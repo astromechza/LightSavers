@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 
 namespace LightSavers
 {
@@ -13,9 +14,10 @@ namespace LightSavers
      */
     public class Globals
     {
-        public static Game1 mainGame;
+        public static LightSaverGame mainGame;
         public static ScreenManager screenManager;
         public static GraphicsDeviceManager graphics;
+        public static ContentManager content;
 
     }
 }

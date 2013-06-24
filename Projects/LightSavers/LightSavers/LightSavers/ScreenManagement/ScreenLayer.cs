@@ -28,7 +28,7 @@ namespace LightSavers.ScreenManagement
 
         public bool mustExit = false;
 
-        private bool updateTransition(GameTime gameTime, TimeSpan totalTime, int direction)
+        private bool UpdateTransition(GameTime gameTime, TimeSpan totalTime, int direction)
         {
             float delta;
 
@@ -57,7 +57,7 @@ namespace LightSavers.ScreenManagement
             {
                 // TransitioningOn : update transition progress, if complete, switch to active
                 case ScreenState.TransitioningOn:
-                    if (updateTransition(gameTime, transitionOnTime, 1))
+                    if (UpdateTransition(gameTime, transitionOnTime, 1))
                     {
                         state = ScreenState.TransitioningOn;                        
                     }
@@ -69,7 +69,7 @@ namespace LightSavers.ScreenManagement
                 case ScreenState.Active:
                     break;
                 case ScreenState.TransitioningOff:
-                    if (updateTransition(gameTime, transitionOffTime, -1))
+                    if (UpdateTransition(gameTime, transitionOffTime, -1))
                     {
                         state = ScreenState.TransitioningOff;
                     }

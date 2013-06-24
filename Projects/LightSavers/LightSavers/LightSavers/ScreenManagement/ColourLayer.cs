@@ -23,8 +23,9 @@ namespace LightSavers.ScreenManagement
             tex = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
             tex.SetData(new Color[] {Color.Red});
 
-            this.transitionOnTime = TimeSpan.FromSeconds(0.5);
+            this.transitionOnTime = TimeSpan.FromSeconds(0.6);
             this.transitionOffTime = TimeSpan.FromSeconds(0.5);
+            
         }
 
         public override void Draw(GameTime gameTime)

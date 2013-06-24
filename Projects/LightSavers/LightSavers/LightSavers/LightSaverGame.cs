@@ -12,17 +12,21 @@ using LightSavers.ScreenManagement;
 
 namespace LightSavers
 {
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class LightSaverGame : Microsoft.Xna.Framework.Game
     {
 
-        public Game1()
+        public LightSaverGame()
         {
             // Initialise Globals and Singleton references
             Globals.mainGame = this;
             Globals.graphics = new GraphicsDeviceManager(this);
             Globals.screenManager = new ScreenManager();
+            Globals.content = Content;
+            Globals.content.RootDirectory = "Content";
 
-            Content.RootDirectory = "Content";
+            // Graphics 
+            Globals.graphics.PreferredBackBufferWidth = 1024;
+            Globals.graphics.PreferredBackBufferHeight = 720;
 
         }
 
@@ -33,7 +37,7 @@ namespace LightSavers
 
         protected override void LoadContent()
         {
-            Globals.screenManager.push(new ColourLayer(Color.Red));
+            Globals.screenManager.Push(new ColourLayer(Color.Red));
         }
 
         protected override void UnloadContent()
@@ -44,9 +48,9 @@ namespace LightSavers
         protected override void Update(GameTime gameTime)
         {
             // FIXME: Emergency escape for XBOX. remove before deployment
-            if (Keyboard.GetState().IsKeyDown(Keys.A) && !Globals.screenManager.empty())
+            if (Keyboard.GetState().IsKeyDown(Keys.A) && !Globals.screenManager.IsEmpty())
             {
-                Globals.screenManager.top().StartTransitionOff();
+                Globals.screenManager.GetTop().StartTransitionOff();
             }
 
             Globals.screenManager.Update(gameTime);

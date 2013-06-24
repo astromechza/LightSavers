@@ -25,7 +25,7 @@ namespace LightSavers
                 layers[layers.Count - 1].Update(gameTime);
                 if (layers[layers.Count - 1].mustExit)
                 {
-                    pop();
+                    Pop();
                 }
             }
         }
@@ -44,7 +44,7 @@ namespace LightSavers
 
         // *** Push ***
         // Push a new layer onto the list
-        public void push(ScreenLayer layer)
+        public void Push(ScreenLayer layer)
         {
             layers.Add(layer);
 
@@ -57,7 +57,7 @@ namespace LightSavers
 
         // *** Pop ***
         // Remove and return the topmost layer
-        public ScreenLayer pop()
+        public ScreenLayer Pop()
         {
             ScreenLayer sl = layers[layers.Count - 1];
             layers.RemoveAt(layers.Count - 1);
@@ -76,14 +76,14 @@ namespace LightSavers
             return sl;
         }
 
-        public ScreenLayer top()
+        public ScreenLayer GetTop()
         {
             return layers[layers.Count - 1];
         }
 
 
 
-        public bool empty()
+        public bool IsEmpty()
         {
             return layers.Count == 0;
         }
