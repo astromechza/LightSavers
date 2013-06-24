@@ -33,7 +33,6 @@ namespace LightSavers
 
         protected override void LoadContent()
         {
-            // Test
             Globals.screenManager.push(new ColourLayer(Color.Red));
         }
 
@@ -45,15 +44,20 @@ namespace LightSavers
         protected override void Update(GameTime gameTime)
         {
             // FIXME: Emergency escape for XBOX. remove before deployment
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed) this.Exit();
+            if (Keyboard.GetState().IsKeyDown(Keys.A) && !Globals.screenManager.empty())
+            {
+                Globals.screenManager.top().StartTransitionOff();
+            }
 
-            //Globals.screenManager.Update(gameTime);
+            Globals.screenManager.Update(gameTime);
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
-        {     
+        {
+            Globals.graphics.GraphicsDevice.Clear(Color.Black);
+
             Globals.screenManager.Draw(gameTime);
 
             base.Draw(gameTime);

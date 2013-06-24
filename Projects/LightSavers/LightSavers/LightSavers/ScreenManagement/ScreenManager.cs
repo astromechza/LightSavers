@@ -18,6 +18,18 @@ namespace LightSavers
             layers = new List<ScreenLayer>();
         }
 
+        public void Update(GameTime gameTime)
+        {
+            if (layers.Count > 0)
+            {
+                layers[layers.Count - 1].Update(gameTime);
+                if (layers[layers.Count - 1].mustExit)
+                {
+                    pop();
+                }
+            }
+        }
+
         // *** Draw ***
         // Draw the layers from the lowest non-transparent layer upwards 
         public void Draw(GameTime gameTime)
@@ -64,7 +76,16 @@ namespace LightSavers
             return sl;
         }
 
+        public ScreenLayer top()
+        {
+            return layers[layers.Count - 1];
+        }
 
 
+
+        public bool empty()
+        {
+            return layers.Count == 0;
+        }
     }
 }
