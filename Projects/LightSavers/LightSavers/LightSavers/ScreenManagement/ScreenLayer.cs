@@ -15,6 +15,8 @@ namespace LightSavers.ScreenManagement
         Hidden
     }
 
+    public delegate bool NoArgCallback();
+
     public abstract class ScreenLayer
     {
         ScreenState state = ScreenState.TransitioningOn;
@@ -27,6 +29,9 @@ namespace LightSavers.ScreenManagement
         public bool isTransparent = false;
 
         public bool mustExit = false;
+
+        public NoArgCallback fadeCallback;
+        public NoArgCallback exitCallback;
 
         private bool UpdateTransition(GameTime gameTime, TimeSpan totalTime, int direction)
         {
@@ -64,6 +69,7 @@ namespace LightSavers.ScreenManagement
                     else
                     {                        
                         state = ScreenState.Active;
+                        if (fadeCallback != null) fadeCallback();
                     }
                     break;
                 case ScreenState.Active:
@@ -76,6 +82,7 @@ namespace LightSavers.ScreenManagement
                     else
                     {
                         state = ScreenState.Hidden;
+                        if (exitCallback != null) exitCallback();
                         mustExit = true;
                     }
                     break;

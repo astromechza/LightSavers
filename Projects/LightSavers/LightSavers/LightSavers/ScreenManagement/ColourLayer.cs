@@ -25,7 +25,10 @@ namespace LightSavers.ScreenManagement
 
             this.transitionOnTime = TimeSpan.FromSeconds(0.6);
             this.transitionOffTime = TimeSpan.FromSeconds(0.5);
-            
+
+
+            this.fadeCallback = fadeFinish;
+            this.exitCallback = fadeFinish;
         }
 
         public override void Draw(GameTime gameTime)
@@ -41,6 +44,12 @@ namespace LightSavers.ScreenManagement
         {   
 
             base.Update(gameTime);
+        }
+
+        public bool fadeFinish()
+        {
+            System.Diagnostics.Debug.WriteLine("derp");
+            return true;
         }
     }
 }
