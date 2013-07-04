@@ -30,8 +30,15 @@ namespace LightSavers.ScreenManagement
 
         public bool mustExit = false;
 
-        public NoArgCallback fadeCallback;
-        public NoArgCallback exitCallback;
+        // Callback functions for events
+        // - As soon as the layer is created
+        public NoArgCallback fadeInBeginCallback;
+        // - As soon as the layer has completed its fade in
+        public NoArgCallback fadeInCompleteCallback;
+        // - Just before it fades out
+        public NoArgCallback fadeOutBeginCallback;
+        // - Once the fade out is complete
+        public NoArgCallback fadeOutCompleteCallback;
 
         private bool UpdateTransition(GameTime gameTime, TimeSpan totalTime, int direction)
         {
