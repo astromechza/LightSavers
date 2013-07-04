@@ -14,7 +14,7 @@ namespace LightSavers.ScreenManagement
         private Viewport viewport;
         private Texture2D tex;
 
-        public ColourLayer(Color bg)
+        public ColourLayer(Color bg) : base()
         {
             background = bg;
             isTransparent = false;

@@ -16,7 +16,7 @@ namespace LightSavers.ScreenManagement
         private Texture2D tex;
         private SpriteFont spriteFont;
 
-        public TextLayer(String text)
+        public TextLayer(String text) : base()
         {
             this.text = text;
 
@@ -29,7 +29,7 @@ namespace LightSavers.ScreenManagement
 
             this.transitionOnTime = TimeSpan.FromSeconds(0.6);
             this.transitionOffTime = TimeSpan.FromSeconds(0.5);
-
+            
         }
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)

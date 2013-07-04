@@ -37,8 +37,29 @@ namespace LightSavers
 
         protected override void LoadContent()
         {
-            ScreenLayer first = new TextLayer("First");
+            ScreenLayer first = new TextLayer("Press A to fade this screen");
+            first.fadeInCompleteCallback = Func1;
+            first.fadeOutBeginCallback = Func2;
+            first.fadeOutCompleteCallback = Func3;
             Globals.screenManager.Push(first);
+        }
+
+        public bool Func1()
+        {
+            System.Diagnostics.Debug.WriteLine("Func1");
+            return true;
+        }
+
+        public bool Func2()
+        {
+            System.Diagnostics.Debug.WriteLine("Func2");
+            return true;
+        }
+
+        public bool Func3()
+        {
+            System.Diagnostics.Debug.WriteLine("Func3");
+            return true;
         }
 
 

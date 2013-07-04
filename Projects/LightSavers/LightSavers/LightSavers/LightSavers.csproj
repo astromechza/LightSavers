@@ -111,10 +111,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="LightSaverGame.cs" />
-    <Compile Include="ScreenManagement\ColourLayer.cs" />
+    <Compile Include="ScreenManagement\Layers\ColourLayer.cs" />
     <Compile Include="ScreenManagement\ScreenLayer.cs" />
     <Compile Include="ScreenManagement\ScreenManager.cs" />
-    <Compile Include="ScreenManagement\TextLayer.cs" />
+    <Compile Include="ScreenManagement\Layers\TextLayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
