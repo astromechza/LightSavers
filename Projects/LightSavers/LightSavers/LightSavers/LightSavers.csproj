@@ -114,6 +114,7 @@
     <Compile Include="ScreenManagement\ColourLayer.cs" />
     <Compile Include="ScreenManagement\ScreenLayer.cs" />
     <Compile Include="ScreenManagement\ScreenManager.cs" />
+    <Compile Include="ScreenManagement\TextLayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

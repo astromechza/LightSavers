@@ -76,7 +76,7 @@ namespace LightSavers.ScreenManagement
                     else
                     {                        
                         state = ScreenState.Active;
-                        if (fadeCallback != null) fadeCallback();
+                        if (fadeInCompleteCallback != null) fadeInCompleteCallback();
                     }
                     break;
                 case ScreenState.Active:
@@ -89,7 +89,7 @@ namespace LightSavers.ScreenManagement
                     else
                     {
                         state = ScreenState.Hidden;
-                        if (exitCallback != null) exitCallback();
+                        if (fadeOutCompleteCallback != null) fadeOutCompleteCallback();
                         mustExit = true;
                     }
                     break;

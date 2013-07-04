@@ -37,8 +37,10 @@ namespace LightSavers
 
         protected override void LoadContent()
         {
-            Globals.screenManager.Push(new ColourLayer(Color.Red));
+            ScreenLayer first = new TextLayer("First");
+            Globals.screenManager.Push(first);
         }
+
 
         protected override void UnloadContent()
         {

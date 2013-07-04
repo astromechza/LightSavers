@@ -26,6 +26,7 @@ namespace LightSavers.ScreenManagement
             this.transitionOnTime = TimeSpan.FromSeconds(0.6);
             this.transitionOffTime = TimeSpan.FromSeconds(0.5);
 
+            this.fadeOutCompleteCallback = bob;
 
         }
 
@@ -42,6 +43,14 @@ namespace LightSavers.ScreenManagement
         {   
 
             base.Update(gameTime);
+        }
+
+        public bool bob()
+        {
+            System.Diagnostics.Debug.WriteLine("derp");
+            Globals.screenManager.Push(new TextLayer("Hello World"));
+            this.mustExit = true;
+            return true;
         }
 
     }
