@@ -39,15 +39,18 @@ namespace LightSavers
         protected override void LoadContent()
         {
             AssetLoader loader = new AssetLoader();
-            loader.fadeOutCompleteCallback = DisplayMainMenu;
             loader.fadeInCompleteCallback = loader.Start;
+            loader.fadeOutCompleteCallback = DisplayMainMenu;
             Globals.screenManager.Push(loader);
             
         }
 
         public bool DisplayMainMenu()
         {
-            Globals.screenManager.Push(new MainMenu());
+            // remove the loading layer since its not needed
+            Globals.screenManager.Pop();
+            // add main menu screen
+            Globals.screenManager.Push(new MainMenu());            
             return true;
         }
 
