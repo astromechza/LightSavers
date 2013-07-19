@@ -16,7 +16,7 @@
     <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>3b7985da-ebb8-4f1c-9b8e-02d18449e401</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
-    <ApplicationIcon>Game.ico</ApplicationIcon>
+    <ApplicationIcon>ScreenManagement\Layers\Menus\Game.ico</ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -112,12 +112,13 @@
     <Compile Include="Program.cs" />
     <Compile Include="LightSaverGame.cs" />
     <Compile Include="ScreenManagement\Layers\ColourLayer.cs" />
+    <Compile Include="ScreenManagement\Layers\Menus\MainMenu.cs" />
     <Compile Include="ScreenManagement\ScreenLayer.cs" />
     <Compile Include="ScreenManagement\ScreenManager.cs" />
     <Compile Include="ScreenManagement\Layers\TextLayer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Game.ico" />
+    <Content Include="ScreenManagement\Layers\Menus\Game.ico" />
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>

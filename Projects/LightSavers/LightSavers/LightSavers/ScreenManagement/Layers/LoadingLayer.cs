@@ -5,55 +5,44 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace LightSavers.ScreenManagement
+namespace LightSavers.ScreenManagement.Layers
 {
-    public class ColourLayer : ScreenLayer
+    public class LoadingLayer : ScreenLayer
     {
-        private Color background;
         private SpriteBatch spriteBatch;
         private Viewport viewport;
         private Texture2D tex;
+        private int gifProgress = 0;
 
-        public ColourLayer(Color bg) : base()
+        public LoadingLayer()
+            : base()
         {
-            background = bg;
-            isTransparent = false;
             spriteBatch = new SpriteBatch(Globals.graphics.GraphicsDevice);
             viewport = Globals.graphics.GraphicsDevice.Viewport;
             tex = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
-            tex.SetData(new Color[] {Color.Red});
+            tex.SetData(new Color[] { Color.Black });
 
-            this.transitionOnTime = TimeSpan.FromSeconds(0.6);
+            this.transitionOnTime = TimeSpan.FromSeconds(0.1);
             this.transitionOffTime = TimeSpan.FromSeconds(0.5);
-
-            this.fadeOutCompleteCallback = bob;
-
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             spriteBatch.Begin();
 
             spriteBatch.Draw(tex, viewport.Bounds, new Color(transitionPercent, transitionPercent, transitionPercent, transitionPercent));
 
-            
-
             spriteBatch.End();
         }
 
-        public new void Update(GameTime gameTime)
-        {   
+        public override void Update(GameTime gameTime)
+        {
+            gifProgress += 1;
+            if (gifProgress == 100) gifProgress = 0;
 
             base.Update(gameTime);
         }
 
-        public bool bob()
-        {
-            System.Diagnostics.Debug.WriteLine("derp");
-            Globals.screenManager.Push(new TextLayer("Hello World"));
-            this.mustExit = true;
-            return true;
-        }
 
     }
 }

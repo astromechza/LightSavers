@@ -19,7 +19,7 @@ namespace LightSavers.ScreenManagement
 
     public abstract class ScreenLayer
     {
-        ScreenState state = ScreenState.TransitioningOn;
+        public ScreenState state = ScreenState.TransitioningOn;
 
         public TimeSpan transitionOnTime = TimeSpan.Zero;
         public TimeSpan transitionOffTime = TimeSpan.Zero;
@@ -66,7 +66,7 @@ namespace LightSavers.ScreenManagement
         /* Layer Update - control transition percentage
          * call via base.Update 
          */
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             switch (state)
             {

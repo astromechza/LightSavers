@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using LightSavers.ScreenManagement;
+using LightSavers.ScreenManagement.Layers.Menus;
 
 namespace LightSavers
 {
@@ -38,27 +39,13 @@ namespace LightSavers
         protected override void LoadContent()
         {
             ScreenLayer first = new TextLayer("Press A to fade this screen");
-            first.fadeInCompleteCallback = Func1;
-            first.fadeOutBeginCallback = Func2;
-            first.fadeOutCompleteCallback = Func3;
+            first.fadeOutCompleteCallback = DisplayMainMenu;
             Globals.screenManager.Push(first);
         }
 
-        public bool Func1()
+        public bool DisplayMainMenu()
         {
-            System.Diagnostics.Debug.WriteLine("Func1");
-            return true;
-        }
-
-        public bool Func2()
-        {
-            System.Diagnostics.Debug.WriteLine("Func2");
-            return true;
-        }
-
-        public bool Func3()
-        {
-            System.Diagnostics.Debug.WriteLine("Func3");
+            Globals.screenManager.Push(new MainMenu());
             return true;
         }
 
