@@ -58,7 +58,6 @@ namespace LightSavers.ScreenManagement.Layers.Menus
 
             Globals.graphics.GraphicsDevice.Clear(Color.Gray);
             
-            // DRAW SCENE
 
             foreach (ModelMesh mesh in AssetLoader.cube_mdl.Meshes)
             {
@@ -76,12 +75,10 @@ namespace LightSavers.ScreenManagement.Layers.Menus
 
             Globals.graphics.GraphicsDevice.SetRenderTarget(null);
 
-            int tw = 1024;
-            int th = 720;
 
             canvas.Begin();
             
-            canvas.Draw(menu3dscene, new Rectangle(0, 0, tw, th), Color.White);
+            canvas.Draw(menu3dscene, viewport.Bounds, Color.White);
 
             canvas.DrawString(spriteFont, "MAIN MENU SCREEN", new Vector2(300, 300), Color.Blue);
 

@@ -19,12 +19,13 @@ namespace LightSavers
         public static Model cube_mdl;
         public static Texture2D black_tex;
         public static Texture2D white_tex;
+        public static Texture2D sand_tex;
         /***********************************/
 
         private String loading_msg = "Loading Assets";
         private int loading_bar_length = 0;
         private int loaded_assets = 0;
-        private const int loaded_assets_count = 1;            // !! increase this 
+        private int num_assets = -1;            
 
         private Viewport viewport;
         private SpriteBatch spriteBatch;
@@ -58,10 +59,14 @@ namespace LightSavers
         // Each asset updates the message and increments the load count
         private void LoadAssets()
         {
+            num_assets = 2;
             // assets
             loading_msg = "Loading Cube.fbx";
-            System.Diagnostics.Debug.WriteLine(loading_msg);
             cube_mdl = Globals.content.Load<Model>("Cube");
+            loaded_assets += 1;
+
+            loading_msg = "Loading sand.jpg";
+            sand_tex = Globals.content.Load<Texture2D>("sand");
             loaded_assets += 1;
             
             // once its loaded, fade out
@@ -85,7 +90,7 @@ namespace LightSavers
         // Update the size of the loading bar
         public override void Update(GameTime gameTime)
         {
-            loading_bar_length = (int)((loaded_assets / (float)loaded_assets_count) * 1024);
+            loading_bar_length = (int)((loaded_assets / (float)num_assets) * 1024);
             base.Update(gameTime);
         }
 
