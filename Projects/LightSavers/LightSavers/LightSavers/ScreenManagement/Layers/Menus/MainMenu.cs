@@ -16,10 +16,6 @@ namespace LightSavers.ScreenManagement.Layers.Menus
 
         public Matrix viewMatrix;
         public Matrix projectionMatrix;
-        public Texture2D tex;
-        public Model cubemdl;
-
-
 
         public float spin;
 
@@ -41,9 +37,6 @@ namespace LightSavers.ScreenManagement.Layers.Menus
                 0, 
                 RenderTargetUsage.DiscardContents);
 
-            tex = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
-            tex.SetData(new Color[] { Color.Black });
-
             spriteFont = Globals.content.Load<SpriteFont>("SpriteFont1");
 
             this.transitionOnTime = TimeSpan.FromSeconds(0.6);
@@ -53,7 +46,6 @@ namespace LightSavers.ScreenManagement.Layers.Menus
 
             viewMatrix = Matrix.CreateLookAt(new Vector3(1.0f, 0.5f, 1.0f), Vector3.Zero, Vector3.Up);
 
-            cubemdl = AssetLoader.cube_mdl;
             spin = 0.0f;
         }
 
@@ -68,7 +60,7 @@ namespace LightSavers.ScreenManagement.Layers.Menus
             
             // DRAW SCENE
 
-            foreach (ModelMesh mesh in cubemdl.Meshes)
+            foreach (ModelMesh mesh in AssetLoader.cube_mdl.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
@@ -91,12 +83,12 @@ namespace LightSavers.ScreenManagement.Layers.Menus
             
             canvas.Draw(menu3dscene, new Rectangle(0, 0, tw, th), Color.White);
 
-            canvas.DrawString(spriteFont, "DEREADEDAE", new Vector2(300, 300), Color.Blue);
+            canvas.DrawString(spriteFont, "MAIN MENU SCREEN", new Vector2(300, 300), Color.Blue);
 
             if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)
             {
                 int trans = (int)((1 - transitionPercent) * 255.0f);
-                canvas.Draw(tex, viewport.Bounds, new Color(trans, trans, trans, trans));
+                canvas.Draw(AssetLoader.black_tex, viewport.Bounds, new Color(trans, trans, trans, trans));
             }
             
             canvas.End();
