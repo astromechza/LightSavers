@@ -41,6 +41,7 @@ namespace LightSavers
             ScreenLayer first = new TextLayer("Press A to fade this screen");
             first.fadeOutCompleteCallback = DisplayMainMenu;
             Globals.screenManager.Push(first);
+            Globals.screenManager.Push(new AssetLoader());
         }
 
         public bool DisplayMainMenu()

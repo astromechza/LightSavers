@@ -46,14 +46,14 @@ namespace LightSavers.ScreenManagement.Layers.Menus
 
             spriteFont = Globals.content.Load<SpriteFont>("SpriteFont1");
 
-            this.transitionOnTime = TimeSpan.FromSeconds(1.6);
+            this.transitionOnTime = TimeSpan.FromSeconds(0.6);
             this.transitionOffTime = TimeSpan.FromSeconds(0.5);
 
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45.0f), viewport.AspectRatio, 1f, 10000);
 
             viewMatrix = Matrix.CreateLookAt(new Vector3(1.0f, 0.5f, 1.0f), Vector3.Zero, Vector3.Up);
 
-            cubemdl = Globals.content.Load<Model>("Cube");
+            cubemdl = AssetLoader.cube_mdl;
             spin = 0.0f;
         }
 
@@ -96,7 +96,6 @@ namespace LightSavers.ScreenManagement.Layers.Menus
             if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)
             {
                 int trans = (int)((1 - transitionPercent) * 255.0f);
-                System.Diagnostics.Debug.WriteLine(trans);
                 canvas.Draw(tex, viewport.Bounds, new Color(trans, trans, trans, trans));
             }
             
