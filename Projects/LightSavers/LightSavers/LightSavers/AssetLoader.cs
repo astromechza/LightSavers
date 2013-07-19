@@ -44,10 +44,14 @@ namespace LightSavers
 
             // Fade times
             transitionOnTime = TimeSpan.FromSeconds(0.6);
-            transitionOffTime = TimeSpan.FromSeconds(0.5);
+            transitionOffTime = TimeSpan.FromSeconds(0.5);           
+        }
 
+        public bool Start()
+        {
             Thread t = new Thread(new ThreadStart(LoadAssets));
             t.Start();
+            return true;
         }
 
         // Asset loading thread
@@ -71,8 +75,7 @@ namespace LightSavers
             spriteBatch.Begin();
             spriteBatch.Draw(black_tex, viewport.Bounds, new Color(transitionPercent, transitionPercent, transitionPercent, transitionPercent));
 
-            int w = (int)(spriteFont.MeasureString(loading_msg).X / 2);
-            spriteBatch.DrawString(spriteFont, loading_msg, new Vector2(viewport.Width / 2 - w, 575), Color.White);
+            spriteBatch.DrawString(spriteFont, loading_msg, new Vector2((viewport.Width - spriteFont.MeasureString(loading_msg).X) / 2, 575), Color.White);
 
             spriteBatch.Draw(white_tex, new Rectangle(0, 600, loading_bar_length, 2), Color.White); 
 

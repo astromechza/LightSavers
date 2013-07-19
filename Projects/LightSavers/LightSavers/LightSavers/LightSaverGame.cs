@@ -38,10 +38,11 @@ namespace LightSavers
 
         protected override void LoadContent()
         {
-            ScreenLayer first = new TextLayer("Press A to fade this screen");
-            first.fadeOutCompleteCallback = DisplayMainMenu;
-            Globals.screenManager.Push(first);
-            Globals.screenManager.Push(new AssetLoader());
+            AssetLoader loader = new AssetLoader();
+            loader.fadeOutCompleteCallback = DisplayMainMenu;
+            loader.fadeInCompleteCallback = loader.Start;
+            Globals.screenManager.Push(loader);
+            
         }
 
         public bool DisplayMainMenu()
