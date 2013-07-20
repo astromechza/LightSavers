@@ -59,7 +59,9 @@ namespace LightSavers
         // Each asset updates the message and increments the load count
         private void LoadAssets()
         {
+            // number of assets to be loaded. (used to compute progress bar size)
             num_assets = 2;
+
             // assets
             loading_msg = "Loading Cube.fbx";
             cube_mdl = Globals.content.Load<Model>("Cube");
