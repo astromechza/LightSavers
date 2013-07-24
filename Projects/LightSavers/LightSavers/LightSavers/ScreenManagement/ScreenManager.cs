@@ -49,7 +49,7 @@ namespace LightSavers
             layers.Add(layer);
 
             // If the added layer is not transparent, it must be the first layer drawn
-            if (!layer.isTransparent || lowestVisibleLayer == -1)
+            if (lowestVisibleLayer == -1 || !layer.isTransparent)
             {
                 lowestVisibleLayer = layers.Count - 1;
             }

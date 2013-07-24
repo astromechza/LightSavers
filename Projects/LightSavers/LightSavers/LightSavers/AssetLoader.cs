@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using LightSavers.ScreenManagement;
 using System.Threading;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 namespace LightSavers
 {
@@ -33,13 +34,13 @@ namespace LightSavers
 
         public AssetLoader() : base()
         {
-            spriteFont = Globals.content.Load<SpriteFont>("LoadingFont");
             spriteBatch = new SpriteBatch(Globals.graphics.GraphicsDevice);
             viewport = Globals.graphics.GraphicsDevice.Viewport;
 
+            // Assets required to view the loading screen
+            spriteFont = Globals.content.Load<SpriteFont>("LoadingFont");
             black_tex = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
             black_tex.SetData(new Color[] { Color.Black });
-
             white_tex = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
             white_tex.SetData(new Color[] { Color.White });
 
@@ -63,16 +64,35 @@ namespace LightSavers
             num_assets = 2;
 
             // assets
-            loading_msg = "Loading Cube.fbx";
-            cube_mdl = Globals.content.Load<Model>("Cube");
-            loaded_assets += 1;
+            cube_mdl = loadModel("Cube");
 
-            loading_msg = "Loading sand.jpg";
-            sand_tex = Globals.content.Load<Texture2D>("sand");
-            loaded_assets += 1;
+            sand_tex = loadTexture("sand");
             
             // once its loaded, fade out
             StartTransitionOff();
+        }
+
+        private Model loadModel(String modelfile)
+        {
+            
+            loading_msg = String.Format("Loading texture '{0}'", modelfile);
+            Stopwatch s = new Stopwatch(); s.Start();
+            Model m = Globals.content.Load<Model>(modelfile);
+            System.Diagnostics.Debug.WriteLine(String.Format("Loading model: '{0}' took {1}ms", modelfile, s.ElapsedMilliseconds));
+            loaded_assets += 1;
+
+            return m;
+        }
+
+        private Texture2D loadTexture(String texfile)
+        {
+            loading_msg = String.Format("Loading texture '{0}'", texfile);
+            Stopwatch s = new Stopwatch(); s.Start();
+            Texture2D t = Globals.content.Load<Texture2D>(texfile);
+            System.Diagnostics.Debug.WriteLine(String.Format("Loading texture: '{0}' took {1}ms", texfile, s.ElapsedMilliseconds));
+            loaded_assets += 1;
+
+            return t;
         }
 
         // Draw the layer
@@ -95,6 +115,7 @@ namespace LightSavers
             loading_bar_length = (int)((loaded_assets / (float)num_assets) * 1024);
             base.Update(gameTime);
         }
+        
 
         
     }
