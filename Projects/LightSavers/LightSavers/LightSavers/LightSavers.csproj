@@ -117,6 +117,7 @@
     <Compile Include="ScreenManagement\ScreenLayer.cs" />
     <Compile Include="ScreenManagement\ScreenManager.cs" />
     <Compile Include="ScreenManagement\Layers\TextLayer.cs" />
+    <Compile Include="Utils\FPScounter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ScreenManagement\Layers\Menus\Game.ico" />

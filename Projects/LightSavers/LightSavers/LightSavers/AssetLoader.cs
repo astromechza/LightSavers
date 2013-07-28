@@ -18,6 +18,9 @@ namespace LightSavers
     {
         /************* ASSETS **************/
         public static Model cube_mdl;
+        public static Model combine_mdl;
+        public static Model dacube_mdl;
+        public static Model gun_mdl;
         public static Texture2D black_tex;
         public static Texture2D white_tex;
         public static Texture2D sand_tex;
@@ -61,26 +64,25 @@ namespace LightSavers
         private void LoadAssets()
         {
             // number of assets to be loaded. (used to compute progress bar size)
-            num_assets = 2;
+            num_assets = 3;
 
             // assets
-            cube_mdl = loadModel("Cube");
-
+            combine_mdl = loadModel("combine");
             sand_tex = loadTexture("sand");
-            
+            dacube_mdl = loadModel("dacube");
+            gun_mdl = loadModel("M1911");
+
             // once its loaded, fade out
             StartTransitionOff();
         }
 
         private Model loadModel(String modelfile)
         {
-            
-            loading_msg = String.Format("Loading texture '{0}'", modelfile);
+            loading_msg = String.Format("Loading model '{0}'", modelfile);
             Stopwatch s = new Stopwatch(); s.Start();
             Model m = Globals.content.Load<Model>(modelfile);
             System.Diagnostics.Debug.WriteLine(String.Format("Loading model: '{0}' took {1}ms", modelfile, s.ElapsedMilliseconds));
             loaded_assets += 1;
-
             return m;
         }
 
@@ -91,7 +93,6 @@ namespace LightSavers
             Texture2D t = Globals.content.Load<Texture2D>(texfile);
             System.Diagnostics.Debug.WriteLine(String.Format("Loading texture: '{0}' took {1}ms", texfile, s.ElapsedMilliseconds));
             loaded_assets += 1;
-
             return t;
         }
 

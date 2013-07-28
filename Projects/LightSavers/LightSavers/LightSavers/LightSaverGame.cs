@@ -10,11 +10,13 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using LightSavers.ScreenManagement;
 using LightSavers.ScreenManagement.Layers.Menus;
+using LightSavers.Utils;
 
 namespace LightSavers
 {
     public class LightSaverGame : Microsoft.Xna.Framework.Game
     {
+        FPScounter fps = new FPScounter();
 
         public LightSaverGame()
         {
@@ -25,10 +27,16 @@ namespace LightSavers
             Globals.content = Content;
             Globals.content.RootDirectory = "Content";
 
+            //anti alias
+            Globals.graphics.PreferMultiSampling = true;
+
+            //uncap FPS
+            Globals.graphics.SynchronizeWithVerticalRetrace = false;
+            IsFixedTimeStep = false;
+
             // Graphics 
             Globals.graphics.PreferredBackBufferWidth = 1024;
             Globals.graphics.PreferredBackBufferHeight = 720;
-
         }
 
         protected override void Initialize()
@@ -62,6 +70,7 @@ namespace LightSavers
 
         protected override void Update(GameTime gameTime)
         {
+            fps.updateTick(gameTime);
             // FIXME: Emergency escape for XBOX. remove before deployment
             if (Keyboard.GetState().IsKeyDown(Keys.A) && !Globals.screenManager.IsEmpty())
             {
@@ -75,9 +84,12 @@ namespace LightSavers
 
         protected override void Draw(GameTime gameTime)
         {
+            fps.frameTick();
             Globals.graphics.GraphicsDevice.Clear(Color.Black);
 
             Globals.screenManager.Draw(gameTime);
+
+
 
             base.Draw(gameTime);
         }
