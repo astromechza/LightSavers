@@ -12,6 +12,7 @@ namespace LightSavers
     {
         private List<ScreenLayer> layers;
         private int lowestVisibleLayer = -1;
+        private Boolean gameHasStarted = false;
 
         public ScreenManager() 
         {
@@ -27,6 +28,10 @@ namespace LightSavers
                 {
                     Pop();
                 }
+            }
+            else if (gameHasStarted)
+            {
+                Globals.mainGame.Exit();
             }
         }
 
@@ -46,6 +51,7 @@ namespace LightSavers
         // Push a new layer onto the list
         public void Push(ScreenLayer layer)
         {
+            gameHasStarted = true;
             layers.Add(layer);
 
             // If the added layer is not transparent, it must be the first layer drawn
