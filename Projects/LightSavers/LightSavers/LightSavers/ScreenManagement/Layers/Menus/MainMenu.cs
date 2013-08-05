@@ -43,7 +43,7 @@ namespace LightSavers.ScreenManagement.Layers.Menus
                 RenderTargetUsage.DiscardContents);
 
             // the actual 3d model
-            model = AssetLoader.menuscene_mdl;
+            model = AssetLoader.mdl_menuscene;
 
         }
 
@@ -83,7 +83,7 @@ namespace LightSavers.ScreenManagement.Layers.Menus
             if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)
             {
                 int trans = (int)((1 - transitionPercent) * 255.0f);
-                canvas.Draw(AssetLoader.black_tex, viewport.Bounds, new Color(trans, trans, trans, trans));
+                canvas.Draw(AssetLoader.tex_black, viewport.Bounds, new Color(trans, trans, trans, trans));
             }
 
             canvas.End();

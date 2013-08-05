@@ -13,15 +13,22 @@ namespace LightSavers
     /** AssetLoader layer ***
      * loads larger assets at the beginning of the game with nice fade in / out and progress bar.
      * To add a new asset, add a static variable for it and add it to the LoadAssets method. 
+     * 
+     * Naming convention:
+     *   Model -> mdl_relevantname
+     *   Texture -> tex_relevantname
+     *   Sound -> snd_relevantname
+     *   Font -> fnt_relevantname
+     * 
      ************************/ 
     public class AssetLoader : ScreenLayer
     {
         /************* ASSETS **************/
-        public static Model combine_mdl;
-        public static Texture2D black_tex;
-        public static Texture2D white_tex;
-        public static Texture2D sand_tex;
-        public static Model menuscene_mdl;
+        public static Model mld_combine;
+        public static Texture2D tex_black;
+        public static Texture2D tex_white;
+        public static Texture2D tex_sand;
+        public static Model mdl_menuscene;
         /***********************************/
 
         private String loading_msg = "Loading Assets";
@@ -40,11 +47,11 @@ namespace LightSavers
             viewport = Globals.graphics.GraphicsDevice.Viewport;
 
             // Assets required to view the loading screen
-            spriteFont = Globals.content.Load<SpriteFont>("LoadingFont");
-            black_tex = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
-            black_tex.SetData(new Color[] { Color.Black });
-            white_tex = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
-            white_tex.SetData(new Color[] { Color.White });
+            spriteFont = Globals.content.Load<SpriteFont>("fonts/LoadingFont");
+            tex_black = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
+            tex_black.SetData(new Color[] { Color.Black });
+            tex_white = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
+            tex_white.SetData(new Color[] { Color.White });
 
             // Fade times
             transitionOnTime = TimeSpan.FromSeconds(0.6);
@@ -69,9 +76,9 @@ namespace LightSavers
             num_assets = 3;
 
             // assets
-            combine_mdl = loadModel("combine");
-            sand_tex = loadTexture("sand");
-            menuscene_mdl = loadModel("menuscene");
+            mld_combine = loadModel("combine");
+            tex_sand = loadTexture("sand");
+            mdl_menuscene = loadModel("menuscene");
 
             // once its loaded, fade out
             StartTransitionOff();
@@ -102,13 +109,13 @@ namespace LightSavers
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(black_tex, viewport.Bounds, new Color(transitionPercent, transitionPercent, transitionPercent, transitionPercent));
+            spriteBatch.Draw(tex_black, viewport.Bounds, new Color(transitionPercent, transitionPercent, transitionPercent, transitionPercent));
 
             spriteBatch.DrawString(spriteFont, loading_msg, new Vector2((viewport.Width - spriteFont.MeasureString(loading_msg).X) / 2, drawingY), Color.White);
 
-            spriteBatch.Draw(white_tex, new Rectangle(0, drawingY + 50-2, viewport.Width, 6), Color.Gray); 
+            spriteBatch.Draw(tex_white, new Rectangle(0, drawingY + 50-2, viewport.Width, 6), Color.Gray); 
 
-            spriteBatch.Draw(white_tex, new Rectangle(0, drawingY + 50, loading_bar_length, 2), Color.White); 
+            spriteBatch.Draw(tex_white, new Rectangle(0, drawingY + 50, loading_bar_length, 2), Color.White); 
 
             spriteBatch.End();
         }
