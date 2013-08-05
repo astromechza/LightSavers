@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using LightSavers.ScreenManagement;
 using LightSavers.ScreenManagement.Layers.Menus;
 using LightSavers.Utils;
+using LightSavers.Components;
 
 namespace LightSavers
 {
@@ -24,6 +25,7 @@ namespace LightSavers
             Globals.mainGame = this;
             Globals.graphics = new GraphicsDeviceManager(this);
             Globals.screenManager = new ScreenManager();
+            Globals.inputController = new InputController();
             Globals.content = Content;
             Globals.content.RootDirectory = "Content";
 
@@ -71,12 +73,11 @@ namespace LightSavers
         protected override void Update(GameTime gameTime)
         {
             fps.updateTick(gameTime);
-            // FIXME: Emergency escape for XBOX. remove before deployment
-            if (Keyboard.GetState().IsKeyDown(Keys.A) && !Globals.screenManager.IsEmpty())
-            {
-                Globals.screenManager.GetTop().StartTransitionOff();
-            }
+            
+            // update input controller
+            Globals.inputController.Update();
 
+            // update the screen manager
             Globals.screenManager.Update(gameTime);
 
             base.Update(gameTime);

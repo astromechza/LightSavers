@@ -11,7 +11,8 @@ namespace LightSavers.Components
      * - support all 4 controllers
      * - support keyboard for debugging 2 players
      * - isKeyPressed / isKeyReleased / isKeyJustPressed / isKeyJustReleased
-     * 
+     * - get list of connected players.
+     * - disconnected / reconnected event..
      * 
      */
     public class InputController

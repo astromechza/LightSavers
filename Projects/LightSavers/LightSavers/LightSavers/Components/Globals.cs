@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using LightSavers.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
@@ -18,6 +19,7 @@ namespace LightSavers
         public static ScreenManager screenManager;
         public static GraphicsDeviceManager graphics;
         public static ContentManager content;
+        public static InputController inputController;
 
     }
 }
