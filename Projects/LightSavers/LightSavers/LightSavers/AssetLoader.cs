@@ -32,6 +32,7 @@ namespace LightSavers
         private Viewport viewport;
         private SpriteBatch spriteBatch;
         private SpriteFont spriteFont;
+        private int drawingY;
 
         public AssetLoader() : base()
         {
@@ -47,7 +48,10 @@ namespace LightSavers
 
             // Fade times
             transitionOnTime = TimeSpan.FromSeconds(0.6);
-            transitionOffTime = TimeSpan.FromSeconds(0.5);           
+            transitionOffTime = TimeSpan.FromSeconds(0.5);      
+     
+            // vertical position
+            drawingY = (int)(viewport.Height * 0.75f);
         }
 
         public bool Start()
@@ -100,9 +104,11 @@ namespace LightSavers
             spriteBatch.Begin();
             spriteBatch.Draw(black_tex, viewport.Bounds, new Color(transitionPercent, transitionPercent, transitionPercent, transitionPercent));
 
-            spriteBatch.DrawString(spriteFont, loading_msg, new Vector2((viewport.Width - spriteFont.MeasureString(loading_msg).X) / 2, 575), Color.White);
+            spriteBatch.DrawString(spriteFont, loading_msg, new Vector2((viewport.Width - spriteFont.MeasureString(loading_msg).X) / 2, drawingY), Color.White);
 
-            spriteBatch.Draw(white_tex, new Rectangle(0, 600, loading_bar_length, 2), Color.White); 
+            spriteBatch.Draw(white_tex, new Rectangle(0, drawingY + 50-2, viewport.Width, 6), Color.Gray); 
+
+            spriteBatch.Draw(white_tex, new Rectangle(0, drawingY + 50, loading_bar_length, 2), Color.White); 
 
             spriteBatch.End();
         }
@@ -110,7 +116,7 @@ namespace LightSavers
         // Update the size of the loading bar
         public override void Update(GameTime gameTime)
         {
-            loading_bar_length = (int)((loaded_assets / (float)num_assets) * 1024);
+            loading_bar_length = (int)((loaded_assets / (float)num_assets) * viewport.Width);
             base.Update(gameTime);
         }
         
