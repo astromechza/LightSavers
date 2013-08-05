@@ -16,7 +16,7 @@
     <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>3b7985da-ebb8-4f1c-9b8e-02d18449e401</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
-    <ApplicationIcon>ScreenManagement\Layers\Menus\Game.ico</ApplicationIcon>
+    <ApplicationIcon>Game.ico</ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -120,7 +120,7 @@
     <Compile Include="Utils\FPScounter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ScreenManagement\Layers\Menus\Game.ico" />
+    <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>

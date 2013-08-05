@@ -17,13 +17,11 @@ namespace LightSavers
     public class AssetLoader : ScreenLayer
     {
         /************* ASSETS **************/
-        public static Model cube_mdl;
         public static Model combine_mdl;
-        public static Model dacube_mdl;
-        public static Model gun_mdl;
         public static Texture2D black_tex;
         public static Texture2D white_tex;
         public static Texture2D sand_tex;
+        public static Model menuscene_mdl;
         /***********************************/
 
         private String loading_msg = "Loading Assets";
@@ -69,8 +67,7 @@ namespace LightSavers
             // assets
             combine_mdl = loadModel("combine");
             sand_tex = loadTexture("sand");
-            dacube_mdl = loadModel("dacube");
-            gun_mdl = loadModel("M1911");
+            menuscene_mdl = loadModel("menuscene");
 
             // once its loaded, fade out
             StartTransitionOff();

@@ -28,7 +28,7 @@ namespace LightSavers
             Globals.content.RootDirectory = "Content";
 
             //anti alias
-            Globals.graphics.PreferMultiSampling = true;
+            //Globals.graphics.PreferMultiSampling = true;
 
             //uncap FPS
             Globals.graphics.SynchronizeWithVerticalRetrace = false;
