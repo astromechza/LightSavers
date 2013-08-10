@@ -7,6 +7,20 @@ using Microsoft.Xna.Framework.Input;
 
 namespace LightSavers.Components
 {
+
+    // Possible Keys to query for. These are all the keys used in the game.
+    public enum Triggers
+    {
+        Left,
+        Right
+    }
+
+    public enum AnalogStick
+    {
+        Left,
+        Right
+    }
+
     /* InputController
      *  
      * This needs to become an awesome crossplatform input thing capable of:
@@ -19,57 +33,70 @@ namespace LightSavers.Components
      */
     public class InputManager
     {
-
         InputController controller;
 
         public InputManager()
         {
-            OperatingSystem os = Environment.OSVersion;
-            PlatformID pid = os.Platform;
-            if (pid == PlatformID.Win32NT)
-            {
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                 controller = new KeyboardInputController();
-            }
             else
-            {
                 controller = new XBoxInputController();
-            }
         }
 
-        // Called on each game update step
         public void Update()
         {
             controller.Update();
         }
 
-        public bool isKeyPressed(PlayerIndex? player, GameKey k)
+        public bool isButtonPressed(Buttons b, PlayerIndex? pi)
         {
-            return controller.IsKeyPressed(player, k);
+            return controller.isButtonPressed(b, pi);
         }
 
-        public bool isKeyDown(PlayerIndex? player, GameKey k)
+        public bool isButtonDown(Buttons b, PlayerIndex? pi)
         {
-            return controller.IsKeyDown(player, k);
+            return controller.isButtonDown(b, pi);
         }
 
-        public bool isKeyUp(PlayerIndex? player, GameKey k)
+        public bool isButtonReleased(Buttons b, PlayerIndex? pi)
         {
-            return controller.IsKeyUp(player, k);
+            return controller.isButtonReleased(b, pi);
+        }
+
+        public bool isTriggerPressed(Triggers t, PlayerIndex? pi)
+        {
+            return controller.isTriggerPressed(t, pi);
+        }
+
+        public bool isTriggerDown(Triggers t, PlayerIndex? pi)
+        {
+            return controller.isTriggerDown(t, pi);
+        }
+
+        public bool isTriggerReleased(Triggers t, PlayerIndex? pi)
+        {
+            return controller.isTriggerReleased(t, pi);
+        }
+
+        public Vector2 getAnalogVector(AnalogStick a, PlayerIndex? pi)
+        {
+            return controller.getAnalogVector(a, pi);
         }
 
     }
-
-    // Possible Keys to query for. These are all the keys used in the game.
-    public enum GameKey { UP, DOWN, LEFT, RIGHT, SELECT, BACK, FIRE };
 
 
     // Skeleton InputController for Xbox and Keyboard to subclass from
     public abstract class InputController
     {
         public abstract void Update();
-        public abstract bool IsKeyPressed(PlayerIndex? player, GameKey k);
-        public abstract bool IsKeyDown(PlayerIndex? player, GameKey k);
-        public abstract bool IsKeyUp(PlayerIndex? player, GameKey k);      
+        public abstract bool isButtonPressed(Buttons b, PlayerIndex? pi);
+        public abstract bool isButtonDown(Buttons b, PlayerIndex? pi);
+        public abstract bool isButtonReleased(Buttons b, PlayerIndex? pi);
+        public abstract bool isTriggerPressed(Triggers t, PlayerIndex? pi);
+        public abstract bool isTriggerDown(Triggers t, PlayerIndex? pi);
+        public abstract bool isTriggerReleased(Triggers t, PlayerIndex? pi);
+        public abstract Vector2 getAnalogVector(AnalogStick a, PlayerIndex? pi);
     }
 
 
