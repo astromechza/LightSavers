@@ -17,6 +17,11 @@ namespace LightSavers.ScreenManagement.Layers.Menus
         public Matrix projectionMatrix;
         Model model;
 
+        float current_focus_height = 0.4f;
+        float target_focus_height = 0.4f;
+        bool currently_pitching = false;
+        int index = 0;
+
 
         public MainMenu() : base()
         {
@@ -81,6 +86,11 @@ namespace LightSavers.ScreenManagement.Layers.Menus
 
             canvas.Draw(menu3dscene, viewport.Bounds, Color.White);
 
+
+            //draw menu here
+            canvas.Draw(AssetLoader.tex_black, new Rectangle(50,0,300,viewport.Height), new Color(0, 0, 0, 150));
+            
+
             if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)
             {
                 int trans = (int)((1 - transitionPercent) * 255.0f);
@@ -94,6 +104,39 @@ namespace LightSavers.ScreenManagement.Layers.Menus
         public override void Update(GameTime gameTime)
         {
             if (Globals.inputController.isButtonReleased(Buttons.Start, null)) this.StartTransitionOff();
+
+            if (currently_pitching)
+            {
+
+                current_focus_height += (target_focus_height - current_focus_height) * 0.01f;
+
+                viewMatrix = Matrix.CreateLookAt(new Vector3(0.8f, 0.4f, 0.8f), new Vector3(0, current_focus_height, 0.2f), Vector3.Up);
+
+                if( Math.Abs(target_focus_height - current_focus_height) < 0.003) currently_pitching = false;
+
+            }
+
+
+            if (Globals.inputController.isButtonReleased(Buttons.DPadDown, null))
+            {
+                if (index < 5)
+                {
+                    index++;
+                    target_focus_height = 0.4f - index * 0.02f;
+                    currently_pitching = true;
+
+                }
+            }
+            else if (Globals.inputController.isButtonReleased(Buttons.DPadUp, null))
+            {
+                if (index > 0)
+                {
+                    index--;
+                    target_focus_height = 0.4f - index * 0.02f;
+                    currently_pitching = true;
+                }
+            }
+
 
 
             base.Update(gameTime);
