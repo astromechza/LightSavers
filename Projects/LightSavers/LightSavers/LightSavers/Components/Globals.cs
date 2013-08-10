@@ -19,7 +19,7 @@ namespace LightSavers
         public static ScreenManager screenManager;
         public static GraphicsDeviceManager graphics;
         public static ContentManager content;
-        public static InputController inputController;
+        public static InputManager inputController;
 
     }
 }

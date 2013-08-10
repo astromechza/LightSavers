@@ -25,7 +25,7 @@ namespace LightSavers
             Globals.mainGame = this;
             Globals.graphics = new GraphicsDeviceManager(this);
             Globals.screenManager = new ScreenManager();
-            Globals.inputController = new InputController();
+            Globals.inputController = new InputManager();
             Globals.content = Content;
             Globals.content.RootDirectory = "Content";
 

@@ -93,8 +93,7 @@ namespace LightSavers.ScreenManagement.Layers.Menus
 
         public override void Update(GameTime gameTime)
         {
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X)) this.StartTransitionOff();
+            if (Globals.inputController.isButtonReleased(Buttons.Start, null)) this.StartTransitionOff();
 
 
             base.Update(gameTime);
