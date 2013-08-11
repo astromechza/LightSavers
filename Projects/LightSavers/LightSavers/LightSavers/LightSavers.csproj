@@ -107,9 +107,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\InputManager.cs" />
-    <Compile Include="Components\KeyboardInputController.cs" />
-    <Compile Include="Components\XBoxInputController.cs" />
+    <Compile Include="Components\GameContainer.cs" />
+    <Compile Include="Input\InputManager.cs" />
+    <Compile Include="Input\KeyboardInputController.cs" />
+    <Compile Include="Input\XBoxInputController.cs" />
     <Compile Include="ScreenManagement\Layers\AssetLoader.cs" />
     <Compile Include="Components\Globals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

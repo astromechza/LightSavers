@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using LightSavers.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,6 +15,8 @@ namespace LightSavers.ScreenManagement.Layers
         private SpriteBatch canvas;
         public Matrix viewMatrix;
         public Matrix projectionMatrix;
+
+        public GameContainer gameContainer;
 
         public GameLayer() : base()
         {
@@ -41,6 +44,7 @@ namespace LightSavers.ScreenManagement.Layers
                 0,
                 RenderTargetUsage.DiscardContents);
 
+            gameContainer = new GameContainer(this);
 
         }
 
@@ -52,10 +56,9 @@ namespace LightSavers.ScreenManagement.Layers
             // reset these because spritebatch can do nasty stuff
             Globals.graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
             Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-
-
+            
             /*/*/// Draw everything here
-
+            gameContainer.DrawWorld();
 
             // Now switch back to the main render device
             Globals.graphics.GraphicsDevice.SetRenderTarget(null);
@@ -65,6 +68,8 @@ namespace LightSavers.ScreenManagement.Layers
 
             // draw the 3d scene
             canvas.Draw(game3DLayer, viewport.Bounds, Color.White);
+
+            gameContainer.DrawHud(canvas, viewport);
             
             // draw the black transparent thing
             if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)
@@ -79,7 +84,8 @@ namespace LightSavers.ScreenManagement.Layers
 
         public override void Update(GameTime gameTime)
         {
-            if (Globals.inputController.isButtonReleased(Microsoft.Xna.Framework.Input.Buttons.Back, null)) StartTransitionOff();
+
+            gameContainer.Update();
 
             base.Update(gameTime);
         }
