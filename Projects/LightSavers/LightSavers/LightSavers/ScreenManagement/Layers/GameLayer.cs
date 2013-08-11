@@ -79,6 +79,8 @@ namespace LightSavers.ScreenManagement.Layers
 
         public override void Update(GameTime gameTime)
         {
+            if (Globals.inputController.isButtonReleased(Microsoft.Xna.Framework.Input.Buttons.Back, null)) StartTransitionOff();
+
             base.Update(gameTime);
         }
 

@@ -87,6 +87,13 @@ namespace LightSavers
             return layers[layers.Count - 1];
         }
 
+        public int Count()
+        {
+            return layers.Count;
+        }
+
+
+
 
 
         public bool IsEmpty()

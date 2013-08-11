@@ -48,22 +48,8 @@ namespace LightSavers
 
         protected override void LoadContent()
         {
-            AssetLoader loader = new AssetLoader();
-            loader.fadeInCompleteCallback = loader.Start;
-            loader.fadeOutCompleteCallback = DisplayMainMenu;
-            Globals.screenManager.Push(loader);
-            
+            Globals.screenManager.Push(new AssetLoader());            
         }
-
-        public bool DisplayMainMenu()
-        {
-            // remove the loading layer since its not needed
-            Globals.screenManager.Pop();
-            // add main menu screen
-            Globals.screenManager.Push(new MainMenu());            
-            return true;
-        }
-
 
         protected override void UnloadContent()
         {
@@ -89,8 +75,6 @@ namespace LightSavers
             Globals.graphics.GraphicsDevice.Clear(Color.Black);
 
             Globals.screenManager.Draw(gameTime);
-
-
 
             base.Draw(gameTime);
         }

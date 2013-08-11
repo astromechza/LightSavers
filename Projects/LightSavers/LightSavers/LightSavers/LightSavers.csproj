@@ -115,12 +115,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="LightSaverGame.cs" />
-    <Compile Include="ScreenManagement\Layers\ColourLayer.cs" />
     <Compile Include="ScreenManagement\Layers\GameLayer.cs" />
     <Compile Include="ScreenManagement\Layers\Menus\MainMenu.cs" />
     <Compile Include="ScreenManagement\ScreenLayer.cs" />
     <Compile Include="ScreenManagement\ScreenManager.cs" />
-    <Compile Include="ScreenManagement\Layers\TextLayer.cs" />
     <Compile Include="Utils\FPScounter.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,7 @@ using LightSavers.ScreenManagement;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
+using LightSavers.ScreenManagement.Layers.Menus;
 
 namespace LightSavers
 {
@@ -29,6 +30,7 @@ namespace LightSavers
         public static Texture2D tex_white;
         public static Texture2D tex_sand;
         public static Model mdl_menuscene;
+        public static SpriteFont fnt_assetloadscreen;
         /***********************************/
 
         private String loading_msg = "Loading Assets";
@@ -38,7 +40,7 @@ namespace LightSavers
 
         private Viewport viewport;
         private SpriteBatch spriteBatch;
-        private SpriteFont spriteFont;
+        
         private int drawingY;
 
         public AssetLoader() : base()
@@ -47,7 +49,7 @@ namespace LightSavers
             viewport = Globals.graphics.GraphicsDevice.Viewport;
 
             // Assets required to view the loading screen
-            spriteFont = Globals.content.Load<SpriteFont>("fonts/LoadingFont");
+            fnt_assetloadscreen = Globals.content.Load<SpriteFont>("fonts/LoadingFont");
             tex_black = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
             tex_black.SetData(new Color[] { Color.Black });
             tex_white = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
@@ -59,12 +61,25 @@ namespace LightSavers
      
             // vertical position
             drawingY = (int)(viewport.Height * 0.75f);
-        }
 
+            fadeInCompleteCallback = Start;
+            fadeOutCompleteCallback = DisplayMainMenu;
+
+        }
+        
         public bool Start()
         {
             Thread t = new Thread(new ThreadStart(LoadAssets));
             t.Start();
+            return true;
+        }
+
+        public bool DisplayMainMenu()
+        {
+            // remove the loading layer since its not needed
+            Globals.screenManager.Pop();
+            // add main menu screen
+            Globals.screenManager.Push(new MainMenu());
             return true;
         }
 
@@ -111,7 +126,7 @@ namespace LightSavers
             spriteBatch.Begin();
             spriteBatch.Draw(tex_black, viewport.Bounds, new Color(transitionPercent, transitionPercent, transitionPercent, transitionPercent));
 
-            spriteBatch.DrawString(spriteFont, loading_msg, new Vector2((viewport.Width - spriteFont.MeasureString(loading_msg).X) / 2, drawingY), Color.White);
+            spriteBatch.DrawString(fnt_assetloadscreen, loading_msg, new Vector2((viewport.Width - fnt_assetloadscreen.MeasureString(loading_msg).X) / 2, drawingY), Color.White);
 
             spriteBatch.Draw(tex_white, new Rectangle(0, drawingY + 50-2, viewport.Width, 6), Color.Gray); 
 

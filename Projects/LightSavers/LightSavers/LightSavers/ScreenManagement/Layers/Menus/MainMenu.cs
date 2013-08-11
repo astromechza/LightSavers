@@ -89,7 +89,8 @@ namespace LightSavers.ScreenManagement.Layers.Menus
 
             //draw menu here
             canvas.Draw(AssetLoader.tex_black, new Rectangle(50,0,300,viewport.Height), new Color(0, 0, 0, 150));
-            
+
+            canvas.DrawString(AssetLoader.fnt_assetloadscreen, "Start", new Vector2(60,400), Color.White);
 
             if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)
             {
@@ -103,12 +104,24 @@ namespace LightSavers.ScreenManagement.Layers.Menus
 
         public override void Update(GameTime gameTime)
         {
-            if (Globals.inputController.isButtonReleased(Buttons.Start, null)) this.StartTransitionOff();
+            if (this.state == ScreenState.Active)
+            {
+                if (Globals.inputController.isButtonReleased(Buttons.Back, null))
+                {
+                    this.StartTransitionOff();
+                }
+                else if (Globals.inputController.isButtonReleased(Buttons.Start, null))
+                {
+                    this.fadeOutCompleteCallback = StartGame;
+                    this.StartTransitionOff();
+                }
+            }
+
 
             if (currently_pitching)
             {
 
-                current_focus_height += (target_focus_height - current_focus_height) * 0.01f;
+                current_focus_height += (target_focus_height - current_focus_height) * 0.02f;
 
                 viewMatrix = Matrix.CreateLookAt(new Vector3(0.8f, 0.4f, 0.8f), new Vector3(0, current_focus_height, 0.2f), Vector3.Up);
 
@@ -142,7 +155,16 @@ namespace LightSavers.ScreenManagement.Layers.Menus
             base.Update(gameTime);
         }
 
-       
+        public bool StartGame()
+        {
+
+            Globals.screenManager.Pop();
+
+            Globals.screenManager.Push(new GameLayer());
+
+            return true;
+        }
+
 
     }
 }

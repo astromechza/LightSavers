@@ -32,6 +32,7 @@ namespace LightSavers.Utils
             if (outPrint > TimeSpan.FromSeconds(3))
             {
                 System.Diagnostics.Debug.WriteLine(frameRate);
+                System.Diagnostics.Debug.WriteLine(Globals.screenManager.Count());
                 outPrint -= TimeSpan.FromSeconds(3);
             }
         }
