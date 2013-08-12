@@ -50,42 +50,42 @@ namespace LightSavers.ScreenManagement.Layers
 
         public override void Draw(GameTime gameTime)
         {
-            // First we need to draw to a temporary buffer
-            Globals.graphics.GraphicsDevice.SetRenderTarget(game3DLayer);
-
-            // reset these because spritebatch can do nasty stuff
-            Globals.graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            //// First we need to draw to a temporary buffer
+            //Globals.graphics.GraphicsDevice.SetRenderTarget(game3DLayer);
+            //Globals.graphics.GraphicsDevice.Clear(Color.Black);
+            //// reset these because spritebatch can do nasty stuff
+            //Globals.graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+            //Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             
             /*/*/// Draw everything here
             gameContainer.DrawWorld();
 
-            // Now switch back to the main render device
-            Globals.graphics.GraphicsDevice.SetRenderTarget(null);
+            //// Now switch back to the main render device
+            //Globals.graphics.GraphicsDevice.SetRenderTarget(null);
 
-            // Draw the layers
-            canvas.Begin();
+            //// Draw the layers
+            //canvas.Begin();
 
-            // draw the 3d scene
-            canvas.Draw(game3DLayer, viewport.Bounds, Color.White);
+            //// draw the 3d scene
+            //canvas.Draw(game3DLayer, viewport.Bounds, Color.White);
 
-            gameContainer.DrawHud(canvas, viewport);
+            //gameContainer.DrawHud(canvas, viewport);
             
-            // draw the black transparent thing
-            if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)
-            {
-                int trans = (int)((1 - transitionPercent) * 255.0f);
-                canvas.Draw(AssetLoader.tex_black, viewport.Bounds, new Color(trans, trans, trans, trans));
-            }
+            //// draw the black transparent thing
+            //if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)
+            //{
+            //    int trans = (int)((1 - transitionPercent) * 255.0f);
+            //    canvas.Draw(AssetLoader.tex_black, viewport.Bounds, new Color(trans, trans, trans, trans));
+            //}
 
-            canvas.End();
+            //canvas.End();
             
         }
 
         public override void Update(GameTime gameTime)
         {
 
-            gameContainer.Update();
+            gameContainer.Update(gameTime);
 
             base.Update(gameTime);
         }

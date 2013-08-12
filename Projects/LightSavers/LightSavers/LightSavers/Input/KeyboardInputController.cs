@@ -118,7 +118,6 @@ namespace LightSavers.Components
             else
             {
                 Vector2 v = Vector2.Zero;
-
                 if (CurrentKeyboardState.IsKeyDown(Keys.J)) v += new Vector2(-1.0f, 0.0f);
                 if (CurrentKeyboardState.IsKeyDown(Keys.L)) v += new Vector2(1.0f, 0.0f);
                 if (CurrentKeyboardState.IsKeyDown(Keys.K)) v += new Vector2(0.0f, -1.0f);

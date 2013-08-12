@@ -57,103 +57,212 @@ namespace LightSavers.Components
             tilesx = arrangement.GetLength(1);
 
 
-            List<VertexPositionNormalTexture> floorvertexlist = new List<VertexPositionNormalTexture>();
+            List<QuadDeclaration> floorQuads = new List<QuadDeclaration>();
+            List<QuadDeclaration> wallAndRoofQuads = new List<QuadDeclaration>();
             List<short> indexlist = new List<short>();
 
+            VertexDeclaration[,] possiblevertices = new VertexDeclaration[tilesz + 1, tilesx + 1];
+            for (int z = 0; z < tilesz + 1; z++)
+            {
+                for (int x = 0; x < tilesx + 1; x++)
+                {
+                    possiblevertices[z, x] = new VertexDeclaration();
+                    possiblevertices[z, x].v.Position = XZOrigin + new Vector3(x, 0, z) * cellsize;
+                    possiblevertices[z, x].v.Normal = Vector3.Up;
+                    possiblevertices[z, x].v.TextureCoordinate = new Vector2(x % 2, z % 2);
+                }
+            }
 
             tiles = new TileType[tilesz, tilesx];
             for (int z = 0; z < tilesz; z++)
             {                
                 for (int x = 0; x < tilesx; x++)
                 {
-                    tiles[z,x] = (TileType)arrangement[z,x];
+                    tiles[z,x] = (TileType)arrangement[z,x];     
+                }
+            }
 
+            for (int z = 0; z < tilesz; z++)
+            {
+                for (int x = 0; x < tilesx; x++)
+                {
                     if (tiles[z, x] == TileType.Floor)
                     {
 
-                        // v1 v2
-                        // v3 v4
+                        QuadDeclaration qd = new QuadDeclaration();
 
-                        VertexPositionNormalTexture v1 = new VertexPositionNormalTexture();
-                        v1.Position = XZOrigin + (new Vector3(x, 0, z) * cellsize);
-                        v1.Normal = Vector3.Up;
-                        v1.TextureCoordinate = new Vector2(0.5f, 0.5f);
+                        qd.vertices[0].Position = XZOrigin + (new Vector3(x, 0, z) * cellsize);
+                        qd.vertices[0].Normal = Vector3.Up;
+                        qd.vertices[0].TextureCoordinate = new Vector2(0.5f, 0.5f);
 
-                        VertexPositionNormalTexture v2 = new VertexPositionNormalTexture();
-                        v2.Position = XZOrigin + (new Vector3(x + 1, 0, z) * cellsize);
-                        v2.Normal = Vector3.Up;
-                        v2.TextureCoordinate = new Vector2(1, 0.5f);
+                        qd.vertices[1].Position = XZOrigin + (new Vector3(x + 1, 0, z) * cellsize);
+                        qd.vertices[1].Normal = Vector3.Up;
+                        qd.vertices[1].TextureCoordinate = new Vector2(1, 0.5f);
 
-                        VertexPositionNormalTexture v3 = new VertexPositionNormalTexture();
-                        v3.Position = XZOrigin + (new Vector3(x, 0, z + 1) * cellsize);
-                        v3.Normal = Vector3.Up;
-                        v3.TextureCoordinate = new Vector2(0.5f, 1);
+                        qd.vertices[2].Position = XZOrigin + (new Vector3(x, 0, z + 1) * cellsize);
+                        qd.vertices[2].Normal = Vector3.Up;
+                        qd.vertices[2].TextureCoordinate = new Vector2(0.5f, 1);
 
-                        VertexPositionNormalTexture v4 = new VertexPositionNormalTexture();
-                        v4.Position = XZOrigin + (new Vector3(x + 1, 0, z + 1) * cellsize);
-                        v4.Normal = Vector3.Up;
-                        v4.TextureCoordinate = new Vector2(1, 1);
+                        qd.vertices[3].Position = XZOrigin + (new Vector3(x + 1, 0, z + 1) * cellsize);
+                        qd.vertices[3].Normal = Vector3.Up;
+                        qd.vertices[3].TextureCoordinate = new Vector2(1, 1);
 
-                        int vind = floorvertexlist.Count;
-
-                        floorvertexlist.Add(v1);
-                        floorvertexlist.Add(v2);
-                        floorvertexlist.Add(v3);
-                        floorvertexlist.Add(v4);
-
-                        indexlist.Add((short)(vind + 0));
-                        indexlist.Add((short)(vind + 3));
-                        indexlist.Add((short)(vind + 2));
-                        indexlist.Add((short)(vind + 0));
-                        indexlist.Add((short)(vind + 1));
-                        indexlist.Add((short)(vind + 3));
-
+                        floorQuads.Add(qd);
                     }
-                    else
+                    else if (tiles[z, x] == TileType.Wall)
                     {
 
-                        VertexPositionNormalTexture v1 = new VertexPositionNormalTexture();
-                        v1.Position = XZOrigin + (new Vector3(x, 0, z) * cellsize) + Vector3.Up*4;
-                        v1.Normal = Vector3.Up;
-                        v1.TextureCoordinate = new Vector2(0, 0);
+                        QuadDeclaration qdt = new QuadDeclaration();
 
-                        VertexPositionNormalTexture v2 = new VertexPositionNormalTexture();
-                        v2.Position = XZOrigin + (new Vector3(x + 1, 0, z) * cellsize) + Vector3.Up * 4;
-                        v2.Normal = Vector3.Up;
-                        v2.TextureCoordinate = new Vector2(0.5f, 0);
+                        qdt.vertices[0].Position = XZOrigin + (new Vector3(x, 1, z) * cellsize);
+                        qdt.vertices[0].Normal = Vector3.Up;
+                        qdt.vertices[0].TextureCoordinate = new Vector2(0.5f, 0.5f);
 
-                        VertexPositionNormalTexture v3 = new VertexPositionNormalTexture();
-                        v3.Position = XZOrigin + (new Vector3(x, 0, z + 1) * cellsize) + Vector3.Up * 4;
-                        v3.Normal = Vector3.Up;
-                        v3.TextureCoordinate = new Vector2(0, 0.5f);
+                        qdt.vertices[1].Position = XZOrigin + (new Vector3(x + 1, 1, z) * cellsize);
+                        qdt.vertices[1].Normal = Vector3.Up;
+                        qdt.vertices[1].TextureCoordinate = new Vector2(1, 0.5f);
 
-                        VertexPositionNormalTexture v4 = new VertexPositionNormalTexture();
-                        v4.Position = XZOrigin + (new Vector3(x + 1, 0, z + 1) * cellsize) + Vector3.Up * 4;
-                        v4.Normal = Vector3.Up;
-                        v4.TextureCoordinate = new Vector2(0.5f, 0.5f);
+                        qdt.vertices[2].Position = XZOrigin + (new Vector3(x, 1, z + 1) * cellsize);
+                        qdt.vertices[2].Normal = Vector3.Up;
+                        qdt.vertices[2].TextureCoordinate = new Vector2(0.5f, 1);
 
-                        int vind = floorvertexlist.Count;
+                        qdt.vertices[3].Position = XZOrigin + (new Vector3(x + 1, 1, z + 1) * cellsize);
+                        qdt.vertices[3].Normal = Vector3.Up;
+                        qdt.vertices[3].TextureCoordinate = new Vector2(1, 1);
 
-                        floorvertexlist.Add(v1);
-                        floorvertexlist.Add(v2);
-                        floorvertexlist.Add(v3);
-                        floorvertexlist.Add(v4);
+                        wallAndRoofQuads.Add(qdt);
 
-                        indexlist.Add((short)(vind + 0));
-                        indexlist.Add((short)(vind + 3));
-                        indexlist.Add((short)(vind + 2));
-                        indexlist.Add((short)(vind + 0));
-                        indexlist.Add((short)(vind + 1));
-                        indexlist.Add((short)(vind + 3));
+
+
+
+
+                        // must make south wall
+                        if (z < (tilesz - 1) && tiles[z + 1, x] != TileType.Wall)
+                        {
+
+                            QuadDeclaration qd = new QuadDeclaration();
+
+                            qd.vertices[0].Position = XZOrigin + (new Vector3(x, 1, z + 1) * cellsize);
+                            qd.vertices[0].Normal = Vector3.Backward;
+                            qd.vertices[0].TextureCoordinate = new Vector2(0.5f, 0.5f);
+
+                            qd.vertices[1].Position = XZOrigin + (new Vector3(x + 1, 1, z + 1) * cellsize);
+                            qd.vertices[1].Normal = Vector3.Backward;
+                            qd.vertices[1].TextureCoordinate = new Vector2(1, 0.5f);
+
+                            qd.vertices[2].Position = XZOrigin + (new Vector3(x, 0, z + 1) * cellsize);
+                            qd.vertices[2].Normal = Vector3.Backward;
+                            qd.vertices[2].TextureCoordinate = new Vector2(0.5f, 1);
+
+                            qd.vertices[3].Position = XZOrigin + (new Vector3(x + 1, 0, z + 1) * cellsize);
+                            qd.vertices[3].Normal = Vector3.Backward;
+                            qd.vertices[3].TextureCoordinate = new Vector2(1, 1);
+
+                            wallAndRoofQuads.Add(qd);
+                        }
+
+                        // must make west wall
+                        if (x < (tilesx - 1) && tiles[z, x+1] != TileType.Wall)
+                        {
+
+                            QuadDeclaration qd = new QuadDeclaration();
+
+                            qd.vertices[0].Position = XZOrigin + (new Vector3(x+1, 1, z+1) * cellsize);
+                            qd.vertices[0].Normal = Vector3.Right;
+                            qd.vertices[0].TextureCoordinate = new Vector2(0.5f, 0.5f);
+
+                            qd.vertices[1].Position = XZOrigin + (new Vector3(x+1, 1, z) * cellsize);
+                            qd.vertices[1].Normal = Vector3.Right;
+                            qd.vertices[1].TextureCoordinate = new Vector2(1, 0.5f);
+
+                            qd.vertices[2].Position = XZOrigin + (new Vector3(x+1, 0, z+1) * cellsize);
+                            qd.vertices[2].Normal = Vector3.Right;
+                            qd.vertices[2].TextureCoordinate = new Vector2(0.5f, 1);
+
+                            qd.vertices[3].Position = XZOrigin + (new Vector3(x+1, 0, z) * cellsize);
+                            qd.vertices[3].Normal = Vector3.Right;
+                            qd.vertices[3].TextureCoordinate = new Vector2(1, 1);
+
+                            wallAndRoofQuads.Add(qd);
+                        }
+
+                        // must make east wall
+                        if (x > 0 && tiles[z, x - 1] != TileType.Wall)
+                        {
+
+                            QuadDeclaration qd = new QuadDeclaration();
+
+                            qd.vertices[0].Position = XZOrigin + (new Vector3(x, 1, z) * cellsize);
+                            qd.vertices[0].Normal = Vector3.Left;
+                            qd.vertices[0].TextureCoordinate = new Vector2(0.5f, 0.5f);
+
+                            qd.vertices[1].Position = XZOrigin + (new Vector3(x, 1, z+1) * cellsize);
+                            qd.vertices[1].Normal = Vector3.Left;
+                            qd.vertices[1].TextureCoordinate = new Vector2(1, 0.5f);
+
+                            qd.vertices[2].Position = XZOrigin + (new Vector3(x, 0, z) * cellsize);
+                            qd.vertices[2].Normal = Vector3.Left;
+                            qd.vertices[2].TextureCoordinate = new Vector2(0.5f, 1);
+
+                            qd.vertices[3].Position = XZOrigin + (new Vector3(x, 0, z+1) * cellsize);
+                            qd.vertices[3].Normal = Vector3.Left;
+                            qd.vertices[3].TextureCoordinate = new Vector2(1, 1);
+
+                            wallAndRoofQuads.Add(qd);
+                        }
+
+
+
 
 
                     }
                 }
             }
 
-            vertices = floorvertexlist.ToArray();
+            
 
-            indices = indexlist.ToArray();
+            vertices = new VertexPositionNormalTexture[floorQuads.Count * 4 + wallAndRoofQuads.Count * 4];
+            int vi = 0;
+            foreach (QuadDeclaration qd in floorQuads)
+            {
+                vertices[vi++] = qd.vertices[0];
+                vertices[vi++] = qd.vertices[1];
+                vertices[vi++] = qd.vertices[2];
+                vertices[vi++] = qd.vertices[3];
+            }
+            foreach (QuadDeclaration qd in wallAndRoofQuads)
+            {
+                vertices[vi++] = qd.vertices[0];
+                vertices[vi++] = qd.vertices[1];
+                vertices[vi++] = qd.vertices[2];
+                vertices[vi++] = qd.vertices[3];
+            }
+
+            indices = new short[floorQuads.Count * 6 + wallAndRoofQuads.Count * 6];
+            int ii = 0;
+            int qi = 0;
+            foreach (QuadDeclaration qd in floorQuads)
+            {
+                indices[ii++] = (short)qi;
+                indices[ii++] = (short)(qi + 3);
+                indices[ii++] = (short)(qi + 2);
+                indices[ii++] = (short)qi;
+                indices[ii++] = (short)(qi + 1);
+                indices[ii++] = (short)(qi + 3);
+                qi+=4;
+            }
+
+            foreach (QuadDeclaration qd in wallAndRoofQuads)
+            {
+                indices[ii++] = (short)qi;
+                indices[ii++] = (short)(qi + 3);
+                indices[ii++] = (short)(qi + 2);
+                indices[ii++] = (short)qi;
+                indices[ii++] = (short)(qi + 1);
+                indices[ii++] = (short)(qi + 3);
+                qi += 4;
+            }
+
             
 
         }
@@ -162,7 +271,7 @@ namespace LightSavers.Components
 
         public class QuadDeclaration
         {
-            VertexPositionNormalTexture[] vertices;
+            public VertexPositionNormalTexture[] vertices;
 
             public QuadDeclaration()
             {
@@ -172,6 +281,18 @@ namespace LightSavers.Components
             
 
 
+        }
+
+        public class VertexDeclaration
+        {
+            public VertexPositionNormalTexture v;
+            public short assignedIndex;
+            public bool used;
+
+            public VertexDeclaration()
+            {
+                v = new VertexPositionNormalTexture();
+            }
         }
 
 

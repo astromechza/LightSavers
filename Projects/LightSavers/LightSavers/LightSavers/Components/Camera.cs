@@ -18,7 +18,7 @@ namespace LightSavers.Components
         public Camera(Vector3 f)
         {
             focus = f;
-            position = focus + new Vector3(0, 1, 0.3f) * 48;
+            position = focus + new Vector3(0, 0.7f, 0.2f) * 24;
         }
 
         public Matrix GetViewMatrix()
@@ -43,6 +43,16 @@ namespace LightSavers.Components
             float ha = FOV / 2;
             float dx = (float)Math.Tan(ha) * 14.14f;
             return focus + new Vector3(dx, 0, 0);
+        }
+
+        public Vector3 GetPosition()
+        {
+            return position;
+        }
+
+        public Vector3 GetFocus()
+        {
+            return focus;
         }
 
     }
