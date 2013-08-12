@@ -29,6 +29,8 @@ namespace LightSavers
             Globals.content = Content;
             Globals.content.RootDirectory = "Content";
 
+            
+
             //anti alias
             //Globals.graphics.PreferMultiSampling = true;
 
@@ -48,7 +50,8 @@ namespace LightSavers
 
         protected override void LoadContent()
         {
-            Globals.screenManager.Push(new AssetLoader());            
+            Globals.screenManager.Push(new AssetLoader());
+            Globals.viewport = Globals.graphics.GraphicsDevice.Viewport;
         }
 
         protected override void UnloadContent()
@@ -72,6 +75,7 @@ namespace LightSavers
         protected override void Draw(GameTime gameTime)
         {
             fps.frameTick();
+         
             Globals.graphics.GraphicsDevice.Clear(Color.Black);
 
             Globals.screenManager.Draw(gameTime);

@@ -107,10 +107,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Camera.cs" />
+    <Compile Include="Components\FloorAndWallSet.cs" />
     <Compile Include="Components\GameContainer.cs" />
+    <Compile Include="Components\GameObject.cs" />
+    <Compile Include="Components\WorldContainer.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Input\KeyboardInputController.cs" />
     <Compile Include="Input\XBoxInputController.cs" />
+    <Compile Include="RectangleF.cs" />
     <Compile Include="ScreenManagement\Layers\AssetLoader.cs" />
     <Compile Include="Components\Globals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

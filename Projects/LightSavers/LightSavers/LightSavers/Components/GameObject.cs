@@ -6,13 +6,13 @@ using Microsoft.Xna.Framework;
 
 namespace LightSavers.Components
 {
-    public class GameObject
+    public abstract class GameObject
     {
 
         public float X;
         public float Y;
 
-        public abstract RectangleF getBoundRect();
+        public abstract RectangleF GetBoundRect();
 
         public abstract void Draw();
 

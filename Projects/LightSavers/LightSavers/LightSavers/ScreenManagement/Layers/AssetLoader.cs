@@ -29,6 +29,8 @@ namespace LightSavers
         public static Texture2D tex_black;
         public static Texture2D tex_white;
         public static Texture2D tex_sand;
+        public static Texture2D tex_floors;
+        public static Texture2D tex_walls;
         public static Model mdl_menuscene;
         public static SpriteFont fnt_assetloadscreen;
         /***********************************/
@@ -88,12 +90,15 @@ namespace LightSavers
         private void LoadAssets()
         {
             // number of assets to be loaded. (used to compute progress bar size)
-            num_assets = 3;
+            num_assets = 5;
 
             // assets
             mld_combine = loadModel("combine");
             tex_sand = loadTexture("sand");
             mdl_menuscene = loadModel("menuscene");
+            tex_floors = loadTexture("floortexture");
+            tex_walls = loadTexture("walltexture");
+
 
             // once its loaded, fade out
             StartTransitionOff();

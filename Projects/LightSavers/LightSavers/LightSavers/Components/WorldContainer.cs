@@ -8,9 +8,6 @@ namespace LightSavers.Components
     public class WorldContainer
     {
 
-        
-
-
         private List<WorldSection> sections;
 
         public WorldContainer()
@@ -30,10 +27,11 @@ namespace LightSavers.Components
 
             for (int x = fx; x < tx; x++) sections[x].Draw();
         }
-
         
-
-
+        public void AddSection(WorldSection worldSection)
+        {
+            sections.Add(worldSection);
+        }
     }
 
 
@@ -48,8 +46,9 @@ namespace LightSavers.Components
 
         List<GameObject>[,] grid;
 
-        public WorldSection()
+        public WorldSection(int index)
         {
+            sectionx = index * SECTION_WIDTH;
             contained = new HashSet<GameObject>();
             grid = new List<GameObject>[SECTION_LENGTH,SECTION_WIDTH];
         }
@@ -68,7 +67,7 @@ namespace LightSavers.Components
         {
             contained.Remove(go);
 
-            RectangleF r = go.getBoundRect();
+            RectangleF r = go.GetBoundRect();
             r.setX(r.x - sectionx);
 
             for (int y = (int)r.y; y < r.y2; y++)
@@ -84,7 +83,7 @@ namespace LightSavers.Components
         {
             contained.Add(go);
 
-            RectangleF r = go.getBoundRect();
+            RectangleF r = go.GetBoundRect();
             r.setX(r.x - sectionx);
 
             for (int y = (int)r.y; y < r.y2; y++)
