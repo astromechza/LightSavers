@@ -1,102 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace LightSavers.Components
 {
     public class WorldContainer
     {
+        private String level;
 
-        private List<WorldSection> sections;
+        private WorldSection[] sections;
 
         public WorldContainer()
         {
-            sections = new List<WorldSection>();
+
         }
 
-        public void Update()
+        public void Load(String level)
         {
-            foreach (WorldSection s in sections) s.Update();
-        }
+            this.level = level;
 
-        public void Draw(float fromx, float tox)
-        {
-            int fx = (int)(fromx / WorldSection.SECTION_WIDTH);
-            int tx = (int)(tox / WorldSection.SECTION_WIDTH);
+            DirectoryInfo dir = new DirectoryInfo(Globals.content.RootDirectory+"\\levels\\"+level);
 
-            for (int x = fx; x < tx; x++) sections[x].Draw();
-        }
-        
-        public void AddSection(WorldSection worldSection)
-        {
-            sections.Add(worldSection);
-        }
-    }
+            FileInfo[] files = dir.GetFiles("*.*");
 
+            sections = new WorldSection[files.Length];
 
-    public class WorldSection
-    {
-        public const int SECTION_WIDTH = 64;
-        public const int SECTION_LENGTH = 64;
+            Vector3 origin = Vector3.Zero;
 
-        float sectionx;
-
-        HashSet<GameObject> contained;
-
-        List<GameObject>[,] grid;
-
-        public WorldSection(int index)
-        {
-            sectionx = index * SECTION_WIDTH;
-            contained = new HashSet<GameObject>();
-            grid = new List<GameObject>[SECTION_LENGTH,SECTION_WIDTH];
-        }
-
-        public void Draw()
-        {
-            foreach (GameObject go in contained) go.Draw();
-        }
-
-        public void Update()
-        {
-            foreach (GameObject go in contained) go.Update();
-        }
-
-        public void Remove(GameObject go)
-        {
-            contained.Remove(go);
-
-            RectangleF r = go.GetBoundRect();
-            r.setX(r.x - sectionx);
-
-            for (int y = (int)r.y; y < r.y2; y++)
+            for(int i=0; i< files.Length;i++)
             {
-                for (int x = (int)r.x; x < r.x2; x++)
-                {
-                    grid[y, x].Remove(go);
-                }
+                String key = Path.GetFileNameWithoutExtension(files[i].Name);
+
+                Texture2D t = Globals.content.Load<Texture2D>("levels\\" + level + "\\" + key);
+                Color[] data = new Color[t.Height * t.Width];                
+                t.GetData<Color>(data);
+
+                sections[i] = new WorldSection(data, t.Width, t.Height, origin);
+
+                origin += Vector3.Right * t.Width * WorldSection.TileSize;
             }
         }
 
-        public void Add(GameObject go)
+        public void Draw(Camera camera, BasicEffect quadEffect)
         {
-            contained.Add(go);
-
-            RectangleF r = go.GetBoundRect();
-            r.setX(r.x - sectionx);
-
-            for (int y = (int)r.y; y < r.y2; y++)
+            for (int i = 0; i < sections.Length; i++)
             {
-                for (int x = (int)r.x; x < r.x2; x++)
-                {
-                    grid[y, x].Add(go);
-                }
-            }
+                sections[i].Draw(camera, quadEffect);
+            }           
         }
 
-
-
     }
+
+
+    
 
 }

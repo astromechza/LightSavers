@@ -108,11 +108,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Camera.cs" />
-    <Compile Include="Components\FloorAndWallSet.cs" />
     <Compile Include="Components\GameContainer.cs" />
     <Compile Include="Components\GameObject.cs" />
     <Compile Include="Components\Player.cs" />
+    <Compile Include="Components\WorldBuilding\TextureCorners.cs" />
+    <Compile Include="Components\WorldBuilding\TextureCornersFactory.cs" />
+    <Compile Include="Components\WorldBuilding\Tile.cs" />
+    <Compile Include="Components\WorldBuilding\QuadDeclaration.cs" />
+    <Compile Include="Components\WorldBuilding\VertexIndiceSet.cs" />
+    <Compile Include="Components\WorldBuilding\WorldQuadBuilder.cs" />
     <Compile Include="Components\WorldContainer.cs" />
+    <Compile Include="Components\WorldSection.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Input\KeyboardInputController.cs" />
     <Compile Include="Input\XBoxInputController.cs" />
@@ -127,6 +133,7 @@
     <Compile Include="ScreenManagement\ScreenLayer.cs" />
     <Compile Include="ScreenManagement\ScreenManager.cs" />
     <Compile Include="Utils\FPScounter.cs" />
+    <Compile Include="Utils\Tuple.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
