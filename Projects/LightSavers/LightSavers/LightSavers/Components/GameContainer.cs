@@ -11,55 +11,26 @@ namespace LightSavers.Components
 {
     public class GameContainer
     {
-        private GameLayer gameLayer;
-        private WorldContainer world;
-        private Camera camera;
+        private GameLayer gameLayer; // parent layer
 
-        FloorAndWallSet floorwalls;
+        private Camera camera;
+        private WorldContainer world;
 
         BasicEffect quadEffect;
 
         public GameContainer(GameLayer layer)
         {
+            // set parent layer
             gameLayer = layer;
+
+            // load level
+            world = new WorldContainer();
+            world.Load("level0");
+
+            // set camera
             camera = new Camera(new Vector3(32.1f,0,32));
 
-            floorwalls = new FloorAndWallSet(Vector3.Zero,
-                new int[,]{
-                    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,1,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
-                    {1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
-                    {1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1},
-                    {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-                },
-            2);
+            
             
             quadEffect = new BasicEffect(Globals.graphics.GraphicsDevice);
 
@@ -80,8 +51,6 @@ namespace LightSavers.Components
             quadEffect.SpecularPower = 50f;
 
             quadEffect.World = Matrix.Identity;
-            quadEffect.TextureEnabled = true;
-            quadEffect.Texture = AssetLoader.tex_floors;
             
 
 
@@ -90,30 +59,9 @@ namespace LightSavers.Components
         public void DrawWorld()
         {
 
-
             quadEffect.View = camera.GetViewMatrix();
             quadEffect.Projection = camera.GetProjectionMatrix();
-            quadEffect.Texture = AssetLoader.tex_floors;
-            foreach (EffectPass pass in quadEffect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-                Globals.graphics.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionNormalTexture>(PrimitiveType.TriangleList, floorwalls.floorvertices, 0, floorwalls.floorvertices.Length, floorwalls.floorindices, 0, floorwalls.floorindices.Length / 3);
-            }
-
-            quadEffect.Texture = AssetLoader.tex_walls;
-            foreach (EffectPass pass in quadEffect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-                Globals.graphics.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionNormalTexture>(PrimitiveType.TriangleList, floorwalls.wallvertices, 0, floorwalls.wallvertices.Length, floorwalls.wallindices, 0, floorwalls.wallindices.Length / 3);
-            }
-
-            quadEffect.Texture = AssetLoader.tex_black;
-            foreach (EffectPass pass in quadEffect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-                Globals.graphics.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionNormalTexture>(PrimitiveType.TriangleList, floorwalls.roofvertices, 0, floorwalls.roofvertices.Length, floorwalls.roofindices, 0, floorwalls.roofindices.Length / 3);
-            }
-
+            world.Draw(camera, quadEffect);
         }
 
         public void DrawHud(SpriteBatch canvas, Viewport viewport)
@@ -124,6 +72,8 @@ namespace LightSavers.Components
         public void Update(GameTime gametime)
         {
             float ms = (float)gametime.ElapsedGameTime.TotalMilliseconds;
+
+
             if (Globals.inputController.isButtonReleased(Buttons.Back, null))
             {
                 gameLayer.StartTransitionOff();
@@ -151,7 +101,6 @@ namespace LightSavers.Components
 
             }
 
-            quadEffect.DirectionalLight0.Direction = Vector3.Transform(quadEffect.DirectionalLight0.Direction, Matrix.CreateRotationY(0.05f));
 
         }
 
