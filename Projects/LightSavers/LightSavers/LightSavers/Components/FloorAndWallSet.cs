@@ -65,6 +65,31 @@ namespace LightSavers.Components
             tilesz = arrangement.GetLength(0);
             tilesx = arrangement.GetLength(1);
 
+            TextureCoordDeclaration[] tex4 = new TextureCoordDeclaration[4];
+            tex4[0] = new TextureCoordDeclaration();
+            tex4[0].topleft = new Vector2(0, 0);            tex4[0].topright = new Vector2(0.5f, 0);
+            tex4[0].bottomleft = new Vector2(0, 0.5f);      tex4[0].bottomright = new Vector2(0.5f, 0.5f);
+            
+
+            tex4[1] = new TextureCoordDeclaration();
+            tex4[1].topleft = new Vector2(0.5f, 0);         tex4[1].topright = new Vector2(1, 0);
+            tex4[1].bottomleft = new Vector2(0.5f, 0.5f);   tex4[1].bottomright = new Vector2(1, 0.5f);
+
+            tex4[2] = new TextureCoordDeclaration();
+            tex4[2].topleft = new Vector2(0, 0.5f);         tex4[2].topright = new Vector2(0.5f, 0.5f);
+            tex4[2].bottomleft = new Vector2(0, 1);         tex4[2].bottomright = new Vector2(0.5f, 1);
+
+            tex4[3] = new TextureCoordDeclaration();
+            tex4[3].topleft = new Vector2(0.5f, 0.5f);      tex4[3].topright = new Vector2(1, 0.5f);
+            tex4[3].bottomleft = new Vector2(0.5f, 1);      tex4[3].bottomright = new Vector2(1, 1);
+
+
+
+
+
+
+            Random random = new Random();
+
 
             List<QuadDeclaration> floorQuads = new List<QuadDeclaration>();
             List<QuadDeclaration> wallQuads = new List<QuadDeclaration>();
@@ -87,28 +112,34 @@ namespace LightSavers.Components
                     if (tiles[z, x] == TileType.Floor)
                     {
 
+                        int index = random.Next(4);
+
+                        TextureCoordDeclaration tex = tex4[index];
+
                         QuadDeclaration qd = new QuadDeclaration();
 
                         qd.vertices[0].Position = XZOrigin + (new Vector3(x, 0, z) * cellsize);
                         qd.vertices[0].Normal = Vector3.Up;
-                        qd.vertices[0].TextureCoordinate = new Vector2(0.5f, 0.5f);
+                        qd.vertices[0].TextureCoordinate = tex.topleft;
 
                         qd.vertices[1].Position = XZOrigin + (new Vector3(x + 1, 0, z) * cellsize);
                         qd.vertices[1].Normal = Vector3.Up;
-                        qd.vertices[1].TextureCoordinate = new Vector2(1, 0.5f);
+                        qd.vertices[1].TextureCoordinate = tex.topright;
 
                         qd.vertices[2].Position = XZOrigin + (new Vector3(x, 0, z + 1) * cellsize);
                         qd.vertices[2].Normal = Vector3.Up;
-                        qd.vertices[2].TextureCoordinate = new Vector2(0.5f, 1);
+                        qd.vertices[2].TextureCoordinate = tex.bottomleft;
 
                         qd.vertices[3].Position = XZOrigin + (new Vector3(x + 1, 0, z + 1) * cellsize);
                         qd.vertices[3].Normal = Vector3.Up;
-                        qd.vertices[3].TextureCoordinate = new Vector2(1, 1);
+                        qd.vertices[3].TextureCoordinate = tex.bottomright;
 
                         floorQuads.Add(qd);
                     }
                     else if (tiles[z, x] == TileType.Wall)
                     {
+
+                        
 
                         QuadDeclaration qdt = new QuadDeclaration();
 
@@ -133,24 +164,26 @@ namespace LightSavers.Components
                         // must make south wall
                         if (z > 1 && tiles[z - 1, x] != TileType.Wall)
                         {
+                            int index = random.Next(4);
+                            TextureCoordDeclaration tex = tex4[index];
 
                             QuadDeclaration qd = new QuadDeclaration();
 
                             qd.vertices[0].Position = XZOrigin + (new Vector3(x + 1, wallhigh, z) * cellsize);
                             qd.vertices[0].Normal = Vector3.Backward;
-                            qd.vertices[0].TextureCoordinate = new Vector2(0.5f, 0.5f);
+                            qd.vertices[0].TextureCoordinate = tex.topleft;
 
                             qd.vertices[1].Position = XZOrigin + (new Vector3(x, wallhigh, z) * cellsize);
                             qd.vertices[1].Normal = Vector3.Backward;
-                            qd.vertices[1].TextureCoordinate = new Vector2(1, 0.5f);
+                            qd.vertices[1].TextureCoordinate = tex.topright;
 
                             qd.vertices[2].Position = XZOrigin + (new Vector3(x+1, 0, z) * cellsize);
                             qd.vertices[2].Normal = Vector3.Backward;
-                            qd.vertices[2].TextureCoordinate = new Vector2(0.5f, 1);
+                            qd.vertices[2].TextureCoordinate = tex.bottomleft;
 
                             qd.vertices[3].Position = XZOrigin + (new Vector3(x, 0, z) * cellsize);
                             qd.vertices[3].Normal = Vector3.Backward;
-                            qd.vertices[3].TextureCoordinate = new Vector2(1, 1);
+                            qd.vertices[3].TextureCoordinate = tex.bottomright;
 
                             wallQuads.Add(qd);
                         }
@@ -158,24 +191,26 @@ namespace LightSavers.Components
                         // must make south wall
                         if (z < (tilesz - 1) && tiles[z + 1, x] != TileType.Wall)
                         {
+                            int index = random.Next(4);
+                            TextureCoordDeclaration tex = tex4[index];
 
                             QuadDeclaration qd = new QuadDeclaration();
 
                             qd.vertices[0].Position = XZOrigin + (new Vector3(x, wallhigh, z + 1) * cellsize);
                             qd.vertices[0].Normal = Vector3.Backward;
-                            qd.vertices[0].TextureCoordinate = new Vector2(0.5f, 0.5f);
+                            qd.vertices[0].TextureCoordinate = tex.topleft;
 
                             qd.vertices[1].Position = XZOrigin + (new Vector3(x + 1, wallhigh, z + 1) * cellsize);
                             qd.vertices[1].Normal = Vector3.Backward;
-                            qd.vertices[1].TextureCoordinate = new Vector2(1, 0.5f);
+                            qd.vertices[1].TextureCoordinate = tex.topright;
 
                             qd.vertices[2].Position = XZOrigin + (new Vector3(x, 0, z + 1) * cellsize);
                             qd.vertices[2].Normal = Vector3.Backward;
-                            qd.vertices[2].TextureCoordinate = new Vector2(0.5f, 1);
+                            qd.vertices[2].TextureCoordinate = tex.bottomleft;
 
                             qd.vertices[3].Position = XZOrigin + (new Vector3(x + 1, 0, z + 1) * cellsize);
                             qd.vertices[3].Normal = Vector3.Backward;
-                            qd.vertices[3].TextureCoordinate = new Vector2(1, 1);
+                            qd.vertices[3].TextureCoordinate = tex.bottomright;
 
                             wallQuads.Add(qd);
                         }
@@ -183,24 +218,26 @@ namespace LightSavers.Components
                         // must make west wall
                         if (x < (tilesx - 1) && tiles[z, x+1] != TileType.Wall)
                         {
+                            int index = random.Next(4);
+                            TextureCoordDeclaration tex = tex4[index];
 
                             QuadDeclaration qd = new QuadDeclaration();
 
                             qd.vertices[0].Position = XZOrigin + (new Vector3(x + 1, wallhigh, z + 1) * cellsize);
                             qd.vertices[0].Normal = Vector3.Right;
-                            qd.vertices[0].TextureCoordinate = new Vector2(0.5f, 0.5f);
+                            qd.vertices[0].TextureCoordinate = tex.topleft;
 
                             qd.vertices[1].Position = XZOrigin + (new Vector3(x + 1, wallhigh, z) * cellsize);
                             qd.vertices[1].Normal = Vector3.Right;
-                            qd.vertices[1].TextureCoordinate = new Vector2(1, 0.5f);
+                            qd.vertices[1].TextureCoordinate = tex.topright;
 
                             qd.vertices[2].Position = XZOrigin + (new Vector3(x+1, 0, z+1) * cellsize);
                             qd.vertices[2].Normal = Vector3.Right;
-                            qd.vertices[2].TextureCoordinate = new Vector2(0.5f, 1);
+                            qd.vertices[2].TextureCoordinate = tex.bottomleft;
 
                             qd.vertices[3].Position = XZOrigin + (new Vector3(x+1, 0, z) * cellsize);
                             qd.vertices[3].Normal = Vector3.Right;
-                            qd.vertices[3].TextureCoordinate = new Vector2(1, 1);
+                            qd.vertices[3].TextureCoordinate = tex.bottomright;
 
                             wallQuads.Add(qd);
                         }
@@ -208,24 +245,26 @@ namespace LightSavers.Components
                         // must make east wall
                         if (x > 0 && tiles[z, x - 1] != TileType.Wall)
                         {
+                            int index = random.Next(4);
+                            TextureCoordDeclaration tex = tex4[index];
 
                             QuadDeclaration qd = new QuadDeclaration();
 
                             qd.vertices[0].Position = XZOrigin + (new Vector3(x, wallhigh, z) * cellsize);
                             qd.vertices[0].Normal = Vector3.Left;
-                            qd.vertices[0].TextureCoordinate = new Vector2(0.5f, 0.5f);
+                            qd.vertices[0].TextureCoordinate = tex.topleft;
 
                             qd.vertices[1].Position = XZOrigin + (new Vector3(x, wallhigh, z + 1) * cellsize);
                             qd.vertices[1].Normal = Vector3.Left;
-                            qd.vertices[1].TextureCoordinate = new Vector2(1, 0.5f);
+                            qd.vertices[1].TextureCoordinate = tex.topright;
 
                             qd.vertices[2].Position = XZOrigin + (new Vector3(x, 0, z) * cellsize);
                             qd.vertices[2].Normal = Vector3.Left;
-                            qd.vertices[2].TextureCoordinate = new Vector2(0.5f, 1);
+                            qd.vertices[2].TextureCoordinate = tex.bottomleft;
 
                             qd.vertices[3].Position = XZOrigin + (new Vector3(x, 0, z+1) * cellsize);
                             qd.vertices[3].Normal = Vector3.Left;
-                            qd.vertices[3].TextureCoordinate = new Vector2(1, 1);
+                            qd.vertices[3].TextureCoordinate = tex.bottomright;
 
                             wallQuads.Add(qd);
                         }
@@ -315,6 +354,20 @@ namespace LightSavers.Components
             {
                 v = new VertexPositionNormalTexture();
             }
+        }
+
+        public class TextureCoordDeclaration
+        {
+            public Vector2 topleft;
+            public Vector2 topright;
+            public Vector2 bottomleft;
+            public Vector2 bottomright;
+            public TextureCoordDeclaration()
+            {
+                topleft = new Vector2(0, 0); topright = new Vector2(1, 0);
+                bottomleft = new Vector2(0, 1); bottomright = new Vector2(1, 1);
+            }
+
         }
 
 

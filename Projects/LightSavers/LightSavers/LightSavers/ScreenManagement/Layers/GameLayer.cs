@@ -13,8 +13,6 @@ namespace LightSavers.ScreenManagement.Layers
         private Viewport viewport;
         private RenderTarget2D game3DLayer;
         private SpriteBatch canvas;
-        public Matrix viewMatrix;
-        public Matrix projectionMatrix;
 
         public GameContainer gameContainer;
 
@@ -28,9 +26,6 @@ namespace LightSavers.ScreenManagement.Layers
 
             // 3D view vars
             viewport = Globals.graphics.GraphicsDevice.Viewport;
-            // temp camera
-            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45.0f), viewport.AspectRatio, 0.5f, 10000);
-            viewMatrix = Matrix.CreateLookAt(new Vector3(0.8f, 0.4f, 0.8f), new Vector3(0, 0.3f, 0.2f), Vector3.Up);
 
             // layers
             canvas = new SpriteBatch(Globals.graphics.GraphicsDevice);
