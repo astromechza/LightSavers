@@ -35,11 +35,11 @@ namespace LightSavers
            // Globals.graphics.PreferMultiSampling = true;
 
             //uncap FPS
-            Globals.graphics.SynchronizeWithVerticalRetrace = false;
+            Globals.graphics.SynchronizeWithVerticalRetrace = true;
             IsFixedTimeStep = false;
 
             // Graphics 
-            Globals.graphics.PreferredBackBufferWidth = 1024;
+            Globals.graphics.PreferredBackBufferWidth = 1280;
             Globals.graphics.PreferredBackBufferHeight = 720;
         }
 

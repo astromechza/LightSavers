@@ -93,11 +93,25 @@ namespace LightSavers.Components
 
             quadEffect.View = camera.GetViewMatrix();
             quadEffect.Projection = camera.GetProjectionMatrix();
-
+            quadEffect.Texture = AssetLoader.tex_floors;
             foreach (EffectPass pass in quadEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                Globals.graphics.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionNormalTexture>(PrimitiveType.TriangleList, floorwalls.vertices, 0, floorwalls.vertices.Length, floorwalls.indices, 0, floorwalls.indices.Length / 3);
+                Globals.graphics.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionNormalTexture>(PrimitiveType.TriangleList, floorwalls.floorvertices, 0, floorwalls.floorvertices.Length, floorwalls.floorindices, 0, floorwalls.floorindices.Length / 3);
+            }
+
+            quadEffect.Texture = AssetLoader.tex_walls;
+            foreach (EffectPass pass in quadEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                Globals.graphics.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionNormalTexture>(PrimitiveType.TriangleList, floorwalls.wallvertices, 0, floorwalls.wallvertices.Length, floorwalls.wallindices, 0, floorwalls.wallindices.Length / 3);
+            }
+
+            quadEffect.Texture = AssetLoader.tex_black;
+            foreach (EffectPass pass in quadEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                Globals.graphics.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionNormalTexture>(PrimitiveType.TriangleList, floorwalls.roofvertices, 0, floorwalls.roofvertices.Length, floorwalls.roofindices, 0, floorwalls.roofindices.Length / 3);
             }
 
         }
