@@ -32,7 +32,7 @@ namespace LightSavers
             
 
             //anti alias
-           // Globals.graphics.PreferMultiSampling = true;
+            Globals.graphics.PreferMultiSampling = true;
 
             //uncap FPS
             Globals.graphics.SynchronizeWithVerticalRetrace = true;
