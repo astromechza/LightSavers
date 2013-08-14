@@ -27,15 +27,20 @@ namespace LightSavers.Components
 
             FileInfo[] files = dir.GetFiles("*.*");
 
+            List<String> filenames = new List<String>();
+            for (int f = 0; f < files.Length; f++)
+            {
+                filenames.Add(Path.GetFileNameWithoutExtension(files[f].Name));
+            }
+            filenames.Sort();
+
             sections = new WorldSection[files.Length];
 
             Vector3 origin = Vector3.Zero;
 
-            for(int i=0; i< files.Length;i++)
+            for (int i = 0; i < filenames.Count; i++)
             {
-                String key = Path.GetFileNameWithoutExtension(files[i].Name);
-
-                Texture2D t = Globals.content.Load<Texture2D>("levels\\" + level + "\\" + key);
+                Texture2D t = Globals.content.Load<Texture2D>("levels\\" + level + "\\" + filenames[i]);
                 Color[] data = new Color[t.Height * t.Width];                
                 t.GetData<Color>(data);
 

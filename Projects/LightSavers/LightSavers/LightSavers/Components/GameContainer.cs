@@ -36,10 +36,11 @@ namespace LightSavers.Components
 
 
             quadEffect.PreferPerPixelLighting = true;
+            
             quadEffect.LightingEnabled = true;
-            //quadEffect.DirectionalLight0.Enabled = false;
-            quadEffect.DirectionalLight0.Direction = new Vector3(-1, -3, -2);
-            quadEffect.DirectionalLight0.DiffuseColor = new Vector3(0.2f,0.2f,0.2f);
+            quadEffect.DirectionalLight0.Enabled = true;
+            quadEffect.DirectionalLight0.Direction = new Vector3(-1, -1, -1);
+            quadEffect.DirectionalLight0.DiffuseColor = new Vector3(0.1f,0.1f,0.3f);
             quadEffect.DirectionalLight0.SpecularColor = new Vector3(0, 0, 0);
 
             quadEffect.FogEnabled = true;
