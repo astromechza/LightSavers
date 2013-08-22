@@ -52,7 +52,14 @@ namespace LightSavers.Components
 
         public void Draw(Camera camera, BasicEffect quadEffect)
         {
-            for (int i = 0; i < sections.Length; i++)
+            // calculate which sections must be drawn
+            int camleft = (int)(camera.GetLeftPoint().X / 32) - 1;
+            int camright = (int)(camera.GetRightPoint().X / 32) + 1;
+
+            camleft = (int)MathHelper.Clamp(camleft, 0, sections.Length-1);
+            camright = (int)MathHelper.Clamp(camright, 0, sections.Length-1);
+
+            for (int i = camleft; i <= camright; i++)
             {
                 sections[i].Draw(camera, quadEffect);
             }           

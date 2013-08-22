@@ -28,27 +28,24 @@ namespace LightSavers.Components
             world.Load("level0");
 
             // set camera
-            camera = new Camera(new Vector3(32.1f,0,32));
-
-            
+            camera = new Camera(new Vector3(32,0,32));           
             
             quadEffect = new BasicEffect(Globals.graphics.GraphicsDevice);
-
 
             quadEffect.PreferPerPixelLighting = true;
             
             quadEffect.LightingEnabled = true;
             quadEffect.DirectionalLight0.Enabled = true;
             quadEffect.DirectionalLight0.Direction = new Vector3(-1, -1, -1);
-            quadEffect.DirectionalLight0.DiffuseColor = new Vector3(0.1f,0.1f,0.3f);
+            quadEffect.DirectionalLight0.DiffuseColor = new Vector3(0.03f,0.03f,0.06f);
             quadEffect.DirectionalLight0.SpecularColor = new Vector3(0, 0, 0);
 
-            quadEffect.FogEnabled = true;
-            quadEffect.FogColor = new Vector3(0, 0, 0);
-            quadEffect.FogStart = 32;
-            quadEffect.FogEnd = 48;
+            //quadEffect.FogEnabled = true;
+            //quadEffect.FogColor = new Vector3(0, 0, 0);
+            //quadEffect.FogStart = 32;
+            //quadEffect.FogEnd = 48;
 
-            quadEffect.AmbientLightColor = new Vector3(0.1f,0.1f,0.1f);
+            quadEffect.AmbientLightColor = new Vector3(0.01f,0.01f,0.01f);
             quadEffect.SpecularPower = 50f;
 
             quadEffect.World = Matrix.Identity;
@@ -59,7 +56,6 @@ namespace LightSavers.Components
 
         public void DrawWorld()
         {
-
             quadEffect.View = camera.GetViewMatrix();
             quadEffect.Projection = camera.GetProjectionMatrix();
             world.Draw(camera, quadEffect);

@@ -27,12 +27,7 @@ namespace LightSavers
             Globals.screenManager = new ScreenManager();
             Globals.inputController = new InputManager();
             Globals.content = Content;
-            Globals.content.RootDirectory = "Content";
-
-            
-
-            //anti alias
-            Globals.graphics.PreferMultiSampling = true;
+            Globals.content.RootDirectory = "Content";            
 
             //uncap FPS
             Globals.graphics.SynchronizeWithVerticalRetrace = true;
