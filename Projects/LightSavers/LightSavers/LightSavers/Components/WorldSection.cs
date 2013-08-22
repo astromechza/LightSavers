@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using LightSavers.Components.WorldBuilding;
 using Microsoft.Xna.Framework.Graphics;
+using LightSavers.Components.Shader;
 
 namespace LightSavers.Components
 {
@@ -144,11 +145,10 @@ namespace LightSavers.Components
 
 
 
-        public void Draw(Camera camera, BasicEffect quadEffect)
+        public void Draw(Camera camera, TestShader shader)
         {
-            quadEffect.TextureEnabled = true;
-            quadEffect.Texture = AssetLoader.tex_floors;
-            foreach (EffectPass pass in quadEffect.CurrentTechnique.Passes)
+            shader.CurrentTexture.SetValue(AssetLoader.tex_floors);
+            foreach (EffectPass pass in shader.Effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
                 Globals.graphics.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionNormalTexture>(
@@ -162,8 +162,8 @@ namespace LightSavers.Components
                 );
             }
 
-            quadEffect.Texture = AssetLoader.tex_walls;
-            foreach (EffectPass pass in quadEffect.CurrentTechnique.Passes)
+            shader.CurrentTexture.SetValue(AssetLoader.tex_walls);
+            foreach (EffectPass pass in shader.Effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
                 Globals.graphics.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionNormalTexture>(
@@ -177,8 +177,8 @@ namespace LightSavers.Components
                 );
             }
 
-            quadEffect.Texture = AssetLoader.tex_black;
-            foreach (EffectPass pass in quadEffect.CurrentTechnique.Passes)
+            shader.CurrentTexture.SetValue(AssetLoader.tex_black);
+            foreach (EffectPass pass in shader.Effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
                 Globals.graphics.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionNormalTexture>(

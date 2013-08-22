@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using LightSavers.Components.Shader;
 
 namespace LightSavers.Components
 {
@@ -50,7 +51,7 @@ namespace LightSavers.Components
             }
         }
 
-        public void Draw(Camera camera, BasicEffect quadEffect)
+        public void Draw(Camera camera, TestShader shader)
         {
             // calculate which sections must be drawn
             int camleft = (int)(camera.GetLeftPoint().X / 32) - 1;
@@ -61,7 +62,7 @@ namespace LightSavers.Components
 
             for (int i = camleft; i <= camright; i++)
             {
-                sections[i].Draw(camera, quadEffect);
+                sections[i].Draw(camera, shader);
             }           
         }
 

@@ -6,6 +6,7 @@ using LightSavers.ScreenManagement.Layers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using LightSavers.Components.Shader;
 
 namespace LightSavers.Components
 {
@@ -16,7 +17,7 @@ namespace LightSavers.Components
         private Camera camera;
         private WorldContainer world;
 
-        BasicEffect quadEffect;
+        TestShader shader;
 
         public GameContainer(GameLayer layer)
         {
@@ -28,37 +29,29 @@ namespace LightSavers.Components
             world.Load("level0");
 
             // set camera
-            camera = new Camera(new Vector3(32,0,32));           
-            
-            quadEffect = new BasicEffect(Globals.graphics.GraphicsDevice);
+            camera = new Camera(new Vector3(32,0,32));
 
-            quadEffect.PreferPerPixelLighting = true;
-            
-            quadEffect.LightingEnabled = true;
-            quadEffect.DirectionalLight0.Enabled = true;
-            quadEffect.DirectionalLight0.Direction = new Vector3(-1, -1, -1);
-            quadEffect.DirectionalLight0.DiffuseColor = new Vector3(0.03f,0.03f,0.06f);
-            quadEffect.DirectionalLight0.SpecularColor = new Vector3(0, 0, 0);
+            shader = new TestShader();
 
-            //quadEffect.FogEnabled = true;
-            //quadEffect.FogColor = new Vector3(0, 0, 0);
-            //quadEffect.FogStart = 32;
-            //quadEffect.FogEnd = 48;
+            shader.DirectionalLight0.Enabled.SetValue(true);
+            shader.DirectionalLight0.Colour.SetValue(new Vector4(0.1f,0.1f,0.5f,1.0f));
+            shader.DirectionalLight0.Direction.SetValue(new Vector3(0.5f, -2, -0.5f));
+            shader.DirectionalLight0.SpecularColour.SetValue(new Vector4(0.5f, 0.5f, 1f, 0.5f));
 
-            quadEffect.AmbientLightColor = new Vector3(0.01f,0.01f,0.01f);
-            quadEffect.SpecularPower = 50f;
+            shader.AmbientLightColour.SetValue(new Vector4(0.1f, 0.1f, 0.1f, 1.0f));
 
-            quadEffect.World = Matrix.Identity;
-            
+            shader.WorldMatrix.SetValue(Matrix.Identity);
 
+            shader.CurrentTexture.SetValue(AssetLoader.tex_white);
 
         }
 
         public void DrawWorld()
         {
-            quadEffect.View = camera.GetViewMatrix();
-            quadEffect.Projection = camera.GetProjectionMatrix();
-            world.Draw(camera, quadEffect);
+            shader.ViewMatrix.SetValue(camera.GetViewMatrix());
+            shader.ProjectionMatrix.SetValue(camera.GetProjectionMatrix());
+            shader.CamPosition.SetValue(camera.GetPosition());
+            world.Draw(camera, shader);
         }
 
         public void DrawHud(SpriteBatch canvas, Viewport viewport)

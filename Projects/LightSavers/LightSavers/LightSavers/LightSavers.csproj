@@ -111,6 +111,8 @@
     <Compile Include="Components\GameContainer.cs" />
     <Compile Include="Components\GameObject.cs" />
     <Compile Include="Components\Player.cs" />
+    <Compile Include="Components\Shader\DirectionalLight.cs" />
+    <Compile Include="Components\Shader\TestShader.cs" />
     <Compile Include="Components\WorldBuilding\TextureCorners.cs" />
     <Compile Include="Components\WorldBuilding\TextureCornersFactory.cs" />
     <Compile Include="Components\WorldBuilding\Tile.cs" />
