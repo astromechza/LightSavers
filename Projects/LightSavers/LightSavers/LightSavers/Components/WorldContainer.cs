@@ -6,18 +6,20 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LightSavers.Components.Shader;
+using LightSavers.Components.GameObjects;
 
 namespace LightSavers.Components
 {
     public class WorldContainer
     {
         private String level;
+        private List<GameObject> allObjects;
 
         private WorldSection[] sections;
 
         public WorldContainer()
         {
-
+            allObjects = new List<GameObject>();
         }
 
         public void Load(String level)
@@ -49,12 +51,22 @@ namespace LightSavers.Components
 
                 origin += Vector3.Right * t.Width * WorldSection.TileSize;
             }
+
+
+            allObjects.Add(new TestLight(10,3,10));
+
+
         }
 
         public void Draw(Camera camera, TestShader shader)
         {
             DrawWallsAndFloors(camera, shader);
+
             // Draw objects here
+            foreach(GameObject go in allObjects)
+            {
+                go.Draw();
+            }
 
         }
 
