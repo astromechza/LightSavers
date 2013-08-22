@@ -53,17 +53,24 @@ namespace LightSavers.Components
 
         public void Draw(Camera camera, TestShader shader)
         {
+            DrawWallsAndFloors(camera, shader);
+            // Draw objects here
+
+        }
+
+        private void DrawWallsAndFloors(Camera camera, TestShader shader)
+        {
             // calculate which sections must be drawn
             int camleft = (int)(camera.GetLeftPoint().X / 32) - 1;
             int camright = (int)(camera.GetRightPoint().X / 32) + 1;
 
-            camleft = (int)MathHelper.Clamp(camleft, 0, sections.Length-1);
-            camright = (int)MathHelper.Clamp(camright, 0, sections.Length-1);
+            camleft = (int)MathHelper.Clamp(camleft, 0, sections.Length - 1);
+            camright = (int)MathHelper.Clamp(camright, 0, sections.Length - 1);
 
             for (int i = camleft; i <= camright; i++)
             {
                 sections[i].Draw(camera, shader);
-            }           
+            } 
         }
 
     }
