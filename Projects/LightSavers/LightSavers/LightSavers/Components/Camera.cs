@@ -18,7 +18,7 @@ namespace LightSavers.Components
         public Camera(Vector3 f)
         {
             focus = f;
-            position = focus + new Vector3(0, 0.7f, 0.2f) * 24;
+            position = focus + new Vector3(0, 0.7f, 0.3f) * 24;
         }
 
         public Matrix GetViewMatrix()

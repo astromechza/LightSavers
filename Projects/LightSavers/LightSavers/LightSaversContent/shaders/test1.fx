@@ -60,8 +60,13 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
-	float4 textureColor = tex2D(TextureSampler, input.TextureCoord);
-    return textureColor;
+	float4 textureColour = tex2D(TextureSampler, input.TextureCoord);
+	float4 ambientColour = AmbientLightColour;
+
+
+
+	// add in ALL the light components
+    return ambientColour * textureColour;
 }
 
 technique Technique1

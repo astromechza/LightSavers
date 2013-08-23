@@ -118,6 +118,7 @@
     <Compile Include="Components\WorldBuilding\TextureCornersFactory.cs" />
     <Compile Include="Components\WorldBuilding\Tile.cs" />
     <Compile Include="Components\WorldBuilding\QuadDeclaration.cs" />
+    <Compile Include="Components\WorldBuilding\TriDeclaration.cs" />
     <Compile Include="Components\WorldBuilding\VertexIndiceSet.cs" />
     <Compile Include="Components\WorldBuilding\WorldQuadBuilder.cs" />
     <Compile Include="Components\WorldContainer.cs" />

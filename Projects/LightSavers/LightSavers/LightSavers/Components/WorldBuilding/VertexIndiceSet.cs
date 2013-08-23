@@ -38,5 +38,27 @@ namespace LightSavers.Components
 
             return vis; 
         }
+
+        public static VertexIndiceSet Build(List<TriDeclaration> tris)
+        {
+            VertexIndiceSet vis = new VertexIndiceSet();
+            vis.vertices = new VertexPositionNormalTexture[tris.Count * 3];
+            vis.indices = new short[tris.Count * 3];
+
+            int vi = 0;
+            int ii = 0;
+            foreach (TriDeclaration tri in tris)
+            {
+                vis.indices[ii++] = (short)(vi);
+                vis.indices[ii++] = (short)(vi + 1);
+                vis.indices[ii++] = (short)(vi + 2);
+
+                vis.vertices[vi++] = tri.vertices[0];
+                vis.vertices[vi++] = tri.vertices[1];
+                vis.vertices[vi++] = tri.vertices[2];
+            }
+
+            return vis;
+        }
     }
 }
