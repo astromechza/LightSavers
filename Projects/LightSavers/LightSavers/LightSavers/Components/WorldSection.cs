@@ -63,7 +63,7 @@ namespace LightSavers.Components
             {
                 for (int x = 0; x < tilesX; x++)
                 {
-                    Vector3 XZOrigin = this.origin + new Vector3(x,0,z) * TileSize;
+                    Vector3 XZOrigin = new Vector3(x,0,z) * TileSize;
                     // build quads based on tile
                     switch (tiles[z, x])
                     {
@@ -147,6 +147,7 @@ namespace LightSavers.Components
 
         public void Draw(Camera camera, TestShader shader)
         {
+            shader.WorldMatrix.SetValue(Matrix.CreateTranslation(origin));
             shader.CurrentTexture.SetValue(AssetLoader.tex_floors);
             foreach (EffectPass pass in shader.Effect.CurrentTechnique.Passes)
             {

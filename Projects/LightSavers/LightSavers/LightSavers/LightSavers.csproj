@@ -112,6 +112,7 @@
     <Compile Include="Components\GameObjects\GameObject.cs" />
     <Compile Include="Components\GameObjects\TestLight.cs" />
     <Compile Include="Components\Player.cs" />
+    <Compile Include="Components\Shader\PointLight.cs" />
     <Compile Include="Components\Shader\DirectionalLight.cs" />
     <Compile Include="Components\Shader\TestShader.cs" />
     <Compile Include="Components\WorldBuilding\TextureCorners.cs" />

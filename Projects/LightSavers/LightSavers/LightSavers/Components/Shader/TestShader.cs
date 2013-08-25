@@ -34,10 +34,7 @@ namespace LightSavers.Components.Shader
         EffectParameter _currentTexture;
         public EffectParameter CurrentTexture { get { return _currentTexture; } }
 
-        public DirectionalLight DirectionalLight0;
-        public DirectionalLight DirectionalLight1;
-        public DirectionalLight DirectionalLight2;
-        public DirectionalLight DirectionalLight3;
+        public PointLight[] PointLight;
 
         public TestShader()
         {
@@ -52,11 +49,10 @@ namespace LightSavers.Components.Shader
 
             _currentTexture = _effect.Parameters["CurrentTexture"];
 
-            DirectionalLight0 = new DirectionalLight(this, 0);
-            DirectionalLight1 = new DirectionalLight(this, 1);
-            DirectionalLight2 = new DirectionalLight(this, 2);
-            DirectionalLight3 = new DirectionalLight(this, 3);
-
+            PointLight = new PointLight[3];
+            PointLight[0] = new Shader.PointLight(this, 0);
+            PointLight[1] = new Shader.PointLight(this, 1);
+            PointLight[2] = new Shader.PointLight(this, 2);
         }
 
 

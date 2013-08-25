@@ -3,15 +3,27 @@ float4x4 View;
 float4x4 Projection;
 float3 CameraPosition;
 
-float4 AmbientLightColour;
 
 // ========= LIGHTS ==========
-bool Light0Enabled; float4 Light0Colour; float3 Light0Direction; float4 Light0Specular;
-bool Light1Enabled; float4 Light1Colour; float3 Light1Direction; float4 Light1Specular;
-bool Light2Enabled; float4 Light2Colour; float3 Light2Direction; float4 Light2Specular;
-bool Light3Enabled; float4 Light3Colour; float3 Light3Direction; float4 Light3Specular;
+float4 AmbientLightColour;
 
-float specularPower;
+// = PointLight0
+bool PointLight0Enabled;
+float4 PointLight0Diffuse;
+float3 PointLight0Position;
+float4 PointLight0Attenuation;    
+
+// = PointLight1
+bool PointLight1Enabled;
+float4 PointLight1Diffuse;
+float3 PointLight1Position;
+float4 PointLight1Attenuation;    
+
+// = PointLight2
+bool PointLight2Enabled;
+float4 PointLight2Diffuse;
+float3 PointLight2Position;
+float4 PointLight2Attenuation; 
 
 Texture2D CurrentTexture;
 sampler2D TextureSampler = sampler_state
@@ -37,6 +49,7 @@ struct VertexShaderOutput
     float4 Position : POSITION0;
 	float3 Normal : TEXCOORD0;
 	float2 TextureCoord : TEXCOORD1;
+	float3 WorldPosition : TEXCOORD2;
 };
 
 VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
@@ -45,6 +58,7 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 
 	// transform coordinate into world transform (Matrix.Indentity)
 	float4 worldPosition = mul(input.Position, World);
+	output.WorldPosition = worldPosition;
 	// transform worldposition into position in view
     float4 viewPosition = mul(worldPosition, View);
 	// project position onto screen
@@ -60,13 +74,66 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
+
+
 	float4 textureColour = tex2D(TextureSampler, input.TextureCoord);
 	float4 ambientColour = AmbientLightColour;
 
+	float4 pointLightContribution = float4(0,0,0,1.0);
 
+	float lightIntensity;
+	float3 lightpos;
+
+	if (PointLight0Enabled)
+	{
+		float3 pointToLightDif = PointLight0Position - input.WorldPosition;
+		float3 pointToLightDifNormal = normalize(pointToLightDif);
+
+		float NDotL = dot(input.Normal, pointToLightDifNormal);
+		if (NDotL > 0)
+		{
+			float LD = length(pointToLightDif);
+			if(LD <= PointLight0Attenuation.x)
+			{
+				pointLightContribution += PointLight0Diffuse * NDotL * 1.0f/(PointLight0Attenuation.y + LD*PointLight0Attenuation.z + LD*LD*PointLight0Attenuation.w);
+			}
+		}
+	}
+
+	if (PointLight1Enabled)
+	{
+		float3 pointToLightDif = PointLight1Position - input.WorldPosition;
+		float3 pointToLightDifNormal = normalize(pointToLightDif);
+
+		float NDotL = dot(input.Normal, pointToLightDifNormal);
+		if (NDotL > 0)
+		{
+			float LD = length(pointToLightDif);
+			if(LD <= PointLight1Attenuation.x)
+			{
+				pointLightContribution += PointLight1Diffuse * NDotL * 1.0f/(PointLight1Attenuation.y + LD*PointLight1Attenuation.z + LD*LD*PointLight1Attenuation.w);
+			}
+		}
+	}
+
+	if (PointLight2Enabled)
+	{
+		float3 pointToLightDif = PointLight2Position - input.WorldPosition;
+		float3 pointToLightDifNormal = normalize(pointToLightDif);
+
+		float NDotL = dot(input.Normal, pointToLightDifNormal);
+		if (NDotL > 0)
+		{
+			float LD = length(pointToLightDif);
+			if(LD <= PointLight2Attenuation.x)
+			{
+				pointLightContribution += PointLight2Diffuse * NDotL * 1.0f/(PointLight2Attenuation.y + LD*PointLight2Attenuation.z + LD*LD*PointLight2Attenuation.w);
+			}
+		}
+	}
 
 	// add in ALL the light components
-    return ambientColour * textureColour;
+    return saturate(pointLightContribution + ambientColour) * textureColour;
 }
 
 technique Technique1

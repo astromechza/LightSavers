@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using LightSavers.Components.Shader;
 
 namespace LightSavers.Components
 {
@@ -14,9 +15,9 @@ namespace LightSavers.Components
 
         public abstract RectangleF GetBoundRect();
 
-        public abstract void Draw();
+        public abstract void Draw(float millis, TestShader shader);
 
-        public abstract void Update();
+        public abstract void Update(float millis);
 
 
 

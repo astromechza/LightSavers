@@ -49,23 +49,26 @@ namespace LightSavers.Components
 
                 sections[i] = new WorldSection(data, t.Width, t.Height, origin);
 
-                origin += Vector3.Right * t.Width * WorldSection.TileSize;
+                origin.X += t.Width * WorldSection.TileSize;
             }
 
 
-            allObjects.Add(new TestLight(10,3,10));
+            allObjects.Add(new TestLight(0,3, 2, 3, 50, new Vector4(0.0f,1.0f,0.0f,1.0f)));
 
+            allObjects.Add(new TestLight(1, 3, 2, 3, 50, new Vector4(0.0f, 0.0f, 1.0f, 1.0f)));
+
+            allObjects.Add(new TestLight(2, 3, 2, 3, 50, new Vector4(1.0f, 1.0f, 0.0f, 1.0f)));
 
         }
 
-        public void Draw(Camera camera, TestShader shader)
+        public void Draw(float millis, Camera camera, TestShader shader)
         {
             DrawWallsAndFloors(camera, shader);
 
             // Draw objects here
             foreach(GameObject go in allObjects)
             {
-                go.Draw();
+                go.Draw(millis, shader);
             }
 
         }
@@ -83,6 +86,14 @@ namespace LightSavers.Components
             {
                 sections[i].Draw(camera, shader);
             } 
+        }
+
+        public void Update(float millis)
+        {
+            foreach (GameObject go in allObjects)
+            {
+                go.Update(millis);
+            }
         }
 
     }

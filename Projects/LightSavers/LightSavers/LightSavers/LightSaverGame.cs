@@ -26,6 +26,7 @@ namespace LightSavers
             Globals.graphics = new GraphicsDeviceManager(this);
             Globals.screenManager = new ScreenManager();
             Globals.inputController = new InputManager();
+            Globals.random = new Random();
             Globals.content = Content;
             Globals.content.RootDirectory = "Content";            
 
@@ -57,12 +58,13 @@ namespace LightSavers
         protected override void Update(GameTime gameTime)
         {
             fps.updateTick(gameTime);
+            float millis = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             
             // update input controller
             Globals.inputController.Update();
 
             // update the screen manager
-            Globals.screenManager.Update(gameTime);
+            Globals.screenManager.Update(millis);
 
             base.Update(gameTime);
         }
@@ -70,10 +72,11 @@ namespace LightSavers
         protected override void Draw(GameTime gameTime)
         {
             fps.frameTick();
+            float millis = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
          
             Globals.graphics.GraphicsDevice.Clear(Color.Black);
 
-            Globals.screenManager.Draw(gameTime);
+            Globals.screenManager.Draw(millis);
 
             base.Draw(gameTime);
         }

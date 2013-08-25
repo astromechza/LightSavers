@@ -43,7 +43,7 @@ namespace LightSavers.ScreenManagement.Layers
 
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw(float millis)
         {
             // First we need to draw to a temporary buffer
             Globals.graphics.GraphicsDevice.SetRenderTarget(game3DLayer);
@@ -53,7 +53,7 @@ namespace LightSavers.ScreenManagement.Layers
             Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             
             /*/*/// Draw everything here
-            gameContainer.DrawWorld();
+            gameContainer.DrawWorld(millis);
 
             // Now switch back to the main render device
             Globals.graphics.GraphicsDevice.SetRenderTarget(null);
@@ -77,12 +77,12 @@ namespace LightSavers.ScreenManagement.Layers
             
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(float millis)
         {
 
-            gameContainer.Update(gameTime);
+            gameContainer.Update(millis);
 
-            base.Update(gameTime);
+            base.Update(millis);
         }
 
 

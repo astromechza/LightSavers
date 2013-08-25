@@ -33,12 +33,8 @@ namespace LightSavers.Components
 
             shader = new TestShader();
 
-            shader.DirectionalLight0.Enabled.SetValue(true);
-            shader.DirectionalLight0.Colour.SetValue(new Vector4(0.1f,0.1f,0.5f,1.0f));
-            shader.DirectionalLight0.Direction.SetValue(new Vector3(0.5f, -2, -0.5f));
-            shader.DirectionalLight0.SpecularColour.SetValue(new Vector4(0.5f, 0.5f, 1f, 0.5f));
-
-            shader.AmbientLightColour.SetValue(new Vector4(0.1f, 0.1f, 0.1f, 1.0f));
+            shader.AmbientLightColour.SetValue(new Vector4(0.05f, 0.05f, 0.05f, 1.0f));
+            shader.AmbientLightColour.SetValue(new Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 
             shader.WorldMatrix.SetValue(Matrix.Identity);
 
@@ -46,12 +42,12 @@ namespace LightSavers.Components
 
         }
 
-        public void DrawWorld()
+        public void DrawWorld(float millis)
         {
             shader.ViewMatrix.SetValue(camera.GetViewMatrix());
             shader.ProjectionMatrix.SetValue(camera.GetProjectionMatrix());
             shader.CamPosition.SetValue(camera.GetPosition());
-            world.Draw(camera, shader);
+            world.Draw(millis, camera, shader);
         }
 
         public void DrawHud(SpriteBatch canvas, Viewport viewport)
@@ -59,9 +55,8 @@ namespace LightSavers.Components
             //throw new NotImplementedException();
         }
 
-        public void Update(GameTime gametime)
+        public void Update(float millis)
         {
-            float ms = (float)gametime.ElapsedGameTime.TotalMilliseconds;
 
 
             if (Globals.inputController.isButtonReleased(Buttons.Back, null))
@@ -76,7 +71,7 @@ namespace LightSavers.Components
 
                 Vector3 v3 = new Vector3(v.X, 0, -v.Y);
 
-                camera = new Camera(camera.GetFocus() + v3 * ms / 20);
+                camera = new Camera(camera.GetFocus() + v3 * millis / 20);
 
             }
 
@@ -87,10 +82,11 @@ namespace LightSavers.Components
 
                 Vector3 v3 = new Vector3(v2.X, v2.Y, 0);
 
-                camera = new Camera(camera.GetFocus() + v3 * ms / 20);
+                camera = new Camera(camera.GetFocus() + v3 * millis / 20);
 
             }
 
+            world.Update(millis);
 
         }
 

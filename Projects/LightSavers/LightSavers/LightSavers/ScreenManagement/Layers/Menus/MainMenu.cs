@@ -53,7 +53,7 @@ namespace LightSavers.ScreenManagement.Layers.Menus
 
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw(float millis)
         {
             // First we need to draw to a temporary buffer
             Globals.graphics.GraphicsDevice.SetRenderTarget(menu3dscene);
@@ -102,7 +102,7 @@ namespace LightSavers.ScreenManagement.Layers.Menus
             
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(float millis)
         {
             if (this.state == ScreenState.Active)
             {
@@ -152,7 +152,7 @@ namespace LightSavers.ScreenManagement.Layers.Menus
 
 
 
-            base.Update(gameTime);
+            base.Update(millis);
         }
 
         public bool StartGame()

@@ -126,7 +126,7 @@ namespace LightSavers
 
         // Draw the layer
         // A black background + text + progress bar
-        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Draw(float millis)
         {
             spriteBatch.Begin();
             spriteBatch.Draw(tex_black, viewport.Bounds, new Color(transitionPercent, transitionPercent, transitionPercent, transitionPercent));
@@ -141,10 +141,10 @@ namespace LightSavers
         }
 
         // Update the size of the loading bar
-        public override void Update(GameTime gameTime)
+        public override void Update(float millis)
         {
             loading_bar_length = (int)((loaded_assets / (float)num_assets) * viewport.Width);
-            base.Update(gameTime);
+            base.Update(millis);
         }
         
 
