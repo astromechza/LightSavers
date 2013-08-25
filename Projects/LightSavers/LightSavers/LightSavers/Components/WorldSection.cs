@@ -11,18 +11,18 @@ namespace LightSavers.Components
 {
     public class WorldSection
     {
-        // statics
-        public const float TileSize = 1.0f;
-        public const float WallHeight = 2.0f;
+        // Constants
+        public const float TileSize = 1.0f;     // size of each tile
+        public const float WallHeight = 2.0f;   // height of walls
 
         private Tile.TileType[,] tiles;
-        private int tilesX;
-        private int tilesZ;
-        private Vector3 origin;
+        private int tilesX;                     // number of tiles in the x direction
+        private int tilesZ;                     // number of tiles in the y direction
+        private Vector3 origin;                 // top left corner
 
-        private VertexIndiceSet floorVIS;
-        private VertexIndiceSet wallVIS;
-        private VertexIndiceSet blackVIS;
+        private VertexIndiceSet floorVIS;       // floor vertex set
+        private VertexIndiceSet wallVIS;        // wall vertex set
+        private VertexIndiceSet blackVIS;       // black tile vertex set
 
         public WorldSection(Color[] data, int tilesX, int tilesZ, Vector3 origin)
         {
@@ -30,7 +30,7 @@ namespace LightSavers.Components
             this.tilesZ = tilesZ;
             this.origin = origin;
 
-            tiles = new Tile.TileType[tilesZ, tilesX];
+            tiles = new Tile.TileType[tilesZ, tilesX];                      
 
             // first create the tile grid
             for (int z = 0; z < tilesZ; z++)
@@ -41,7 +41,12 @@ namespace LightSavers.Components
                 }
             }
 
-            #region CREATE TEXTURED TILE QUADS
+            CreateGeometry();       
+            
+        }
+
+        private void CreateGeometry()
+        {
             TextureCornersFactory floorTCF = new TextureCornersFactory();
             floorTCF.Add(TextureCorners.BuildProb(new Vector2(0.0f, 0.0f), new Vector2(0.5f, 0.5f), 0.25f));
             floorTCF.Add(TextureCorners.BuildProb(new Vector2(0.5f, 0.0f), new Vector2(1.0f, 0.5f), 0.25f));
@@ -63,7 +68,7 @@ namespace LightSavers.Components
             {
                 for (int x = 0; x < tilesX; x++)
                 {
-                    Vector3 XZOrigin = this.origin + new Vector3(x,0,z) * TileSize;
+                    Vector3 XZOrigin = new Vector3(x, 0, z) * TileSize;
                     // build quads based on tile
                     switch (tiles[z, x])
                     {
@@ -106,28 +111,28 @@ namespace LightSavers.Components
                                 qdE.SetTextureCorners(wallTCF.Get());
                                 blackquads.Add(qdE);
                             }
-                            if ((x < (tilesX - 1) && tiles[z, x + 1] == Tile.TileType.Empty) || (x == tilesX-1))
+                            if ((x < (tilesX - 1) && tiles[z, x + 1] == Tile.TileType.Empty) || (x == tilesX - 1))
                             {
                                 QuadDeclaration qdW = WorldQuadBuilder.BuildWallQuad(XZOrigin, TileSize, Orientation.West);
                                 qdW.SetTextureCorners(wallTCF.Get());
                                 blackquads.Add(qdW);
                             }
-                            if ((z > 0 && tiles[z - 1, x] == Tile.TileType.Empty) || (z==0))
+                            if ((z > 0 && tiles[z - 1, x] == Tile.TileType.Empty) || (z == 0))
                             {
                                 QuadDeclaration qdN = WorldQuadBuilder.BuildWallQuad(XZOrigin, TileSize, Orientation.North);
                                 qdN.SetTextureCorners(wallTCF.Get());
                                 blackquads.Add(qdN);
                             }
-                            if ((z < (tilesZ - 1) && tiles[z + 1, x] == Tile.TileType.Empty) || (z == tilesZ -1))
+                            if ((z < (tilesZ - 1) && tiles[z + 1, x] == Tile.TileType.Empty) || (z == tilesZ - 1))
                             {
                                 QuadDeclaration qdS = WorldQuadBuilder.BuildWallQuad(XZOrigin, TileSize, Orientation.South);
                                 qdS.SetTextureCorners(wallTCF.Get());
                                 blackquads.Add(qdS);
                             }
-                            
+
                             QuadDeclaration qdr = WorldQuadBuilder.BuildRoofQuad(XZOrigin, TileSize);
-                            qdr.SetTextureCorners(TextureCorners.Build(new Vector2(0,0), new Vector2(1,1)));
-                            blackquads.Add(qdr);                            
+                            qdr.SetTextureCorners(TextureCorners.Build(new Vector2(0, 0), new Vector2(1, 1)));
+                            blackquads.Add(qdr);
                             break;
                     }
                 }
@@ -136,9 +141,6 @@ namespace LightSavers.Components
             floorVIS = VertexIndiceSet.Build(floors);
             wallVIS = VertexIndiceSet.Build(walls);
             blackVIS = VertexIndiceSet.Build(blackquads);
-            #endregion
-        
-            
         }
 
 
@@ -147,7 +149,13 @@ namespace LightSavers.Components
 
         public void Draw(Camera camera, TestShader shader)
         {
+            // Set the world matrix
+            shader.WorldMatrix.SetValue(Matrix.CreateTranslation(origin));
+
+            // set the texture
             shader.CurrentTexture.SetValue(AssetLoader.tex_floors);
+
+            // draw VIS
             foreach (EffectPass pass in shader.Effect.CurrentTechnique.Passes)
             {
                 pass.Apply();

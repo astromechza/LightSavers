@@ -12,12 +12,12 @@ namespace LightSavers.Components
 {
     public class GameContainer
     {
-        private GameLayer gameLayer; // parent layer
+        private GameLayer gameLayer;        // parent layer
 
-        private Camera camera;
-        private WorldContainer world;
+        private Camera camera;              // camera viewing the world
+        private WorldContainer world;       // the world : all objects and things
 
-        TestShader shader;
+        private TestShader shader;          // the actual shader rendering everything (The main effect)
 
         public GameContainer(GameLayer layer)
         {
@@ -25,32 +25,36 @@ namespace LightSavers.Components
             gameLayer = layer;
 
             // load level
-            world = new WorldContainer();
-            world.Load("level0");
+            world = new WorldContainer("level0");
 
             // set camera
             camera = new Camera(new Vector3(32,0,32));
 
+            SetupShader();
+
+        }
+
+        private void SetupShader()
+        {
             shader = new TestShader();
 
-            shader.DirectionalLight0.Enabled.SetValue(true);
-            shader.DirectionalLight0.Colour.SetValue(new Vector4(0.1f,0.1f,0.5f,1.0f));
-            shader.DirectionalLight0.Direction.SetValue(new Vector3(0.5f, -2, -0.5f));
-            shader.DirectionalLight0.SpecularColour.SetValue(new Vector4(0.5f, 0.5f, 1f, 0.5f));
-
-            shader.AmbientLightColour.SetValue(new Vector4(0.1f, 0.1f, 0.1f, 1.0f));
-
+            // set initial matrices
+            shader.ViewMatrix.SetValue(camera.GetViewMatrix());
+            shader.ProjectionMatrix.SetValue(camera.GetProjectionMatrix());
             shader.WorldMatrix.SetValue(Matrix.Identity);
-
-            shader.CurrentTexture.SetValue(AssetLoader.tex_white);
-
         }
 
         public void DrawWorld()
         {
+            // update transform matrices
+            shader.WorldMatrix.SetValue(Matrix.Identity);
             shader.ViewMatrix.SetValue(camera.GetViewMatrix());
             shader.ProjectionMatrix.SetValue(camera.GetProjectionMatrix());
+
+            // update eye/camera position
             shader.CamPosition.SetValue(camera.GetPosition());
+
+            // draw the world
             world.Draw(camera, shader);
         }
 
@@ -61,35 +65,26 @@ namespace LightSavers.Components
 
         public void Update(float ms)
         {
+            // if back is pressed. exit layer
+            if (Globals.inputController.isButtonReleased(Buttons.Back, null)) gameLayer.StartTransitionOff();
 
-
-            if (Globals.inputController.isButtonReleased(Buttons.Back, null))
-            {
-                gameLayer.StartTransitionOff();
-            }
-
+            // control horizantal movement
             Vector2 v = Globals.inputController.getAnalogVector(AnalogStick.Left, null);
-
             if (v.Length() > 0.1f)
             {
-
                 Vector3 v3 = new Vector3(v.X, 0, -v.Y);
-
-                camera = new Camera(camera.GetFocus() + v3 * ms / 20);
-
+                camera = new Camera(camera.GetFocus() + v3 * ms / 30);
             }
 
+            // control vertical movement
             Vector2 v2 = Globals.inputController.getAnalogVector(AnalogStick.Right, null);
-
             if (v2.Length() > 0.1f)
             {
-
                 Vector3 v3 = new Vector3(v2.X, v2.Y, 0);
-
-                camera = new Camera(camera.GetFocus() + v3 * ms / 20);
-
+                camera = new Camera(camera.GetFocus() + v3 * ms / 30);
             }
 
+            world.Update(ms);
 
         }
 

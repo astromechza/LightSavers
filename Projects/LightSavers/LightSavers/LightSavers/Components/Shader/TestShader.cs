@@ -34,10 +34,6 @@ namespace LightSavers.Components.Shader
         EffectParameter _currentTexture;
         public EffectParameter CurrentTexture { get { return _currentTexture; } }
 
-        public DirectionalLight DirectionalLight0;
-        public DirectionalLight DirectionalLight1;
-        public DirectionalLight DirectionalLight2;
-        public DirectionalLight DirectionalLight3;
 
         public TestShader()
         {
@@ -51,12 +47,6 @@ namespace LightSavers.Components.Shader
             _ambientLightColour = _effect.Parameters["AmbientLightColour"];
 
             _currentTexture = _effect.Parameters["CurrentTexture"];
-
-            DirectionalLight0 = new DirectionalLight(this, 0);
-            DirectionalLight1 = new DirectionalLight(this, 1);
-            DirectionalLight2 = new DirectionalLight(this, 2);
-            DirectionalLight3 = new DirectionalLight(this, 3);
-
         }
 
 

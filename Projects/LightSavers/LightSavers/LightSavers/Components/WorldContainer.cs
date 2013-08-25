@@ -11,19 +11,18 @@ namespace LightSavers.Components
 {
     public class WorldContainer
     {
-        private String level;
         private List<GameObject> allObjects;
 
         private WorldSection[] sections;
 
-        public WorldContainer()
+        public WorldContainer(String level)
         {
             allObjects = new List<GameObject>();
+            Load(level);
         }
 
         public void Load(String level)
         {
-            this.level = level;
 
             DirectoryInfo dir = new DirectoryInfo(Globals.content.RootDirectory+"\\levels\\"+level);
 
@@ -81,6 +80,14 @@ namespace LightSavers.Components
             } 
         }
 
+
+        public void Update(float ms)
+        {
+            foreach (GameObject go in allObjects)
+            {
+                go.Update(ms);
+            }
+        }
     }
 
 

@@ -5,13 +5,6 @@ float3 CameraPosition;
 
 float4 AmbientLightColour;
 
-// ========= LIGHTS ==========
-bool Light0Enabled; float4 Light0Colour; float3 Light0Direction; float4 Light0Specular;
-bool Light1Enabled; float4 Light1Colour; float3 Light1Direction; float4 Light1Specular;
-bool Light2Enabled; float4 Light2Colour; float3 Light2Direction; float4 Light2Specular;
-bool Light3Enabled; float4 Light3Colour; float3 Light3Direction; float4 Light3Specular;
-
-float specularPower;
 
 Texture2D CurrentTexture;
 sampler2D TextureSampler = sampler_state
