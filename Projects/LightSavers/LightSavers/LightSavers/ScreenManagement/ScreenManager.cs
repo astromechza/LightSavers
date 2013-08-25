@@ -19,11 +19,11 @@ namespace LightSavers
             layers = new List<ScreenLayer>();
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(float ms)
         {
             if (layers.Count > 0)
             {
-                layers[layers.Count - 1].Update(gameTime);
+                layers[layers.Count - 1].Update(ms);
                 if (layers[layers.Count - 1].mustExit)
                 {
                     Pop();
@@ -37,13 +37,13 @@ namespace LightSavers
 
         // *** Draw ***
         // Draw the layers from the lowest non-transparent layer upwards 
-        public void Draw(GameTime gameTime)
+        public void Draw()
         {
             if (lowestVisibleLayer == -1) return;
 
             for (int i = lowestVisibleLayer; i < layers.Count; i++)
             {
-                layers[i].Draw(gameTime);
+                layers[i].Draw();
             }
         }
 

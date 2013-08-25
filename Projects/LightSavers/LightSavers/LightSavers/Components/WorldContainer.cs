@@ -6,7 +6,6 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LightSavers.Components.Shader;
-using LightSavers.Components.GameObjects;
 
 namespace LightSavers.Components
 {
@@ -51,9 +50,6 @@ namespace LightSavers.Components
 
                 origin += Vector3.Right * t.Width * WorldSection.TileSize;
             }
-
-
-            allObjects.Add(new TestLight(10,3,10));
 
 
         }

@@ -8,15 +8,13 @@ namespace LightSavers.Components
 {
     public abstract class GameObject
     {
-        public float X;
-        public float Y;
-        public float Z;
+        public Vector3 Position;
 
         public abstract RectangleF GetBoundRect();
 
         public abstract void Draw();
 
-        public abstract void Update();
+        public abstract void Update(float millis);
 
 
 

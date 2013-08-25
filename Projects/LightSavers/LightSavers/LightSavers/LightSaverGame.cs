@@ -57,12 +57,15 @@ namespace LightSavers
         protected override void Update(GameTime gameTime)
         {
             fps.updateTick(gameTime);
-            
+         
+            // pass through elapsed milliseconds
+            float ms = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
             // update input controller
             Globals.inputController.Update();
 
             // update the screen manager
-            Globals.screenManager.Update(gameTime);
+            Globals.screenManager.Update(ms);
 
             base.Update(gameTime);
         }
@@ -73,7 +76,7 @@ namespace LightSavers
          
             Globals.graphics.GraphicsDevice.Clear(Color.Black);
 
-            Globals.screenManager.Draw(gameTime);
+            Globals.screenManager.Draw();
 
             base.Draw(gameTime);
         }

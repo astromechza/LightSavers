@@ -59,9 +59,8 @@ namespace LightSavers.Components
             //throw new NotImplementedException();
         }
 
-        public void Update(GameTime gametime)
+        public void Update(float ms)
         {
-            float ms = (float)gametime.ElapsedGameTime.TotalMilliseconds;
 
 
             if (Globals.inputController.isButtonReleased(Buttons.Back, null))

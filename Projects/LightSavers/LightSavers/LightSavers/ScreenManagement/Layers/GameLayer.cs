@@ -43,7 +43,7 @@ namespace LightSavers.ScreenManagement.Layers
 
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw()
         {
             // First we need to draw to a temporary buffer
             Globals.graphics.GraphicsDevice.SetRenderTarget(game3DLayer);
@@ -77,12 +77,12 @@ namespace LightSavers.ScreenManagement.Layers
             
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(float ms)
         {
 
-            gameContainer.Update(gameTime);
+            gameContainer.Update(ms);
 
-            base.Update(gameTime);
+            base.Update(ms);
         }
 
 

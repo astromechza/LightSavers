@@ -43,14 +43,14 @@ namespace LightSavers.ScreenManagement
             // do nothing
         }
 
-        private bool UpdateTransition(GameTime gameTime, TimeSpan totalTime, int direction)
+        private bool UpdateTransition(float ms, TimeSpan totalTime, int direction)
         {
             float delta;
 
             if (totalTime == TimeSpan.Zero)
                 delta = 1;
             else
-                delta = (float)(gameTime.ElapsedGameTime.TotalMilliseconds / totalTime.TotalMilliseconds);
+                delta = (float)(ms / totalTime.TotalMilliseconds);
 
             transitionPercent += delta * direction;
 
@@ -66,13 +66,13 @@ namespace LightSavers.ScreenManagement
         /* Layer Update - control transition percentage
          * call via base.Update 
          */
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(float ms)
         {
             switch (state)
             {
                 // TransitioningOn : update transition progress, if complete, switch to active
                 case ScreenState.TransitioningOn:
-                    if (UpdateTransition(gameTime, transitionOnTime, 1))
+                    if (UpdateTransition(ms, transitionOnTime, 1))
                     {
                         state = ScreenState.TransitioningOn;                        
                     }
@@ -85,7 +85,7 @@ namespace LightSavers.ScreenManagement
                 case ScreenState.Active:
                     break;
                 case ScreenState.TransitioningOff:
-                    if (UpdateTransition(gameTime, transitionOffTime, -1))
+                    if (UpdateTransition(ms, transitionOffTime, -1))
                     {
                         state = ScreenState.TransitioningOff;
                     }
@@ -106,7 +106,7 @@ namespace LightSavers.ScreenManagement
             state = ScreenState.TransitioningOff;
         }
 
-        public abstract void Draw(GameTime gameTime);
+        public abstract void Draw();
 
 
 

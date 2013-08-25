@@ -110,7 +110,6 @@
     <Compile Include="Components\Camera.cs" />
     <Compile Include="Components\GameContainer.cs" />
     <Compile Include="Components\GameObjects\GameObject.cs" />
-    <Compile Include="Components\GameObjects\TestLight.cs" />
     <Compile Include="Components\Player.cs" />
     <Compile Include="Components\Shader\DirectionalLight.cs" />
     <Compile Include="Components\Shader\TestShader.cs" />
