@@ -21,6 +21,7 @@ namespace LightSavers.Components
             Load(level);
         }
 
+        //takes in string and finds files
         public void Load(String level)
         {
 
@@ -39,6 +40,7 @@ namespace LightSavers.Components
 
             Vector3 origin = Vector3.Zero;
 
+            
             for (int i = 0; i < filenames.Count; i++)
             {
                 Texture2D t = Globals.content.Load<Texture2D>("levels\\" + level + "\\" + filenames[i]);
