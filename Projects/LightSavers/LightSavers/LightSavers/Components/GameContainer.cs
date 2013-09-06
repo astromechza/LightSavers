@@ -6,7 +6,6 @@ using LightSavers.ScreenManagement.Layers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using LightSavers.Components.Shader;
 
 namespace LightSavers.Components
 {
@@ -17,7 +16,6 @@ namespace LightSavers.Components
         private Camera camera;              // camera viewing the world
         private WorldContainer world;       // the world : all objects and things
 
-        private TestShader shader;          // the actual shader rendering everything (The main effect)
 
         public GameContainer(GameLayer layer)
         {
@@ -30,32 +28,15 @@ namespace LightSavers.Components
             // set camera
             camera = new Camera(new Vector3(32,0,32));
 
-            SetupShader();
 
         }
 
-        private void SetupShader()
-        {
-            shader = new TestShader();
-
-            // set initial matrices
-            shader.ViewMatrix.SetValue(camera.GetViewMatrix());
-            shader.ProjectionMatrix.SetValue(camera.GetProjectionMatrix());
-            shader.WorldMatrix.SetValue(Matrix.Identity);
-        }
 
         public void DrawWorld()
         {
-            // update transform matrices
-            shader.WorldMatrix.SetValue(Matrix.Identity);
-            shader.ViewMatrix.SetValue(camera.GetViewMatrix());
-            shader.ProjectionMatrix.SetValue(camera.GetProjectionMatrix());
-
-            // update eye/camera position
-            shader.CamPosition.SetValue(camera.GetPosition());
 
             // draw the world
-            world.Draw(camera, shader);
+            world.Draw(camera);
         }
 
         public void DrawHud(SpriteBatch canvas, Viewport viewport)

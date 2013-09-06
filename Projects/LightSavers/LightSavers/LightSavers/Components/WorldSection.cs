@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using LightSavers.Components.Shader;
 
 namespace LightSavers.Components
 {
@@ -34,7 +33,7 @@ namespace LightSavers.Components
             this.origin = origin;
         }
 
-        public void Draw(Camera camera, TestShader shader)
+        public void Draw(Camera camera)
         {
             foreach (ModelMesh mesh in model.Meshes)
             {

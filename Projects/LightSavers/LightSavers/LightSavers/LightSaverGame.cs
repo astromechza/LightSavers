@@ -30,7 +30,7 @@ namespace LightSavers
             Globals.content.RootDirectory = "Content";            
 
             //uncap FPS
-            Globals.graphics.SynchronizeWithVerticalRetrace = true;
+            Globals.graphics.SynchronizeWithVerticalRetrace = true; // uncheck to uncap fpx completely
             IsFixedTimeStep = false;
 
             // Graphics 

@@ -111,8 +111,6 @@
     <Compile Include="Components\GameContainer.cs" />
     <Compile Include="Components\GameObjects\GameObject.cs" />
     <Compile Include="Components\Player.cs" />
-    <Compile Include="Components\Shader\DirectionalLight.cs" />
-    <Compile Include="Components\Shader\TestShader.cs" />
     <Compile Include="Components\WorldContainer.cs" />
     <Compile Include="Components\WorldSection.cs" />
     <Compile Include="Input\InputManager.cs" />

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using LightSavers.Components.Shader;
 
 namespace LightSavers.Components
 {
@@ -72,9 +71,9 @@ namespace LightSavers.Components
         /// </summary>
         /// <param name="camera"> Camera object, used for view and projection matrices </param>
         /// <param name="shader"> Shader object, used to set specific lighting and texturing values </param>
-        public void Draw(Camera camera, TestShader shader)
+        public void Draw(Camera camera)
         {
-            DrawWallsAndFloors(camera, shader);
+            DrawWallsAndFloors(camera);
 
             // Draw objects here
             foreach(GameObject go in allObjects)
@@ -90,7 +89,7 @@ namespace LightSavers.Components
         /// </summary>
         /// <param name="camera"> Camera object, used for view and projection matrices </param>
         /// <param name="shader"> Shader object, used to set specific lighting and texturing values </param>
-        private void DrawWallsAndFloors(Camera camera, TestShader shader)
+        private void DrawWallsAndFloors(Camera camera)
         {
             // calculate which sections must be drawn based on the left and right edges of the camera
             int camleft = (int)(camera.GetLeftPoint().X / 32) - 1;
@@ -103,7 +102,7 @@ namespace LightSavers.Components
             // Draw the suckers
             for (int i = camleft; i <= camright; i++)
             {
-                sections[i].Draw(camera, shader);
+                sections[i].Draw(camera);
             } 
         }
 

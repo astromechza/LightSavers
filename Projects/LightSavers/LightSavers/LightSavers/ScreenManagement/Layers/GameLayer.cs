@@ -47,9 +47,9 @@ namespace LightSavers.ScreenManagement.Layers
         {
             // First we need to draw to a temporary buffer
             Globals.graphics.GraphicsDevice.SetRenderTarget(game3DLayer);
-            Globals.graphics.GraphicsDevice.Clear(Color.Black);
+
             // reset these because spritebatch can do nasty stuff
-            Globals.graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+            Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
             Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             
             /*/*/// Draw everything here
@@ -57,9 +57,11 @@ namespace LightSavers.ScreenManagement.Layers
 
             // Now switch back to the main render device
             Globals.graphics.GraphicsDevice.SetRenderTarget(null);
+            Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
+            Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
             // Draw the layers
-            canvas.Begin();
+            canvas.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
 
             // draw the 3d scene
             canvas.Draw(game3DLayer, viewport.Bounds, Color.White);
