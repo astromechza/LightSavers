@@ -136,6 +136,26 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="modelfolder\s0.bmp">
+      <Name>s0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CustomProcessors\CustomProcessors.csproj">
+      <Project>{0ff6b644-08a2-4af4-b805-af45c1634773}</Project>
+      <Name>CustomProcessors</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="worldsectiontexture.bmp">
+      <Name>worldsectiontexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
