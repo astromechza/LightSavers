@@ -22,8 +22,6 @@ namespace LightSavers.Components
     public class WorldSection
     {
         // Constants
-        public const float TileSize = 1.0f;     // size of each tile
-        public const float WallHeight = 2.0f;   // height of walls
 
         private Vector3 origin;                 // top left corner
 
