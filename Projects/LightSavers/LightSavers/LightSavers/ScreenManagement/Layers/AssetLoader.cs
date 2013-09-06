@@ -90,14 +90,10 @@ namespace LightSavers
         private void LoadAssets()
         {
             // number of assets to be loaded. (used to compute progress bar size)
-            num_assets = 5;
+            num_assets = 1;
 
             // assets
-            mld_combine = loadModel("combine");
-            tex_sand = loadTexture("sand");
             mdl_menuscene = loadModel("menuscene");
-            tex_floors = loadTexture("floortexture");
-            tex_walls = loadTexture("walltexture");
 
 
             // once its loaded, fade out

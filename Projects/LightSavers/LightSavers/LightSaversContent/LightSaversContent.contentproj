@@ -42,32 +42,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="sand.jpg">
-      <Name>sand</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="fonts\LoadingFont.spritefont">
       <Name>LoadingFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="combine.fbx">
-      <Name>combine</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-      <ProcessorParameters_Scale>0.1</ProcessorParameters_Scale>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="combinesoldiersheet_prisonguard.tga">
-      <Name>combinesoldiersheet_prisonguard</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -78,34 +56,22 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="floortexture.jpg">
-      <Name>floortexture</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="walltexture.jpg">
-      <Name>walltexture</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="levels\level0\s2.bmp">
       <Name>s2</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>WorldSectionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="levels\level0\s0.bmp">
       <Name>s0</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>WorldSectionProcessor</Processor>
     </Compile>
     <Compile Include="levels\level0\s1.bmp">
       <Name>s1</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>WorldSectionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -119,26 +85,19 @@
     <Compile Include="levels\level0\s3.bmp">
       <Name>s3</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>WorldSectionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="levels\level0\s4.bmp">
       <Name>s4</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>WorldSectionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="levels\level0\s5.bmp">
       <Name>s5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="modelfolder\s0.bmp">
-      <Name>s0</Name>
       <Importer>TextureImporter</Importer>
       <Processor>WorldSectionProcessor</Processor>
     </Compile>
@@ -150,8 +109,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="worldsectiontexture.bmp">
-      <Name>worldsectiontexture</Name>
+    <Compile Include="textures\floortexture.bmp">
+      <Name>floortexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="textures\walltexture.bmp">
+      <Name>walltexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="textures\black.bmp">
+      <Name>black</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

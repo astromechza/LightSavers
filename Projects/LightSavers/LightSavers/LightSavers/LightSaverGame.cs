@@ -47,8 +47,6 @@ namespace LightSavers
         {
             Globals.screenManager.Push(new AssetLoader());
             Globals.viewport = Globals.graphics.GraphicsDevice.Viewport;
-
-            Model mtest = Globals.content.Load<Model>("modelfolder/s0");
         }
 
         protected override void UnloadContent()

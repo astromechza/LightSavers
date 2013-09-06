@@ -57,17 +57,12 @@ namespace LightSavers.Components
             Vector3 origin = Vector3.Zero;            
             for (int i = 0; i < filenames.Count; i++)
             {
-                // Load texture file
-                Texture2D t = Globals.content.Load<Texture2D>("levels\\" + level + "\\" + filenames[i]);
-                // Read array of colour data
-                Color[] data = new Color[t.Height * t.Width];                
-                t.GetData<Color>(data);
-
+                
                 // Construct section using colour array
-                sections[i] = new WorldSection(data, t.Width, t.Height, origin);
+                sections[i] = new WorldSection("levels\\" + level + "\\" + filenames[i], origin);
 
                 // Increment origin
-                origin += Vector3.Right * t.Width * WorldSection.TileSize;
+                origin += Vector3.Right * 32;
             }
 
         }

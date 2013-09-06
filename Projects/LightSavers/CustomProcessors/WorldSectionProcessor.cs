@@ -16,7 +16,16 @@ namespace CustomProcessors
     public class WorldSectionProcessor : ContentProcessor<Texture2DContent, ModelContent>
     {        
         // Texture 
-        public const string texturefile = "worldsectiontexture.bmp";
+        private const string floortexturefile = "textures/floortexture.bmp";
+        private const string walltexturefile = "textures/walltexture.bmp";
+        private const string blacktexturefile = "textures/black.bmp";
+
+        private Vector2[][] quarters = {
+            new Vector2[] { new Vector2(0.0f, 0.0f), new Vector2(0.5f, 0.0f), new Vector2(0.0f, 0.5f), new Vector2(0.5f, 0.5f) },
+            new Vector2[] { new Vector2(0.5f, 0.0f), new Vector2(1.0f, 0.0f), new Vector2(0.5f, 0.5f), new Vector2(1.0f, 0.5f) },
+            new Vector2[] { new Vector2(0.0f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.0f, 1.0f), new Vector2(0.5f, 1.0f) },
+            new Vector2[] { new Vector2(0.5f, 0.5f), new Vector2(1.0f, 0.5f), new Vector2(0.5f, 1.0f), new Vector2(1.0f, 1.0f) }
+        };
 
         public override ModelContent Process(Texture2DContent input, ContentProcessorContext context)
         {
@@ -39,7 +48,7 @@ namespace CustomProcessors
 
             // Create a material, and point it at the world section texture
             BasicMaterialContent material = new BasicMaterialContent();
-            material.Texture = new ExternalReference<TextureContent>(texturefile);
+            material.Texture = new ExternalReference<TextureContent>(floortexturefile);
             mb.SetMaterial(material);
 
             // Create data channels
@@ -48,53 +57,24 @@ namespace CustomProcessors
             // First create vertex data
             
             // loop through all the pixels
+            int quadcount = 0;
             for (int z = 0; z < bitmap.Height; z++)
             {
                 for (int x = 0; x < bitmap.Width; x++)
                 {
                     if (bitmap.GetPixel(x, z) == Color.White)
                     {
-                        // Create the 4 vertices
-                        Vector3 topleft = new Vector3(x, 0, z);
-                        mb.CreatePosition(topleft);
-                        Vector3 topright = new Vector3(x + 1.0f, 0, z);
-                        mb.CreatePosition(topright);
-                        Vector3 bottomleft = new Vector3(x, 0, z + 1.0f);
-                        mb.CreatePosition(bottomleft);
-                        Vector3 bottomright = new Vector3(x + 1.0f, 0, z + 1.0f);
-                        mb.CreatePosition(bottomleft);
+                        quadcount += AddQuadVertexPositions(mb, new Vector3(x, 0.0f, z), new Vector3(x + 1.0f, 0.0f, z + 1.0f));
                     }
                 }
-            }
+            }            
 
+            Random r = new Random();
 
-            int vertexindex = 0;
-
-            // loop through all the pixels
-            for (int z = 0; z < bitmap.Height; z++)
+            for (int q = 0; q < quadcount; q++)
             {
-                for (int x = 0; x < bitmap.Width; x++)
-                {
-                    if (bitmap.GetPixel(x, z) == Color.White)
-                    {
-                        // Create the 2 triangles. Clockwise winding
-                        mb.SetVertexChannelData(channel_texCoord0, new Vector2(0.0f, 0.0f));
-                        mb.AddTriangleVertex(vertexindex + 0);
-                        mb.SetVertexChannelData(channel_texCoord0, new Vector2(1.0f, 0.0f));
-                        mb.AddTriangleVertex(vertexindex + 1);
-                        mb.SetVertexChannelData(channel_texCoord0, new Vector2(1.0f, 1.0f));
-                        mb.AddTriangleVertex(vertexindex + 3);
-
-                        mb.SetVertexChannelData(channel_texCoord0, new Vector2(0.0f, 0.0f));
-                        mb.AddTriangleVertex(vertexindex + 0);
-                        mb.SetVertexChannelData(channel_texCoord0, new Vector2(1.0f, 1.0f));
-                        mb.AddTriangleVertex(vertexindex + 3);
-                        mb.SetVertexChannelData(channel_texCoord0, new Vector2(0.0f, 1.0f));
-                        mb.AddTriangleVertex(vertexindex + 2);
-                        
-                        vertexindex += 4;
-                    }
-                }
+                Vector2[] tex = quarters[r.Next(4)];
+                AddTriangleVertices(mb, q, channel_texCoord0, tex);
             }
 
             return mb.FinishMesh();
@@ -104,6 +84,57 @@ namespace CustomProcessors
         {
             MeshBuilder mb = MeshBuilder.StartMesh("wall");
 
+            // Create a material, and point it at the world section texture
+            BasicMaterialContent material = new BasicMaterialContent();
+            material.Texture = new ExternalReference<TextureContent>(walltexturefile);
+            mb.SetMaterial(material);
+
+            int channel_texCoord0 = mb.CreateVertexChannel<Vector2>(VertexChannelNames.TextureCoordinate(0));
+
+            // First create vertex data
+            // loop through all the pixels
+            int quadcount = 0;
+            for (int z = 0; z < bitmap.Height; z++)
+            {
+                for (int x = 0; x < bitmap.Width; x++)
+                {
+                    if (bitmap.GetPixel(x, z) == Color.Blue)
+                    {
+                        bool leftWall = (x > 0) && (bitmap.GetPixel(x - 1, z) == Color.White);
+                        bool rightWall = (x < bitmap.Width - 1) && (bitmap.GetPixel(x + 1, z) == Color.White);
+                        bool backWall = (z > 0) && (bitmap.GetPixel(x, z - 1) == Color.White);
+                        bool frontWall = (z < bitmap.Height - 1) && (bitmap.GetPixel(x, z + 1) == Color.White);
+
+                        if (leftWall)
+                        {
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, 2.0f, z), new Vector3(x, 0.0f, z + 1.0f));
+                        }
+
+                        if (rightWall)
+                        {
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, 2.0f, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z));
+                        }
+
+                        if (frontWall)
+                        {
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, 2.0f, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z + 1.0f));
+                        }
+
+                        if (backWall)
+                        {
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, 2.0f, z), new Vector3(x, 0.0f, z));
+                        }
+                    }
+                }
+            }
+
+            Random r = new Random();
+
+            for (int q = 0; q < quadcount; q++)
+            {
+                Vector2[] tex = quarters[r.Next(4)];
+                AddTriangleVertices(mb, q, channel_texCoord0, tex);
+            }
 
             return mb.FinishMesh();
         }
@@ -112,9 +143,105 @@ namespace CustomProcessors
         {
             MeshBuilder mb = MeshBuilder.StartMesh("black");
 
+            // Create a material, and point it at the world section texture
+            BasicMaterialContent material = new BasicMaterialContent();
+            material.Texture = new ExternalReference<TextureContent>(blacktexturefile);
+            mb.SetMaterial(material);
+
+            int channel_texCoord0 = mb.CreateVertexChannel<Vector2>(VertexChannelNames.TextureCoordinate(0));
+
+            // First create vertex data
+            // loop through all the pixels
+            int quadcount = 0;
+            for (int z = 0; z < bitmap.Height; z++)
+            {
+                for (int x = 0; x < bitmap.Width; x++)
+                {
+                    if (bitmap.GetPixel(x, z) == Color.Blue)
+                    {
+
+                        quadcount += AddQuadVertexPositions(mb, new Vector3(x, 2.0f, z), new Vector3(x + 1.0f, 2.0f, z + 1.0f));
+
+                        bool leftWall = (x == 0) || ((x > 0) && (bitmap.GetPixel(x - 1, z) == Color.Black));
+                        bool rightWall = (x == bitmap.Width - 1) || ((x < bitmap.Width - 1) && (bitmap.GetPixel(x + 1, z) == Color.Black));
+                        bool backWall = (z == 0) || ((z > 0) && (bitmap.GetPixel(x, z - 1) == Color.Black));
+                        bool frontWall = (z == bitmap.Height - 1) || ((z < bitmap.Height - 1) && (bitmap.GetPixel(x, z + 1) == Color.Black));
+
+                        if (leftWall)
+                        {
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, 2.0f, z), new Vector3(x, 0.0f, z + 1.0f));
+                        }
+
+                        if (rightWall)
+                        {
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, 2.0f, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z));
+                        }
+
+                        if (frontWall)
+                        {
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, 2.0f, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z + 1.0f));
+                        }
+
+                        if (backWall)
+                        {
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, 2.0f, z), new Vector3(x, 0.0f, z));
+                        }
+                    }
+                }
+            }
+
+            Random r = new Random();
+
+            for (int q = 0; q < quadcount; q++)
+            {
+                Vector2[] tex = quarters[r.Next(4)];
+                AddTriangleVertices(mb, q, channel_texCoord0, tex);
+            }
 
             return mb.FinishMesh();
         }
 
+        private int AddQuadVertexPositions(MeshBuilder mb, Vector3 tl, Vector3 br)
+        {
+            mb.CreatePosition(tl);
+
+            if (tl.Y != br.Y)
+            {
+                Vector3 tr = new Vector3(br.X, tl.Y, br.Z);
+                mb.CreatePosition(tr);
+
+                Vector3 bl = new Vector3(tl.X, br.Y, tl.Z);
+                mb.CreatePosition(bl);
+            }
+            else
+            {
+                Vector3 tr = new Vector3(br.X, tl.Y, tl.Z);
+                mb.CreatePosition(tr);
+
+                Vector3 bl = new Vector3(tl.X, br.Y, br.Z);
+                mb.CreatePosition(bl);
+            }
+
+            mb.CreatePosition(br);
+
+            return 1;
+        }
+
+        private void AddTriangleVertices(MeshBuilder mb, int q, int texchannel0, Vector2[] tex)
+        {
+            mb.SetVertexChannelData(texchannel0, tex[0]);
+            mb.AddTriangleVertex(q * 4 + 0);
+            mb.SetVertexChannelData(texchannel0, tex[1]);
+            mb.AddTriangleVertex(q * 4 + 1);
+            mb.SetVertexChannelData(texchannel0, tex[3]);
+            mb.AddTriangleVertex(q * 4 + 3);
+
+            mb.SetVertexChannelData(texchannel0, tex[0]);
+            mb.AddTriangleVertex(q * 4 + 0);
+            mb.SetVertexChannelData(texchannel0, tex[3]);
+            mb.AddTriangleVertex(q * 4 + 3);
+            mb.SetVertexChannelData(texchannel0, tex[2]);
+            mb.AddTriangleVertex(q * 4 + 2);
+        }
     }
-}
+} 
