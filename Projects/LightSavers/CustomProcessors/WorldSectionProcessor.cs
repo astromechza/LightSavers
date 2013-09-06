@@ -41,7 +41,7 @@ namespace CustomProcessors
             nodeContent.Children.Add(buildWallMesh(bmpInput));
             nodeContent.Children.Add(buildBlackMesh(bmpInput));
 
-            return context.Convert<NodeContent, ModelContent>(nodeContent, "ModelProcessor");
+            return context.Convert<NodeContent, ModelContent>(nodeContent, typeof(ModelBakerProcessor).Name);
         }
 
         private NodeContent buildFloorMesh(PixelBitmapContent<Color> bitmap)

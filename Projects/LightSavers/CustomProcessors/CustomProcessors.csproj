@@ -51,7 +51,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LightPrePassProcessor.cs" />
+    <Compile Include="FXBakerProcessor.cs" />
+    <Compile Include="ModelBakerProcessor.cs" />
+    <Compile Include="MaterialBakerProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorldSectionProcessor.cs" />
   </ItemGroup>
