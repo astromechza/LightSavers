@@ -93,7 +93,7 @@ namespace LightSavers
             num_assets = 1;
 
             // assets
-            mdl_menuscene = loadModel("menuscene");
+            mdl_menuscene = loadModel("models/menuscene");
 
 
             // once its loaded, fade out

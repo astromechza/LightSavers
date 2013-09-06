@@ -16,11 +16,11 @@ namespace CustomProcessors
     public class WorldSectionProcessor : ContentProcessor<Texture2DContent, ModelContent>
     {        
         // Texture 
-        private const string floortexturefile = "textures/floortexture.bmp";
-        private const string walltexturefile = "textures/walltexture.bmp";
+        private const string floortexturefile = "textures/floortexture.png";
+        private const string walltexturefile = "textures/walltexture.png";
         private const string blacktexturefile = "textures/black.bmp";
 
-        public const float WallHeight = 3.0f;   // height of walls
+        public const float WallHeight = 2.5f;   // height of walls
 
         private Vector2[][] quarters = {
             new Vector2[] { new Vector2(0.0f, 0.0f), new Vector2(0.5f, 0.0f), new Vector2(0.0f, 0.5f), new Vector2(0.5f, 0.5f) },
