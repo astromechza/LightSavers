@@ -20,6 +20,8 @@ namespace CustomProcessors
         private const string walltexturefile = "textures/walltexture.bmp";
         private const string blacktexturefile = "textures/black.bmp";
 
+        public const float WallHeight = 3.0f;   // height of walls
+
         private Vector2[][] quarters = {
             new Vector2[] { new Vector2(0.0f, 0.0f), new Vector2(0.5f, 0.0f), new Vector2(0.0f, 0.5f), new Vector2(0.5f, 0.5f) },
             new Vector2[] { new Vector2(0.5f, 0.0f), new Vector2(1.0f, 0.0f), new Vector2(0.5f, 0.5f), new Vector2(1.0f, 0.5f) },
@@ -107,22 +109,22 @@ namespace CustomProcessors
 
                         if (leftWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, 2.0f, z), new Vector3(x, 0.0f, z + 1.0f));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, z), new Vector3(x, 0.0f, z + 1.0f));
                         }
 
                         if (rightWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, 2.0f, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z));
                         }
 
                         if (frontWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, 2.0f, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z + 1.0f));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z + 1.0f));
                         }
 
                         if (backWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, 2.0f, z), new Vector3(x, 0.0f, z));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, z), new Vector3(x, 0.0f, z));
                         }
                     }
                 }
@@ -160,7 +162,7 @@ namespace CustomProcessors
                     if (bitmap.GetPixel(x, z) == Color.Blue)
                     {
 
-                        quadcount += AddQuadVertexPositions(mb, new Vector3(x, 2.0f, z), new Vector3(x + 1.0f, 2.0f, z + 1.0f));
+                        quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, z), new Vector3(x + 1.0f, WallHeight, z + 1.0f));
 
                         bool leftWall = (x == 0) || ((x > 0) && (bitmap.GetPixel(x - 1, z) == Color.Black));
                         bool rightWall = (x == bitmap.Width - 1) || ((x < bitmap.Width - 1) && (bitmap.GetPixel(x + 1, z) == Color.Black));
@@ -169,22 +171,22 @@ namespace CustomProcessors
 
                         if (leftWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, 2.0f, z), new Vector3(x, 0.0f, z + 1.0f));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, z), new Vector3(x, 0.0f, z + 1.0f));
                         }
 
                         if (rightWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, 2.0f, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z));
                         }
 
                         if (frontWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, 2.0f, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z + 1.0f));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z + 1.0f));
                         }
 
                         if (backWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, 2.0f, z), new Vector3(x, 0.0f, z));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, z), new Vector3(x, 0.0f, z));
                         }
                     }
                 }
