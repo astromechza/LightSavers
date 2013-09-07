@@ -40,6 +40,8 @@ namespace CustomProcessors
             nodeContent.Children.Add(buildFloorMesh(bmpInput));
             nodeContent.Children.Add(buildWallMesh(bmpInput));
             nodeContent.Children.Add(buildBlackMesh(bmpInput));
+            
+            
 
             return context.Convert<NodeContent, ModelContent>(nodeContent, typeof(ModelBakerProcessor).Name);
         }
@@ -85,7 +87,8 @@ namespace CustomProcessors
         private NodeContent buildWallMesh(PixelBitmapContent<Color> bitmap)
         {
             MeshBuilder mb = MeshBuilder.StartMesh("wall");
-
+            
+            
             // Create a material, and point it at the world section texture
             BasicMaterialContent material = new BasicMaterialContent();
             material.Texture = new ExternalReference<TextureContent>(walltexturefile);

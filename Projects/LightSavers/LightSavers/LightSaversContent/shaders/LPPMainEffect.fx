@@ -259,7 +259,7 @@ float4 ReconstructPixelShaderFunction(ReconstructVertexShaderOutput input):COLOR
 	//return float4(lightColor.aaa,1);
 	float4 finalColor = float4(diffuseMap*lightColor.rgb + specular*specularMap + emissiveMap,1);
 	//add a small constant to avoid dark areas
-	finalColor.rgb+= diffuseMap*0.03f;
+	finalColor.rgb+= diffuseMap*0.1f;
 	return finalColor;
 }
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using LightSavers.Components.GameObjects;
 
 namespace LightSavers.Components
 {
@@ -12,6 +13,11 @@ namespace LightSavers.Components
     {
         private List<GameObject> allObjects;
         private WorldSection[] sections;
+
+        private Light light1;
+        private Light light2;
+        private Light light3;
+        private Light light4;
 
         /// <summary>
         /// Constructor
@@ -23,6 +29,40 @@ namespace LightSavers.Components
         {
             allObjects = new List<GameObject>();
             Load(level);
+
+            light1 = new Light();
+            light1.LightType = Light.Type.Point;
+            light1.Radius = 4f;
+            light1.Intensity = 0.7f;
+            light1.Color = new Color(1.0f, 0.5f, 0.5f);
+            light1.Transform = Matrix.CreateTranslation(new Vector3(4, 1f, 4));
+
+            light2 = new Light();
+            light2.LightType = Light.Type.Spot;
+            light2.ShadowDepthBias = 0.001f;
+            light2.Radius = 40;
+            light2.SpotAngle = 20;
+            light2.Intensity = 1.5f;
+            light2.Color = new Color(1.0f, 0.5f, 0.5f);
+            light2.CastShadows = true;
+            light2.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(270)) * Matrix.CreateTranslation(new Vector3(4, 1f, 4));
+
+            light3 = new Light();
+            light3.LightType = Light.Type.Point;
+            light3.Radius = 10f;
+            light3.Intensity = 0.7f;
+            light3.Color = new Color(1.0f, 1.0f, 1.0f);
+            light3.Transform = Matrix.CreateTranslation(new Vector3(4, 1f, 20));
+
+            light4 = new Light();
+            light4.LightType = Light.Type.Spot;
+            light4.ShadowDepthBias = 0.001f;
+            light4.Radius = 40;
+            light4.SpotAngle = 20;
+            light4.Intensity = 1.5f;
+            light4.Color = new Color(0.5f, 0.5f, 1.0f);
+            light4.CastShadows = true;
+            light4.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(-45)) * Matrix.CreateTranslation(new Vector3(4, 1f, 20));
         }
 
         
@@ -65,40 +105,29 @@ namespace LightSavers.Components
             }
 
         }
-
-        /// <summary>
-        /// Draw the current world geometry and all of the objects in it
-        /// </summary>
-        /// <param name="camera"> Camera object, used for view and projection matrices </param>
-        /// <param name="shader"> Shader object, used to set specific lighting and texturing values </param>
-        public void Draw(Camera camera)
+        
+        public List<Light> GetVisibleLights()
         {
-            DrawWallsAndFloors(camera);
-
-            // Draw objects here
-            foreach(GameObject go in allObjects)
-            {
-                go.Draw();
-            }
-
+            List<Light> lights = new List<Light>();
+            lights.Add(light1);
+            lights.Add(light2);
+            lights.Add(light3);
+            lights.Add(light4);
+            return lights;
         }
 
-        /// <summary>
-        /// A simple optimisation is to just draw the Sections which are in 
-        /// view of the camera at the current moment.
-        /// </summary>
-        /// <param name="camera"> Camera object, used for view and projection matrices </param>
-        /// <param name="shader"> Shader object, used to set specific lighting and texturing values </param>
-        private void DrawWallsAndFloors(Camera camera)
+        public List<MeshWrapper> GetVisibleMeshes()
         {
-            
-
+            List<MeshWrapper> meshes = new List<MeshWrapper>();
             foreach (WorldSection ws in sections)
             {
-                ws.Draw(camera);
+                meshes.Add(ws.Mesh);
             }
-
+            return meshes;
         }
+
+
+
 
         /// <summary>
         /// Update the World in general and all of the objects in it
@@ -106,6 +135,11 @@ namespace LightSavers.Components
         /// <param name="ms">Elapsed milliseconds since last update call</param>
         public void Update(float ms)
         {
+
+            light2.Transform = Matrix.CreateRotationY(0.03f) * light2.Transform;
+
+
+
             foreach (GameObject go in allObjects)
             {
                 go.Update(ms);

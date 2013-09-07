@@ -44,19 +44,6 @@ namespace LightSavers.Rendering
 
         #endregion
         #region Fields
-        /// <summary>
-        /// Our main graphic device, created by XNA framework
-        /// </summary>
-        private GraphicsDevice _graphicsDevice;
-
-        /// <summary>
-        /// Content manager responsible for loading our shaders.
-        /// It can be the same you use to load your assets, or a new one
-        /// to be used only in the renderer. This is useful when you unload
-        /// your assets when changing levels (or another situation), so you
-        /// don't need to care about reloading this.
-        /// </summary>
-        private ContentManager _contentManager;
 
         /// <summary>
         /// GBuffer height
@@ -160,8 +147,6 @@ namespace LightSavers.Rendering
         public RenderTarget2D LightBuffer { get { return _lightBuffer; } }
 
         public bool UseQuads { get { return _useQuads; } set { _useQuads = value; } }
-
-        public GraphicsDevice GraphicsDevice { get { return _graphicsDevice; } }
         
         #endregion
         /// <summary>
@@ -171,15 +156,13 @@ namespace LightSavers.Rendering
         /// <param name="contentManager"></param>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        public Renderer(GraphicsDevice graphicsDevice, ContentManager contentManager, int width, int height)
+        public Renderer(int width, int height)
         {
             _width = width;
             _height = height;
-            _graphicsDevice = graphicsDevice;
-            _contentManager = contentManager;
             _quadRenderer = new QuadRenderer();
-            _sphereRenderer = new MeshRenderer(contentManager.Load<Model>("meshes/sphere"));
-            _spotRenderer = new MeshRenderer(contentManager.Load<Model>("meshes/cone"));
+            _sphereRenderer = new MeshRenderer(Globals.content.Load<Model>("meshes/sphere"));
+            _spotRenderer = new MeshRenderer(Globals.content.Load<Model>("meshes/cone"));
 
             _cwDepthState = new DepthStencilState();
             _cwDepthState.DepthBufferWriteEnable = false;
@@ -206,23 +189,23 @@ namespace LightSavers.Rendering
             //that is supposed to be more expensive than DISCARD CONTENT.
             //We use a floating point (32bit) buffer for Z values, although our HW use only 24bits.
             //We could use some packing and use a 24bit buffer too, but lets start simpler
-            _depthBuffer = new RenderTarget2D(GraphicsDevice, _width, _height, false, SurfaceFormat.Single, DepthFormat.None, 0, RenderTargetUsage.DiscardContents);
+            _depthBuffer = new RenderTarget2D(Globals.graphics.GraphicsDevice, _width, _height, false, SurfaceFormat.Single, DepthFormat.None, 0, RenderTargetUsage.DiscardContents);
 
             //Our normal buffer stores encoded view-space normal into RG (10bit each) and the specular power in B.
             //Some engines encode the specular power with some log or ln functions. We will output 
             //only the normal texture's alpha channel multiplied by a const value (100),
             //so we have specular power in the range [1..100].
             //Currently, A is not used (2bit).
-            _normalBuffer = new RenderTarget2D(GraphicsDevice, _width, _height, false, SurfaceFormat.Rgba1010102, DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents);
+            _normalBuffer = new RenderTarget2D(Globals.graphics.GraphicsDevice, _width, _height, false, SurfaceFormat.Rgba1010102, DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents);
 
             //This buffer stores all the "pure" lighting on the scene, no albedo applied to it. We use an floating
             //point format to allow us "overbright" some areas. Read the blog for more information. We use a depth buffer
             //to optimize light rendering.
-            _lightBuffer = new RenderTarget2D(GraphicsDevice, _width, _height, false, SurfaceFormat.Rgba64, DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents);
+            _lightBuffer = new RenderTarget2D(Globals.graphics.GraphicsDevice, _width, _height, false, SurfaceFormat.Rgba64, DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents);
 
             //We need another depth here because we need to render all objects again, to reconstruct their shading 
             //using our light texture.
-            _outputTexture = new RenderTarget2D(GraphicsDevice, _width, _height, false, SurfaceFormat.Color, DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents);
+            _outputTexture = new RenderTarget2D(Globals.graphics.GraphicsDevice, _width, _height, false, SurfaceFormat.Color, DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents);
         }
 
         /// <summary>
@@ -230,9 +213,9 @@ namespace LightSavers.Rendering
         /// </summary>
         private void LoadShaders()
         {
-            _clearGBuffer = _contentManager.Load<Effect>("shaders/ClearGBuffer");
-            _lighting = _contentManager.Load<Effect>("shaders/LightingLpp");
-            _reconstructZBuffer = _contentManager.Load<Effect>("shaders/ReconstructDepth");
+            _clearGBuffer = Globals.content.Load<Effect>("shaders/ClearGBuffer");
+            _lighting = Globals.content.Load<Effect>("shaders/LightingLpp");
+            _reconstructZBuffer = Globals.content.Load<Effect>("shaders/ReconstructDepth");
         }
 
         /// <summary>
@@ -261,35 +244,36 @@ namespace LightSavers.Rendering
             GenerateShadows(camera, meshes);
 
             //first of all, we must bind our GBuffer and reset all states
-            GraphicsDevice.SetRenderTargets(_normalBuffer, _depthBuffer);
-            GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Stencil, Color.Black, 1.0f, 0);
-            GraphicsDevice.BlendState = BlendState.Opaque;
-            GraphicsDevice.DepthStencilState = DepthStencilState.None;
-            GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+            Globals.graphics.GraphicsDevice.SetRenderTargets(_normalBuffer, _depthBuffer);
+            Globals.graphics.GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Stencil, Color.Black, 1.0f, 0);
+            Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
+            Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.None;
+            Globals.graphics.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
 
             //bind the effect that outputs the default GBuffer values
             _clearGBuffer.CurrentTechnique.Passes[0].Apply();
             //draw a full screen quad for clearing our GBuffer
-            _quadRenderer.RenderQuad(GraphicsDevice, -Vector2.One, Vector2.One);
+            _quadRenderer.RenderQuad(Globals.graphics.GraphicsDevice, -Vector2.One, Vector2.One);
 
-            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+            Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            Globals.graphics.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
             //now, render all our objects
             RenderToGbuffer(camera,meshes);
 
             //resolve our GBuffer and render the lights
             //clear the light buffer with black
-            GraphicsDevice.SetRenderTarget(_lightBuffer);
+            Globals.graphics.GraphicsDevice.SetRenderTarget(_lightBuffer);
             //dont be fooled by Color.Black, as its alpha is 255 (or 1.0f)
-            GraphicsDevice.Clear(new Color(0,0,0,0));
+            Globals.graphics.GraphicsDevice.Clear(new Color(0, 0, 0, 0));
 
             //dont use depth/stencil test...we dont have a depth buffer, anyway
-            GraphicsDevice.DepthStencilState = DepthStencilState.None;
-            GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+            Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.None;
+            Globals.graphics.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
             //draw using additive blending. 
             //At first I was using BlendState.additive, but it seems to use alpha channel for modulation, 
             //and as we use alpha channel as the specular intensity, we have to create our own blend state here
-            GraphicsDevice.BlendState = new BlendState() {
+            Globals.graphics.GraphicsDevice.BlendState = new BlendState()
+            {
                 AlphaSourceBlend = Blend.One,
                 ColorSourceBlend = Blend.One,
                 AlphaDestinationBlend = Blend.One,
@@ -299,16 +283,16 @@ namespace LightSavers.Rendering
             RenderLights(camera);
 
             //reconstruct each object shading, using the light texture as input (and another specific parameters too)
-            GraphicsDevice.SetRenderTarget(_outputTexture);
-            GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Stencil, Color.Black, 1.0f, 0);
-            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            GraphicsDevice.BlendState = BlendState.Opaque;
-            GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+            Globals.graphics.GraphicsDevice.SetRenderTarget(_outputTexture);
+            Globals.graphics.GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Stencil, Color.Black, 1.0f, 0);
+            Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
+            Globals.graphics.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
 
             ReconstructShading(camera, meshes);
 
             //unbind our final buffer and return it
-            GraphicsDevice.SetRenderTarget(null);
+            Globals.graphics.GraphicsDevice.SetRenderTarget(null);
 
             return _outputTexture;
         }
@@ -400,14 +384,14 @@ namespace LightSavers.Rendering
             };
 
             //store previous state
-            BlendState oldBlendState = GraphicsDevice.BlendState;
+            BlendState oldBlendState = Globals.graphics.GraphicsDevice.BlendState;
             BlendState blendState = new BlendState();
             //we dont need to write to color channels
             blendState.ColorWriteChannels = ColorWriteChannels.None;
 
-            GraphicsDevice.DepthStencilState = depthStencilState;
+            Globals.graphics.GraphicsDevice.DepthStencilState = depthStencilState;
 
-            _quadRenderer.RenderQuad(GraphicsDevice, -Vector2.One, Vector2.One);
+            _quadRenderer.RenderQuad(Globals.graphics.GraphicsDevice, -Vector2.One, Vector2.One);
 
             DepthStencilState depthState = new DepthStencilState();
 
@@ -415,8 +399,8 @@ namespace LightSavers.Rendering
             depthState.DepthBufferFunction = CompareFunction.GreaterEqual;
             //with our z-buffer reconstructed we only need to read it
             depthState.DepthBufferWriteEnable = false;
-            GraphicsDevice.DepthStencilState = depthState;
-            GraphicsDevice.BlendState = oldBlendState;
+            Globals.graphics.GraphicsDevice.DepthStencilState = depthState;
+            Globals.graphics.GraphicsDevice.BlendState = oldBlendState;
         }
 
         private void ReconstructShading(Camera camera, List<MeshWrapper> meshes)
@@ -437,7 +421,6 @@ namespace LightSavers.Rendering
             ReconstructZBuffer(camera);
 
             _lighting.Parameters["TanAspect"].SetValue(new Vector2(camera.TanFovy * camera.Aspect, -camera.TanFovy));
-
 
             for (int i = 0; i < _lightEntries.Count; i++)
             {
@@ -461,6 +444,7 @@ namespace LightSavers.Rendering
                     case Light.Type.Spot:
                         if (light.LightType == Light.Type.Point)
                         {
+
                             //check if the light touches the near plane
                             BoundingSphere boundingSphereExpanded = light.BoundingSphere;
                             boundingSphereExpanded.Radius *= 1.375f; //expand it a little, because our mesh is not a perfect sphere
@@ -468,14 +452,14 @@ namespace LightSavers.Rendering
                             camera.Frustum.Near.Intersects(ref boundingSphereExpanded, out planeIntersectionType);
                             if (planeIntersectionType != PlaneIntersectionType.Back)
                             {
-                                GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
-                                GraphicsDevice.DepthStencilState = _ccwDepthState;
+                                Globals.graphics.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+                                Globals.graphics.GraphicsDevice.DepthStencilState = _ccwDepthState;
 
                             }
                             else
                             {
-                                GraphicsDevice.RasterizerState = RasterizerState.CullClockwise;
-                                GraphicsDevice.DepthStencilState = _cwDepthState;
+                                Globals.graphics.GraphicsDevice.RasterizerState = RasterizerState.CullClockwise;
+                                Globals.graphics.GraphicsDevice.DepthStencilState = _cwDepthState;
                             }
 
                             Matrix lightMatrix = Matrix.CreateScale(light.Radius);
@@ -486,8 +470,8 @@ namespace LightSavers.Rendering
                             _lighting.CurrentTechnique = _lighting.Techniques[1];
                             _lighting.CurrentTechnique.Passes[0].Apply();
 
-                            _sphereRenderer.BindMesh(GraphicsDevice);
-                            _sphereRenderer.RenderMesh(GraphicsDevice);
+                            _sphereRenderer.BindMesh(Globals.graphics.GraphicsDevice);
+                            _sphereRenderer.RenderMesh(Globals.graphics.GraphicsDevice);
                         }
                         else
                         {
@@ -498,14 +482,14 @@ namespace LightSavers.Rendering
                             PlaneIntersectionType planeIntersectionType = near.Intersects(light.Frustum);
                             if (planeIntersectionType != PlaneIntersectionType.Back)
                             {
-                                GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
-                                GraphicsDevice.DepthStencilState = _ccwDepthState;
+                                Globals.graphics.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+                                Globals.graphics.GraphicsDevice.DepthStencilState = _ccwDepthState;
 
                             }
                             else
                             {
-                                GraphicsDevice.RasterizerState = RasterizerState.CullClockwise;
-                                GraphicsDevice.DepthStencilState = _cwDepthState;
+                                Globals.graphics.GraphicsDevice.RasterizerState = RasterizerState.CullClockwise;
+                                Globals.graphics.GraphicsDevice.DepthStencilState = _cwDepthState;
                             }
 
                             float tan = (float) Math.Tan(MathHelper.ToRadians(light.SpotAngle));
@@ -534,21 +518,21 @@ namespace LightSavers.Rendering
                             }
 
                             _lighting.CurrentTechnique.Passes[0].Apply();
-                            
-                            _spotRenderer.BindMesh(GraphicsDevice);
-                            _spotRenderer.RenderMesh(GraphicsDevice);
+
+                            _spotRenderer.BindMesh(Globals.graphics.GraphicsDevice);
+                            _spotRenderer.RenderMesh(Globals.graphics.GraphicsDevice);
                            
                         }
 
                         break;
                     case Light.Type.Directional:
 
-                        GraphicsDevice.DepthStencilState = _directionalDepthState;
-                        GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+                        Globals.graphics.GraphicsDevice.DepthStencilState = _directionalDepthState;
+                        Globals.graphics.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
                         ApplyFrustumCorners(_lighting, -Vector2.One, Vector2.One);
                         _lighting.CurrentTechnique = _lighting.Techniques[2];
                         _lighting.CurrentTechnique.Passes[0].Apply();
-                        _quadRenderer.RenderQuad(GraphicsDevice, -Vector2.One, Vector2.One);
+                        _quadRenderer.RenderQuad(Globals.graphics.GraphicsDevice, -Vector2.One, Vector2.One);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

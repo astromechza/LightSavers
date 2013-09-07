@@ -35,7 +35,7 @@ namespace LightSavers.Rendering
             {
                 SpotShadowMapEntry entry = new SpotShadowMapEntry();
                 //we store the linear depth, in a float render target. We need also the HW zbuffer
-                entry.Texture = new RenderTarget2D(renderer.GraphicsDevice, SPOT_SHADOW_RESOLUTION, SPOT_SHADOW_RESOLUTION, false, SurfaceFormat.Single, DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents);
+                entry.Texture = new RenderTarget2D(Globals.graphics.GraphicsDevice, SPOT_SHADOW_RESOLUTION, SPOT_SHADOW_RESOLUTION, false, SurfaceFormat.Single, DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents);
                 entry.LightViewProjection = Matrix.Identity;
                 _spotShadowMaps.Add(entry);
             }
@@ -69,11 +69,11 @@ namespace LightSavers.Rendering
         public void GenerateShadowTextureSpotLight(Renderer renderer, List<MeshWrapper> meshes, Light light, SpotShadowMapEntry shadowMap)
         {
             //bind the render target
-            renderer.GraphicsDevice.SetRenderTarget(shadowMap.Texture);
+            Globals.graphics.GraphicsDevice.SetRenderTarget(shadowMap.Texture);
             //clear it to white, ie, far far away
-            renderer.GraphicsDevice.Clear(Color.White);
-            renderer.GraphicsDevice.BlendState = BlendState.Opaque;
-            renderer.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            Globals.graphics.GraphicsDevice.Clear(Color.White);
+            Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
+            Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
 
             Matrix viewProj = light.ViewProjection;
@@ -83,6 +83,7 @@ namespace LightSavers.Rendering
 
             for (int index = 0; index < meshes.Count; index++)
             {
+
                 MeshWrapper mesh = meshes[index];
                 //cull meshes outside the light volume
                 //if (!frustum.Intersects(mesh.GlobalBoundingBox))

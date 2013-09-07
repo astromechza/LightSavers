@@ -5,6 +5,7 @@ using System.Text;
 using LightSavers.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using LightSavers.Rendering;
 
 namespace LightSavers.ScreenManagement.Layers
 {
@@ -14,7 +15,10 @@ namespace LightSavers.ScreenManagement.Layers
         private RenderTarget2D game3DLayer;
         private SpriteBatch canvas;
 
-        public GameContainer gameContainer;
+        private Renderer renderer;
+
+        private Camera camera;              // camera viewing the world
+        private WorldContainer world;       // the world : all objects and things
 
         public GameLayer() : base()
         {
@@ -39,21 +43,32 @@ namespace LightSavers.ScreenManagement.Layers
                 0,
                 RenderTargetUsage.DiscardContents);
 
-            gameContainer = new GameContainer(this);
+            world = new WorldContainer("level0");
+
+            // set camera
+            camera = new Camera();
+
+            Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(new Vector3(16, 50, 16));
+
+            camera.Aspect = viewport.AspectRatio;
+            camera.NearClip = 0.1f;
+            camera.FarClip = 1000;
+            camera.Transform = temp;
+            camera.Viewport = viewport;
+
+            renderer = new Renderer(viewport.Width, viewport.Height);
 
         }
 
         public override void Draw()
         {
-            // First we need to draw to a temporary buffer
-            Globals.graphics.GraphicsDevice.SetRenderTarget(game3DLayer);
 
             // reset these because spritebatch can do nasty stuff
             Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
             Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             
-            /*/*/// Draw everything here
-            gameContainer.DrawWorld();
+            RenderTarget2D o = renderer.RenderScene(camera, world.GetVisibleLights(), world.GetVisibleMeshes());
+
 
             // Now switch back to the main render device
             Globals.graphics.GraphicsDevice.SetRenderTarget(null);
@@ -64,16 +79,8 @@ namespace LightSavers.ScreenManagement.Layers
             canvas.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
 
             // draw the 3d scene
-            canvas.Draw(game3DLayer, viewport.Bounds, Color.White);
+            canvas.Draw(o, viewport.Bounds, Color.White);
 
-            gameContainer.DrawHud(canvas, viewport);
-
-            // draw the black transparent thing
-            if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)
-            {
-                int trans = (int)((1 - transitionPercent) * 255.0f);
-                canvas.Draw(AssetLoader.tex_black, viewport.Bounds, new Color(trans, trans, trans, trans));
-            }
 
             canvas.End();
             
@@ -82,7 +89,7 @@ namespace LightSavers.ScreenManagement.Layers
         public override void Update(float ms)
         {
 
-            gameContainer.Update(ms);
+            world.Update(ms);
 
             base.Update(ms);
         }

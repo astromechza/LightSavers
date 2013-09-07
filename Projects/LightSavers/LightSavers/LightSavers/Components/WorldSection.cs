@@ -24,6 +24,7 @@ namespace LightSavers.Components
 
         // Geometry
         private MeshWrapper mesh;
+        public MeshWrapper Mesh { get {return mesh;} }
 
         public WorldSection(string file, Vector3 origin)
         {
@@ -34,5 +35,7 @@ namespace LightSavers.Components
         {
             mesh.RenderToGBuffer(camera);
         }
+
+        
     }
 }
