@@ -284,7 +284,7 @@ namespace LightSavers.Rendering
 
             //reconstruct each object shading, using the light texture as input (and another specific parameters too)
             Globals.graphics.GraphicsDevice.SetRenderTarget(_outputTexture);
-            Globals.graphics.GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Stencil, Color.Black, 1.0f, 0);
+            Globals.graphics.GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Stencil | ClearOptions.Target, Color.Black, 1.0f, 0);
             Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
             Globals.graphics.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
