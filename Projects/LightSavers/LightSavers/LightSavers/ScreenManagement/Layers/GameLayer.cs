@@ -48,7 +48,7 @@ namespace LightSavers.ScreenManagement.Layers
             // set camera
             camera = new Camera();
 
-            Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(new Vector3(16, 50, 16));
+            Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(new Vector3(16, 42, 16));
 
             camera.Aspect = viewport.AspectRatio;
             camera.NearClip = 0.1f;

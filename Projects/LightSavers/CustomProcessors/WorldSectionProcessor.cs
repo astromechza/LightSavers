@@ -39,9 +39,7 @@ namespace CustomProcessors
 
             nodeContent.Children.Add(buildFloorMesh(bmpInput));
             nodeContent.Children.Add(buildWallMesh(bmpInput));
-            nodeContent.Children.Add(buildBlackMesh(bmpInput));
-            
-            
+            nodeContent.Children.Add(buildBlackMesh(bmpInput));           
 
             return context.Convert<NodeContent, ModelContent>(nodeContent, typeof(ModelBakerProcessor).Name);
         }
@@ -52,7 +50,9 @@ namespace CustomProcessors
 
             // Create a material, and point it at the world section texture
             BasicMaterialContent material = new BasicMaterialContent();
-            material.Texture = new ExternalReference<TextureContent>(floortexturefile);
+
+            material.Textures.Add(ModelBakerProcessor.DiffuseMapKey, new ExternalReference<TextureContent>(floortexturefile));
+
             mb.SetMaterial(material);
 
             // Create data channels
@@ -88,11 +88,13 @@ namespace CustomProcessors
         {
             MeshBuilder mb = MeshBuilder.StartMesh("wall");
             
-            
             // Create a material, and point it at the world section texture
             BasicMaterialContent material = new BasicMaterialContent();
-            material.Texture = new ExternalReference<TextureContent>(walltexturefile);
+            
+            material.Textures.Add(ModelBakerProcessor.DiffuseMapKey, new ExternalReference<TextureContent>(walltexturefile));
+            
             mb.SetMaterial(material);
+
 
             int channel_texCoord0 = mb.CreateVertexChannel<Vector2>(VertexChannelNames.TextureCoordinate(0));
 
@@ -149,8 +151,11 @@ namespace CustomProcessors
             MeshBuilder mb = MeshBuilder.StartMesh("black");
 
             // Create a material, and point it at the world section texture
+
             BasicMaterialContent material = new BasicMaterialContent();
-            material.Texture = new ExternalReference<TextureContent>(blacktexturefile);
+
+            material.Textures.Add(ModelBakerProcessor.DiffuseMapKey, new ExternalReference<TextureContent>(blacktexturefile));
+
             mb.SetMaterial(material);
 
             int channel_texCoord0 = mb.CreateVertexChannel<Vector2>(VertexChannelNames.TextureCoordinate(0));
