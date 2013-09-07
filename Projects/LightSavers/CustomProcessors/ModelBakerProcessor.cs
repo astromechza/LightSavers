@@ -73,10 +73,62 @@ namespace CustomProcessors
             processorParameters["PremultiplyTextureAlpha"] = false;
             processorParameters["ColorKeyEnabled"] = false;
 
+            lppMaterial.Effect = new ExternalReference<EffectContent>("shaders/LPPMainEffect.fx");
+            lppMaterial.CompiledEffect = context.BuildAsset<EffectContent, CompiledEffectContent>(lppMaterial.Effect, typeof(FXBakerProcessor).Name);
 
+            ExtractTextures(lppMaterial, material);
 
-            return base.ConvertMaterial(material, context);
+            ExtractDefines(lppMaterial, material, context);
+
+            return context.Convert<MaterialContent, MaterialContent>(lppMaterial, typeof(MaterialBakerProcessor).Name, processorParameters);
         }
-    
+
+        /// <summary>
+        /// Copy Textures from source effectmaterial into destination effectmaterial
+        /// </summary>
+        private void ExtractTextures(EffectMaterialContent destination, MaterialContent source)
+        {
+            // Copy known textures
+            foreach (KeyValuePair<String, ExternalReference<TextureContent>> texture in source.Textures)
+            {
+                if (texture.Key.ToLower().Contains("diffuseMap".ToLower())) destination.Textures.Add(DiffuseMapKey, texture.Value);
+                if (texture.Key.ToLower().Contains("normalMap".ToLower())) destination.Textures.Add(NormalMapKey, texture.Value);
+                if (texture.Key.ToLower().Contains("specularMap".ToLower())) destination.Textures.Add(SpecularMapKey, texture.Value);
+                if (texture.Key.ToLower().Contains("emissiveMap".ToLower())) destination.Textures.Add(EmissiveMapKey, texture.Value);
+            }
+
+            // If Textures don't exist, add default textures instead
+            ExternalReference<TextureContent> externalRef;
+            if (!destination.Textures.TryGetValue(DiffuseMapKey, out externalRef))
+            {
+                destination.Textures[DiffuseMapKey] = new ExternalReference<TextureContent>("textures/default_diffuse.tga");
+            }
+            if (!destination.Textures.TryGetValue(NormalMapKey, out externalRef))
+            {
+                destination.Textures[NormalMapKey] = new ExternalReference<TextureContent>("textures/default_normal.tga");
+            }
+            if (!destination.Textures.TryGetValue(SpecularMapKey, out externalRef))
+            {
+                destination.Textures[SpecularMapKey] = new ExternalReference<TextureContent>("textures/default_specular.tga");
+            }
+            if (!destination.Textures.TryGetValue(EmissiveMapKey, out externalRef))
+            {
+                destination.Textures[EmissiveMapKey] = new ExternalReference<TextureContent>("textures/default_emissive.tga");
+            }
+        }
+
+        /// <summary>
+        /// Extract the defines we need (Just alpha for the moment)
+        /// </summary>
+        private void ExtractDefines(EffectMaterialContent destination, MaterialContent source, ContentProcessorContext context)
+        {
+            if (source.OpaqueData.ContainsKey("alphaMasked") && source.OpaqueData["alphaMasked"].ToString() == "True")
+            {
+                context.Logger.LogMessage("Alpha masked material found");
+                destination.OpaqueData.Add("AlphaReference", (float) source.OpaqueData["AlphaReference"]);
+                destination.OpaqueData.Add("Defines", "ALPHA_MASKED;");
+            }
+        }
+
     }
 }

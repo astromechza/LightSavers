@@ -36,7 +36,7 @@ namespace LightSavers.Components
         public void Load(String level)
         {
             // Get directory
-            DirectoryInfo dir = new DirectoryInfo(Globals.content.RootDirectory+"\\levels\\"+level);
+            DirectoryInfo dir = new DirectoryInfo(Globals.content.RootDirectory+"/levels/"+level);
             //get list of files from directory
             FileInfo[] files = dir.GetFiles("*.*");
 
@@ -58,7 +58,7 @@ namespace LightSavers.Components
             {
                 
                 // Construct section using colour array
-                sections[i] = new WorldSection("levels\\" + level + "\\" + filenames[i], origin);
+                sections[i] = new WorldSection("levels/" + level + "/" + filenames[i], origin);
 
                 // Increment origin
                 origin += Vector3.Right * 32;
@@ -91,19 +91,13 @@ namespace LightSavers.Components
         /// <param name="shader"> Shader object, used to set specific lighting and texturing values </param>
         private void DrawWallsAndFloors(Camera camera)
         {
-            // calculate which sections must be drawn based on the left and right edges of the camera
-            int camleft = (int)(camera.GetLeftPoint().X / 32) - 1;
-            int camright = (int)(camera.GetRightPoint().X / 32) + 1;
+            
 
-            // avoid index out of range issues
-            camleft = (int)MathHelper.Clamp(camleft, 0, sections.Length - 1);
-            camright = (int)MathHelper.Clamp(camright, 0, sections.Length - 1);
-
-            // Draw the suckers
-            for (int i = camleft; i <= camright; i++)
+            foreach (WorldSection ws in sections)
             {
-                sections[i].Draw(camera);
-            } 
+                ws.Draw(camera);
+            }
+
         }
 
         /// <summary>

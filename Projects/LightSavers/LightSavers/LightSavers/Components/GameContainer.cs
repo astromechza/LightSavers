@@ -26,7 +26,11 @@ namespace LightSavers.Components
             world = new WorldContainer("level0");
 
             // set camera
-            camera = new Camera(new Vector3(32,0,32));
+            camera = new Camera();
+
+            Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(new Vector3(16,32,16));
+
+            camera.Transform = temp;
 
 
         }
@@ -49,21 +53,21 @@ namespace LightSavers.Components
             // if back is pressed. exit layer
             if (Globals.inputController.isButtonReleased(Buttons.Back, null)) gameLayer.StartTransitionOff();
 
-            // control horizantal movement
-            Vector2 v = Globals.inputController.getAnalogVector(AnalogStick.Left, null);
-            if (v.Length() > 0.1f)
-            {
-                Vector3 v3 = new Vector3(v.X, 0, -v.Y);
-                camera = new Camera(camera.GetFocus() + v3 * ms / 30);
-            }
+            //// control horizantal movement
+            //Vector2 v = Globals.inputController.getAnalogVector(AnalogStick.Left, null);
+            //if (v.Length() > 0.1f)
+            //{
+            //    Vector3 v3 = new Vector3(v.X, 0, -v.Y);
+            //    camera = new Camera(camera.Focus + v3 * ms / 30);
+            //}
 
-            // control vertical movement
-            Vector2 v2 = Globals.inputController.getAnalogVector(AnalogStick.Right, null);
-            if (v2.Length() > 0.1f)
-            {
-                Vector3 v3 = new Vector3(v2.X, v2.Y, 0);
-                camera = new Camera(camera.GetFocus() + v3 * ms / 30);
-            }
+            //// control vertical movement
+            //Vector2 v2 = Globals.inputController.getAnalogVector(AnalogStick.Right, null);
+            //if (v2.Length() > 0.1f)
+            //{
+            //    Vector3 v3 = new Vector3(v2.X, v2.Y, 0);
+            //    camera = new Camera(camera.Focus + v3 * ms / 30);
+            //}
 
             world.Update(ms);
 

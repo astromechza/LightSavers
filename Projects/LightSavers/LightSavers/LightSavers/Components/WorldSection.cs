@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using LightSavers.Components.GameObjects;
 
 namespace LightSavers.Components
 {
@@ -20,31 +21,18 @@ namespace LightSavers.Components
     /// </summary>
     public class WorldSection
     {
-        // Constants
-
-        private Vector3 origin;                 // top left corner
 
         // Geometry
-        private Model model;
+        private MeshWrapper mesh;
 
         public WorldSection(string file, Vector3 origin)
         {
-            model = Globals.content.Load<Model>(file);
-            this.origin = origin;
+            mesh = new MeshWrapper(Globals.content.Load<Model>(file), Matrix.CreateTranslation(origin));
         }
 
         public void Draw(Camera camera)
         {
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    effect.World = Matrix.CreateTranslation(origin);
-                    effect.View = camera.GetViewMatrix();
-                    effect.Projection = camera.GetProjectionMatrix();
-                }
-                mesh.Draw();
-            }
+            mesh.RenderToGBuffer(camera);
         }
     }
 }
