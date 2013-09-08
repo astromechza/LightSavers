@@ -28,6 +28,7 @@ float2 LightBufferPixelSize;
 //revert it back here.
 const static float LightBufferScaleInv = 10.0f;
 
+const static float3 AmbientLightTerm = float3(0.0f, 0.04f, 0.04f);
 
 #ifdef ALPHA_MASKED
 float AlphaReference;
@@ -257,9 +258,7 @@ float4 ReconstructPixelShaderFunction(ReconstructVertexShaderOutput input):COLOR
 	//our specular intensity is stored in alpha. We reconstruct the specular here, using a cheap and NOT accurate trick
 	float3 specular = lightColor.rgb*lightColor.a;
 	//return float4(lightColor.aaa,1);
-	float4 finalColor = float4(diffuseMap*lightColor.rgb + specular*specularMap + emissiveMap,1);
-	//add a small constant to avoid dark areas
-	finalColor.rgb+= diffuseMap*0.05f;
+	float4 finalColor = float4(diffuseMap*(lightColor.rgb + AmbientLightTerm) + specular*specularMap + emissiveMap,1);
 	return finalColor;
 }
 
