@@ -19,6 +19,7 @@ namespace CustomProcessors
         private const string floortexturefile = "textures/floortexture.png";
         private const string walltexturefile = "textures/walltexture.png";
         private const string blacktexturefile = "textures/black.bmp";
+        private const string floortexturenormalfile = "textures/floortexture_normal.png";
 
         public const float WallHeight = 2.5f;   // height of walls
 
@@ -52,6 +53,8 @@ namespace CustomProcessors
             BasicMaterialContent material = new BasicMaterialContent();
 
             material.Textures.Add(ModelBakerProcessor.DiffuseMapKey, new ExternalReference<TextureContent>(floortexturefile));
+            material.Textures.Add(ModelBakerProcessor.NormalMapKey, new ExternalReference<TextureContent>(floortexturenormalfile));
+
 
             mb.SetMaterial(material);
 
