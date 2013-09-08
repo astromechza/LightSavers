@@ -17,8 +17,9 @@ namespace LightSavers.ScreenManagement.Layers
 
         private Renderer renderer;
 
-        private Camera camera;              // camera viewing the world
         private WorldContainer world;       // the world : all objects and things
+
+        private CameraController cameraController;
 
         public GameLayer() : base()
         {
@@ -45,17 +46,9 @@ namespace LightSavers.ScreenManagement.Layers
 
             world = new WorldContainer("level0");
 
-            // set camera
-            camera = new Camera();
-
-            Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(new Vector3(16, 42, 16));
-
-            camera.Aspect = viewport.AspectRatio;
-            camera.NearClip = 0.1f;
-            camera.FarClip = 1000;
-            camera.Transform = temp;
-            camera.Viewport = viewport;
-
+            Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(new Vector3(16, 16, 16));
+            cameraController = new CameraController(viewport, temp);
+            
             renderer = new Renderer(viewport.Width, viewport.Height);
 
         }
@@ -67,9 +60,8 @@ namespace LightSavers.ScreenManagement.Layers
             Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
             Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             
-            RenderTarget2D o = renderer.RenderScene(camera, world.GetVisibleLights(), world.GetVisibleMeshes());
-
-
+            RenderTarget2D o = renderer.RenderScene(cameraController.Camera, world.GetVisibleLights(), world.GetVisibleMeshes());
+            
             // Now switch back to the main render device
             Globals.graphics.GraphicsDevice.SetRenderTarget(null);
             Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
@@ -88,6 +80,8 @@ namespace LightSavers.ScreenManagement.Layers
 
         public override void Update(float ms)
         {
+            cameraController.HandleInput(ms);
+
 
             world.Update(ms);
 

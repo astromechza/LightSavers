@@ -30,7 +30,7 @@ namespace LightSavers
             Globals.content.RootDirectory = "Content";            
 
             //uncap FPS
-            Globals.graphics.SynchronizeWithVerticalRetrace = true; // uncheck to uncap fpx completely
+            Globals.graphics.SynchronizeWithVerticalRetrace = false; // uncheck to uncap fpx completely
             IsFixedTimeStep = false;
 
             // Graphics 
@@ -72,13 +72,15 @@ namespace LightSavers
 
         protected override void Draw(GameTime gameTime)
         {
-            fps.frameTick();
+            fps.frameStart();
          
             Globals.graphics.GraphicsDevice.Clear(Color.Black);
 
             Globals.screenManager.Draw();
 
             base.Draw(gameTime);
+
+            fps.frameEnd();
         }
     }
 }
