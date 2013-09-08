@@ -12,20 +12,13 @@ namespace LightSavers.Utils
         private int frameCounter = 0;
         private TimeSpan elapsedTime = TimeSpan.Zero;
         private TimeSpan outPrint = TimeSpan.Zero;
-        private long fstc = 0;
-        private long lastFrameDrawTicks = 0;
         
 
         public void frameStart()
         {
-            fstc = DateTime.Now.Ticks;
             frameCounter++;
         }
 
-        public void frameEnd()
-        {
-            lastFrameDrawTicks = DateTime.Now.Ticks - fstc;
-        }
 
         public void updateTick(GameTime gameTime)
         {
@@ -41,7 +34,6 @@ namespace LightSavers.Utils
             if (outPrint > TimeSpan.FromSeconds(3))
             {
                 System.Diagnostics.Debug.WriteLine("fps: " + frameRate);
-                System.Diagnostics.Debug.WriteLine("dticks: " + lastFrameDrawTicks);
                 outPrint -= TimeSpan.FromSeconds(3);
             }
         }

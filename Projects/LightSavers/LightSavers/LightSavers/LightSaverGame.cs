@@ -80,7 +80,6 @@ namespace LightSavers
 
             base.Draw(gameTime);
 
-            fps.frameEnd();
         }
     }
 }
