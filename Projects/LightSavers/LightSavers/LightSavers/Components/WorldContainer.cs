@@ -19,6 +19,9 @@ namespace LightSavers.Components
         private Light light3;
         private Light light4;
 
+        private List<Light> visibleLights;
+        private List<MeshWrapper> visibleMeshes;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -28,12 +31,18 @@ namespace LightSavers.Components
         public WorldContainer(String level)
         {
             allObjects = new List<GameObject>();
+
+            visibleMeshes = new List<MeshWrapper>();
             Load(level);
+
+            foreach (WorldSection s in sections) visibleMeshes.Add(s.Mesh);
+
+            visibleLights = new List<Light>();
 
             light1 = new Light();
             light1.LightType = Light.Type.Point;
-            light1.Radius = 4f;
-            light1.Intensity = 0.7f;
+            light1.Radius = 10f;
+            light1.Intensity = 0.3f;
             light1.Color = new Color(1.0f, 0.5f, 0.5f);
             light1.Transform = Matrix.CreateTranslation(new Vector3(4, 1f, 4));
 
@@ -63,9 +72,32 @@ namespace LightSavers.Components
             light4.Color = new Color(0.5f, 0.5f, 1.0f);
             light4.CastShadows = true;
             light4.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(-45)) * Matrix.CreateTranslation(new Vector3(4, 1f, 20));
+
+            visibleLights.Add(light1);
+            visibleLights.Add(light2);
+            visibleLights.Add(light3);
+            visibleLights.Add(light4);
+
+            // testing light performance
+            Random r = new Random();
+            for (int i = 0; i < 33; i++)
+            {
+                Light l = new Light();
+                l.LightType = Light.Type.Point;
+                l.Radius = 10f;
+                l.Intensity = 0.4f;
+                l.Color = new Color(1.0f, 1.0f, 1.0f);
+                l.CastShadows = true;
+                int x = r.Next(100);
+                int y = r.Next(32);
+                l.Transform = Matrix.CreateTranslation(new Vector3(x, 1f, y));
+                visibleLights.Add(l);
+            }
+
+
         }
 
-        
+
         /// <summary>
         /// Loads all of the sections of a level in alphabetical order into the array of WorldSections.
         /// Each image is analysed in the constructor of the WorldSection
@@ -108,22 +140,12 @@ namespace LightSavers.Components
         
         public List<Light> GetVisibleLights()
         {
-            List<Light> lights = new List<Light>();
-            lights.Add(light1);
-            lights.Add(light2);
-            lights.Add(light3);
-            lights.Add(light4);
-            return lights;
+            return visibleLights;
         }
 
         public List<MeshWrapper> GetVisibleMeshes()
         {
-            List<MeshWrapper> meshes = new List<MeshWrapper>();
-            foreach (WorldSection ws in sections)
-            {
-                meshes.Add(ws.Mesh);
-            }
-            return meshes;
+            return visibleMeshes;
         }
 
 
@@ -137,8 +159,6 @@ namespace LightSavers.Components
         {
 
             light2.Transform = Matrix.CreateRotationY(0.03f) * light2.Transform;
-
-
 
             foreach (GameObject go in allObjects)
             {
