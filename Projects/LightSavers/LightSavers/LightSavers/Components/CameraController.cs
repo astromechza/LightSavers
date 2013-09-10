@@ -42,7 +42,10 @@ namespace LightSavers.Components
             if (v.Length() > 0.1f)
             {
                 // modifies the horizantal direction
-                Vector3 v3 = new Vector3(v.X, 0, -v.Y) * ms / 100;
+                Vector3 pdelta = new Vector3(v.X, 0, -v.Y);
+                pdelta.Normalize();
+
+                Vector3 v3 = pdelta * ms / 100;
 
                 Matrix t = camera.Transform;
 

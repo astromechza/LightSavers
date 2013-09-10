@@ -97,14 +97,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\AnimationAux\AnimationAux.csproj">
-      <Project>{ce3e7eb4-4c0d-491f-8bf7-997c8a5505b3}</Project>
-      <Name>AnimationAux</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\AnimationPipeline\AnimationPipeline.csproj">
-      <Project>{cd376e1f-0312-4be1-98c7-5ff2c56367f9}</Project>
-      <Name>AnimationPipeline</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\CustomProcessors\CustomProcessors.csproj">
       <Project>{0ff6b644-08a2-4af4-b805-af45c1634773}</Project>
       <Name>CustomProcessors</Name>

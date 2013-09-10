@@ -13,9 +13,6 @@ namespace LightSavers.Components
 {
     class Player
     {
-        //TEST ATTRIBUTES FOR MODEL/ANIMATION
-        Animation_recs.AnimatedModel animatedPlayerModel;
-        Animation_recs.AnimationPlayer animationPlayer;
 
         //***INITIAILISNG ATTRIBUTES OF PLAYER OBJECT***//
 
