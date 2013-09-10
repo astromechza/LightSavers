@@ -56,7 +56,6 @@ namespace LightSavers.Components.Animation_recs
         /// <summary>
         /// The position in the animation
         /// </summary>
-        [Browsable(false)]
         public float Position
         {
             get { return position; }
@@ -76,19 +75,16 @@ namespace LightSavers.Components.Animation_recs
         /// <summary>
         /// The associated animation clip
         /// </summary>
-        [Browsable(false)]
         public AnimationClip Clip { get { return clip; } }
 
         /// <summary>
         /// The clip duration
         /// </summary>
-        [Browsable(false)]
         public float Duration { get { return (float)clip.Duration; } }
 
         /// <summary>
         /// A model this animation is assigned to. It will play on that model.
         /// </summary>
-        [Browsable(false)]
         public AnimatedModel Model { get { return model; } }
 
         /// <summary>
