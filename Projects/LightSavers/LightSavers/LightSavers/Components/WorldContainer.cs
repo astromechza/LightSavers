@@ -123,21 +123,21 @@ namespace LightSavers.Components
 
         public void SetupLighting()
         {
-            //// testing light performance
-            //Random r = new Random();
-            //for (int i = 0; i < 33; i++)
-            //{
-            //    Light l = new Light();
-            //    l.LightType = Light.Type.Point;
-            //    l.Radius = 10f;
-            //    l.Intensity = 0.4f;
-            //    l.Color = new Color(1.0f, 1.0f, 1.0f);
-            //    l.CastShadows = true;
-            //    int x = r.Next(100);
-            //    int y = r.Next(32);
-            //    l.Transform = Matrix.CreateTranslation(new Vector3(x, 1f, y));
-            //    visibleLights.Add(l);
-            //}
+            // testing light performance
+            Random r = new Random();
+            for (int i = 0; i < 33; i++)
+            {
+                Light l = new Light();
+                l.LightType = Light.Type.Point;
+                l.Radius = 10f;
+                l.Intensity = 0.4f;
+                l.Color = new Color(1.0f, 1.0f, 1.0f);
+                l.CastShadows = true;
+                int x = r.Next(100);
+                int y = r.Next(32);
+                l.Transform = Matrix.CreateTranslation(new Vector3(x, 1f, y));
+                visibleLights.Add(l);
+            }
 
         }
     }
