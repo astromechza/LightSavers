@@ -16,6 +16,7 @@ namespace LightSavers.Components.GameObjects
 
         // Transform info
         private Vector3 position;
+
         private float rotation;
 
         // Lighting variables
@@ -71,7 +72,11 @@ namespace LightSavers.Components.GameObjects
                 if (deltarotation < -Math.PI)
                     deltarotation += MathHelper.TwoPi;
 
+
                 rotation += 0.1f * deltarotation;
+
+                if (rotation > MathHelper.TwoPi) rotation -= MathHelper.TwoPi;
+                if (rotation < -MathHelper.TwoPi) rotation += MathHelper.TwoPi;
             }
 
            
