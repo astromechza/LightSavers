@@ -8,6 +8,17 @@ namespace LightSavers.Components.GameObjects
 {
     public class PlayerObject : GameObject
     {
+        #region CONSTANTS
+        // Player orientation
+        float PLAYER_YORIGIN = 0.8f;
+        float PLAYER_SCALE = 0.6f;
+
+        // Light stuff
+        float TORCH_HEIGHT = 0.6f;
+        float HALO_HEIGHT = 6.0f;
+        #endregion
+
+
 
         private PlayerIndex playerIndex;
         private Color color;
@@ -20,7 +31,6 @@ namespace LightSavers.Components.GameObjects
         private float rotation;
 
         // Lighting variables
-        private Light arealight;
         private Light torchlight;
         private Light halolight;
 
@@ -40,10 +50,9 @@ namespace LightSavers.Components.GameObjects
 
         private void UpdateTransform()
         {
-            mesh.Transform = Matrix.CreateScale(0.5f) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0,0.7f,0));
-
-            halolight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, 5.0f, 0));
-            torchlight.Transform = Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, 0.6f, 0));
+            mesh.Transform = Matrix.CreateScale(PLAYER_SCALE) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, PLAYER_YORIGIN, 0));
+            halolight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, HALO_HEIGHT, 0));
+            torchlight.Transform = Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
         }
 
         public override void Update(float ms)
@@ -61,20 +70,24 @@ namespace LightSavers.Components.GameObjects
             }
 
             Vector2 v2 = Globals.inputController.getAnalogVector(AnalogStick.Right, playerIndex);
-            if (v2.Length() > 0.1f)
+            if (v2.Length() > 0.01f)
             {
-
+                // get target angle
                 float targetrotation = (float)Math.Atan2(v2.Y, v2.X) - MathHelper.PiOver2;
 
+                // get difference
                 float deltarotation = targetrotation - rotation;
+
+                // sanitise
                 if (deltarotation > Math.PI)
                     deltarotation -= MathHelper.TwoPi;
                 if (deltarotation < -Math.PI)
                     deltarotation += MathHelper.TwoPi;
 
-
+                // add difference
                 rotation += 0.1f * deltarotation;
 
+                // sanitise rotation
                 if (rotation > MathHelper.TwoPi) rotation -= MathHelper.TwoPi;
                 if (rotation < -MathHelper.TwoPi) rotation += MathHelper.TwoPi;
             }
@@ -101,7 +114,7 @@ namespace LightSavers.Components.GameObjects
             halolight = new Light();
             halolight.LightType = Light.Type.Spot;
             halolight.ShadowDepthBias = 0.001f;
-            halolight.Radius = 6;
+            halolight.Radius = 8;
             halolight.SpotAngle = 30;
             halolight.SpotExponent = 1;
             halolight.Intensity = 0.8f;
