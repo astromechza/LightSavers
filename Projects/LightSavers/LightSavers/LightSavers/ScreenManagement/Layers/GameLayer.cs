@@ -46,7 +46,7 @@ namespace LightSavers.ScreenManagement.Layers
 
             world = new WorldContainer("level0");
 
-            Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(new Vector3(16, 16, 16));
+            Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-75)) * Matrix.CreateTranslation(new Vector3(4, 16, 8));
             cameraController = new CameraController(viewport, temp);
             
             renderer = new Renderer(viewport.Width, viewport.Height);

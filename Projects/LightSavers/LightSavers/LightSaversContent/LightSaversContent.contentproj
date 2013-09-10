@@ -204,10 +204,11 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="Animated Models\Archetype_Rig.fbx">
+    <Compile Include="animatedmodels\Archetype_Rig.fbx">
       <Name>Archetype_Rig</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
+      <Processor>ModelBakerProcessor</Processor>
+      <ProcessorParameters_RotationY>180</ProcessorParameters_RotationY>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

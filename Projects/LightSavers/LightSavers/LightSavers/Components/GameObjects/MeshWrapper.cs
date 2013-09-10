@@ -114,6 +114,15 @@ namespace LightSavers.Components.GameObjects
             }
         }
 
+        // == TRANSFORM STUFF ===
 
+        public Matrix Transform 
+        { 
+            get { return transform; }
+            set { transform = value; }
+        }
+         
+
+        
     }
 }

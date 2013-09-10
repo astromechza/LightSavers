@@ -12,8 +12,6 @@ namespace LightSavers.Components
 
         public abstract RectangleF GetBoundRect();
 
-        public abstract void Draw();
-
         public abstract void Update(float millis);
 
 

@@ -25,12 +25,9 @@ namespace LightSavers
     public class AssetLoader : ScreenLayer
     {
         /************* ASSETS **************/
-        public static Model mld_combine;
+        public static Model mld_character;
         public static Texture2D tex_black;
         public static Texture2D tex_white;
-        public static Texture2D tex_sand;
-        public static Texture2D tex_floors;
-        public static Texture2D tex_walls;
         public static Model mdl_menuscene;
         public static SpriteFont fnt_assetloadscreen;
         /***********************************/
@@ -90,11 +87,11 @@ namespace LightSavers
         private void LoadAssets()
         {
             // number of assets to be loaded. (used to compute progress bar size)
-            num_assets = 1;
+            num_assets = 2;
 
             // assets
             mdl_menuscene = loadModel("models/menuscene");
-
+            mld_character = loadModel("animatedmodels/Archetype_Rig");
 
             // once its loaded, fade out
             StartTransitionOff();
