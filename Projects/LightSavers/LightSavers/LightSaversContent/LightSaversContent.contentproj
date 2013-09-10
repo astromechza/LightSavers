@@ -96,12 +96,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CustomProcessors\CustomProcessors.csproj">
-      <Project>{0ff6b644-08a2-4af4-b805-af45c1634773}</Project>
-      <Name>CustomProcessors</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="textures\black.bmp">
       <Name>black</Name>
       <Importer>TextureImporter</Importer>
@@ -194,13 +188,17 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\LightPrePassPipeline\LightPrePassPipeline.csproj">
+      <Project>{bfc22e44-cefe-4c0a-b9c9-e2cbb568cc93}</Project>
+      <Name>LightPrePassPipeline</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="animatedmodels\Archetype_Rig.fbx">
       <Name>Archetype_Rig</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>ModelBakerProcessor</Processor>
-      <ProcessorParameters_RotationY>180</ProcessorParameters_RotationY>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

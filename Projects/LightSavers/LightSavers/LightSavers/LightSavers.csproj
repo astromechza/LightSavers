@@ -118,10 +118,6 @@
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Input\KeyboardInputController.cs" />
     <Compile Include="Input\XBoxInputController.cs" />
-    <Compile Include="Rendering\MeshRenderer.cs" />
-    <Compile Include="Rendering\QuadRenderer.cs" />
-    <Compile Include="Rendering\Renderer.cs" />
-    <Compile Include="Rendering\ShadowRenderer.cs" />
     <Compile Include="Components\CameraController.cs" />
     <Compile Include="Utils\RectangleF.cs" />
     <Compile Include="ScreenManagement\Layers\AssetLoader.cs" />
@@ -141,6 +137,18 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\LightPrePassRenderer\LightPrePassRenderer.csproj">
+      <Project>{a63bf0b7-82d8-4397-be18-3e1dc9c05fa7}</Project>
+      <Name>LightPrePassRenderer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ParticleSettings\ParticleSettings.csproj">
+      <Project>{708f5839-7cca-4bb7-953d-3085dfd32632}</Project>
+      <Name>ParticleSettings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SkinnedModel\SkinnedModel.csproj">
+      <Project>{3950341f-0425-466c-b3fd-13ad600ab9b4}</Project>
+      <Name>SkinnedModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LightSaversContent\LightSaversContent.contentproj">
       <Name>LightSaversContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
