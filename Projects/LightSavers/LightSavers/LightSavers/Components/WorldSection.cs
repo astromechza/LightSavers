@@ -18,6 +18,7 @@ namespace LightSavers.Components
     /// BLACK ( 000000 ) : No tile, blank empty space
     /// WHITE ( FFFFFF ) : Floor tile, randomly chosen texture
     /// BLUE ( FF0000 ) : Wall tile, this corrospondes to a full height tile with intelligent wall quads.
+    /// GREEN (00FF00): Door
     /// </summary>
     public class WorldSection
     {

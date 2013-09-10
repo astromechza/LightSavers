@@ -25,12 +25,12 @@ namespace LightSavers.Components
         /// <param name="level">
         /// A subdirectory in the Content/levels folder containing level .bmp's
         /// </param>
-        public WorldContainer(String level)
+        public WorldContainer(String level, int levelSize)
         {
             allObjects = new List<GameObject>();
 
             visibleMeshes = new List<MeshWrapper>();
-            Load(level);
+            Load(level, levelSize);
 
             foreach (WorldSection s in sections) visibleMeshes.Add(s.Mesh);
 
@@ -57,12 +57,12 @@ namespace LightSavers.Components
         /// <param name="level">
         /// A subdirectory in the Content/levels folder containing level .bmp's
         /// </param>
-        public void Load(String level)
+        public void Load(String level, int levelSize)
         {
             // Get directory
             DirectoryInfo dir = new DirectoryInfo(Globals.content.RootDirectory+"/levels/"+level);
             //get list of files from directory
-            FileInfo[] files = dir.GetFiles("*.*");
+            FileInfo[] files = dir.GetFiles("*.xnb");
 
             // Convert FileInfo into asset filenames
             List<String> filenames = new List<String>();
@@ -73,21 +73,45 @@ namespace LightSavers.Components
             // Must be in alphabetical order
             filenames.Sort();
 
-            // Initialise the WorldSection array
-            sections = new WorldSection[files.Length];
-
-            // Topleft of section 1 is (0,0,0)
-            Vector3 origin = Vector3.Zero;            
-            for (int i = 0; i < filenames.Count; i++)
+            //if levelSize is bigger than number of levels, lock to num of levels
+            if (levelSize > filenames.Count())
             {
-                
-                // Construct section using colour array
-                sections[i] = new WorldSection("levels/" + level + "/" + filenames[i], origin);
-
-                // Increment origin
-                origin += Vector3.Right * 32;
+                levelSize = filenames.Count();
             }
 
+            // Initialise the WorldSection array
+            sections = new WorldSection[levelSize];
+            
+            // Topleft of section 1 is (0,0,0)
+            Vector3 origin = Vector3.Zero;
+
+            //first and last tiles and remove them
+            sections[0] = new WorldSection("levels/" + level + "/" + filenames[0], origin);
+            filenames.RemoveAt(0);
+            origin += Vector3.Right * 32;
+
+            sections[levelSize - 1] = new WorldSection("levels/" + level + "/" + filenames[filenames.Count() - 1], Vector3.Right * (levelSize- 1) * 32);
+            filenames.RemoveAt(filenames.Count() - 1);
+
+
+            //random integer instance
+            Random rnd = new Random();
+            int current_section = 1;
+
+            //looping thru sizes
+            while (filenames.Count() > 0 && current_section < levelSize-1)
+            {
+                int index = rnd.Next(0, filenames.Count());
+                sections[current_section] = new WorldSection("levels/" + level + "/" + filenames[index], origin);
+                filenames.RemoveAt(index);
+             
+             // Increment origin
+                origin += Vector3.Right * 32;
+             
+                current_section++;
+            }
+
+            
         }
         
         public List<Light> GetVisibleLights()

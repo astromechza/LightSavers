@@ -44,7 +44,7 @@ namespace LightSavers.ScreenManagement.Layers
                 0,
                 RenderTargetUsage.DiscardContents);
 
-            world = new WorldContainer("level0");
+            world = new WorldContainer("level0", 100);
 
             Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-75)) * Matrix.CreateTranslation(new Vector3(4, 16, 8));
             cameraController = new CameraController(viewport, temp);

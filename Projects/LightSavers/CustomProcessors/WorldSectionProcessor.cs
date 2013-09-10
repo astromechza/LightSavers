@@ -69,7 +69,7 @@ namespace CustomProcessors
             {
                 for (int x = 0; x < bitmap.Width; x++)
                 {
-                    if (bitmap.GetPixel(x, z) == Color.White)
+                    if (bitmap.GetPixel(x, z) == Color.White /*|| bitmap.GetPixel(x, z) == Color.Green*/)
                     {
                         quadcount += AddQuadVertexPositions(mb, new Vector3(x, 0.0f, z), new Vector3(x + 1.0f, 0.0f, z + 1.0f));
                     }

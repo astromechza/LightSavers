@@ -29,6 +29,7 @@ float2 LightBufferPixelSize;
 const static float LightBufferScaleInv = 10.0f;
 
 const static float3 AmbientLightTerm = float3(0.0f, 0.04f, 0.04f);
+//const static float3 AmbientLightTerm = float3(0.1f, 0.1f, 0.1f);
 
 #ifdef ALPHA_MASKED
 float AlphaReference;
