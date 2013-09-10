@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LightSavers.Components.GameObjects;
+using LightPrePassRenderer;
 
 namespace LightSavers.Components
 {
@@ -15,7 +16,7 @@ namespace LightSavers.Components
         private WorldSection[] sections;
 
         private List<Light> visibleLights;
-        private List<MeshWrapper> visibleMeshes;
+        private List<Mesh> visibleMeshes;
 
         private PlayerObject[] players;
 
@@ -29,8 +30,8 @@ namespace LightSavers.Components
         {
             allObjects = new List<GameObject>();
 
-            visibleMeshes = new List<MeshWrapper>();
-            Load(level, levelSize);
+            visibleMeshes = new List<Mesh>();
+            Load(level);
 
             foreach (WorldSection s in sections) visibleMeshes.Add(s.Mesh);
 
@@ -119,7 +120,7 @@ namespace LightSavers.Components
             return visibleLights;
         }
 
-        public List<MeshWrapper> GetVisibleMeshes()
+        public List<Mesh> GetVisibleMeshes()
         {
             return visibleMeshes;
         }

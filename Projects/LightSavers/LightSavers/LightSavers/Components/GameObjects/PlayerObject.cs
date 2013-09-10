@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using LightPrePassRenderer;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace LightSavers.Components.GameObjects
         private PlayerIndex playerIndex;
         private Color color;
 
-        private MeshWrapper mesh;
+        private Mesh mesh;
 
         // Transform info
         private Vector3 position;
@@ -43,7 +44,9 @@ namespace LightSavers.Components.GameObjects
             position = pos;
             rotation = initialYRot;
 
-            mesh = new MeshWrapper(AssetLoader.mld_character);
+            mesh = new Mesh();
+            mesh.Model = AssetLoader.mld_character;
+            
             SetupLights();
             UpdateTransform();
         }
@@ -131,7 +134,7 @@ namespace LightSavers.Components.GameObjects
         {
             return new Light[] { torchlight, halolight };
         }
-        public MeshWrapper GetMesh()
+        public Mesh GetMesh()
         {
             return mesh;
         }

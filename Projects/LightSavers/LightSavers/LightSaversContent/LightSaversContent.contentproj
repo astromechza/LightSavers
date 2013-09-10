@@ -199,7 +199,30 @@
     <Compile Include="animatedmodels\Archetype_Rig.fbx">
       <Name>Archetype_Rig</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+      <Processor>LightPrePassProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="shaders\DownsampleDepth.fx">
+      <Name>DownsampleDepth</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+    <Compile Include="shaders\Fresnel.fx">
+      <Name>Fresnel</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+    <Compile Include="shaders\skybox.fx">
+      <Name>skybox</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+    <Compile Include="shaders\SSAO.fx">
+      <Name>SSAO</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+      <ProcessorParameters_DebugMode>Optimize</ProcessorParameters_DebugMode>
     </Compile>
   </ItemGroup>
   <ItemGroup>

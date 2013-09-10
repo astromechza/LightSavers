@@ -319,8 +319,8 @@ namespace LightPrePassRenderer
             _graphicsDevice = graphicsDevice;
             _contentManager = contentManager;
             _quadRenderer = new QuadRenderer();
-            _sphereRenderer = new MeshRenderer(contentManager.Load<Model>("defaultMeshes/sphere"));
-            _spotRenderer = new MeshRenderer(contentManager.Load<Model>("defaultMeshes/cone"));
+            _sphereRenderer = new MeshRenderer(contentManager.Load<Model>("meshes/sphere"));
+            _spotRenderer = new MeshRenderer(contentManager.Load<Model>("meshes/cone"));
 
             _cwDepthState = new DepthStencilState();
             _cwDepthState.DepthBufferWriteEnable = false;
