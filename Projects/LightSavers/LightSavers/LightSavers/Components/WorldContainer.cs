@@ -38,12 +38,15 @@ namespace LightSavers.Components
 
             SetupLighting();
 
-            players = new PlayerObject[1];
-            players[0] = new PlayerObject(PlayerIndex.One, new Color(0.3f, 1.0f, 0.3f), new Vector3(4,0,4), 0.0f);
-
+            players = new PlayerObject[2];
+            players[0] = new PlayerObject(PlayerIndex.One, new Color(0.4f, 1.0f, 0.4f), new Vector3(4, 0, 4), (float)Math.PI * 1.2f);
+            players[1] = new PlayerObject(PlayerIndex.Two, new Color(0.3f, 0.6f, 1.0f), new Vector3(4, 0, 10), (float)Math.PI * 1.8f);
+            
             visibleLights.AddRange(players[0].GetLights());
+            visibleLights.AddRange(players[1].GetLights());
 
             visibleMeshes.Add(players[0].GetMesh());
+            visibleMeshes.Add(players[1].GetMesh());
         }
 
 
