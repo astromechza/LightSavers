@@ -13,84 +13,115 @@ using AnimationAux;
 
 namespace LightSavers.Components.Animation_recs
 {
-    //This class encloses the xna model that will be used and includes support for bones, animation and some manipulations
+    /// <summary>
+    /// An encloser for an XNA model that we will use that includes support for
+    /// bones, animation, and some manipulations.
+    /// </summary>
     public class AnimatedModel
     {
         #region Fields
-        //The actual model
+
+        /// <summary>
+        /// The actual underlying XNA model
+        /// </summary>
         private Model model = null;
 
-        //Extra data associated with the model
-        //this stores the animation clips and skeleton indices
+        /// <summary>
+        /// Extra data associated with the XNA model
+        /// </summary>
         private ModelExtra modelExtra = null;
 
-        //model bones
+        /// <summary>
+        /// The model bones
+        /// </summary>
         private List<Bone> bones = new List<Bone>();
 
-        //? My own variable :D:D this should scale up the model - guess it's here more for debuggin than anything else
-        private float modelScale=50f;
-
-        //model Asset name
+        /// <summary>
+        /// The model asset name
+        /// </summary>
         private string assetName = "";
 
-        //? assotiated animation clip player
+        /// <summary>
+        /// An associated animation clip player
+        /// </summary>
         private AnimationPlayer player = null;
 
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// The actual underlying XNA model
+        /// </summary>
         public Model Model
         {
             get { return model; }
         }
 
+        /// <summary>
+        /// The underlying bones for the model
+        /// </summary>
         public List<Bone> Bones { get { return bones; } }
 
-        public List<AnimationClip> Clips { get { return modelExtra.Clips; } }
-
         /// <summary>
-        /// Set a custom scale for the model
+        /// The model animation clips
         /// </summary>
-        public float ModelScale { get { return modelScale; } set { modelScale = value; } }
+        public List<AnimationClip> Clips { get { return modelExtra.Clips; } }
 
         #endregion
 
         #region Construction and Loading
-        //constructor
+
+        /// <summary>
+        /// Constructor. Creates the model from an XNA model
+        /// </summary>
+        /// <param name="assetName">The name of the asset for this model</param>
         public AnimatedModel(string assetName)
         {
             this.assetName = assetName;
+
         }
 
+        /// <summary>
+        /// Load the model asset from content
+        /// </summary>
+        /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
             this.model = content.Load<Model>(assetName);
-            //? Tag as?
-            modelExtra = model.Tag as ModelExtra;            
+            modelExtra = model.Tag as ModelExtra;
             System.Diagnostics.Debug.Assert(modelExtra != null);
 
             ObtainBones();
         }
 
+
         #endregion
 
         #region Bones Management
-        //Get the bones from the model and create a bone class object (the custom bone class defined in AnimationRecs) the custom bone class is used for the actual bone animation work
+
+        /// <summary>
+        /// Get the bones from the model and create a bone class object for
+        /// each bone. We use our bone class to do the real animated bone work.
+        /// </summary>
         private void ObtainBones()
         {
             bones.Clear();
-
             foreach (ModelBone bone in model.Bones)
             {
-                //Create a new bone object and add it to the hierarchy of bones
+                // Create the bone object and add to the heirarchy
                 Bone newBone = new Bone(bone.Name, bone.Transform, bone.Parent != null ? bones[bone.Parent.Index] : null);
 
-                //Add to the bones for this model
+                // Add to the bones for this model
                 bones.Add(newBone);
             }
         }
 
-        //find a bone int his model by name
+        /// <summary>
+        /// Find a bone in this model by name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public Bone FindBone(string name)
         {
             foreach (Bone bone in Bones)
@@ -104,27 +135,55 @@ namespace LightSavers.Components.Animation_recs
 
         #endregion
 
-        #region AnimationManagement
+        #region Animation Management
+
+        /// <summary>
+        /// Play an animation clip
+        /// </summary>
+        /// <param name="clip">The clip to play</param>
+        /// <returns>The player that will play this clip</returns>
         public AnimationPlayer PlayClip(AnimationClip clip)
         {
-            // create a new clip player and assign it to this model
-            //? Animation player still being constructed at this time
+            // Create a clip player and assign it to this model
             player = new AnimationPlayer(clip, this);
             return player;
         }
+
+        #endregion
+
+        #region Updating
+
+        /// <summary>
+        /// Update animation for the model.
+        /// </summary>
+        /// <param name="gameTime"></param>
+        public void Update(GameTime gameTime)
+        {
+            if (player != null)
+            {
+                player.Update(gameTime);
+            }
+        }
+
         #endregion
 
         #region Drawing
-        //? This class will be modified for our cause!
 
+        /// <summary>
+        /// Draw the model
+        /// </summary>
+        /// <param name="graphics">The graphics device to draw on</param>
+        /// <param name="camera">A camera to determine the view</param>
+        /// <param name="world">A world matrix to place the model</param>
         public void Draw(GraphicsDevice graphics, Camera camera, Matrix world)
         {
-            //no point in drawing a no-existent model
             if (model == null)
                 return;
 
-            //set the scale of the model!
-            Matrix scale = Matrix.CreateScale(modelScale);
+            //
+            // Compute all of the bone absolute transforms
+            //
+            Matrix scale = Matrix.CreateScale(50f);
             Matrix[] boneTransforms = new Matrix[bones.Count];
 
             for (int i = 0; i < bones.Count; i++)
@@ -135,7 +194,9 @@ namespace LightSavers.Components.Animation_recs
                 boneTransforms[i] = bone.AbsoluteTransform;
             }
 
-            //? Determine the skin transforms from the skeleton _ I'm guessing skin is the texture?
+            //
+            // Determine the skin transforms from the skeleton
+            //
             Matrix[] skeleton = new Matrix[modelExtra.Skeleton.Count];
             for (int s = 0; s < modelExtra.Skeleton.Count; s++)
             {
@@ -143,7 +204,7 @@ namespace LightSavers.Components.Animation_recs
                 skeleton[s] = bone.SkinTransform * bone.AbsoluteTransform * scale;
             }
 
-            //draw the model
+            // Draw the model.
             foreach (ModelMesh modelMesh in model.Meshes)
             {
                 foreach (Effect effect in modelMesh.Effects)
@@ -169,9 +230,12 @@ namespace LightSavers.Components.Animation_recs
                         seffect.SetBoneTransforms(skeleton);
                     }
                 }
+
                 modelMesh.Draw();
             }
         }
+
+
         #endregion
 
     }

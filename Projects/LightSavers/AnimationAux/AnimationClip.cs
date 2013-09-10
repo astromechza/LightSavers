@@ -14,18 +14,22 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AnimationAux
 {
-    //Animation Clips store a form of keyframes for use with associated bones
-    
+    /// <summary>
+    /// An animation clip is a set of keyframes with associated bones.
+    /// </summary>
     public class AnimationClip
     {
-        // Each keyframe stores a rotation and translation for a moment in time
-        #region Keyframe Nested Class:
+        #region Keyframe and Bone nested class
+
+        /// <summary>
+        /// An Keyframe is a rotation and translation for a moment in time.
+        /// It would be easy to extend this to include scaling as well.
+        /// </summary>
         public class Keyframe
         {
-            //? keyframe time
-            public double Time;
-            public Quaternion Rotation;//rotation for the bone
-            public Vector3 Translation;//translation for the bone
+            public double Time;             // The keyframe time
+            public Quaternion Rotation;     // The rotation for the bone
+            public Vector3 Translation;     // The translation for the bone
 
             public Matrix Transform
             {
@@ -44,37 +48,173 @@ namespace AnimationAux
                 }
             }
         }
-        #endregion
 
-       //? Keyframes are grouped per bones (apparently?)
-        #region Bones
+        /// <summary>
+        /// Keyframes are grouped per bone for an animation clip
+        /// </summary>
         public class Bone
         {
-            //? Each bone has a name that is associated witha  run time model - not sure why/ what this means now
+            /// <summary>
+            /// Each bone has a name so we can associate it with a runtime model
+            /// </summary>
             private string name = "";
 
-            //The keyframes for this bone
+            /// <summary>
+            /// The keyframes for this bone
+            /// </summary>
             private List<Keyframe> keyframes = new List<Keyframe>();
 
+            /// <summary>
+            /// The bone name for these keyframes
+            /// </summary>
             public string Name { get { return name; } set { name = value; } }
 
-            public List<Keyframe> Keyframes { get { return keyframes; } }
-
+            /// <summary>
+            /// The keyframes for this bone
+            /// </summary>
+            public List<Keyframe> Keyframes { get { return keyframes; } set { keyframes = value; } }
         }
-        #endregion
 
-        //The bones for this animation
+        #endregion
+        #region other
+        /// <summary>
+        /// The bones for this animation
+        /// </summary>
         private List<Bone> bones = new List<Bone>();
 
-        //name of the animation clip
+        /// <summary>
+        /// Name of the animation clip
+        /// </summary>
         public string Name;
 
-        //Length of the animation clip
+        /// <summary>
+        /// Duration of the animation clip
+        /// </summary>
         public double Duration;
 
-        //return them bones that be in this animation clip
+        /// <summary>
+        /// The bones for this animation clip with their keyframes
+        /// </summary>
         public List<Bone> Bones { get { return bones; } }
+        #endregion
 
+        public AnimationClip extractAclip(int clipBegin, int clipEnd, int totalkeyFrames, string Name)
+        {
+            AnimationClip newMiniClip = new AnimationClip();
+            newMiniClip.Name = Name;
+            double newDuration = Duration * ((double)(totalkeyFrames / (clipEnd - clipBegin)));
+            newMiniClip.Duration = newDuration;
+
+            List<Bone> newBoneList = new List<Bone>();
+
+            foreach (Bone bone in bones)
+            {
+                Bone newBone = extractBoneClip(bone, clipBegin, clipEnd);
+                newBoneList.Add(newBone);
+            }
+
+            return newMiniClip;
+        }
+
+        private Bone extractBoneClip(Bone bone, int begin, int end)
+        {
+            Bone newBone = new Bone();
+            newBone.Name = bone.Name;
+
+            List<Keyframe> newKeyframes = new List<Keyframe>();
+
+            //for (int i = begin; i < end; ++i)
+            //{
+            //    if (end < bone.Keyframes.Count() || i==0 )
+            //    {
+            //        newKeyframes=bone.Keyframes;
+            //    }else{
+            //        continue;
+            //    }
+
+            //}
+
+            return newBone;
+        }
+
+        public AnimationClip copyClip(int clipBegin, int clipEnd, int totalkeyFrames, string Name)
+        {
+            //Create a new clip
+            AnimationClip newClip = new AnimationClip();
+            //Calculate the length of the new animation
+            double newDuration = ((double)(clipEnd - clipBegin) / (double)178) * Duration;
+            newClip.Duration = newDuration;
+
+            //Calculate the number of keyframes in new animation
+            int noOfkeyFrames = (int)(newDuration * Duration);
+
+            newClip.Name = Name;
+
+            foreach (Bone oldBone in bones)
+            {
+                //Copy the bones
+                newClip.bones.Add(copyBone(oldBone, clipBegin, clipEnd, noOfkeyFrames));
+            }
+
+            return newClip;
+
+        }
+
+        private Bone copyBone(Bone bone, int begin, int end, int noOfkeyFrames)
+        {
+            //create a new bone
+            Bone newBone = new Bone();
+
+            //set the new bones name
+            string newName = bone.Name;
+            newBone.Name = newName;
+            //Count the number of keyframes associated with his bone
+            int No = bone.Keyframes.Count() - 1;
+
+            //Iterate over every keyFrame
+            int keyFrame = 0;
+            double timeThusfar = 0;
+            for (int i = 0; i <= No; i++)
+            {
+                if (i > 9 && begin + i < end)
+                {
+                    if (timeThusfar == 0 && !(i >= 12))
+                    {
+                        timeThusfar = bone.Keyframes[begin - 1 + i].Time;
+                    }
+                    keyFrame++;
+                    newBone.Keyframes.Add(copyKeyframe(bone.Keyframes[begin + i], keyFrame, timeThusfar, noOfkeyFrames));
+                }
+                else
+                {
+                    newBone.Keyframes.Add(copyKeyframe(bone.Keyframes[i], keyFrame, timeThusfar, noOfkeyFrames));
+                }
+
+
+            }
+
+            //foreach (Keyframe oldKeyframe in bone.Keyframes)
+            //{
+            //    //Add keyframes to the new Bone
+            //    newBone.Keyframes.Add(copyKeyframe(oldKeyframe, begin, end, noOfkeyFrames));
+            //}
+
+            return newBone;
+        }
+
+        //Copy keyframe
+        private Keyframe copyKeyframe(Keyframe oldKeyframe, int keyFrame, double timeSofar, int noOfKeyFrames)
+        {
+            //create a new keyframe
+            Keyframe newKeyframe = new Keyframe();
+            double time = oldKeyframe.Time - timeSofar;
+            //Set Keyframe attributes
+            newKeyframe.Rotation = oldKeyframe.Rotation;
+            newKeyframe.Time = time;
+            newKeyframe.Translation = oldKeyframe.Translation;
+            newKeyframe.Transform = oldKeyframe.Transform;
+
+            return newKeyframe;
+        }
     }
-
 }

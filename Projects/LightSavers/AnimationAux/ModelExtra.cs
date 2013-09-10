@@ -9,23 +9,39 @@ using System.Text;
 namespace AnimationAux
 {
     /// <summary>
-    /// ? This class adds some aditional stuff to the model class apparently (shared with the run time - whatever that means)
+    /// Class that contains additional information attached to the model and
+    /// shared with the runtime.
     /// </summary>
     public class ModelExtra
     {
-
         #region Fields
-        //bone indices associated with a skinned model
+
+        /// <summary>
+        /// The bone indices for the skeleton associated with any
+        /// skinned model.
+        /// </summary>
         private List<int> skeleton = new List<int>();
 
-        //Any associated animation clips
+        /// <summary>
+        /// Any associated animation clips
+        /// </summary>
         public List<AnimationClip> clips = new List<AnimationClip>();
+
         #endregion
 
-        #region properties
+        #region Properties
+
+        /// <summary>
+        /// The bone indices for the skeleton associated with any
+        /// skinned model.
+        /// </summary>
         public List<int> Skeleton { get { return skeleton; } set { skeleton = value; } }
 
+        /// <summary>
+        /// Animation clips associated with this model
+        /// </summary>
         public List<AnimationClip> Clips { get { return clips; } set { clips = value; } }
+
         #endregion
     }
 }

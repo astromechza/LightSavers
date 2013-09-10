@@ -10,33 +10,53 @@ using Microsoft.Xna.Framework;
 ///Bound Under MPL License
 
 namespace LightSavers.Components.Animation_recs
-{ 
+{
+    /// <summary>
+    /// Animation clip player. It maps an animation clip onto a model
+    /// </summary>
     public class AnimationPlayer
     {
         #region Fields
-        //current position in time in the clip
+
+        /// <summary>
+        /// Current position in time in the clip
+        /// </summary>
         private float position = 0;
 
-        //The current clip being played
+        /// <summary>
+        /// The clip we are playing
+        /// </summary>
         private AnimationClip clip = null;
 
-        //Mainting a bone info class (defined later on in this file) This does most of the work in playing the animation
+        /// <summary>
+        /// We maintain a BoneInfo class for each bone. This class does
+        /// most of the work in playing the animation.
+        /// </summary>
         private BoneInfo[] boneInfos;
 
-        //the number of bones
+        /// <summary>
+        /// The number of bones
+        /// </summary>
         private int boneCnt;
 
+        /// <summary>
+        /// An assigned model
+        /// </summary>
         private AnimatedModel model = null;
 
-        //Does the animation loop?
+        /// <summary>
+        /// The looping option
+        /// </summary>
         private bool looping = false;
 
         #endregion
 
-         #region Properties
+        #region Properties
 
-        //Position in the Animation (which keyframe)
-        //[Browsable(false)]
+        /// <summary>
+        /// The position in the animation
+        /// </summary>
+        [Browsable(false)]
         public float Position
         {
             get { return position; }
@@ -53,19 +73,22 @@ namespace LightSavers.Components.Animation_recs
             }
         }
 
-       
-        //[Browsable(false)]
-        //The clip specified this is playing
+        /// <summary>
+        /// The associated animation clip
+        /// </summary>
+        [Browsable(false)]
         public AnimationClip Clip { get { return clip; } }
 
+        /// <summary>
         /// The clip duration
-       // [Browsable(false)]
+        /// </summary>
+        [Browsable(false)]
         public float Duration { get { return (float)clip.Duration; } }
 
         /// <summary>
         /// A model this animation is assigned to. It will play on that model.
         /// </summary>
-        //[Browsable(false)]
+        [Browsable(false)]
         public AnimatedModel Model { get { return model; } }
 
         /// <summary>
@@ -92,7 +115,7 @@ namespace LightSavers.Components.Animation_recs
             boneCnt = clip.Bones.Count;
             boneInfos = new BoneInfo[boneCnt];
 
-            for(int b=0;  b<boneInfos.Length;  b++)
+            for (int b = 0; b < boneInfos.Length; b++)
             {
                 // Create it
                 boneInfos[b] = new BoneInfo(clip.Bones[b]);
@@ -109,14 +132,18 @@ namespace LightSavers.Components.Animation_recs
         #region Update and Transport Controls
 
 
-        //reset the Animation Position
+        /// <summary>
+        /// Reset back to time zero.
+        /// </summary>
         public void Rewind()
         {
             Position = 0;
         }
 
-      
-        //Update Position in animation clip
+        /// <summary>
+        /// Update the clip position
+        /// </summary>
+        /// <param name="delta"></param>
         public void Update(GameTime gameTime)
         {
             Position = Position + (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -189,7 +216,7 @@ namespace LightSavers.Components.Animation_recs
             /// The bone this animation bone is assigned to in the model
             /// </summary>
             public Bone ModelBone { get { return assignedBone; } }
-            
+
             #endregion
 
             #region Constructor
@@ -303,6 +330,5 @@ namespace LightSavers.Components.Animation_recs
 
         #endregion
 
-    
     }
 }
