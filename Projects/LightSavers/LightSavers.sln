@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightSavers", "LightSavers\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightSaversContent", "LightSavers\LightSaversContent\LightSaversContent.contentproj", "{2ACFE82D-9355-4E7F-BB76-C22126A40A66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomProcessors", "CustomProcessors\CustomProcessors.csproj", "{0FF6B644-08A2-4AF4-B805-AF45C1634773}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightPrePassPipeline", "LightPrePassPipeline\LightPrePassPipeline.csproj", "{BFC22E44-CEFE-4C0A-B9C9-E2CBB568CC93}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightPrePassRenderer", "LightPrePassRenderer\LightPrePassRenderer.csproj", "{A63BF0B7-82D8-4397-BE18-3E1DC9C05FA7}"
@@ -41,18 +39,6 @@ Global
 		{2ACFE82D-9355-4E7F-BB76-C22126A40A66}.Release|Any CPU.ActiveCfg = Release|x86
 		{2ACFE82D-9355-4E7F-BB76-C22126A40A66}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{2ACFE82D-9355-4E7F-BB76-C22126A40A66}.Release|x86.ActiveCfg = Release|x86
-		{0FF6B644-08A2-4AF4-B805-AF45C1634773}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{0FF6B644-08A2-4AF4-B805-AF45C1634773}.Debug|Any CPU.Build.0 = Debug|x86
-		{0FF6B644-08A2-4AF4-B805-AF45C1634773}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{0FF6B644-08A2-4AF4-B805-AF45C1634773}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{0FF6B644-08A2-4AF4-B805-AF45C1634773}.Debug|x86.ActiveCfg = Debug|x86
-		{0FF6B644-08A2-4AF4-B805-AF45C1634773}.Debug|x86.Build.0 = Debug|x86
-		{0FF6B644-08A2-4AF4-B805-AF45C1634773}.Release|Any CPU.ActiveCfg = Debug|x86
-		{0FF6B644-08A2-4AF4-B805-AF45C1634773}.Release|Any CPU.Build.0 = Debug|x86
-		{0FF6B644-08A2-4AF4-B805-AF45C1634773}.Release|Mixed Platforms.ActiveCfg = Debug|x86
-		{0FF6B644-08A2-4AF4-B805-AF45C1634773}.Release|Mixed Platforms.Build.0 = Debug|x86
-		{0FF6B644-08A2-4AF4-B805-AF45C1634773}.Release|x86.ActiveCfg = Debug|x86
-		{0FF6B644-08A2-4AF4-B805-AF45C1634773}.Release|x86.Build.0 = Debug|x86
 		{BFC22E44-CEFE-4C0A-B9C9-E2CBB568CC93}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{BFC22E44-CEFE-4C0A-B9C9-E2CBB568CC93}.Debug|Any CPU.Build.0 = Debug|x86
 		{BFC22E44-CEFE-4C0A-B9C9-E2CBB568CC93}.Debug|Mixed Platforms.ActiveCfg = Debug|x86

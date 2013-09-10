@@ -5,7 +5,7 @@ using System.Text;
 using LightSavers.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using LightSavers.Rendering;
+using LightPrePassRenderer;
 
 namespace LightSavers.ScreenManagement.Layers
 {

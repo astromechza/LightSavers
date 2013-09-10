@@ -7,12 +7,12 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 
-namespace CustomProcessors
+namespace LightPrePassProcessor
 {
     /// <summary>
     /// This ContentProcessor is designed to convert a bmp file into a model and to embed textures and defines
     /// </summary>
-    [ContentProcessor(DisplayName = "WorldSectionProcessor - CustomProcessors")]
+    [ContentProcessor(DisplayName = "WorldSectionProcessor - LightPrePassProcessor")]
     public class WorldSectionProcessor : ContentProcessor<Texture2DContent, ModelContent>
     {        
         // Texture 
@@ -42,7 +42,7 @@ namespace CustomProcessors
             nodeContent.Children.Add(buildWallMesh(bmpInput));
             nodeContent.Children.Add(buildBlackMesh(bmpInput));           
 
-            return context.Convert<NodeContent, ModelContent>(nodeContent, typeof(ModelBakerProcessor).Name);
+            return context.Convert<NodeContent, ModelContent>(nodeContent, typeof(LightPrePassProcessor).Name);
         }
 
         private NodeContent buildFloorMesh(PixelBitmapContent<Color> bitmap)
@@ -52,8 +52,8 @@ namespace CustomProcessors
             // Create a material, and point it at the world section texture
             BasicMaterialContent material = new BasicMaterialContent();
 
-            material.Textures.Add(ModelBakerProcessor.DiffuseMapKey, new ExternalReference<TextureContent>(floortexturefile));
-            material.Textures.Add(ModelBakerProcessor.NormalMapKey, new ExternalReference<TextureContent>(floortexturenormalfile));
+            material.Textures.Add(LightPrePassProcessor.DiffuseMapKey, new ExternalReference<TextureContent>(floortexturefile));
+            material.Textures.Add(LightPrePassProcessor.NormalMapKey, new ExternalReference<TextureContent>(floortexturenormalfile));
 
 
             mb.SetMaterial(material);
@@ -93,8 +93,8 @@ namespace CustomProcessors
             
             // Create a material, and point it at the world section texture
             BasicMaterialContent material = new BasicMaterialContent();
-            
-            material.Textures.Add(ModelBakerProcessor.DiffuseMapKey, new ExternalReference<TextureContent>(walltexturefile));
+
+            material.Textures.Add(LightPrePassProcessor.DiffuseMapKey, new ExternalReference<TextureContent>(walltexturefile));
             
             mb.SetMaterial(material);
 
@@ -157,7 +157,7 @@ namespace CustomProcessors
 
             BasicMaterialContent material = new BasicMaterialContent();
 
-            material.Textures.Add(ModelBakerProcessor.DiffuseMapKey, new ExternalReference<TextureContent>(blacktexturefile));
+            material.Textures.Add(LightPrePassProcessor.DiffuseMapKey, new ExternalReference<TextureContent>(blacktexturefile));
 
             mb.SetMaterial(material);
 
