@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LightSavers.Components.GameObjects;
+using LightPrePassRenderer;
 
 namespace LightSavers.Components
 {
@@ -23,18 +24,16 @@ namespace LightSavers.Components
     {
 
         // Geometry
-        private MeshWrapper mesh;
-        public MeshWrapper Mesh { get {return mesh;} }
+        private Mesh mesh;
+        public Mesh Mesh { get { return mesh; } }
 
         public WorldSection(string file, Vector3 origin)
         {
-            mesh = new MeshWrapper(Globals.content.Load<Model>(file), Matrix.CreateTranslation(origin));
+            mesh = new Mesh();
+            mesh.Model = Globals.content.Load<Model>(file);
+            mesh.Transform = Matrix.CreateTranslation(origin);
         }
 
-        public void Draw(Camera camera)
-        {
-            mesh.RenderToGBuffer(camera);
-        }
 
         
     }

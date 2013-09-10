@@ -13,7 +13,7 @@
 //-----------------------------------------
 // Parameters
 //-----------------------------------------
-float3 LightColor;
+float4 LightColor;
 float3 LightDir;
 float3 LightPosition;
 float InvLightRadiusSqr;
@@ -32,6 +32,13 @@ float DepthBias;
 float SpotAngle;
 float InvSpotAngle;
 float SpotExponent;
+
+
+//Cascade shadow maps parameters
+static const int NUM_SPLITS = 3;
+float4x4	MatLightViewProj [NUM_SPLITS];
+float2		ClipPlanes[NUM_SPLITS];
+float3		CascadeDistances;
 
 //we use this to avoid clamping our results into [0..1]. 
 //this way, we can fake a [0..10] range, since we are using a
@@ -112,6 +119,12 @@ float ComputeAttenuation(float3 lDir)
 // Shaders
 //-------------------------------
 
+struct PixelShaderOutput
+{
+    float4 Diffuse : COLOR0;
+    float4 Specular : COLOR1;
+};
+
 struct VertexShaderInput
 {
     float4 Position : POSITION0;
@@ -154,8 +167,9 @@ VertexShaderOutputMeshBased PointLightMeshVS(VertexShaderInput input)
 	return output;
 }
 
-float4 PointLightPS(VertexShaderOutput input) : COLOR0
+PixelShaderOutput PointLightPS(VertexShaderOutput input)
 {
+	PixelShaderOutput output = (PixelShaderOutput)0;
 	//read the depth value
 	float depthValue = tex2D(depthSampler, input.TexCoord).r;
 	
@@ -183,22 +197,29 @@ float4 PointLightPS(VertexShaderOutput input) : COLOR0
 	//reject pixels outside our radius or that are not facing the light
 	clip(nl -0.00001);
 
-	float4 finalColor;
 	//As our position is relative to camera position, we dont need to use (ViewPosition - pos) here
 	float3 camDir = normalize(pos);
 	
+	//scale by our constant
+	nl*= LightBufferScale;
+
 	// Calculate specular term
 	float3 h = normalize(reflect(lDir, normal));
 	float spec = nl*pow(saturate(dot(camDir, h)), normalMap.b*100);
-	finalColor = float4(LightColor * (nl), spec);	
+	
 
+	output.Diffuse.rgb = LightColor * nl;
+	output.Specular.rgb = (LightColor.a*spec)* LightColor.rgb;
+	
 	//output light
-	return finalColor *LightBufferScale;
+	return output;
 }
 
 
-float4 PointLightMeshPS(VertexShaderOutputMeshBased input) : COLOR0
+PixelShaderOutput PointLightMeshPS(VertexShaderOutputMeshBased input)
 {
+	PixelShaderOutput output = (PixelShaderOutput)0;
+
 	//as we are using a sphere mesh, we need to recompute each pixel position into texture space coords
 	float2 screenPos = PostProjectionSpaceToScreenSpace(input.TexCoordScreenSpace) + GBufferPixelSize;
 	//read the depth value
@@ -234,22 +255,28 @@ float4 PointLightMeshPS(VertexShaderOutputMeshBased input) : COLOR0
 	//reject pixels outside our radius or that are not facing the light
 	clip(nl -0.00001f);
 
-	float4 finalColor;
 	//As our position is relative to camera position, we dont need to use (ViewPosition - pos) here
 	float3 camDir = normalize(pos);
 	
+	//scale by our constant
+	nl*= LightBufferScale;
+
 	// Calculate specular term
 	float3 h = normalize(reflect(lDir, normal));
-	float spec = nl*pow(saturate(dot(camDir, h)), normalMap.b*100);
-	finalColor = float4(LightColor * (nl), spec);	
+	float spec = nl*pow(saturate(dot(camDir, h)), normalMap.b*100);	
 	
+	output.Diffuse.rgb = LightColor * nl;
+	output.Specular.rgb = (LightColor.a*spec)* LightColor.rgb;
+
 	//output light
-	return finalColor *LightBufferScale;
+	return output;
 }
 
 
-float4 SpotLightMeshPS(VertexShaderOutputMeshBased input) : COLOR0
+PixelShaderOutput SpotLightMeshPS(VertexShaderOutputMeshBased input)
 {
+	PixelShaderOutput output = (PixelShaderOutput)0;
+
 	//as we are using a sphere mesh, we need to recompute each pixel position into texture space coords
 	float2 screenPos = PostProjectionSpaceToScreenSpace(input.TexCoordScreenSpace) + GBufferPixelSize;
 	//read the depth value
@@ -288,17 +315,21 @@ float4 SpotLightMeshPS(VertexShaderOutputMeshBased input) : COLOR0
 	//reject pixels outside our radius or that are not facing the light
 	clip(nl -0.00001f);
 
-	float4 finalColor;
 	//As our position is relative to camera position, we dont need to use (ViewPosition - pos) here
 	float3 camDir = normalize(pos);
-	
+		
+	//scale by our constant
+	nl*= LightBufferScale;
+
 	// Calculate specular term
 	float3 h = normalize(reflect(lDir, normal));
 	float spec = nl*pow(saturate(dot(camDir, h)), normalMap.b*100);
-	finalColor = float4(LightColor * (nl), spec);	
 	
+	output.Diffuse.rgb = LightColor * nl;
+	output.Specular.rgb = (LightColor.a*spec)* LightColor.rgb;
+
 	//output light
-	return finalColor * LightBufferScale;
+	return output;
 }
 
 ////////////////////////////////////////
@@ -339,8 +370,11 @@ float ComputeShadow4Samples(float nl, float2 shadowTexCoord, float ourdepth)
 //////////////////////////////////////////////////////
 // Pixel shader to compute spot lights with shadows
 //////////////////////////////////////////////////////
-float4 SpotLightMeshShadowPS(VertexShaderOutputMeshBased input) : COLOR0
+PixelShaderOutput SpotLightMeshShadowPS(VertexShaderOutputMeshBased input)
 {
+
+	PixelShaderOutput output = (PixelShaderOutput)0;
+
 	//as we are using a sphere mesh, we need to recompute each pixel position into texture space coords
 	float2 screenPos = PostProjectionSpaceToScreenSpace(input.TexCoordScreenSpace) + GBufferPixelSize;
 	//read the depth value
@@ -379,8 +413,8 @@ float4 SpotLightMeshShadowPS(VertexShaderOutputMeshBased input) : COLOR0
 	//reject pixels outside our radius or that are not facing the light
 	clip(nl -0.00001f);
 
-	//compute shadow attenuation
-	
+
+	//compute shadow attenuation	
 	float4 lightPosition = mul(mul(float4(pos,1),CameraTransform), MatLightViewProjSpot);
 
 	// Find the position in the shadow map for this pixel
@@ -400,13 +434,18 @@ float4 SpotLightMeshShadowPS(VertexShaderOutputMeshBased input) : COLOR0
 	//As our position is relative to camera position, we dont need to use (ViewPosition - pos) here
 	float3 camDir = normalize(pos);
 	
+	//scale by our constant
+	nl*= LightBufferScale;
+
 	// Calculate specular term
 	float3 h = normalize(reflect(lDir, normal));
 	float spec = nl*pow(saturate(dot(camDir, h)), normalMap.b*100);
-	finalColor = float4(LightColor * (nl), spec);	
 	
+	output.Diffuse.rgb = LightColor * nl;
+	output.Specular.rgb = (LightColor.a*spec)* LightColor.rgb;
+
 	//output light
-	return finalColor * LightBufferScale;
+	return output;
 }
 VertexShaderOutput DirectionalLightVS(VertexShaderInput input)
 {
@@ -419,8 +458,47 @@ VertexShaderOutput DirectionalLightVS(VertexShaderInput input)
 }
 
 
-float4 DirectionalLightPS(VertexShaderOutput input) : COLOR0
+PixelShaderOutput DirectionalLightPS(VertexShaderOutput input)
 {
+	PixelShaderOutput output = (PixelShaderOutput)0;
+
+	// If we want the WorldPosition, we have to multiply by the world camera matrix
+	float depthValue = tex2D(depthSampler, input.TexCoord).r;
+	
+	//if depth value == 1, we can assume its a background value, so skip it
+	clip(-depthValue + 0.9999f);
+
+    float3 pos = input.FrustumRay * depthValue;
+	
+	// Convert normal back with the decoding function
+	float4 normalMap = tex2D(normalSampler,  input.TexCoord);
+	float3 normal = DecodeNormal(normalMap);
+
+	float nl = saturate(dot(normal, LightDir));
+	
+	clip(nl - 0.00001f);
+	
+	//As our position is relative to camera position, we dont need to use (ViewPosition - pos) here
+	float3 camDir = normalize(pos);
+		
+	//scale by our constant
+	nl*= LightBufferScale;
+
+	// Calculate specular term
+	float3 h = normalize(reflect(LightDir, normal)); 
+	float spec = nl*pow(saturate(dot(camDir, h)), normalMap.b*100);
+	
+	output.Diffuse.rgb = LightColor * nl;
+	output.Specular.rgb = (LightColor.a*spec)* LightColor.rgb;
+
+	//output light
+	return output;
+}
+
+PixelShaderOutput DirectionalLightShadowPS(VertexShaderOutput input)
+{
+	PixelShaderOutput output = (PixelShaderOutput)0;
+
 	// If we want the WorldPosition, we have to multiply by the world camera matrix
 	float depthValue = tex2D(depthSampler, input.TexCoord).r;
 	
@@ -436,18 +514,56 @@ float4 DirectionalLightPS(VertexShaderOutput input) : COLOR0
 	float nl = saturate(dot(normal, LightDir));
 	
 	float spec = 0;
-	float4 finalColor = 0;
 
 	clip(nl - 0.00001f);
+
+	{
+		// Figure out which split this pixel belongs to, based on view-space depth.
+		float3 weights = ( pos.z < CascadeDistances );
+		weights.xy -= weights.yz;
+
+
+		float4x4 lightViewProj = MatLightViewProj[0]*weights.x + MatLightViewProj[1]*weights.y + MatLightViewProj[2]*weights.z;		
+
+		//remember that we need to find the correct cascade into our cascade atlas
+		float fOffset = weights.y*0.33333f + weights.z*0.666666f;
+
+
+		// Find the position of this pixel in light space
+		float4 lightingPosition = mul(mul(float4(pos,1),CameraTransform), lightViewProj);
+    
+		// Find the position in the shadow map for this pixel
+		float2 shadowTexCoord = 0.5 * lightingPosition.xy / 
+								lightingPosition.w + float2( 0.5, 0.5 );
+
+		shadowTexCoord.x = shadowTexCoord.x *0.3333333f + fOffset;
+		shadowTexCoord.y = 1.0f - shadowTexCoord.y;
+		shadowTexCoord += ShadowMapPixelSize;
+
+		// Calculate the current pixel depth
+		// The bias is used to prevent floating point errors that occur when
+		// the pixel of the occluder is being drawn
+		float ourdepth = (lightingPosition.z / lightingPosition.w) - DepthBias;
+
+		//the pixel can be outside of shadow distance, so skip it in that case
+		float shadowSkip = ClipPlanes[2].y > pos.z;
+		nl = nl*shadowSkip + ComputeShadow4Samples(nl, shadowTexCoord, ourdepth)*(1-shadowSkip);   
+		
+	}
 
 	//As our position is relative to camera position, we dont need to use (ViewPosition - pos) here
 	float3 camDir = normalize(pos);
 	float3 h = normalize(reflect(LightDir, normal)); 
+	
+	//scale by our constant
+	nl*= LightBufferScale;
 	spec = nl*pow(saturate(dot(camDir, h)), normalMap.b*100);
-	finalColor = float4(LightColor * (nl), spec);
+	
+	output.Diffuse.rgb = LightColor * nl;
+	output.Specular.rgb = (LightColor.a*spec)* LightColor.rgb;
 
 	//output light
-	return finalColor*LightBufferScale;	
+	return output;
 }
 
 //tech 0
@@ -497,5 +613,16 @@ technique SpotMeshShadowTechnique
     {
         VertexShader = compile vs_3_0 PointLightMeshVS();
         PixelShader = compile ps_3_0 SpotLightMeshShadowPS();
+    }
+}
+
+
+//tech 5
+technique DirectionalShadowTechnique
+{
+    pass DirectionalShadowLight
+    {
+        VertexShader = compile vs_3_0 DirectionalLightVS();
+        PixelShader = compile ps_3_0 DirectionalLightShadowPS();
     }
 }

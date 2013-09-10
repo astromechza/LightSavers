@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using LightSavers.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LightPrePassRenderer;
+using LightSavers.Components;
 
 namespace LightSavers.ScreenManagement.Layers
 {
@@ -14,12 +14,11 @@ namespace LightSavers.ScreenManagement.Layers
         private Viewport viewport;
         private RenderTarget2D game3DLayer;
         private SpriteBatch canvas;
-
-        private Renderer renderer;
-
         private WorldContainer world;       // the world : all objects and things
 
+        private Renderer renderer;
         private CameraController cameraController;
+        private RenderWorld renderWorld = new RenderWorld();
 
         public GameLayer() : base()
         {
@@ -49,7 +48,29 @@ namespace LightSavers.ScreenManagement.Layers
             Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-75)) * Matrix.CreateTranslation(new Vector3(4, 16, 8));
             cameraController = new CameraController(viewport, temp);
             
-            renderer = new Renderer(viewport.Width, viewport.Height);
+            renderer = new Renderer(Globals.graphics.GraphicsDevice, Globals.content, viewport.Width, viewport.Height);
+            renderer.SSAO.Enabled = false;
+
+            foreach(Mesh m in world.GetVisibleMeshes())
+            {
+                renderWorld.AddMesh(m);
+            }
+
+            foreach (Light l in world.GetVisibleLights())
+            {
+                renderWorld.AddLight(l);
+            }
+
+            renderWorld.Visit(delegate(Mesh.SubMesh subMesh)
+            {
+                renderer.SetupSubMesh(subMesh);
+                //add some ambient value
+                if (subMesh.RenderEffect.AmbientParameter != null)
+                    subMesh.RenderEffect.AmbientParameter.SetValue(new Vector4(0.7f, 0.7f, 0.7f, 0));
+                //set the same cubemap to all meshes. we could set different cubemaps according to 
+                //the mesh position. The cubemap color is modulated by the AmbientParameter (above) and diffuse
+                //texture, and added to the lighting result
+            });
 
         }
 
@@ -60,7 +81,7 @@ namespace LightSavers.ScreenManagement.Layers
             Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
             Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             
-            RenderTarget2D o = renderer.RenderScene(cameraController.Camera, world.GetVisibleLights(), world.GetVisibleMeshes());
+            RenderTarget2D o = renderer.RenderScene(cameraController.Camera, renderWorld, new GameTime());
             
             // Now switch back to the main render device
             Globals.graphics.GraphicsDevice.SetRenderTarget(null);
