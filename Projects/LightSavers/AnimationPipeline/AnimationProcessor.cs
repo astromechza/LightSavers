@@ -15,22 +15,40 @@ using AnimationAux;
 
 namespace AnimationPipeline
 {
+    /// <summary>
+    /// This class extends the standard ModelProcessor to include code
+    /// that extracts a skeleton, pulls any animations, and does any
+    /// necessary prep work to support animation and skinning.
+    /// </summary>
     [ContentProcessor(DisplayName = "Animation Processor")]
     public class AnimationProcessor : ModelProcessor
     {
-        //The model that will be processed
+        /// <summary>
+        /// The model we are reading
+        /// </summary>
         private ModelContent model;
 
-        //Extra information on the model will be stored here... (animation clips, etc)
+        /// <summary>
+        /// Extra content to associated with the model. This is where we put the stuff that is 
+        /// unique to this project.
+        /// </summary>
         private ModelExtra modelExtra = new ModelExtra();
 
-        //Keeps track of which materials have already been swapped to a skinned materials
+        /// <summary>
+        /// A lookup dictionary that remembers when we changes a material to 
+        /// skinned material.
+        /// </summary>
         private Dictionary<MaterialContent, SkinnedMaterialContent> toSkinnedMaterial = new Dictionary<MaterialContent, SkinnedMaterialContent>();
 
-        //? not quite sure exactly what this does yet, will get back to it once I've gone over the functions lower down
+        /// <summary>
+        /// The function to process a model from original content into model content for export
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
-            //this uses a method defined below
+            // Process the skeleton for skinned character animation
             BoneContent skeleton = ProcessSkeleton(input);
 
             SwapSkinnedMaterial(input);
@@ -39,45 +57,63 @@ namespace AnimationPipeline
 
             ProcessAnimations(model, input, context);
 
+            // Add the extra content to the model 
             model.Tag = modelExtra;
 
             return model;
         }
 
-        #region skeleton Support
-        //? not Idea what the hell Node Content is - this method implements skeletal animation support (processes the skeleton)
+        #region Skeleton Support
+
+        /// <summary>
+        /// Process the skeleton in support of skeletal animation...
+        /// </summary>
+        /// <param name="input"></param>
         private BoneContent ProcessSkeleton(NodeContent input)
         {
+            // Find the skeleton.
             BoneContent skeleton = MeshHelper.FindSkeleton(input);
 
-            //If there is not skeleton, surrender to the powers that be!!! (return null)
             if (skeleton == null)
                 return null;
 
-            //NOTE: The rest of this method only works if there is a skeleton - this comment is a sanity check - don't judge me!!! >.<
-
-            //? This method has not been defined at the time of writing, I have no idea what it's doing
-            //On another note: his comments say that we don't want to worry about different parts of the model being in different local coordinate systems so he's just baking everything (stoner?) anyways, I will try to figure this out when I get there
+            // We don't want to have to worry about different parts of the model being
+            // in different local coordinate systems, so let's just bake everything.
             FlattenTransforms(input, skeleton);
 
-            //? This removes "nubs" according to the other comments these are useless bones that 3D studio max apparently puts in. 
+            //
+            // 3D Studio Max includes helper bones that end with "Nub"
+            // These are not part of the skinning system and can be 
+            // discarded.  TrimSkeleton removes them from the geometry.
+            //
+
             TrimSkeleton(skeleton);
 
-            //? Convert a heirarchy of nodes and bones into a list (what on earth are nodes?)
+            // Convert the heirarchy of nodes and bones into a list
             List<NodeContent> nodes = FlattenHeirarchy(input);
             IList<BoneContent> bones = MeshHelper.FlattenSkeleton(skeleton);
 
-            //?
+            // Create a dictionary to convert a node to an index into the array of nodes
             Dictionary<NodeContent, int> nodeToIndex = new Dictionary<NodeContent, int>();
-            for (int i=0; i< nodes.Count; i++)
+            for (int i = 0; i < nodes.Count; i++)
             {
                 nodeToIndex[nodes[i]] = i;
+            }
+
+            // Now create the array that maps the bones to the nodes
+            foreach (BoneContent bone in bones)
+            {
+                modelExtra.Skeleton.Add(nodeToIndex[bone]);
             }
 
             return skeleton;
         }
 
-        //? Convert a tree of nodes into a list of nodes in topological order - as of now I have no idea what this is for 2013/09/01
+        /// <summary>
+        /// Convert a tree of nodes into a list of nodes in topological order.
+        /// </summary>
+        /// <param name="item">The root of the heirarchy</param>
+        /// <returns></returns>
         private List<NodeContent> FlattenHeirarchy(NodeContent item)
         {
             List<NodeContent> nodes = new List<NodeContent>();
@@ -90,6 +126,7 @@ namespace AnimationPipeline
             return nodes;
         }
 
+
         private void FlattenHeirarchy(List<NodeContent> nodes, NodeContent item)
         {
             nodes.Add(item);
@@ -99,47 +136,59 @@ namespace AnimationPipeline
             }
         }
 
-        //? Bakes unwanted transforms into the model geometry, so that all everything ends up in the same local coordinates
+        /// <summary>
+        /// Bakes unwanted transforms into the model geometry,
+        /// so everything ends up in the same coordinate system.
+        /// </summary>
         void FlattenTransforms(NodeContent node, BoneContent skeleton)
         {
             foreach (NodeContent child in node.Children)
             {
-                //? do not process the skeleton for some reason
+                // Don't process the skeleton, because that is special.
                 if (child == skeleton)
                     continue;
 
-                //Do not bake in transforms unless it's part of a skinned mesh NB
+                // This is important: Don't bake in the transforms except
+                // for geometry that is part of a skinned mesh
                 if (IsSkinned(child))
                 {
                     FlattenAllTransforms(child);
                 }
-
             }
         }
 
-        //Recursively flatten all transforms from this node down
+        /// <summary>
+        /// Recursively flatten all transforms from this node down
+        /// </summary>
+        /// <param name="node"></param>
         void FlattenAllTransforms(NodeContent node)
         {
-            //backe the local transforms into the actual geometry
+            // Bake the local transform into the actual geometry.
             MeshHelper.TransformScene(node, node.Transform);
 
-            //since it is now baked, local coordinate systems can be set to identity
+            // Having baked it, we can now set the local
+            // coordinate system back to identity.
             node.Transform = Matrix.Identity;
 
             foreach (NodeContent child in node.Children)
             {
                 FlattenAllTransforms(child);
             }
-
         }
 
-        //Remove some extras that are useless to us (put in by 3ds max)
+        /// <summary>
+        /// 3D Studio Max includes an extra help bone at the end of each
+        /// IK chain that doesn't effect the skinning system and is 
+        /// redundant as far as any game is concerned.  This function
+        /// looks for children who's name ends with "Nub" and removes
+        /// them from the heirarchy.
+        /// </summary>
+        /// <param name="skeleton">Root of the skeleton tree</param>
         void TrimSkeleton(NodeContent skeleton)
         {
-            //store a list of nodes to be deleted
             List<NodeContent> todelete = new List<NodeContent>();
 
-            foreach(NodeContent child in skeleton.Children)
+            foreach (NodeContent child in skeleton.Children)
             {
                 if (child.Name.EndsWith("Nub") || child.Name.EndsWith("Footsteps"))
                     todelete.Add(child);
@@ -147,24 +196,31 @@ namespace AnimationPipeline
                     TrimSkeleton(child);
             }
 
-            //delete the nubs
             foreach (NodeContent child in todelete)
             {
                 skeleton.Children.Remove(child);
             }
-
         }
+
 
         #endregion
 
         #region Skinned Support
-        //? Determine if a node is a skinned node, meaning it has bone weights. Bone weights?
+
+        /// <summary>
+        /// Determine if a node is a skinned node, meaning it has bone weights
+        /// associated with it.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         bool IsSkinned(NodeContent node)
         {
+            // It has to be a MeshContent node
             MeshContent mesh = node as MeshContent;
             if (mesh != null)
             {
-                //? Find the vertex channel that has a bone weight collection
+                // In the geometry we have to find a vertex channel that
+                // has a bone weight collection
                 foreach (GeometryContent geometry in mesh.Geometry)
                 {
                     foreach (VertexChannel vchannel in geometry.Vertices.Channels)
@@ -178,23 +234,28 @@ namespace AnimationPipeline
             return false;
         }
 
-        //? swaps in a skinned effect instead of a basic effect  by finding meshes that have bone weights associated with them. still not sure on this bone weigthting thing... skinned effect vs basic effect - I wonder if thats whats been making the model pop up as plane black
-        //Recursively
+
+        /// <summary>
+        /// If a node is skinned, we need to use the skinned model 
+        /// effect rather than basic effect. This function runs through the 
+        /// geometry and finds the meshes that have bone weights associated 
+        /// and swaps in the skinned effect. 
+        /// </summary>
+        /// <param name="node"></param>
         void SwapSkinnedMaterial(NodeContent node)
         {
-            //convert node to a mesh content type thingy
+            // It has to be a MeshContent node
             MeshContent mesh = node as MeshContent;
-
-            if ( mesh != null)
+            if (mesh != null)
             {
-                //find the geometry in the vertex channel that has a bone weight collection
+                // In the geometry we have to find a vertex channel that
+                // has a bone weight collection
                 foreach (GeometryContent geometry in mesh.Geometry)
                 {
                     bool swap = false;
-                    //? vertices channels?
                     foreach (VertexChannel vchannel in geometry.Vertices.Channels)
                     {
-                        if ( vchannel is VertexChannel<BoneWeightCollection>)
+                        if (vchannel is VertexChannel<BoneWeightCollection>)
                         {
                             swap = true;
                             break;
@@ -205,79 +266,94 @@ namespace AnimationPipeline
                     {
                         if (toSkinnedMaterial.ContainsKey(geometry.Material))
                         {
-                            //? 
+                            // We have already swapped it
                             geometry.Material = toSkinnedMaterial[geometry.Material];
                         }
                         else
                         {
-                            //? converts to a skinned material?
                             SkinnedMaterialContent smaterial = new SkinnedMaterialContent();
                             BasicMaterialContent bmaterial = geometry.Material as BasicMaterialContent;
 
+                            // Copy over the data
                             smaterial.Alpha = bmaterial.Alpha;
                             smaterial.DiffuseColor = bmaterial.DiffuseColor;
                             smaterial.EmissiveColor = bmaterial.EmissiveColor;
                             smaterial.SpecularColor = bmaterial.SpecularColor;
                             smaterial.SpecularPower = bmaterial.SpecularPower;
                             smaterial.Texture = bmaterial.Texture;
-                            //? I have no idea where the 4 comes from
                             smaterial.WeightsPerVertex = 4;
 
                             toSkinnedMaterial[geometry.Material] = smaterial;
                             geometry.Material = smaterial;
-
                         }
                     }
-
-                }               
+                }
             }
-            //recurse over the children
+
             foreach (NodeContent child in node.Children)
             {
                 SwapSkinnedMaterial(child);
             }
         }
+
+
         #endregion
 
         #region Animation Support
 
-        //Bone lookup table - converts bone names to indices
+        /// <summary>
+        /// Bones lookup table, converts bone names to indices.
+        /// </summary>
         private Dictionary<string, int> bones = new Dictionary<string, int>();
 
-        //bone transformations for a base pose
+        /// <summary>
+        /// This will keep track of all of the bone transforms for a base pose
+        /// </summary>
         private Matrix[] boneTransforms;
 
-        //Keep track of clips by name;
+        /// <summary>
+        /// A dictionary so we can keep track of the clips by name
+        /// </summary>
         private Dictionary<string, AnimationClip> clips = new Dictionary<string, AnimationClip>();
 
-        //Entry point for Animation Processing
-        public void ProcessAnimations(ModelContent model, NodeContent input, ContentProcessorContext context)
-        { 
-            for ( int  i = 0; i< model.Bones.Count; ++i)
+        /// <summary>
+        /// Entry point for animation processing. 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="input"></param>
+        /// <param name="context"></param>
+        private void ProcessAnimations(ModelContent model, NodeContent input, ContentProcessorContext context)
+        {
+            // First build a lookup table so we can determine the 
+            // index into the list of bones from a bone name.
+            for (int i = 0; i < model.Bones.Count; i++)
             {
-                //create a lookup table
                 bones[model.Bones[i].Name] = i;
             }
 
-            //for saving bone transforms
+            // For saving the bone transforms
             boneTransforms = new Matrix[model.Bones.Count];
 
-            //Collect all the animation data
-            ProcessAnimationRecursive(input);
+            //
+            // Collect up all of the animation data
+            //
 
-            //make sure there is always an animation clip, even if none is included in the FBX
-            if (modelExtra.clips.Count == 0)
+            ProcessAnimationsRecursive(input);
+
+            // Ensure there is always a clip, even if none is included in the FBX
+            // That way we can create poses using FBX files as one-frame 
+            // animation clips
+            if (modelExtra.Clips.Count == 0)
             {
                 AnimationClip clip = new AnimationClip();
                 modelExtra.Clips.Add(clip);
 
-                //? not sure if there is something specific about the naming policy here:
                 string clipName = "Take 001";
 
+                // Retain by name
                 clips[clipName] = clip;
 
                 clip.Name = clipName;
-
                 foreach (ModelBoneContent bone in model.Bones)
                 {
                     AnimationClip.Bone clipBone = new AnimationClip.Bone();
@@ -287,12 +363,12 @@ namespace AnimationPipeline
                 }
             }
 
-            //Insure all animation have a first key frame for every bone
+            // Ensure all animations have a first key frame for every bone
             foreach (AnimationClip clip in modelExtra.Clips)
             {
                 for (int b = 0; b < bones.Count; b++)
                 {
-                    List<AnimationClip.Keyframe> keyframes = new List<AnimationClip.Keyframe>();
+                    List<AnimationClip.Keyframe> keyframes = clip.Bones[b].Keyframes;
                     if (keyframes.Count == 0 || keyframes[0].Time > 0)
                     {
                         AnimationClip.Keyframe keyframe = new AnimationClip.Keyframe();
@@ -304,63 +380,72 @@ namespace AnimationPipeline
             }
         }
 
-        //Recursively process Animations through the entire scene graph, collecting up all the animation data
-        private void ProcessAnimationRecursive(NodeContent input)
+        /// <summary>
+        /// Recursive function that processes the entire scene graph, collecting up
+        /// all of the animation data.
+        /// </summary>
+        private void ProcessAnimationsRecursive(NodeContent input)
         {
-            //Look up the bone for this input channel
+            // Look up the bone for this input channel
             int inputBoneIndex;
-            if(bones.TryGetValue(input.Name, out inputBoneIndex))
+            if (bones.TryGetValue(input.Name, out inputBoneIndex))
             {
-                //save the transform
+                // Save the transform
                 boneTransforms[inputBoneIndex] = input.Transform;
             }
 
+
             foreach (KeyValuePair<string, AnimationContent> animation in input.Animations)
             {
+                // Do we have this animation before?
                 AnimationClip clip;
                 string clipName = animation.Key;
 
-                if(!clips.TryGetValue(clipName, out clip))
+                if (!clips.TryGetValue(clipName, out clip))
                 {
-                    //New clip
-                    clip= new AnimationClip();
+                    // Never seen before clip
+                    clip = new AnimationClip();
                     modelExtra.Clips.Add(clip);
 
-                    //retain by name
+                    // Retain by name
                     clips[clipName] = clip;
 
                     clip.Name = clipName;
-
                     foreach (ModelBoneContent bone in model.Bones)
                     {
                         AnimationClip.Bone clipBone = new AnimationClip.Bone();
                         clipBone.Name = bone.Name;
-                        clip.Bones.Add(clipBone);
 
+                        clip.Bones.Add(clipBone);
                     }
                 }
 
-                //Insure the duration is set correctly
+                // Ensure the duration is always set
                 if (animation.Value.Duration.TotalSeconds > clip.Duration)
                     clip.Duration = animation.Value.Duration.TotalSeconds;
 
-                //? For each channel (what is a channel?) determine the bone and then process all of the keyframes for that bone
+                //
+                // For each channel, determine the bone and then process all of the 
+                // keyframes for that bone.
+                //
 
                 foreach (KeyValuePair<string, AnimationChannel> channel in animation.Value.Channels)
                 {
+                    // What is the bone index?
                     int boneIndex;
                     if (!bones.TryGetValue(channel.Key, out boneIndex))
-                        continue; //ignore if not a named bone
+                        continue;           // Ignore if not a named bone
 
-                    //remove animations associated with bones that are not assigned to any meshes
+                    // An animation is useless if it is for a bone not assigned to any meshes at all
                     if (UselessAnimationTest(boneIndex))
                         continue;
 
-                    //? create a linked list that will be used for removing redundant keyframes
+                    // I'm collecting up in a linked list so we can process the data
+                    // and remove redundant keyframes
                     LinkedList<AnimationClip.Keyframe> keyframes = new LinkedList<AnimationClip.Keyframe>();
                     foreach (AnimationKeyframe keyframe in channel.Value)
                     {
-                        Matrix transform = keyframe.Transform;
+                        Matrix transform = keyframe.Transform;      // Keyframe transformation
 
                         AnimationClip.Keyframe newKeyframe = new AnimationClip.Keyframe();
                         newKeyframe.Time = keyframe.Time.TotalSeconds;
@@ -369,52 +454,55 @@ namespace AnimationPipeline
                         keyframes.AddLast(newKeyframe);
                     }
 
-                    //remove anything that can be linearly interpolated
-                    LinearKeyframeReduction(keyframes);
+                    // LinearKeyframeReduction(keyframes);
                     foreach (AnimationClip.Keyframe keyframe in keyframes)
                     {
                         clip.Bones[boneIndex].Keyframes.Add(keyframe);
                     }
+
                 }
+
 
             }
 
-            //recurse over each of the nodes children
             foreach (NodeContent child in input.Children)
             {
-                ProcessAnimationRecursive(child);
+                ProcessAnimationsRecursive(child);
             }
         }
 
-        //? not sure what these will be used for yet - first guess is lerping and or slerping
-        private const float TineLength = 1e-8f;
-        private const float TineCosAngle = 0.9999999f;
+        private const float TinyLength = 1e-8f;
+        private const float TinyCosAngle = 0.9999999f;
 
-        //This filters out keyframes that can be approximated well with linear interpolation
+        /// <summary>
+        /// This function filters out keyframes that can be approximated well with 
+        /// linear interpolation.
+        /// </summary>
+        /// <param name="keyframes"></param>
         private void LinearKeyframeReduction(LinkedList<AnimationClip.Keyframe> keyframes)
         {
             if (keyframes.Count < 3)
                 return;
 
-            //? weird use of a for loop?
             for (LinkedListNode<AnimationClip.Keyframe> node = keyframes.First.Next; ; )
             {
                 LinkedListNode<AnimationClip.Keyframe> next = node.Next;
                 if (next == null)
                     break;
 
-                //determine nodes before and after current
+                // Determine nodes before and after the current node.
                 AnimationClip.Keyframe a = node.Previous.Value;
                 AnimationClip.Keyframe b = node.Value;
                 AnimationClip.Keyframe c = next.Value;
 
-                //Time between keyframes
-                float t = (float)((node.Value.Time - node.Previous.Value.Time) / (next.Value.Time - node.Previous.Value.Time));
+                float t = (float)((node.Value.Time - node.Previous.Value.Time) /
+                                   (next.Value.Time - node.Previous.Value.Time));
 
                 Vector3 translation = Vector3.Lerp(a.Translation, c.Translation, t);
                 Quaternion rotation = Quaternion.Slerp(a.Rotation, c.Rotation, t);
 
-                if ((translation - b.Translation).LengthSquared() < TineLength && Quaternion.Dot(rotation, b.Rotation) > TineCosAngle)
+                if ((translation - b.Translation).LengthSquared() < TinyLength &&
+                   Quaternion.Dot(rotation, b.Rotation) > TinyCosAngle)
                 {
                     keyframes.Remove(node);
                 }
@@ -423,29 +511,33 @@ namespace AnimationPipeline
             }
         }
 
-        //Used to discard any animations that are not assigned to a mesh or skeleton
+        /// <summary>
+        /// Discard any animation not assigned to a mesh or the skeleton
+        /// </summary>
+        /// <param name="boneId"></param>
+        /// <returns></returns>
         bool UselessAnimationTest(int boneId)
         {
-            // if any mesh is assigned to a bone then it is not useless!
+            // If any mesh is assigned to this bone, it is not useless
             foreach (ModelMeshContent mesh in model.Meshes)
             {
                 if (mesh.ParentBone.Index == boneId)
                     return false;
             }
 
-            //If this bone is part of a skeleton, then it also is not useless!
+            // If this bone is in the skeleton, it is not useless
             foreach (int b in modelExtra.Skeleton)
             {
                 if (boneId == b)
                     return false;
             }
 
-            //Otherwise it be useless!!!
+            // Otherwise, it is useless
             return true;
         }
+
         #endregion
 
-        ///////////////////////////ADD MORE HERE:::
 
     }
 }

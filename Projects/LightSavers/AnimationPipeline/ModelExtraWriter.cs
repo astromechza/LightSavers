@@ -18,7 +18,7 @@ namespace AnimationPipeline
         protected override void Write(ContentWriter output, ModelExtra extra)
         {
             output.WriteObject(extra.Skeleton);
-            output.WriteObject(extra.Clips);          
+            output.WriteObject(extra.Clips);
         }
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)

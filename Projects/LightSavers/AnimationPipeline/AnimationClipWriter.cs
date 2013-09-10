@@ -25,7 +25,6 @@ namespace AnimationPipeline
             {
                 output.Write(bone.Name);
                 output.Write(bone.Keyframes.Count);
-
                 foreach (AnimationClip.Keyframe keyframe in bone.Keyframes)
                 {
                     output.Write(keyframe.Time);
