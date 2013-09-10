@@ -36,7 +36,7 @@ namespace LightSavers.Components.Animation_recs
          #region Properties
 
         //Position in the Animation (which keyframe)
-        [Browsable(false)]
+        //[Browsable(false)]
         public float Position
         {
             get { return position; }
@@ -54,18 +54,18 @@ namespace LightSavers.Components.Animation_recs
         }
 
        
-        [Browsable(false)]
+        //[Browsable(false)]
         //The clip specified this is playing
         public AnimationClip Clip { get { return clip; } }
 
         /// The clip duration
-        [Browsable(false)]
+       // [Browsable(false)]
         public float Duration { get { return (float)clip.Duration; } }
 
         /// <summary>
         /// A model this animation is assigned to. It will play on that model.
         /// </summary>
-        [Browsable(false)]
+        //[Browsable(false)]
         public AnimatedModel Model { get { return model; } }
 
         /// <summary>
