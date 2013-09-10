@@ -13,11 +13,15 @@ namespace LightSavers.Components
 {
     class Player
     {
+        //TEST ATTRIBUTES FOR MODEL/ANIMATION
+        Animation_recs.AnimatedModel animatedPlayerModel;
+        Animation_recs.AnimationPlayer animationPlayer;
+
         //***INITIAILISNG ATTRIBUTES OF PLAYER OBJECT***//
 
         //MODEL AS A WHOLE
         Model playerModel;
-
+        //Animation_recs.AnimatedModel playerAnimatedModel;
         //MODEL BONES
         //here we need to figure out exactly which bones we have. 
         //fingers??
@@ -75,8 +79,6 @@ namespace LightSavers.Components
         //LOAD METHOD
         public void Load(ContentManager content)
         {
-            //loads correct model for player
-            playerModel = content.Load<Model>("");
 
             //load all the bones
             neckBone = playerModel.Bones[""];
