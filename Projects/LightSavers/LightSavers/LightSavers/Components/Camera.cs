@@ -288,14 +288,8 @@ namespace LightSavers.Components
 	        }
 
 	        //compute the width & height of the rectangle
-            size = new Vector2();
-	        size.X = scissorRight - scissorLeft;
-	        size.Y = scissorTop - scissorBottom;
-
-            topLeft = new Vector2();
-            topLeft.X = scissorLeft;
-            topLeft.Y = -scissorBottom - size.Y;
-            
+            size = new Vector2(scissorRight - scissorLeft, scissorTop - scissorBottom);
+            topLeft = new Vector2(scissorLeft, -scissorBottom - size.Y);
         }
     }
 }
