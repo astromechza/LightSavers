@@ -61,8 +61,10 @@ namespace LightSavers.Components.GameObjects
             Vector2 v = Globals.inputController.getAnalogVector(AnalogStick.Left, playerIndex);
             if (v.Length() > 0.1f)
             {
+                Vector3 pdelta = new Vector3(v.X, 0, -v.Y);
+                pdelta.Normalize();
                 // modifies the horizantal direction
-                position += new Vector3(v.X, 0, -v.Y) * ms / 100;
+                position += pdelta * ms / 100;
 
                 
 
