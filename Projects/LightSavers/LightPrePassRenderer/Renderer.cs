@@ -205,8 +205,6 @@ namespace LightPrePassRenderer
         private RenderTargetBinding[] _lightAccumBinding = new RenderTargetBinding[2];
         private RenderTargetBinding[] _gBufferBinding = new RenderTargetBinding[2];
 
-        private SSAO _ssao;
-
         private Camera _currentCamera;
 
         #endregion
@@ -299,10 +297,6 @@ namespace LightPrePassRenderer
             get { return _currentCamera; }
         }
 
-        public SSAO SSAO
-        {
-            get { return _ssao; }
-        }
 
         #endregion
         /// <summary>
@@ -372,8 +366,6 @@ namespace LightPrePassRenderer
             _downsampleDepth = new DownsampleDepthEffect();
             _downsampleDepth.Init(contentManager, this);
 
-            _ssao = new SSAO();
-            _ssao.Init(contentManager);
         }
 
 
@@ -536,12 +528,10 @@ namespace LightPrePassRenderer
 
             RenderLights(camera);
 
-            if (_ssao.Enabled)
-                 _ssao.ComputeSSAO(this, _graphicsDevice);
 
             //reconstruct each object shading, using the light texture as input (and another specific parameters too)
             GraphicsDevice.SetRenderTarget(_outputTexture);
-            GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Stencil, Color.Black, 1.0f, 0);
+            GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Stencil | ClearOptions.Target, Color.Black, 1.0f, 0);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
@@ -552,11 +542,6 @@ namespace LightPrePassRenderer
             DrawOpaqueObjects(camera);
             //draw objects with transparency
             DrawBlendObjects(camera);
-
-            //draw SSAO texture. It's not correct to do it here, because ideally the SSAO should affect only 
-            //the ambient light, but it looks good this way
-            if (_ssao.Enabled)
-                _ssao.FinalMix(this, _graphicsDevice);
 
             //unbind our final buffer and return it
             GraphicsDevice.SetRenderTarget(null);

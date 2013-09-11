@@ -35,7 +35,7 @@ float4 AmbientColor;
 //AMBIENT_COLOR --we use an external variable to modulate the diffuse color
 //AMBIENT_CUBEMAP --we use a cubemap to encode ambient light information
 
-#define AMBIENT_CUBEMAP
+#define AMBIENT_COLOR
 
 #ifdef ALPHA_MASKED
 float AlphaReference;
