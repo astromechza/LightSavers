@@ -40,8 +40,8 @@ namespace LightSavers.Components
             SetupLighting();
 
             players = new PlayerObject[2];
-            players[0] = new PlayerObject(PlayerIndex.One, new Color(0.4f, 1.0f, 0.4f), new Vector3(4, 0, 4), (float)Math.PI * 1.2f);
-            players[1] = new PlayerObject(PlayerIndex.Two, new Color(0.3f, 0.6f, 1.0f), new Vector3(4, 0, 10), (float)Math.PI * 1.8f);
+            players[0] = new PlayerObject(PlayerIndex.One, new Color(0.5f, 1.0f, 0.5f), new Vector3(4, 0, 4), (float)Math.PI * 1.2f);
+            players[1] = new PlayerObject(PlayerIndex.Two, new Color(0.5f, 0.6f, 1.0f), new Vector3(4, 0, 10), (float)Math.PI * 1.8f);
             
             visibleLights.AddRange(players[0].GetLights());
             visibleLights.AddRange(players[1].GetLights());
@@ -147,21 +147,6 @@ namespace LightSavers.Components
 
         public void SetupLighting()
         {
-            //// testing light performance
-            //Random r = new Random();
-            //for (int i = 0; i < 33; i++)
-            //{
-            //    Light l = new Light();
-            //    l.LightType = Light.Type.Point;
-            //    l.Radius = 10f;
-            //    l.Intensity = 0.4f;
-            //    l.Color = new Color(1.0f, 1.0f, 1.0f);
-            //    l.CastShadows = true;
-            //    int x = r.Next(100);
-            //    int y = r.Next(32);
-            //    l.Transform = Matrix.CreateTranslation(new Vector3(x, 1f, y));
-            //    visibleLights.Add(l);
-            //}
 
         }
     }
