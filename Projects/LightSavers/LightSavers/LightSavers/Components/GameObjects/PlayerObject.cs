@@ -34,6 +34,7 @@ namespace LightSavers.Components.GameObjects
         // Lighting variables
         private Light torchlight;
         private Light halolight;
+        private Light haloemitlight;
 
         public PlayerObject(PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
@@ -55,7 +56,9 @@ namespace LightSavers.Components.GameObjects
         {
             mesh.Transform = Matrix.CreateScale(PLAYER_SCALE) * Matrix.CreateRotationY(rotation+(float)Math.PI) * Matrix.CreateTranslation(position + new Vector3(0, PLAYER_YORIGIN, 0));
             halolight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, HALO_HEIGHT, 0));
+            haloemitlight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, 2, 0));
             torchlight.Transform = Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
+            
         }
 
         public override void Update(float ms)
@@ -109,9 +112,10 @@ namespace LightSavers.Components.GameObjects
             torchlight = new Light();
             torchlight.LightType = Light.Type.Spot;
             torchlight.ShadowDepthBias = 0.005f;
-            torchlight.Radius = 20;
-            torchlight.SpotAngle = 25;
-            torchlight.Intensity = 1.5f;
+            torchlight.Radius = 15;
+            torchlight.SpotAngle = 20;
+            torchlight.Intensity = 1.0f;
+            torchlight.SpotExponent = 6;
             torchlight.Color = color;
             torchlight.CastShadows = true;
             torchlight.Transform = Matrix.Identity;
@@ -119,20 +123,28 @@ namespace LightSavers.Components.GameObjects
             halolight = new Light();
             halolight.LightType = Light.Type.Spot;
             halolight.ShadowDepthBias = 0.001f;
-            halolight.Radius = 8;
-            halolight.SpotAngle = 30;
-            halolight.SpotExponent = 1;
+            halolight.Radius = HALO_HEIGHT+1;
+            halolight.SpotAngle = 35;
+            halolight.SpotExponent = 0.6f;
             halolight.Intensity = 0.8f;
             halolight.Color = color;
             halolight.CastShadows = true;
             halolight.Transform = Matrix.Identity;
+
+            haloemitlight = new Light();
+            haloemitlight.LightType = Light.Type.Point;
+            haloemitlight.Intensity = 0.4f;
+            haloemitlight.Radius = 3;
+            haloemitlight.Color = color;
+            haloemitlight.Transform = Matrix.Identity;
+            haloemitlight.SpecularIntensity = 3;
 
         }
 
 
         public Light[] GetLights()
         {
-            return new Light[] { torchlight, halolight };
+            return new Light[] { torchlight, halolight, haloemitlight };
         }
         public Mesh GetMesh()
         {
