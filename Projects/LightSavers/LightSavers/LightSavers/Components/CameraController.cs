@@ -55,12 +55,24 @@ namespace LightSavers.Components
                 camera.Transform = t;
             }
 
-            // Handle RIGHT analog stick (IJKL)
-            Vector2 v2 = Globals.inputController.getAnalogVector(AnalogStick.Right, null);
-            if (v2.Length() > 0.1f)
+            // Handle button A
+            if (Globals.inputController.isButtonDown(Buttons.A, null))
             {
                 // modifies the vertical direction
-                Vector3 v3 = new Vector3(0, v2.Y, 0)* ms / 100;
+                Vector3 v3 = new Vector3(0, 1, 0) * ms / 100;
+
+                Matrix t = camera.Transform;
+
+                t.Translation += v3;
+
+                camera.Transform = t;
+            }
+
+            // Handle button B
+            if (Globals.inputController.isButtonDown(Buttons.B, null))
+            {
+                // modifies the vertical direction
+                Vector3 v3 = new Vector3(0, -1, 0) * ms / 100;
 
                 Matrix t = camera.Transform;
 

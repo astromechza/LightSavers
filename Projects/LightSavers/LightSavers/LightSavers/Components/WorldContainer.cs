@@ -31,7 +31,7 @@ namespace LightSavers.Components
             allObjects = new List<GameObject>();
 
             visibleMeshes = new List<Mesh>();
-            Load(level);
+            Load(level,10);
 
             foreach (WorldSection s in sections) visibleMeshes.Add(s.Mesh);
 
