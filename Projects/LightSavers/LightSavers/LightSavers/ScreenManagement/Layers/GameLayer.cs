@@ -49,7 +49,6 @@ namespace LightSavers.ScreenManagement.Layers
             cameraController = new CameraController(viewport, temp);
             
             renderer = new Renderer(Globals.graphics.GraphicsDevice, Globals.content, viewport.Width, viewport.Height);
-            renderer.SSAO.Enabled = false;
 
             foreach(Mesh m in world.GetVisibleMeshes())
             {
@@ -64,12 +63,9 @@ namespace LightSavers.ScreenManagement.Layers
             renderWorld.Visit(delegate(Mesh.SubMesh subMesh)
             {
                 renderer.SetupSubMesh(subMesh);
+
                 //add some ambient value
-                if (subMesh.RenderEffect.AmbientParameter != null)
-                    subMesh.RenderEffect.AmbientParameter.SetValue(new Vector4(0.7f, 0.7f, 0.7f, 0));
-                //set the same cubemap to all meshes. we could set different cubemaps according to 
-                //the mesh position. The cubemap color is modulated by the AmbientParameter (above) and diffuse
-                //texture, and added to the lighting result
+                subMesh.RenderEffect.AmbientParameter.SetValue(new Vector4(0.04f, 0.04f, 0.04f, 0));
             });
 
         }
