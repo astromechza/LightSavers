@@ -69,7 +69,7 @@ namespace LightPrePassProcessor
             {
                 for (int x = 0; x < bitmap.Width; x++)
                 {
-                    if (bitmap.GetPixel(x, z) == Color.White /*|| bitmap.GetPixel(x, z) == Color.Green*/)
+                    if (IsFloorTile(bitmap, x, z))
                     {
                         quadcount += AddQuadVertexPositions(mb, new Vector3(x, 0.0f, z), new Vector3(x + 1.0f, 0.0f, z + 1.0f));
                     }
@@ -108,12 +108,12 @@ namespace LightPrePassProcessor
             {
                 for (int x = 0; x < bitmap.Width; x++)
                 {
-                    if (bitmap.GetPixel(x, z) == Color.Blue)
+                    if (IsWallTile(bitmap, x, z))
                     {
-                        bool leftWall = (x > 0) && (bitmap.GetPixel(x - 1, z) == Color.White);
-                        bool rightWall = (x < bitmap.Width - 1) && (bitmap.GetPixel(x + 1, z) == Color.White);
-                        bool backWall = (z > 0) && (bitmap.GetPixel(x, z - 1) == Color.White);
-                        bool frontWall = (z < bitmap.Height - 1) && (bitmap.GetPixel(x, z + 1) == Color.White);
+                        bool leftWall = IsFloorTileSafe(bitmap, x - 1, z);
+                        bool rightWall = IsFloorTileSafe(bitmap, x + 1, z);
+                        bool backWall = IsFloorTileSafe(bitmap, x, z - 1);
+                        bool frontWall = IsFloorTileSafe(bitmap, x, z + 1);
 
                         if (leftWall)
                         {
@@ -170,15 +170,15 @@ namespace LightPrePassProcessor
             {
                 for (int x = 0; x < bitmap.Width; x++)
                 {
-                    if (bitmap.GetPixel(x, z) == Color.Blue)
+                    if (IsWallTile(bitmap, x, z))
                     {
 
                         quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, z), new Vector3(x + 1.0f, WallHeight, z + 1.0f));
 
-                        bool leftWall = (x == 0) || ((x > 0) && (bitmap.GetPixel(x - 1, z) == Color.Black));
-                        bool rightWall = (x == bitmap.Width - 1) || ((x < bitmap.Width - 1) && (bitmap.GetPixel(x + 1, z) == Color.Black));
-                        bool backWall = (z == 0) || ((z > 0) && (bitmap.GetPixel(x, z - 1) == Color.Black));
-                        bool frontWall = (z == bitmap.Height - 1) || ((z < bitmap.Height - 1) && (bitmap.GetPixel(x, z + 1) == Color.Black));
+                        bool leftWall = IsNullTileSafe(bitmap, x-1, z);
+                        bool rightWall = IsNullTileSafe(bitmap, x + 1, z);
+                        bool backWall = IsNullTileSafe(bitmap, x, z - 1);
+                        bool frontWall = IsNullTileSafe(bitmap, x, z + 1);
 
                         if (leftWall)
                         {
@@ -256,5 +256,51 @@ namespace LightPrePassProcessor
             mb.SetVertexChannelData(texchannel0, tex[2]);
             mb.AddTriangleVertex(q * 4 + 2);
         }
+
+        private bool IsFloorTile(PixelBitmapContent<Color> bitmap, int x, int y)
+        {
+            return bitmap.GetPixel(x, y) == Color.White || bitmap.GetPixel(x, y) == Color.Green;
+        }
+
+        private bool IsWallTile(PixelBitmapContent<Color> bitmap, int x, int y)
+        {
+            return bitmap.GetPixel(x, y) == Color.Blue;
+        }
+
+        private bool IsNullTile(PixelBitmapContent<Color> bitmap, int x, int y)
+        {
+            return bitmap.GetPixel(x, y) == Color.Black;
+        }
+
+        // Safe type checking : checks if the tile is in the bitmap and handles accordingly
+        #region safe tile type checking methods
+        private bool IsFloorTileSafe(PixelBitmapContent<Color> bitmap, int x, int y)
+        {
+            if (IsNotInBitmap(bitmap, x, y)) return false;
+            return IsFloorTile(bitmap, x, y);
+        }
+
+        private bool IsWallTileSafe(PixelBitmapContent<Color> bitmap, int x, int y)
+        {
+            if (IsNotInBitmap(bitmap, x, y)) return false;
+            return IsWallTile(bitmap, x, y);
+        }
+
+        private bool IsNullTileSafe(PixelBitmapContent<Color> bitmap, int x, int y)
+        {
+            if (IsNotInBitmap(bitmap, x, y)) return true;
+            return IsNullTile(bitmap, x, y);
+        }
+        #endregion
+
+        private bool IsNotInBitmap(PixelBitmapContent<Color> bitmap, int x, int y)
+        {
+            if (x < 0) return true;
+            if (y < 0) return true;
+            if (x > bitmap.Width - 1) return true;
+            if (y > bitmap.Height - 1) return true;
+            return false;
+        }
+    
     }
 } 
