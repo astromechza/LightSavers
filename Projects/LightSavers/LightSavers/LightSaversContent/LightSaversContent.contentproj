@@ -199,7 +199,7 @@
     <Compile Include="animatedmodels\Archetype_Rig.fbx">
       <Name>Archetype_Rig</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassProcessor</Processor>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>

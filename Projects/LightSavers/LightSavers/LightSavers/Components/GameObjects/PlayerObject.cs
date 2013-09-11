@@ -1,5 +1,6 @@
 ﻿using LightPrePassRenderer;
 using Microsoft.Xna.Framework;
+using SkinnedModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace LightSavers.Components.GameObjects
         private PlayerIndex playerIndex;
         private Color color;
 
-        private Mesh mesh;
+        private SkinnedMesh mesh;
 
         // Transform info
         private Vector3 position;
@@ -36,6 +37,8 @@ namespace LightSavers.Components.GameObjects
         private Light halolight;
         private Light haloemitlight;
 
+        private AnimationPlayer aplayer;
+
         public PlayerObject(PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
             this.playerIndex = playerIndex;
@@ -45,19 +48,28 @@ namespace LightSavers.Components.GameObjects
             position = pos;
             rotation = initialYRot;
 
-            mesh = new Mesh();
+            mesh = new SkinnedMesh();
             mesh.Model = AssetLoader.mld_character;
-            
+
+            aplayer = new AnimationPlayer(mesh.SkinningData);
+            aplayer.StartClip(mesh.SkinningData.AnimationClips["Take 001"]);
+
             SetupLights();
-            UpdateTransform();
+            UpdateTransform(0);
         }
 
-        private void UpdateTransform()
+        private void UpdateTransform(float ms)
         {
+            TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int) ms);
+
+            aplayer.Update(ts, true, Matrix.Identity);
+            mesh.BoneMatrixes = aplayer.GetSkinTransforms();
+
             mesh.Transform = Matrix.CreateScale(PLAYER_SCALE) * Matrix.CreateRotationY(rotation+(float)Math.PI) * Matrix.CreateTranslation(position + new Vector3(0, PLAYER_YORIGIN, 0));
             halolight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, HALO_HEIGHT, 0));
             haloemitlight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, 2, 0));
-            torchlight.Transform = Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
+
+            torchlight.Transform = Matrix.CreateTranslation(new Vector3(0, 0, -1)) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
             
         }
 
@@ -131,7 +143,7 @@ namespace LightSavers.Components.GameObjects
            
 
 
-            UpdateTransform();
+            UpdateTransform(ms);
         }
 
         public void SetupLights()
