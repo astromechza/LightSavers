@@ -53,7 +53,7 @@ namespace LightSavers.Components.GameObjects
 
         private void UpdateTransform()
         {
-            mesh.Transform = Matrix.CreateScale(PLAYER_SCALE) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, PLAYER_YORIGIN, 0));
+            mesh.Transform = Matrix.CreateScale(PLAYER_SCALE) * Matrix.CreateRotationY(rotation+(float)Math.PI) * Matrix.CreateTranslation(position + new Vector3(0, PLAYER_YORIGIN, 0));
             halolight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, HALO_HEIGHT, 0));
             torchlight.Transform = Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
         }
@@ -108,7 +108,7 @@ namespace LightSavers.Components.GameObjects
 
             torchlight = new Light();
             torchlight.LightType = Light.Type.Spot;
-            torchlight.ShadowDepthBias = 0.01f;
+            torchlight.ShadowDepthBias = 0.005f;
             torchlight.Radius = 20;
             torchlight.SpotAngle = 25;
             torchlight.Intensity = 1.5f;
