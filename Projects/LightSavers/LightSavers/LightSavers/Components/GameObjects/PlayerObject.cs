@@ -64,24 +64,15 @@ namespace LightSavers.Components.GameObjects
         public override void Update(float ms)
         {
 
-            Vector2 v = Globals.inputController.getAnalogVector(AnalogStick.Left, playerIndex);
-            if (v.Length() > 0.1f)
-            {
-                Vector3 pdelta = new Vector3(v.X, 0, -v.Y);
-                pdelta.Normalize();
-                // modifies the horizantal direction
-                position += pdelta * ms / 100;
-
-                
-
-
-            }
-
-            Vector2 v2 = Globals.inputController.getAnalogVector(AnalogStick.Right, playerIndex);
-            if (v2.Length() > 0.01f)
+            // 1. == Update Movement
+            // movement is done via analog sticks
+            Vector2 vleft = Globals.inputController.getAnalogVector(AnalogStick.Left, playerIndex);
+            Vector2 vright = Globals.inputController.getAnalogVector(AnalogStick.Right, playerIndex);
+            // 1.1 = Update player rotation based on RIGHT analog stick
+            if (vright.Length() > 0.01f)
             {
                 // get target angle
-                float targetrotation = (float)Math.Atan2(v2.Y, v2.X) - MathHelper.PiOver2;
+                float targetrotation = (float)Math.Atan2(vright.Y, vright.X) - MathHelper.PiOver2;
 
                 // get difference
                 float deltarotation = targetrotation - rotation;
@@ -99,6 +90,43 @@ namespace LightSavers.Components.GameObjects
                 if (rotation > MathHelper.TwoPi) rotation -= MathHelper.TwoPi;
                 if (rotation < -MathHelper.TwoPi) rotation += MathHelper.TwoPi;
             }
+
+            // 1.2 = Update player movement based on LEFT analog stick
+            if (vleft.Length() > 0.1f)
+            {
+                Vector3 pdelta = new Vector3(vleft.X, 0, -vleft.Y);
+                pdelta.Normalize();
+                // modifies the horizantal direction
+                position += pdelta * ms / 100;
+
+                // 1.3 = If no rotation was changed, pull player angle toward forward vector
+                if (vright.Length() < 0.1f)
+                {
+                    // get target angle
+                    float targetrotation = (float)Math.Atan2(vleft.Y, vleft.X) - MathHelper.PiOver2;
+
+                    // get difference
+                    float deltarotation = targetrotation - rotation;
+
+                    // sanitise
+                    if (deltarotation > Math.PI)
+                        deltarotation -= MathHelper.TwoPi;
+                    if (deltarotation < -Math.PI)
+                        deltarotation += MathHelper.TwoPi;
+
+                    // add difference
+                    rotation += 0.1f * deltarotation;
+
+                    // sanitise rotation
+                    if (rotation > MathHelper.TwoPi) rotation -= MathHelper.TwoPi;
+                    if (rotation < -MathHelper.TwoPi) rotation += MathHelper.TwoPi;
+
+                }
+
+
+            }
+
+           
 
            
 
