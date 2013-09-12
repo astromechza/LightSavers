@@ -102,6 +102,12 @@ namespace LightSavers.ScreenManagement.Layers
 
             world.Update(ms);
 
+            if (Globals.inputController.isButtonReleased(Microsoft.Xna.Framework.Input.Buttons.Back, null))
+            {
+                this.StartTransitionOff();
+            }
+
+
             base.Update(ms);
         }
 

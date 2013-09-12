@@ -175,7 +175,7 @@ namespace LightSavers.Components.GameObjects
             haloemitlight.LightType = Light.Type.Point;
             haloemitlight.Intensity = 0.4f;
             haloemitlight.Radius = 3;
-            haloemitlight.Color = color;
+            haloemitlight.Color = color * 1.4f;
             haloemitlight.Transform = Matrix.Identity;
             haloemitlight.SpecularIntensity = 3;
 
