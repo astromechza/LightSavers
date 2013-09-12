@@ -49,7 +49,7 @@ namespace LightSavers.Components.GameObjects
             rotation = initialYRot;
 
             mesh = new SkinnedMesh();
-            mesh.Model = AssetLoader.mld_character;
+            mesh.Model = AssetLoader.mdl_character;
 
             aplayer = new AnimationPlayer(mesh.SkinningData);
             aplayer.StartClip(mesh.SkinningData.AnimationClips["Take 001"]);
@@ -69,7 +69,7 @@ namespace LightSavers.Components.GameObjects
             halolight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, HALO_HEIGHT, 0));
             haloemitlight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, 2, 0));
 
-            torchlight.Transform = Matrix.CreateTranslation(new Vector3(0, 0, -0.5f)) * Matrix.CreateRotationX(-0.2f) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
+            torchlight.Transform = Matrix.CreateTranslation(new Vector3(0, 0, -0.5f)) * Matrix.CreateRotationX(-0.1f) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
             
         }
 
@@ -153,7 +153,7 @@ namespace LightSavers.Components.GameObjects
             torchlight.LightType = Light.Type.Spot;
             torchlight.ShadowDepthBias = 0.005f;
             torchlight.Radius = 15;
-            torchlight.SpotAngle = 30;
+            torchlight.SpotAngle = 25;
             torchlight.Intensity = 1.0f;
             torchlight.SpotExponent = 6;
             torchlight.Color = color*1.1f;

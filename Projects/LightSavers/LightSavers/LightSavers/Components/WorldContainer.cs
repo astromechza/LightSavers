@@ -48,6 +48,21 @@ namespace LightSavers.Components
 
             visibleMeshes.Add(players[0].GetMesh());
             visibleMeshes.Add(players[1].GetMesh());
+
+            Random r = new Random();
+
+            for (int i = 0; i < 200; i++)
+            {
+                int x = r.Next(64) + 16;
+                int z = r.Next(20) + 6;
+                float y = (float)(r.NextDouble() * 1.0f + 0.2f);
+
+                Mesh m = new Mesh();
+                m.Model = AssetLoader.mdl_sphere;
+                m.Transform = Matrix.CreateTranslation(x, y, z);
+                visibleMeshes.Add(m);
+            }
+
         }
 
 
