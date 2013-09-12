@@ -69,7 +69,7 @@ namespace LightSavers.Components.GameObjects
             halolight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, HALO_HEIGHT, 0));
             haloemitlight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, 2, 0));
 
-            torchlight.Transform = Matrix.CreateTranslation(new Vector3(0, 0, -1)) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
+            torchlight.Transform = Matrix.CreateTranslation(new Vector3(0, 0, -0.5f)) * Matrix.CreateRotationX(-0.2f) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
             
         }
 
@@ -109,7 +109,7 @@ namespace LightSavers.Components.GameObjects
                 Vector3 pdelta = new Vector3(vleft.X, 0, -vleft.Y);
                 pdelta.Normalize();
                 // modifies the horizantal direction
-                position += pdelta * ms / 100;
+                position += pdelta * ms / 300;
 
                 // 1.3 = If no rotation was changed, pull player angle toward forward vector
                 if (vright.Length() < 0.1f)
@@ -153,10 +153,10 @@ namespace LightSavers.Components.GameObjects
             torchlight.LightType = Light.Type.Spot;
             torchlight.ShadowDepthBias = 0.005f;
             torchlight.Radius = 15;
-            torchlight.SpotAngle = 20;
+            torchlight.SpotAngle = 30;
             torchlight.Intensity = 1.0f;
             torchlight.SpotExponent = 6;
-            torchlight.Color = color;
+            torchlight.Color = color*1.1f;
             torchlight.CastShadows = true;
             torchlight.Transform = Matrix.Identity;
 
@@ -184,7 +184,11 @@ namespace LightSavers.Components.GameObjects
 
         public Light[] GetLights()
         {
-            return new Light[] { torchlight, halolight, haloemitlight };
+            return new Light[] { 
+                torchlight, 
+                halolight, 
+                haloemitlight 
+            };
         }
         public Mesh GetMesh()
         {

@@ -46,7 +46,7 @@ namespace LightSavers.Components
                 Vector3 pdelta = new Vector3(v.X, 0, -v.Y);
                 pdelta.Normalize();
 
-                Vector3 v3 = pdelta * ms / 100;
+                Vector3 v3 = pdelta * ms / 300;
 
                 Matrix t = camera.Transform;
 
