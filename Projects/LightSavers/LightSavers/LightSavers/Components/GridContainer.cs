@@ -140,6 +140,38 @@ namespace LightSavers.Components
             return new BoundingBox(min, max);
         }
     
+        public void BuildIntersectList(BoundingBox bb, List<AGridContainable> output)
+        {
+            foreach (AGridContainable a in contained)
+            {
+                if (a.GetBoundingBox().Intersects(bb))
+                {
+                    output.Add(a);
+                }
+            }
+
+            if (subcontainers[0, 0].GetBoundingBox().Intersects(bb)) subcontainers[0, 0].BuildIntersectList(bb, output);
+            if (subcontainers[0, 1].GetBoundingBox().Intersects(bb)) subcontainers[0, 1].BuildIntersectList(bb, output);
+            if (subcontainers[1, 0].GetBoundingBox().Intersects(bb)) subcontainers[1, 0].BuildIntersectList(bb, output);
+            if (subcontainers[1, 1].GetBoundingBox().Intersects(bb)) subcontainers[1, 1].BuildIntersectList(bb, output);
+        }
+
+        public void BuildIntersectList(BoundingFrustum bf, List<AGridContainable> output)
+        {
+            foreach (AGridContainable a in contained)
+            {
+                if (a.GetBoundingBox().Intersects(bf))
+                {
+                    output.Add(a);
+                }
+            }
+
+            if (subcontainers[0, 0].GetBoundingBox().Intersects(bf)) subcontainers[0, 0].BuildIntersectList(bf, output);
+            if (subcontainers[0, 1].GetBoundingBox().Intersects(bf)) subcontainers[0, 1].BuildIntersectList(bf, output);
+            if (subcontainers[1, 0].GetBoundingBox().Intersects(bf)) subcontainers[1, 0].BuildIntersectList(bf, output);
+            if (subcontainers[1, 1].GetBoundingBox().Intersects(bf)) subcontainers[1, 1].BuildIntersectList(bf, output);
+        }
+
     
     }
 }
