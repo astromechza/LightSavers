@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LightPrePassRenderer;
 using LightSavers.Components;
+using LightPrePassRenderer.partitioning;
 
 namespace LightSavers.ScreenManagement.Layers
 {
@@ -18,7 +19,7 @@ namespace LightSavers.ScreenManagement.Layers
 
         private Renderer renderer;
         private CameraController cameraController;
-        private RenderWorld renderWorld = new RenderWorld();
+        private LightAndMeshContainer lightAndMeshContainer;
 
         public GameLayer() : base()
         {
@@ -31,7 +32,7 @@ namespace LightSavers.ScreenManagement.Layers
             // 3D view vars
             viewport = Globals.graphics.GraphicsDevice.Viewport;
 
-            // layers
+            // drawable layers
             canvas = new SpriteBatch(Globals.graphics.GraphicsDevice);
             game3DLayer = new RenderTarget2D(
                 Globals.graphics.GraphicsDevice,
@@ -43,30 +44,36 @@ namespace LightSavers.ScreenManagement.Layers
                 0,
                 RenderTargetUsage.DiscardContents);
 
-            world = new WorldContainer("level0", 100);
-
-            Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-75)) * Matrix.CreateTranslation(new Vector3(4, 16, 8));
-            cameraController = new CameraController(viewport, temp);
-            
+            // Create the renderer, this renderer binds to the graphics device and with the given width and height, is used to 
+            // draw everything on each frame
             renderer = new Renderer(Globals.graphics.GraphicsDevice, Globals.content, viewport.Width, viewport.Height);
 
-            foreach(Mesh m in world.GetVisibleMeshes())
+            // The light and mesh container is used to store mesh and light obejcts. This is just for RENDERING. Not for DRAWING
+            lightAndMeshContainer = new LightAndMeshContainer(
+            delegate(Mesh.SubMesh subMesh) 
             {
-                renderWorld.AddMesh(m);
+                renderer.SetupSubMesh(subMesh);
+                subMesh.RenderEffect.AmbientParameter.SetValue(new Vector4(0.04f, 0.04f, 0.04f, 0));
+            }, 
+            delegate(Light l) { });
+
+            // Load the World
+            world = new WorldContainer("level0", 100);
+            
+            foreach (Mesh m in world.GetVisibleMeshes())
+            {
+                lightAndMeshContainer.AddMesh(m);
             }
 
             foreach (Light l in world.GetVisibleLights())
             {
-                renderWorld.AddLight(l);
+                lightAndMeshContainer.AddLight(l);
             }
 
-            renderWorld.Visit(delegate(Mesh.SubMesh subMesh)
-            {
-                renderer.SetupSubMesh(subMesh);
+            Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-75)) * Matrix.CreateTranslation(new Vector3(4, 16, 8));
+            cameraController = new CameraController(viewport, temp);
+            
 
-                //add some ambient value
-                subMesh.RenderEffect.AmbientParameter.SetValue(new Vector4(0.04f, 0.04f, 0.04f, 0));
-            });
 
         }
 
@@ -76,8 +83,8 @@ namespace LightSavers.ScreenManagement.Layers
             // reset these because spritebatch can do nasty stuff
             Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
             Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            
-            RenderTarget2D o = renderer.RenderScene(cameraController.Camera, renderWorld, new GameTime());
+
+            RenderTarget2D o = renderer.RenderScene(cameraController.Camera, lightAndMeshContainer, new GameTime());
             
             // Now switch back to the main render device
             Globals.graphics.GraphicsDevice.SetRenderTarget(null);

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using LightPrePassRenderer.partitioning;
 
 namespace LightPrePassRenderer
 {
@@ -433,7 +434,7 @@ namespace LightPrePassRenderer
         /// <param name="gameTime"></param>
         /// <param name="lights">Visible lights</param>
         /// <returns></returns>
-        public RenderTarget2D RenderScene(Camera camera, RenderWorld renderWorld, GameTime gameTime)
+        public RenderTarget2D RenderScene(Camera camera, LightAndMeshContainer renderWorld, GameTime gameTime)
         {
             _depthDownsampledThisFrame = false;
             _currentCamera = camera;
@@ -548,7 +549,7 @@ namespace LightPrePassRenderer
         /// </summary>
         /// <param name="camera"></param>
         /// <param name="meshes"></param>
-        private void CullVisibleMeshes(Camera camera, RenderWorld renderWorld)
+        private void CullVisibleMeshes(Camera camera, LightAndMeshContainer renderWorld)
         {
             for (int index = 0; index < _visibleMeshes.Length; index++)
             {
@@ -619,7 +620,7 @@ namespace LightPrePassRenderer
         /// <param name="camera"></param>
         /// <param name="meshes"></param>
         /// <param name="renderWorld"></param>
-        private void GenerateShadows(Camera camera, RenderWorld renderWorld)
+        private void GenerateShadows(Camera camera, LightAndMeshContainer renderWorld)
         {
             for (int index = 0; index < _lightShadowCasters.Count; index++)
             {

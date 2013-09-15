@@ -1,53 +1,30 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
 
-namespace LightPrePassRenderer
+namespace LightPrePassRenderer.partitioning
 {
-    public class RenderWorld
+    public class LightAndMeshContainer
     {
-        public delegate void VisitSubMesh(Mesh.SubMesh subMesh);
-        public delegate void VisitLight(Light light);
+        # region Delegate Defines
+        public delegate void AddSubMeshDelegate(Mesh.SubMesh subMesh);
+        public delegate void AddLightDelegate(Light light);
+        #endregion
+
+        #region Properties
+        private AddSubMeshDelegate addSubMeshFunc;
+        private AddLightDelegate addLightFunc;
 
         private List<Mesh.SubMesh> _worldSubMeshes = new List<Mesh.SubMesh>(100);
         private List<Light> _worldLights = new List<Light>(20);
+        #endregion
 
-        public RenderWorld()
+        public LightAndMeshContainer(AddSubMeshDelegate subMeshD, AddLightDelegate lightD)
         {
-            
-        }
-
-        public void ClearWorld()
-        {
-            _worldSubMeshes.Clear();
-            _worldLights.Clear();
-        }
-
-        /// <summary>
-        /// This is a visitor design pattern implementation. The render world loops through
-        /// all submeshes and call the delegate over each one of them. 
-        /// </summary>
-        /// <param name="visitor"></param>
-        public void Visit(VisitSubMesh visitor)
-        {
-            foreach (Mesh.SubMesh subMesh in _worldSubMeshes)
-            {
-                visitor(subMesh);
-            }
-        }
-        /// <summary>
-        /// This is a visitor design pattern implementation. The render world loops through
-        /// all lights and call the delegate over each one of them. 
-        /// </summary>
-        /// <param name="visitor"></param>
-        public void Visit(VisitLight visitor)
-        {
-            foreach (Light light in _worldLights)
-            {
-                visitor(light);
-            }
+            addSubMeshFunc = subMeshD;
+            addLightFunc = lightD;
         }
 
         public void AddMesh(Mesh mesh)
@@ -61,6 +38,7 @@ namespace LightPrePassRenderer
 
         public void AddSubMesh(Mesh.SubMesh subMesh)
         {
+            addSubMeshFunc(subMesh);
             _worldSubMeshes.Add(subMesh);
         }
 
@@ -72,6 +50,7 @@ namespace LightPrePassRenderer
 
         public void AddLight(Light light)
         {
+            addLightFunc(light);
             _worldLights.Add(light);
         }
 
@@ -173,7 +152,6 @@ namespace LightPrePassRenderer
                                 visibleLights.Add(light);
                             break;
                         case Light.Type.Spot:
-                            //check first agains the bounding sphere (quick and cheap)
                             if (frustum.Intersects(light.BoundingSphere) &&
                                 frustum.Intersects(light.Frustum))
                                 visibleLights.Add(light);
@@ -184,5 +162,6 @@ namespace LightPrePassRenderer
                 }
             }
         }
+
     }
 }

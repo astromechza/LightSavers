@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using LightPrePassRenderer.partitioning;
 
 namespace LightPrePassRenderer
 {
@@ -88,7 +89,7 @@ namespace LightPrePassRenderer
         /// <param name="meshes"></param>
         /// <param name="light"></param>
         /// <param name="shadowMap"></param>
-        public void GenerateShadowTextureSpotLight(Renderer renderer, RenderWorld renderWorld, Light light, SpotShadowMapEntry shadowMap)
+        public void GenerateShadowTextureSpotLight(Renderer renderer, LightAndMeshContainer renderWorld, Light light, SpotShadowMapEntry shadowMap)
         {
             //bind the render target
             renderer.GraphicsDevice.SetRenderTarget(shadowMap.Texture);
