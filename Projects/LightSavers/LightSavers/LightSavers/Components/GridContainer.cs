@@ -17,20 +17,24 @@ namespace LightSavers.Components
         /// 2 - 16ths
         /// </summary>
         private int level;
+
         /// <summary>
         /// min = bottom corner,
         /// cen = middle,
         /// max = top corner
         /// </summary>
         private Vector3 min, cen, max;
+
         /// <summary>
         /// All of the objects in this level that dont fit in a specific sub level
         /// </summary>
         private List<AGridContainable> contained;
+
         /// <summary>
         /// Is this container subdivided
         /// </summary>
         private bool hasSubcontainers;
+
         /// <summary>
         /// The 4 subcontainers
         /// </summary>
@@ -39,6 +43,7 @@ namespace LightSavers.Components
         #region SECTION: Accesors
         public Vector3 Min { get { return min; } }
         public Vector3 Max { get { return max; } }
+        public BoundingBox BoundingBox { get { return new BoundingBox(min, max); } }
         #endregion
 
         /// <summary>
@@ -134,11 +139,6 @@ namespace LightSavers.Components
             go.GetParentContainer().contained.Remove(go);
             go.SetParentContainer(null);
         }
-
-        public BoundingBox GetBoundingBox()
-        {
-            return new BoundingBox(min, max);
-        }
     
         public void BuildIntersectList(BoundingBox bb, List<AGridContainable> output)
         {
@@ -150,10 +150,10 @@ namespace LightSavers.Components
                 }
             }
 
-            if (subcontainers[0, 0].GetBoundingBox().Intersects(bb)) subcontainers[0, 0].BuildIntersectList(bb, output);
-            if (subcontainers[0, 1].GetBoundingBox().Intersects(bb)) subcontainers[0, 1].BuildIntersectList(bb, output);
-            if (subcontainers[1, 0].GetBoundingBox().Intersects(bb)) subcontainers[1, 0].BuildIntersectList(bb, output);
-            if (subcontainers[1, 1].GetBoundingBox().Intersects(bb)) subcontainers[1, 1].BuildIntersectList(bb, output);
+            if (subcontainers[0, 0].BoundingBox.Intersects(bb)) subcontainers[0, 0].BuildIntersectList(bb, output);
+            if (subcontainers[0, 1].BoundingBox.Intersects(bb)) subcontainers[0, 1].BuildIntersectList(bb, output);
+            if (subcontainers[1, 0].BoundingBox.Intersects(bb)) subcontainers[1, 0].BuildIntersectList(bb, output);
+            if (subcontainers[1, 1].BoundingBox.Intersects(bb)) subcontainers[1, 1].BuildIntersectList(bb, output);
         }
 
         public void BuildIntersectList(BoundingFrustum bf, List<AGridContainable> output)
@@ -166,10 +166,10 @@ namespace LightSavers.Components
                 }
             }
 
-            if (subcontainers[0, 0].GetBoundingBox().Intersects(bf)) subcontainers[0, 0].BuildIntersectList(bf, output);
-            if (subcontainers[0, 1].GetBoundingBox().Intersects(bf)) subcontainers[0, 1].BuildIntersectList(bf, output);
-            if (subcontainers[1, 0].GetBoundingBox().Intersects(bf)) subcontainers[1, 0].BuildIntersectList(bf, output);
-            if (subcontainers[1, 1].GetBoundingBox().Intersects(bf)) subcontainers[1, 1].BuildIntersectList(bf, output);
+            if (subcontainers[0, 0].BoundingBox.Intersects(bf)) subcontainers[0, 0].BuildIntersectList(bf, output);
+            if (subcontainers[0, 1].BoundingBox.Intersects(bf)) subcontainers[0, 1].BuildIntersectList(bf, output);
+            if (subcontainers[1, 0].BoundingBox.Intersects(bf)) subcontainers[1, 0].BuildIntersectList(bf, output);
+            if (subcontainers[1, 1].BoundingBox.Intersects(bf)) subcontainers[1, 1].BuildIntersectList(bf, output);
         }
 
     
