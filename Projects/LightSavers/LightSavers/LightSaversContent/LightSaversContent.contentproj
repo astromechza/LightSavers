@@ -56,41 +56,41 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\level0\s2.bmp">
+    <Compile Include="levels\parts\s2.bmp">
       <Name>s2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>WorldSectionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\level0\s0.bmp">
-      <Name>s0</Name>
+    <Compile Include="levels\start.bmp">
+      <Name>start</Name>
       <Importer>TextureImporter</Importer>
       <Processor>WorldSectionProcessor</Processor>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="levels\level0\s1.bmp">
+    <Compile Include="levels\parts\s1.bmp">
       <Name>s1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>WorldSectionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\level0\s3.bmp">
+    <Compile Include="levels\parts\s3.bmp">
       <Name>s3</Name>
       <Importer>TextureImporter</Importer>
       <Processor>WorldSectionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\level0\s4.bmp">
+    <Compile Include="levels\parts\s4.bmp">
       <Name>s4</Name>
       <Importer>TextureImporter</Importer>
       <Processor>WorldSectionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\level0\s5.bmp">
+    <Compile Include="levels\parts\s5.bmp">
       <Name>s5</Name>
       <Importer>TextureImporter</Importer>
       <Processor>WorldSectionProcessor</Processor>
@@ -226,15 +226,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\level0\s6.bmp">
+    <Compile Include="levels\parts\s6.bmp">
       <Name>s6</Name>
       <Importer>TextureImporter</Importer>
       <Processor>WorldSectionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\level0\s7.bmp">
-      <Name>s7</Name>
+    <Compile Include="levels\end.bmp">
+      <Name>end</Name>
       <Importer>TextureImporter</Importer>
       <Processor>WorldSectionProcessor</Processor>
     </Compile>
