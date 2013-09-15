@@ -109,6 +109,8 @@
   <ItemGroup>
     <Compile Include="Components\GameObjects\GameObject.cs" />
     <Compile Include="Components\GameObjects\PlayerObject.cs" />
+    <Compile Include="Components\GridContainer.cs" />
+    <Compile Include="Components\AGridContainable.cs" />
     <Compile Include="Components\Player.cs" />
     <Compile Include="Components\WorldContainer.cs" />
     <Compile Include="Components\WorldSection.cs" />
