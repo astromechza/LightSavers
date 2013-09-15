@@ -10,11 +10,9 @@ namespace LightPrePassRenderer
     {
         public delegate void VisitSubMesh(Mesh.SubMesh subMesh);
         public delegate void VisitLight(Light light);
-        
 
         private List<Mesh.SubMesh> _worldSubMeshes = new List<Mesh.SubMesh>(100);
         private List<Light> _worldLights = new List<Light>(20);
-        private List<ParticleSystem> _worldParticleSystems = new List<ParticleSystem>(10);
 
         public RenderWorld()
         {
@@ -25,7 +23,6 @@ namespace LightPrePassRenderer
         {
             _worldSubMeshes.Clear();
             _worldLights.Clear();
-            _worldParticleSystems.Clear();
         }
 
         /// <summary>
@@ -83,16 +80,6 @@ namespace LightPrePassRenderer
             _worldLights.Remove(light);
         }
 
-        public void AddParticleSystem(ParticleSystem particleSystem)
-        {
-            _worldParticleSystems.Add(particleSystem);
-        }
-
-        public void RemoveParticleSystem(ParticleSystem particleSystem)
-        {
-            _worldParticleSystems.Remove(particleSystem);
-        }
-
         public void GetVisibleMeshes(BoundingFrustum frustum, List<Mesh.SubMesh>[] visibleSubMeshes)
         {
             for (int index = 0; index < _worldSubMeshes.Count; index++)
@@ -121,17 +108,6 @@ namespace LightPrePassRenderer
             }
         }
 
-        public void GetVisibleParticleSystems(BoundingFrustum frustum, List<ParticleSystem> visibleParticleSystems)
-        {
-            foreach (ParticleSystem particleSystem in _worldParticleSystems)
-            {
-                if (particleSystem.Enabled && frustum.Intersects(particleSystem.GlobalBoundingBox))
-                {
-                    visibleParticleSystems.Add(particleSystem);
-                }
-            }    
-        }
-
         public void GetShadowCasters(BoundingFrustum frustum, List<Mesh.SubMesh> visibleSubMeshes)
         {
             for (int index = 0; index < _worldSubMeshes.Count; index++)
@@ -157,8 +133,7 @@ namespace LightPrePassRenderer
             for (int index = 0; index < _worldSubMeshes.Count; index++)
             {
                 Mesh.SubMesh subMesh = _worldSubMeshes[index];
-                if (subMesh.Enabled && subMesh.CastShadows/*&&
-                    frustum.Intersects(subMesh.GlobalBoundingBox)*/)
+                if (subMesh.Enabled && subMesh.CastShadows)
                 { 
                     //cull sub meshes outside the sub frustum
                     bool outside = false;
@@ -196,9 +171,6 @@ namespace LightPrePassRenderer
                         case Light.Type.Point:
                             if (frustum.Intersects(light.BoundingSphere))
                                 visibleLights.Add(light);
-                            break;
-                        case Light.Type.Directional:
-                            visibleLights.Add(light);
                             break;
                         case Light.Type.Spot:
                             //check first agains the bounding sphere (quick and cheap)

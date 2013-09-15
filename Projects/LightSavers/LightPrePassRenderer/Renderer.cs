@@ -34,24 +34,15 @@ namespace LightPrePassRenderer
         {
             public Light light;
             public ShadowRenderer.SpotShadowMapEntry spotShadowMap;
-            public ShadowRenderer.CascadeShadowMapEntry cascadeShadowMap;
             public bool castShadows ;
 
             public float sqrDistanceToCam;
             public float priority;
         }
 
-        /// <summary>
-        /// Struct to hold current visible particle systems
-        /// </summary>
-        private struct ParticleSystemEntry
-        {
-            public ParticleSystem particleSystem;
-            public float sqrDistanceToCam;
-        }
-
         #endregion
         #region Fields
+
         /// <summary>
         /// Our main graphic device, created by XNA framework
         /// </summary>
@@ -181,7 +172,6 @@ namespace LightPrePassRenderer
         /// </summary>
         private DepthStencilState _ccwDepthState;
         private DepthStencilState _cwDepthState;
-        private DepthStencilState _directionalDepthState;
         private DepthStencilState _depthStateReconstructZ;
         private DepthStencilState _depthStateDrawLights;
 
@@ -191,8 +181,6 @@ namespace LightPrePassRenderer
 
         private List<LightEntry> _lightEntries = new List<LightEntry>();
         private List<LightEntry> _lightShadowCasters = new List<LightEntry>();
-        private List<ParticleSystemEntry> _visibleParticleSystemEntries = new List<ParticleSystemEntry>();
-        private List<ParticleSystem> _visibleParticleSystems = new List<ParticleSystem>();
 
         private List<Mesh.SubMesh>[] _visibleMeshes = new List<Mesh.SubMesh>[(int)(MeshMetadata.ERenderQueue.Count)];
         private List<Light> _visibleLights = new List<Light>(10);
@@ -324,11 +312,6 @@ namespace LightPrePassRenderer
             _ccwDepthState.DepthBufferWriteEnable = false;
             _ccwDepthState.DepthBufferFunction = CompareFunction.GreaterEqual;
 
-            _directionalDepthState = new DepthStencilState(); ;
-            _directionalDepthState.DepthBufferWriteEnable = false;
-            _directionalDepthState.DepthBufferFunction = CompareFunction.Greater;
-
-
             _depthStateDrawLights = new DepthStencilState();
 
             //we draw our volumes with front-face culling, so we have to use GreaterEqual here
@@ -346,12 +329,12 @@ namespace LightPrePassRenderer
             };
 
             _lightAddBlendState = new BlendState()
-                {
-                    AlphaSourceBlend = Blend.One,
-                    ColorSourceBlend = Blend.One,
-                    AlphaDestinationBlend = Blend.One,
-                    ColorDestinationBlend = Blend.One,
-                };
+            {
+                AlphaSourceBlend = Blend.One,
+                ColorSourceBlend = Blend.One,
+                AlphaDestinationBlend = Blend.One,
+                ColorDestinationBlend = Blend.One,
+            };
 
             //create render queues
             for (int index = 0; index < _visibleMeshes.Length; index++)
@@ -472,7 +455,6 @@ namespace LightPrePassRenderer
             //compute the frustum corners for this camera
             ComputeFrustumCorners(camera);
 
-
             //this resets the free shadow maps
             _shadowRenderer.InitFrame();
 
@@ -503,9 +485,6 @@ namespace LightPrePassRenderer
             
             //select the visible meshes
             CullVisibleMeshes(camera, renderWorld);
-
-            //select the visible particle systems
-            CullVisibleParticleSystems(camera, renderWorld);
             
             //now, render them to the G-Buffer
             RenderToGbuffer(camera);
@@ -551,34 +530,6 @@ namespace LightPrePassRenderer
             return _outputTexture;
         }
 
-        private void CullVisibleParticleSystems(Camera camera,RenderWorld renderWorld)
-        {
-            _visibleParticleSystemEntries.Clear();
-            _visibleParticleSystems.Clear();
-            Vector3 translation = camera.Transform.Translation;
-            renderWorld.GetVisibleParticleSystems(camera.Frustum, _visibleParticleSystems);
-
-            //find visible particle systems);
-            for (int index = 0; index < _visibleParticleSystems.Count; index++)
-            {
-                ParticleSystem particleSystem = _visibleParticleSystems[index];
-                if (camera.Frustum.Intersects(particleSystem.GlobalBoundingBox))
-                {
-                    ParticleSystemEntry entry = new ParticleSystemEntry();
-                    entry.particleSystem = particleSystem;
-                    entry.sqrDistanceToCam = Vector3.DistanceSquared(translation,
-                                                                     particleSystem.GlobalTransform.Translation);
-                    _visibleParticleSystemEntries.Add(entry);
-                }
-            }
-
-            //sort by distance, from furthest to closest
-            _visibleParticleSystemEntries.Sort(delegate(ParticleSystemEntry p1, ParticleSystemEntry p2)
-            {
-                return (int)(p2.sqrDistanceToCam - p1.sqrDistanceToCam);
-            });
-        }
-
         private void DrawOpaqueObjects(Camera camera)
         {
             List<Mesh.SubMesh> meshes = _visibleMeshes[(int)MeshMetadata.ERenderQueue.SkipGbuffer];
@@ -606,19 +557,6 @@ namespace LightPrePassRenderer
             _graphicsDevice.BlendState = BlendState.Additive;
             _graphicsDevice.BlendFactor = Color.White;
             _graphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
-
-            Matrix projectionTransform = camera.ProjectionTransform;
-            Matrix eyeTransform = camera.EyeTransform;
-            for (int index = 0; index < _visibleParticleSystemEntries.Count; index++)
-            {
-                ParticleSystem particleSystem = _visibleParticleSystemEntries[index].particleSystem;
-               
-                particleSystem.SetCamera(eyeTransform, projectionTransform);
-                particleSystem.Draw();
-                _renderStatistics.VisibleParticleSystems++;
-                
-            }
-           
         }
 
         /// <summary>
@@ -660,17 +598,6 @@ namespace LightPrePassRenderer
                         {
                             _lightShadowCasters.Add(entry);
                         }
-                    }
-                    else if (entry.light.LightType == Light.Type.Directional)
-                    {
-                        entry.cascadeShadowMap = _shadowRenderer.GetFreeCascadeShadowMap();
-                        entry.castShadows = entry.cascadeShadowMap != null;
-                        //if we dont have that many shadow maps, it cannot cast shadows
-                        if (entry.castShadows)
-                        {
-                            _lightShadowCasters.Add(entry);
-                        }
-
                     }
                 }
                 //assign it back, since it's a struct
@@ -871,44 +798,8 @@ namespace LightPrePassRenderer
                             
                             _spotRenderer.BindMesh(GraphicsDevice);
                             _spotRenderer.RenderMesh(GraphicsDevice);
-                           
                         }
-
-                        break;
-                    case Light.Type.Directional:
-
-                        GraphicsDevice.DepthStencilState = _directionalDepthState;
-                        GraphicsDevice.RasterizerState = RasterizerState.CullNone;
-                        ApplyFrustumCorners(_lighting, -Vector2.One, Vector2.One);
-                        if (lightEntry.castShadows)
-                        {
-                            _lighting.CurrentTechnique = _lighting.Techniques[5];
-
-                            _lighting.Parameters["DepthBias"].SetValue(light.ShadowDepthBias);
-                            Vector2 shadowMapPixelSize = new Vector2(0.5f / lightEntry.cascadeShadowMap.Texture.Width, 0.5f / lightEntry.cascadeShadowMap.Texture.Height);
-                            _lighting.Parameters["ShadowMapPixelSize"].SetValue(shadowMapPixelSize);
-                            _lighting.Parameters["ShadowMapSize"].SetValue(new Vector2(lightEntry.cascadeShadowMap.Texture.Width, lightEntry.cascadeShadowMap.Texture.Height));
-                            _lighting.Parameters["ShadowMap"].SetValue(lightEntry.cascadeShadowMap.Texture);
-                            _lighting.Parameters["CameraTransform"].SetValue(camera.Transform);
-
-                            _lighting.Parameters["ClipPlanes"].SetValue(lightEntry.cascadeShadowMap.LightClipPlanes);
-                            _lighting.Parameters["MatLightViewProj"].SetValue(lightEntry.cascadeShadowMap.LightViewProjectionMatrices);
-
-                            Vector3 cascadeDistances = Vector3.Zero;
-                            cascadeDistances.X = lightEntry.cascadeShadowMap.LightClipPlanes[0].X;
-                            cascadeDistances.Y = lightEntry.cascadeShadowMap.LightClipPlanes[1].X;
-                            cascadeDistances.Z = lightEntry.cascadeShadowMap.LightClipPlanes[2].X;
-                            _lighting.Parameters["CascadeDistances"].SetValue(cascadeDistances);
-
-                        }
-                        else
-                        {
-                            _lighting.CurrentTechnique = _lighting.Techniques[2];
-                            
-                        }
-                        _lighting.CurrentTechnique.Passes[0].Apply();
-                        _quadRenderer.RenderQuad(GraphicsDevice, -Vector2.One, Vector2.One);
-                        break;
+                        break;                
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

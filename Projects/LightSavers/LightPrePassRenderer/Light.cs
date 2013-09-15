@@ -17,7 +17,6 @@ namespace LightPrePassRenderer
         public enum Type
         {
             Point,
-            Directional, //not implemented
             Spot        
         } ;
 
