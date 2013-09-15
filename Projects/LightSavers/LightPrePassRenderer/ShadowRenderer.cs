@@ -23,19 +23,6 @@ namespace LightPrePassRenderer
             public Matrix LightViewProjection;
         }
 
-        internal class CascadeShadowMapEntry
-        {
-            public RenderTarget2D Texture;
-            public Matrix[] LightViewProjectionMatrices = new Matrix[NUM_CSM_SPLITS];
-            public Vector2[] LightClipPlanes = new Vector2[NUM_CSM_SPLITS];
-        }
-
-
-#if XBOX360
-        private const int CASCADE_SHADOW_RESOLUTION = 640;
-#else
-        private const int CASCADE_SHADOW_RESOLUTION = 1024;
-#endif
         private const int NUM_CSM_SPLITS = 3;
 
         //temporary variables to help on cascade shadow maps
@@ -54,14 +41,12 @@ namespace LightPrePassRenderer
         BoundingFrustum _tempFrustum = new BoundingFrustum(Matrix.Identity);
 
         private List<SpotShadowMapEntry> _spotShadowMaps = new List<SpotShadowMapEntry>();
-        private List<CascadeShadowMapEntry> _cascadeShadowMaps = new List<CascadeShadowMapEntry>();
         private List<Mesh.SubMesh> _visibleMeshes = new List<Mesh.SubMesh>(100);
         private const int NUM_SPOT_SHADOWS = 4;
         private const int NUM_CSM_SHADOWS = 1;
         private const int SPOT_SHADOW_RESOLUTION = 512;
         
         private int _currentFreeSpotShadowMap;
-        private int _currentFreeCascadeShadowMap;
 
         public ShadowRenderer(Renderer renderer)
         {
@@ -76,20 +61,11 @@ namespace LightPrePassRenderer
                 entry.LightViewProjection = Matrix.Identity;
                 _spotShadowMaps.Add(entry);
             }
-            for (int i=0; i< NUM_CSM_SHADOWS; i++)
-            {
-                CascadeShadowMapEntry entry = new CascadeShadowMapEntry();
-                entry.Texture = new RenderTarget2D(renderer.GraphicsDevice, CASCADE_SHADOW_RESOLUTION * NUM_CSM_SPLITS,
-                                                   CASCADE_SHADOW_RESOLUTION, false, SurfaceFormat.Single,
-                                                   DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents);
-                _cascadeShadowMaps.Add(entry);
-            }
         }
 
         public void InitFrame()
         {
             _currentFreeSpotShadowMap = 0;
-            _currentFreeCascadeShadowMap = 0;
         }
 
         /// <summary>
@@ -101,19 +77,6 @@ namespace LightPrePassRenderer
             if (_currentFreeSpotShadowMap < _spotShadowMaps.Count)
             {
                return _spotShadowMaps[_currentFreeSpotShadowMap++];
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Returns an unused cascade shadow map, or null if we run out of SMs
-        /// </summary>
-        /// <returns></returns>
-        internal CascadeShadowMapEntry GetFreeCascadeShadowMap()
-        {
-            if (_currentFreeCascadeShadowMap < _cascadeShadowMaps.Count)
-            {
-                return _cascadeShadowMaps[_currentFreeCascadeShadowMap++];
             }
             return null;
         }
@@ -150,85 +113,6 @@ namespace LightPrePassRenderer
                 //render it
                 subMesh.RenderShadowMap(ref viewProj, renderer.GraphicsDevice);
                 
-            }
-        }
-
-        /// <summary>
-        /// Generate the cascade shadow map for a given directional light
-        /// </summary>
-        /// <param name="renderer"></param>
-        /// <param name="meshes"> All meshes in the world</param>
-        /// <param name="light"></param>
-        /// <param name="cascadeShadowMap"></param>
-        /// <param name="camera"></param>
-        public void GenerateShadowTextureDirectionalLight(Renderer renderer, RenderWorld renderWorld, Light light, CascadeShadowMapEntry cascadeShadowMap, Camera camera)
-        {
-            //bind the render target
-            renderer.GraphicsDevice.SetRenderTarget(cascadeShadowMap.Texture);
-            //clear it to white, ie, far far away
-            renderer.GraphicsDevice.Clear(Color.White);
-            renderer.GraphicsDevice.BlendState = BlendState.Opaque;
-            renderer.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-
-            // Get the corners of the frustum
-            camera.Frustum.GetCorners(frustumCornersWS);
-            Matrix eyeTransform = camera.EyeTransform;
-            Vector3.Transform(frustumCornersWS, ref eyeTransform, frustumCornersVS);
-
-
-            float near = camera.NearClip, far = MathHelper.Min(camera.FarClip, light.ShadowDistance);
-
-            splitDepthsTmp[0] = near;
-            splitDepthsTmp[NUM_CSM_SPLITS] = far;
-
-            //compute each distance the way you like...
-            for (int i = 1; i < splitDepthsTmp.Length - 1; i++)
-                splitDepthsTmp[i] = near + (far - near) * (float)Math.Pow((i / (float)NUM_CSM_SPLITS), 1.6f);
-
-
-            Viewport splitViewport = new Viewport();
-            Vector3 lightDir = -Vector3.Normalize(light.Transform.Forward);
-
-
-            PlaneIntersectionType intersectionType;
-
-            
-            for (int i = 0; i < NUM_CSM_SPLITS; i++)
-            {
-                cascadeShadowMap.LightClipPlanes[i].X = -splitDepthsTmp[i];
-                cascadeShadowMap.LightClipPlanes[i].Y = -splitDepthsTmp[i + 1];
-
-                cascadeShadowMap.LightViewProjectionMatrices[i] = CreateLightViewProjectionMatrix(lightDir, camera, splitDepthsTmp[i], splitDepthsTmp[i + 1], i);
-                Matrix viewProj = cascadeShadowMap.LightViewProjectionMatrices[i];
-                _tempFrustum.Matrix = viewProj;
-                //we tweak the near plane, so keep all other planes
-                _directionalClippingPlanes[0] = _tempFrustum.Left;
-                _directionalClippingPlanes[1] = _tempFrustum.Right;
-                _directionalClippingPlanes[2] = _tempFrustum.Bottom;
-                _directionalClippingPlanes[3] = _tempFrustum.Top;
-                _directionalClippingPlanes[4] = _tempFrustum.Far;
-                //the near clipping plane is set inside the CreateLightViewProjectionMatrix method, keep it
-
-                // Set the viewport for the current split     
-                splitViewport.MinDepth = 0;
-                splitViewport.MaxDepth = 1;
-                splitViewport.Width = CASCADE_SHADOW_RESOLUTION;
-                splitViewport.Height = CASCADE_SHADOW_RESOLUTION;
-                splitViewport.X = i * CASCADE_SHADOW_RESOLUTION;
-                splitViewport.Y = 0;
-                renderer.GraphicsDevice.Viewport = splitViewport;
-
-                _tempFrustum.Matrix = viewProj;
-
-                _visibleMeshes.Clear();
-
-                renderWorld.GetShadowCasters(_tempFrustum, _directionalClippingPlanes, _visibleMeshes);
-                for (int index = 0; index < _visibleMeshes.Count; index++)
-                {
-                    Mesh.SubMesh subMesh = _visibleMeshes[index];
-                    //render it
-                    subMesh.RenderShadowMap(ref viewProj, renderer.GraphicsDevice);
-                }
             }
         }
 
@@ -302,7 +186,7 @@ namespace LightPrePassRenderer
                 // This is a matter of integer dividing by the world space size of a texel
                 float diagonalLength = (frustumCornersWS[0] - frustumCornersWS[6]).Length();
                 diagonalLength += 2; //Without this, the shadow map isn't big enough in the world.
-                float worldsUnitsPerTexel = diagonalLength/(float) CASCADE_SHADOW_RESOLUTION;
+                float worldsUnitsPerTexel = diagonalLength/(float) 640;
 
                 Vector3 vBorderOffset = (new Vector3(diagonalLength, diagonalLength, diagonalLength) -
                                          (_lightBox.Max - _lightBox.Min))*0.5f;
