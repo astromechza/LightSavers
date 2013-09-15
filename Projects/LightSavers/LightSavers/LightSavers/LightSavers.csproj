@@ -107,20 +107,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\RealGame.cs" />
     <Compile Include="Components\GameObjects\GameObject.cs" />
     <Compile Include="Components\GameObjects\PlayerObject.cs" />
-    <Compile Include="Components\GridContainer.cs" />
-    <Compile Include="Components\AGridContainable.cs" />
     <Compile Include="Components\Player.cs" />
-    <Compile Include="Components\WorldContainer.cs" />
-    <Compile Include="Components\WorldSection.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Input\KeyboardInputController.cs" />
     <Compile Include="Input\XBoxInputController.cs" />
     <Compile Include="Components\CameraController.cs" />
     <Compile Include="Utils\RectangleF.cs" />
     <Compile Include="ScreenManagement\Layers\AssetLoader.cs" />
-    <Compile Include="Components\Globals.cs" />
+    <Compile Include="Utils\Globals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="LightSaverGame.cs" />

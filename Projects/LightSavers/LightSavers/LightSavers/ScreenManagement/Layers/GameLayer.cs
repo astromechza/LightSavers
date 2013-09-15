@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using LightPrePassRenderer;
 using LightSavers.Components;
 using LightPrePassRenderer.partitioning;
+using LightSavers.Utils;
 
 namespace LightSavers.ScreenManagement.Layers
 {
@@ -15,7 +16,7 @@ namespace LightSavers.ScreenManagement.Layers
         private Viewport viewport;
         private RenderTarget2D game3DLayer;
         private SpriteBatch canvas;
-        private WorldContainer world;       // the world : all objects and things
+        private RealGame game;       // the world : all objects and things
 
         private Renderer renderer;
         private CameraController cameraController;
@@ -57,24 +58,12 @@ namespace LightSavers.ScreenManagement.Layers
             }, 
             delegate(Light l) { });
 
-            // Load the World
-            world = new WorldContainer("level0", 100);
-            
-            foreach (Mesh m in world.GetVisibleMeshes())
-            {
-                lightAndMeshContainer.AddMesh(m);
-            }
-
-            foreach (Light l in world.GetVisibleLights())
-            {
-                lightAndMeshContainer.AddLight(l);
-            }
+            // Load the Game
+            game = new RealGame(10, lightAndMeshContainer);
 
             Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-75)) * Matrix.CreateTranslation(new Vector3(4, 16, 8));
             cameraController = new CameraController(viewport, temp);
             
-
-
         }
 
         public override void Draw()
@@ -105,9 +94,8 @@ namespace LightSavers.ScreenManagement.Layers
         public override void Update(float ms)
         {
             cameraController.HandleInput(ms);
-
-
-            world.Update(ms);
+            
+            game.Update(ms);
 
             if (Globals.inputController.isButtonReleased(Microsoft.Xna.Framework.Input.Buttons.Back, null))
             {

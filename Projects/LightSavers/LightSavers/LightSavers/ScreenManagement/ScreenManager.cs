@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using LightSavers.ScreenManagement;
+using LightSavers.Utils;
 
 namespace LightSavers
 {

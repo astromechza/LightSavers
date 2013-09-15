@@ -8,6 +8,7 @@ using System.Threading;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using LightSavers.ScreenManagement.Layers.Menus;
+using LightSavers.Utils;
 
 namespace LightSavers
 {
