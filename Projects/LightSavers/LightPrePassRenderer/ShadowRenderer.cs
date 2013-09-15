@@ -148,7 +148,7 @@ namespace LightPrePassRenderer
             {
                 Mesh.SubMesh subMesh = _visibleMeshes[index];
                 //render it
-                subMesh.RenderShadowMap(ref viewProj, renderer.RenderStatistics, renderer.GraphicsDevice);
+                subMesh.RenderShadowMap(ref viewProj, renderer.GraphicsDevice);
                 
             }
         }
@@ -227,7 +227,7 @@ namespace LightPrePassRenderer
                 {
                     Mesh.SubMesh subMesh = _visibleMeshes[index];
                     //render it
-                    subMesh.RenderShadowMap(ref viewProj, renderer.RenderStatistics, renderer.GraphicsDevice);
+                    subMesh.RenderShadowMap(ref viewProj, renderer.GraphicsDevice);
                 }
             }
         }

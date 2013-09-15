@@ -60,7 +60,7 @@ namespace LightPrePassRenderer
 
           
 
-            public virtual void RenderToGBuffer(Camera camera, GraphicsDevice graphicsDevice, RenderStatistics renderStatistics)
+            public virtual void RenderToGBuffer(Camera camera, GraphicsDevice graphicsDevice)
             {
                 RenderEffect.SetCurrentTechnique(0);
                 RenderEffect.SetMatrices(GlobalTransform, camera.EyeTransform, camera.ProjectionTransform);
@@ -76,12 +76,10 @@ namespace LightPrePassRenderer
                 graphicsDevice.Indices = _meshPart.IndexBuffer;
 
                 graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _meshPart.NumVertices, _meshPart.StartIndex, _meshPart.PrimitiveCount);
-
-                renderStatistics.DrawCalls++;
-           
+                           
             }
 
-            public void ReconstructShading(Camera camera, GraphicsDevice graphicsDevice, RenderStatistics renderStatistics)
+            public void ReconstructShading(Camera camera, GraphicsDevice graphicsDevice)
             {
                
                 //this pass uses the light diffuse and specular accumulation texture (already bound in the setup stage) and reconstruct the mesh's shading
@@ -100,8 +98,7 @@ namespace LightPrePassRenderer
                 graphicsDevice.Indices = _meshPart.IndexBuffer;
 
                 graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _meshPart.NumVertices, _meshPart.StartIndex, _meshPart.PrimitiveCount);
-                renderStatistics.DrawCalls++;
-              
+                           
             }
 
             /// <summary>
@@ -110,7 +107,7 @@ namespace LightPrePassRenderer
             /// <param name="camera"></param>
             /// <param name="graphicsDevice"></param>
             /// <param name="renderStatistics"></param>
-            public void GenericRender(Camera camera, GraphicsDevice graphicsDevice, RenderStatistics renderStatistics)
+            public void GenericRender(Camera camera, GraphicsDevice graphicsDevice)
             {
                 RenderEffect.SetMatrices(GlobalTransform, camera.EyeTransform, camera.ProjectionTransform);
 
@@ -123,11 +120,10 @@ namespace LightPrePassRenderer
                 graphicsDevice.Indices = _meshPart.IndexBuffer;
 
                 graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _meshPart.NumVertices, _meshPart.StartIndex, _meshPart.PrimitiveCount);
-                renderStatistics.DrawCalls++;
-
+                
             }
 
-            public virtual void RenderShadowMap(ref Matrix viewProj, RenderStatistics renderStatistics, GraphicsDevice graphicsDevice)
+            public virtual void RenderShadowMap(ref Matrix viewProj, GraphicsDevice graphicsDevice)
             {
 
                 //render to shadow map
@@ -146,10 +142,7 @@ namespace LightPrePassRenderer
                 graphicsDevice.Indices = _meshPart.IndexBuffer;
 
                 graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _meshPart.NumVertices, _meshPart.StartIndex, _meshPart.PrimitiveCount);
-
-                renderStatistics.DrawCalls++;
-                renderStatistics.ShadowCasterMeshes++;
-                
+                                
             }
 
         }

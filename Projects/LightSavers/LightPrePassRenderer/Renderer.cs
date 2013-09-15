@@ -184,10 +184,6 @@ namespace LightPrePassRenderer
 
         private List<Mesh.SubMesh>[] _visibleMeshes = new List<Mesh.SubMesh>[(int)(MeshMetadata.ERenderQueue.Count)];
         private List<Light> _visibleLights = new List<Light>(10);
-        /// <summary>
-        /// Lets keep track of what we are rendering
-        /// </summary>
-        private RenderStatistics _renderStatistics = new RenderStatistics();
 
         //store the bindings for avoiding useless reallocations
         private RenderTargetBinding[] _lightAccumBinding = new RenderTargetBinding[2];
@@ -239,13 +235,6 @@ namespace LightPrePassRenderer
             get { return _graphicsDevice; }
         }
 
-        /// <summary>
-        /// Lets keep track of what we are rendering
-        /// </summary>
-        public RenderStatistics RenderStatistics
-        {
-            get { return _renderStatistics; }
-        }
 
         /// <summary>
         /// This render target stores the specular component of the light buffer, the sum of all lights
@@ -422,8 +411,7 @@ namespace LightPrePassRenderer
         /// <returns></returns>
         public RenderTarget2D GetDownsampledDepth()
         {
-            if (!_depthDownsampledThisFrame)
-                DownsampleDepthbuffer();
+            if (!_depthDownsampledThisFrame) DownsampleDepthbuffer();
             return _halfDepth;
         }
 
@@ -451,7 +439,6 @@ namespace LightPrePassRenderer
             _currentCamera = camera;
 
             BaseRenderEffect.TotalTime = (float)gameTime.TotalGameTime.TotalSeconds;
-            _renderStatistics.Reset();
             //compute the frustum corners for this camera
             ComputeFrustumCorners(camera);
 
@@ -524,9 +511,6 @@ namespace LightPrePassRenderer
 
             //unbind our final buffer and return it
             GraphicsDevice.SetRenderTarget(null);
-
-            _renderStatistics.VisibleLights = _lightEntries.Count;
-            _renderStatistics.ShadowCasterLights = _lightShadowCasters.Count;
             return _outputTexture;
         }
 
@@ -536,7 +520,7 @@ namespace LightPrePassRenderer
             for (int index = 0; index < meshes.Count; index++)
             {
                 Mesh.SubMesh visibleMesh = meshes[index];
-                visibleMesh.GenericRender(camera, GraphicsDevice, _renderStatistics);
+                visibleMesh.GenericRender(camera, GraphicsDevice);
             }
         }
 
@@ -549,7 +533,7 @@ namespace LightPrePassRenderer
             for (int index = 0; index < meshes.Count; index++)
             {
                 Mesh.SubMesh visibleMesh = meshes[index];
-                visibleMesh.GenericRender(camera, GraphicsDevice, _renderStatistics);
+                visibleMesh.GenericRender(camera, GraphicsDevice);
             }
 
             //reset states, since the custom shaders could have overriden them
@@ -678,7 +662,7 @@ namespace LightPrePassRenderer
             for (int index = 0; index < meshes.Count; index++)
             {
                 Mesh.SubMesh visibleMesh = meshes[index];
-                visibleMesh.ReconstructShading(camera, GraphicsDevice, _renderStatistics);
+                visibleMesh.ReconstructShading(camera, GraphicsDevice);
             }
         }
 
@@ -701,10 +685,8 @@ namespace LightPrePassRenderer
                 Light light = lightEntry.light;
 
                  //convert light position into viewspace
-                Vector3 viewSpaceLPos = Vector3.Transform(light.Transform.Translation,
-                                                            camera.EyeTransform);
-                Vector3 viewSpaceLDir = Vector3.TransformNormal(Vector3.Normalize(light.Transform.Backward),
-                                                            camera.EyeTransform);
+                Vector3 viewSpaceLPos = Vector3.Transform(light.Transform.Translation, camera.EyeTransform);
+                Vector3 viewSpaceLDir = Vector3.TransformNormal(Vector3.Normalize(light.Transform.Backward), camera.EyeTransform);
                 _lighting.Parameters["LightPosition"].SetValue(viewSpaceLPos);
                 _lighting.Parameters["LightDir"].SetValue(viewSpaceLDir);
                 Vector4 lightColor = light.Color.ToVector4() * light.Intensity;
@@ -729,7 +711,6 @@ namespace LightPrePassRenderer
                             {
                                 GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
                                 GraphicsDevice.DepthStencilState = _ccwDepthState;
-
                             }
                             else
                             {
@@ -740,8 +721,7 @@ namespace LightPrePassRenderer
                             Matrix lightMatrix = Matrix.CreateScale(light.Radius);
                             lightMatrix.Translation = light.BoundingSphere.Center;
 
-                            _lighting.Parameters["WorldViewProjection"].SetValue(lightMatrix*
-                                                                                 camera.EyeProjectionTransform);
+                            _lighting.Parameters["WorldViewProjection"].SetValue(lightMatrix * camera.EyeProjectionTransform);
                           
                             _lighting.CurrentTechnique = _lighting.Techniques[1];
                             _lighting.CurrentTechnique.Passes[0].Apply();
@@ -760,7 +740,6 @@ namespace LightPrePassRenderer
                             {
                                 GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
                                 GraphicsDevice.DepthStencilState = _ccwDepthState;
-
                             }
                             else
                             {
@@ -773,8 +752,7 @@ namespace LightPrePassRenderer
 
                             lightMatrix = lightMatrix * light.Transform;
 
-                            _lighting.Parameters["WorldViewProjection"].SetValue(lightMatrix *
-                                                                                 camera.EyeProjectionTransform);
+                            _lighting.Parameters["WorldViewProjection"].SetValue(lightMatrix * camera.EyeProjectionTransform);
                             float cosSpotAngle = (float)Math.Cos(MathHelper.ToRadians(light.SpotAngle));
                             _lighting.Parameters["SpotAngle"].SetValue(cosSpotAngle);
                             _lighting.Parameters["SpotExponent"].SetValue(light.SpotExponent / (1 - cosSpotAngle));
@@ -813,7 +791,7 @@ namespace LightPrePassRenderer
             List<Mesh.SubMesh> meshes = _visibleMeshes[(int)MeshMetadata.ERenderQueue.Default];
             foreach (Mesh.SubMesh mesh in meshes)
             {
-                mesh.RenderToGBuffer(camera, GraphicsDevice, _renderStatistics);
+                mesh.RenderToGBuffer(camera, GraphicsDevice);
             }
         }
 

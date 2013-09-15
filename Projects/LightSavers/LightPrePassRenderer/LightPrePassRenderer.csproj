@@ -105,10 +105,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuadRenderer.cs" />
     <Compile Include="Renderer.cs" />
-    <Compile Include="RenderStatistics.cs" />
     <Compile Include="ShadowRenderer.cs" />
     <Compile Include="SkinnedMesh.cs" />
-    <Compile Include="SSAO.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SkinnedModel\SkinnedModel.csproj">
