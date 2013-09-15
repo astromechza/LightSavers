@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace LightSavers
+namespace LightSavers.Utils
 {
     /**** GLOBALS class ****
      * Use this for static singletons that need to be accessible from everywhere.
