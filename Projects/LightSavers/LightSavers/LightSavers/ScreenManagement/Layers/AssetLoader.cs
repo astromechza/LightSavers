@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using LightSavers.ScreenManagement.Layers.Menus;
 using LightSavers.Utils;
+using System.IO;
 
 namespace LightSavers
 {
@@ -29,10 +30,15 @@ namespace LightSavers
         public static Model mdl_character;
         public static Model mdl_sphere;
         public static Model mdl_ceilinglight;
+        public static Model mdl_menuscene;
         public static Texture2D tex_black;
         public static Texture2D tex_white;
-        public static Model mdl_menuscene;
         public static SpriteFont fnt_assetloadscreen;
+
+        // -- Sections
+        public static Model[] mdl_section;
+        public static Texture2D[] tex_section_ent;
+
         /***********************************/
 
         private String loading_msg = "Loading Assets";
@@ -91,7 +97,8 @@ namespace LightSavers
         {
             // number of assets to be loaded. (used to compute progress bar size)
             num_assets = 4;
-
+            num_assets += CountSections();
+            LoadSections();
             // assets
             mdl_menuscene = loadModel("models/menuscene");
             mdl_character = loadModel("animatedmodels/Archetype_Rig");
@@ -144,7 +151,37 @@ namespace LightSavers
             loading_bar_length = (int)((loaded_assets / (float)num_assets) * viewport.Width);
             base.Update(ms);
         }
-        
+
+
+        private int CountSections()
+        {
+            DirectoryInfo dir = new DirectoryInfo(Globals.content.RootDirectory + "/levels/geometry");
+            FileInfo[] files = dir.GetFiles("*.xnb");
+            return files.Length;
+        }
+
+        private void LoadSections()
+        {
+            DirectoryInfo dir = new DirectoryInfo(Globals.content.RootDirectory + "/levels/geometry");
+            FileInfo[] files = dir.GetFiles("*.xnb");
+
+            int count = files.Length;
+
+            mdl_section = new Model[count];
+            tex_section_ent = new Texture2D[count];
+
+            int index = 0;
+            foreach (FileInfo f in files)
+            {
+                string gfile = "levels/geometry/" + Path.GetFileNameWithoutExtension(f.Name);
+                string efile = "levels/entities/" + Path.GetFileNameWithoutExtension(f.Name);
+
+                mdl_section[index] = loadModel(gfile);
+                tex_section_ent[index] = loadTexture(efile);
+
+                index++;
+            }
+        }
 
         
     }

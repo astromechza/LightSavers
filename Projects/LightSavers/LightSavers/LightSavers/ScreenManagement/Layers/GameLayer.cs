@@ -54,7 +54,7 @@ namespace LightSavers.ScreenManagement.Layers
             delegate(Mesh.SubMesh subMesh) 
             {
                 renderer.SetupSubMesh(subMesh);
-                subMesh.RenderEffect.AmbientParameter.SetValue(new Vector4(0.04f, 0.04f, 0.04f, 0));
+                subMesh.RenderEffect.AmbientParameter.SetValue(Vector4.Zero);
             }, 
             delegate(Light l) { });
 

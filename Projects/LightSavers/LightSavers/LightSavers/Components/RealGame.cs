@@ -17,46 +17,16 @@ namespace LightSavers.Components
     {
         private PlayerObject[] players;
 
+        public LightAndMeshContainer lightAndMeshContainer;
+
         public RealGame(int numberOfSections, LightAndMeshContainer lightAndMeshContainer)
         {
+            this.lightAndMeshContainer = lightAndMeshContainer;
+
             #region LOAD LEVEL
-            Vector3 origin = Vector3.Zero;
 
-            Mesh mesh = new Mesh();
-            mesh.Model = Globals.content.Load<Model>("levels/start");
-            mesh.Transform = Matrix.CreateTranslation(origin);
-            lightAndMeshContainer.AddMesh(mesh);
-
-            origin += Vector3.Right * 32;
-
-            DirectoryInfo dir = new DirectoryInfo(Globals.content.RootDirectory + "/levels/parts");
-            FileInfo[] files = dir.GetFiles("*.xnb");
-
-            // Convert FileInfo into asset filenames
-            List<String> filenames = new List<String>();
-            for (int f = 0; f < files.Length; f++)
-            {
-                filenames.Add(Path.GetFileNameWithoutExtension(files[f].Name));
-            }
-
-            Random r = new Random();
-            for (int i = 0; i < numberOfSections - 2; i++)
-            {
-                string filename = "levels/parts/" + filenames[r.Next(filenames.Count)];
-                mesh = new Mesh();
-                mesh.Model = Globals.content.Load<Model>(filename);
-                mesh.Transform = Matrix.CreateTranslation(origin);
-                lightAndMeshContainer.AddMesh(mesh);
-
-
-
-                origin += Vector3.Right * 32;
-            }
-
-            mesh = new Mesh();
-            mesh.Model = Globals.content.Load<Model>("levels/end");
-            mesh.Transform = Matrix.CreateTranslation(origin);
-            lightAndMeshContainer.AddMesh(mesh);
+            WorldBuilder wb = new WorldBuilder(this, numberOfSections, Vector3.Zero);            
+           
             #endregion
 
             #region LOAD PLAYERS
@@ -70,22 +40,7 @@ namespace LightSavers.Components
             foreach (Light l in players[0].GetLights()) lightAndMeshContainer.AddLight(l);
             foreach (Light l in players[1].GetLights()) lightAndMeshContainer.AddLight(l);            
             #endregion
-
-            #region LOAD ARB TEST OBJECTS
-
-            for (int i = 0; i < 500; i++)
-            {
-                int x = r.Next(64) + 6;
-                int z = r.Next(20) + 6;
-                float y = (float)(r.NextDouble() * 1.0f + 0.2f);
-
-                Mesh m = new Mesh();
-                m.Model = AssetLoader.mdl_ceilinglight;
-                m.Transform = Matrix.CreateTranslation(x, y, z);
-                lightAndMeshContainer.AddMesh(m);
-            }
-
-            #endregion
+           
 
         }
 
