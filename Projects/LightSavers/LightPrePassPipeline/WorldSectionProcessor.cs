@@ -259,7 +259,8 @@ namespace LightPrePassProcessor
 
         private bool IsFloorTile(PixelBitmapContent<Color> bitmap, int x, int y)
         {
-            return bitmap.GetPixel(x, y) == Color.White || bitmap.GetPixel(x, y) == Color.Green;
+            //return bitmap.GetPixel(x, y) == Color.White || bitmap.GetPixel(x, y) == Color.Green;
+            return !(IsWallTile(bitmap, x, y) || IsNullTile(bitmap, x, y));
         }
 
         private bool IsWallTile(PixelBitmapContent<Color> bitmap, int x, int y)

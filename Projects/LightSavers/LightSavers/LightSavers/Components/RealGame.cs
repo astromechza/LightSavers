@@ -2,6 +2,7 @@
 using LightPrePassRenderer.partitioning;
 using LightSavers.Components.GameObjects;
 using LightSavers.Utils;
+using LightSavers.WorldBuilding;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -41,11 +42,13 @@ namespace LightSavers.Components
             Random r = new Random();
             for (int i = 0; i < numberOfSections - 2; i++)
             {
-                string rfile = filenames[r.Next(filenames.Count)];
+                string filename = "levels/parts/" + filenames[r.Next(filenames.Count)];
                 mesh = new Mesh();
-                mesh.Model = Globals.content.Load<Model>("levels/parts/" + rfile);
+                mesh.Model = Globals.content.Load<Model>(filename);
                 mesh.Transform = Matrix.CreateTranslation(origin);
                 lightAndMeshContainer.AddMesh(mesh);
+
+
 
                 origin += Vector3.Right * 32;
             }
@@ -77,7 +80,7 @@ namespace LightSavers.Components
                 float y = (float)(r.NextDouble() * 1.0f + 0.2f);
 
                 Mesh m = new Mesh();
-                m.Model = AssetLoader.mdl_sphere;
+                m.Model = AssetLoader.mdl_ceilinglight;
                 m.Transform = Matrix.CreateTranslation(x, y, z);
                 lightAndMeshContainer.AddMesh(m);
             }

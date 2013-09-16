@@ -33,7 +33,7 @@ namespace LightPrePassRenderer.partitioning
             {
                 Mesh.SubMesh subMesh = mesh.SubMeshes[index];
                 AddSubMesh(subMesh);
-            }
+            }            
         }
 
         public void AddSubMesh(Mesh.SubMesh subMesh)
