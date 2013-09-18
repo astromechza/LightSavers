@@ -247,7 +247,14 @@
       <ProcessorParameters_Scale>0.1</ProcessorParameters_Scale>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="models\filing\Filing.fbx">
+      <Name>Filing</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
+      <ProcessorParameters_Scale>0.5</ProcessorParameters_Scale>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="models\ceilinglight\ceilinglight_model.fbx">
       <Name>ceilinglight_model</Name>
