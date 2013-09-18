@@ -30,6 +30,7 @@ namespace LightSavers
         public static Model mdl_character;
         public static Model mdl_sphere;
         public static Model mdl_ceilinglight;
+        public static Model mdl_filingcabinet;
         public static Model mdl_menuscene;
         public static Texture2D tex_black;
         public static Texture2D tex_white;
@@ -96,7 +97,7 @@ namespace LightSavers
         private void LoadAssets()
         {
             // number of assets to be loaded. (used to compute progress bar size)
-            num_assets = 4;
+            num_assets = 5;
             num_assets += CountSections();
             LoadSections();
             // assets
@@ -104,6 +105,7 @@ namespace LightSavers
             mdl_character = loadModel("animatedmodels/Archetype_Rig");
             mdl_sphere = loadModel("models/sphere");
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
+            mdl_filingcabinet = loadModel("models/filing/Filing");
 
             // once its loaded, fade out
             StartTransitionOff();
