@@ -70,6 +70,30 @@ namespace LightSavers.WorldBuilding
                     {
                         SpawnOverheadLight(center);
                     }
+
+                    if (c == Color.White)
+                    {
+                        if (x > 0 && y > 0)
+                        {
+                            if (x < 31 && y < 31)
+                            {
+                                Color u = colours[(y - 1) * 32 + x];
+                                Color d = colours[(y + 1) * 32 + x];
+                                Color l = colours[(y) * 32 + x-1];
+                                Color r = colours[(y) * 32 + x+1];
+                                if ( u == Color.Black)
+                                    SpawnFilingCabinet(center, 180);
+                                else if (d == Color.Black)
+                                        SpawnFilingCabinet(center, 0);
+                                else if (l == Color.Black)
+                                    SpawnFilingCabinet(center, -90);
+                                else if (r == Color.Black)
+                                    SpawnFilingCabinet(center, 90);
+                            }
+                        }
+                    }
+
+
                 }
             }
         }
@@ -90,7 +114,15 @@ namespace LightSavers.WorldBuilding
             
             l.Transform = Matrix.CreateTranslation(position + Vector3.Up * 4);
             game.lightAndMeshContainer.AddLight(l);
+        }
 
+        public void SpawnFilingCabinet(Vector3 position, int angle_d)
+        {
+            System.Diagnostics.Debug.WriteLine("Spawned cabinet at " + position.ToString());
+            Mesh m = new Mesh();
+            m.Model = AssetLoader.mdl_filingcabinet;
+            m.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(angle_d)) * Matrix.CreateTranslation(position);
+            game.lightAndMeshContainer.AddMesh(m);
         }
         
 
