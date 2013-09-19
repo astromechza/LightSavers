@@ -35,7 +35,6 @@ namespace LightPrePassRenderer
         {
             public Light light;
             public ShadowRenderer.SpotShadowMapEntry spotShadowMap;
-            public ShadowRenderer.CascadeShadowMapEntry cascadeShadowMap;
             public bool castShadows;
 
             public float sqrDistanceToCam;
@@ -173,7 +172,6 @@ namespace LightPrePassRenderer
         /// </summary>
         private DepthStencilState _ccwDepthState;
         private DepthStencilState _cwDepthState;
-        private DepthStencilState _directionalDepthState;
         private DepthStencilState _depthStateReconstructZ;
         private DepthStencilState _depthStateDrawLights;
 
@@ -307,11 +305,6 @@ namespace LightPrePassRenderer
             _ccwDepthState = new DepthStencilState();
             _ccwDepthState.DepthBufferWriteEnable = false;
             _ccwDepthState.DepthBufferFunction = CompareFunction.GreaterEqual;
-
-            _directionalDepthState = new DepthStencilState(); ;
-            _directionalDepthState.DepthBufferWriteEnable = false;
-            _directionalDepthState.DepthBufferFunction = CompareFunction.Greater;
-
 
             _depthStateDrawLights = new DepthStencilState();
 
@@ -511,7 +504,7 @@ namespace LightPrePassRenderer
 
             //reconstruct each object shading, using the light texture as input (and another specific parameters too)
             GraphicsDevice.SetRenderTarget(_outputTexture);
-            GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Stencil, Color.Black, 1.0f, 0);
+            GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Stencil | ClearOptions.Target, Color.Black, 1.0f, 0);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
@@ -606,17 +599,6 @@ namespace LightPrePassRenderer
                             _lightShadowCasters.Add(entry);
                         }
                     }
-                    else if (entry.light.LightType == Light.Type.Directional)
-                    {
-                        entry.cascadeShadowMap = _shadowRenderer.GetFreeCascadeShadowMap();
-                        entry.castShadows = entry.cascadeShadowMap != null;
-                        //if we dont have that many shadow maps, it cannot cast shadows
-                        if (entry.castShadows)
-                        {
-                            _lightShadowCasters.Add(entry);
-                        }
-
-                    }
                 }
                 //assign it back, since it's a struct
                 _lightEntries[i] = entry;
@@ -662,10 +644,6 @@ namespace LightPrePassRenderer
                 if (light.light.LightType == Light.Type.Spot)
                 {
                     _shadowRenderer.GenerateShadowTextureSpotLight(this, renderWorld, light.light, light.spotShadowMap);
-                }
-                else if (light.light.LightType == Light.Type.Directional)
-                {
-                    _shadowRenderer.GenerateShadowTextureDirectionalLight(this, renderWorld, light.light, light.cascadeShadowMap, camera);
                 }
             }
 
@@ -830,40 +808,7 @@ namespace LightPrePassRenderer
                         }
 
                         break;
-                    case Light.Type.Directional:
-
-                        GraphicsDevice.DepthStencilState = _directionalDepthState;
-                        GraphicsDevice.RasterizerState = RasterizerState.CullNone;
-                        ApplyFrustumCorners(_lighting, -Vector2.One, Vector2.One);
-                        if (lightEntry.castShadows)
-                        {
-                            _lighting.CurrentTechnique = _lighting.Techniques[5];
-
-                            _lighting.Parameters["DepthBias"].SetValue(light.ShadowDepthBias);
-                            Vector2 shadowMapPixelSize = new Vector2(0.5f / lightEntry.cascadeShadowMap.Texture.Width, 0.5f / lightEntry.cascadeShadowMap.Texture.Height);
-                            _lighting.Parameters["ShadowMapPixelSize"].SetValue(shadowMapPixelSize);
-                            _lighting.Parameters["ShadowMapSize"].SetValue(new Vector2(lightEntry.cascadeShadowMap.Texture.Width, lightEntry.cascadeShadowMap.Texture.Height));
-                            _lighting.Parameters["ShadowMap"].SetValue(lightEntry.cascadeShadowMap.Texture);
-                            _lighting.Parameters["CameraTransform"].SetValue(camera.Transform);
-
-                            _lighting.Parameters["ClipPlanes"].SetValue(lightEntry.cascadeShadowMap.LightClipPlanes);
-                            _lighting.Parameters["MatLightViewProj"].SetValue(lightEntry.cascadeShadowMap.LightViewProjectionMatrices);
-
-                            Vector3 cascadeDistances = Vector3.Zero;
-                            cascadeDistances.X = lightEntry.cascadeShadowMap.LightClipPlanes[0].X;
-                            cascadeDistances.Y = lightEntry.cascadeShadowMap.LightClipPlanes[1].X;
-                            cascadeDistances.Z = lightEntry.cascadeShadowMap.LightClipPlanes[2].X;
-                            _lighting.Parameters["CascadeDistances"].SetValue(cascadeDistances);
-
-                        }
-                        else
-                        {
-                            _lighting.CurrentTechnique = _lighting.Techniques[2];
-
-                        }
-                        _lighting.CurrentTechnique.Passes[0].Apply();
-                        _quadRenderer.RenderQuad(GraphicsDevice, -Vector2.One, Vector2.One);
-                        break;
+                    
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
