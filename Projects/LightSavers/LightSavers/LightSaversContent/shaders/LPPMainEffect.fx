@@ -15,10 +15,8 @@
 // Parameters
 //-----------------------------------------
 float4x4 World;
-float4x4 WorldView;
 float4x4 View;
 float4x4 Projection;
-float4x4 WorldViewProjection;
 float4x4 LightViewProj; //used when rendering to shadow map
 
 float FarClip;
@@ -35,7 +33,7 @@ float4 AmbientColor;
 //AMBIENT_COLOR --we use an external variable to modulate the diffuse color
 //AMBIENT_CUBEMAP --we use a cubemap to encode ambient light information
 
-#define AMBIENT_COLOR
+#define NO_AMBIENT
 
 #ifdef ALPHA_MASKED
 float AlphaReference;
@@ -244,11 +242,13 @@ struct PixelShaderInput
 	float Face : VFACE;
 #endif
 };
-VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
+
+VertexShaderOutput RenderToGBufferVertexCommon(VertexShaderInput input, float4x4 instanceTransform) 
 {
     VertexShaderOutput output = (VertexShaderOutput)0;
 
-	
+	float4x4 worldView = mul(instanceTransform, View);
+	float4x4 worldViewProjection = mul(worldView, Projection);
 #ifdef SKINNED_MESH
 	// Blend between the weighted bone matrices.
     float4x4 skinTransform = 0;
@@ -263,26 +263,26 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 	float3 skinTangent = mul(input.Tangent, skinTransform);
 	float3 skinBinormal = mul(input.Binormal, skinTransform);
 	
-	float3 viewSpacePos = mul(skinPos, WorldView);
-    output.Position = mul(skinPos, WorldViewProjection);
+	float3 viewSpacePos = mul(skinPos, worldView);
+    output.Position = mul(skinPos, worldViewProjection);
 	
     output.TexCoord.xy = input.TexCoord; //pass the texture coordinates further
 	
 	//we output our normals/tangents/binormals in viewspace
-    output.Normal = mul(skinNormal,WorldView); 
-	output.Tangent =mul(skinTangent,WorldView); 
-	output.Binormal =mul(skinBinormal,WorldView); 
+    output.Normal =  mul( skinNormal   , worldView); 
+	output.Tangent = mul( skinTangent  , worldView); 
+	output.Binormal =mul( skinBinormal , worldView); 
 
 #else
 
-	float3 viewSpacePos = mul(input.Position, WorldView);
-    output.Position = mul(input.Position, WorldViewProjection);
+	float3 viewSpacePos = mul(input.Position, worldView);
+    output.Position = mul(input.Position, worldViewProjection);
     output.TexCoord.xy = input.TexCoord; //pass the texture coordinates further
 
 	//we output our normals/tangents/binormals in viewspace
-	output.Normal = normalize(mul(input.Normal,WorldView)); 
-	output.Tangent =  normalize(mul(input.Tangent,WorldView)); 
-	output.Binormal =  normalize(mul(input.Binormal,WorldView)); 
+	output.Normal = normalize   (mul( input.Normal  , worldView)); 
+	output.Tangent =  normalize (mul( input.Tangent , worldView)); 
+	output.Binormal =  normalize(mul( input.Binormal, worldView)); 
 #endif
 
 #ifdef DUAL_LAYER
@@ -292,6 +292,8 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 	output.Depth = viewSpacePos.z; //pass depth
     return output;
 }
+
+
 //render to our 2 render targets, normal and depth 
 struct PixelShaderOutput
 {
@@ -299,7 +301,7 @@ struct PixelShaderOutput
     float4 Depth : COLOR1;
 };
 
-PixelShaderOutput PixelShaderFunction(PixelShaderInput input)
+PixelShaderOutput RenderToGBufferPixelShader(PixelShaderInput input)
 {
 	PixelShaderOutput output = (PixelShaderOutput)1;   
 
@@ -328,8 +330,8 @@ PixelShaderOutput PixelShaderFunction(PixelShaderInput input)
 #endif
 
 	output.Normal.rg =  EncodeNormal (normalize(normalViewSpace));	//our encoder output in RG channels
-	output.Normal.b = normalMap.a;			//our specular power goes into B channel
-	output.Normal.a = 1;					//not used
+	output.Normal.b = normalMap.a;	//our specular power goes into B channel
+	//output.Normal.a = 1;					//not used
 	output.Depth.x = -input.Depth/ FarClip;		//output Depth in linear space, [0..1]
 	
 	return output;
@@ -365,9 +367,13 @@ struct ReconstructVertexShaderOutput
 #endif
 };
 
-ReconstructVertexShaderOutput ReconstructVertexShaderFunction(ReconstructVertexShaderInput input)
+
+ReconstructVertexShaderOutput ReconstructVertexShaderCommon(ReconstructVertexShaderInput input, float4x4 instanceTransform)
 {
     ReconstructVertexShaderOutput output=(ReconstructVertexShaderOutput)0;
+	
+	float4x4 worldView = mul(instanceTransform, View);
+	float4x4 worldViewProjection = mul(worldView, Projection);
 
 #ifdef SKINNED_MESH
 	// Blend between the weighted bone matrices.
@@ -380,18 +386,18 @@ ReconstructVertexShaderOutput ReconstructVertexShaderFunction(ReconstructVertexS
 
 	float4 skinPos = mul(input.Position, skinTransform);
 
-    output.Position = mul(skinPos, WorldViewProjection);
+    output.Position = mul(skinPos, worldViewProjection);
 	#ifdef AMBIENT_CUBEMAP
 	float3 skinNormal = mul(input.Normal, skinTransform);
-	output.Normal = normalize(mul(skinNormal,World)); 
+	output.Normal = normalize(mul(skinNormal,instanceTransform)); 
 	#endif
 
 #else
 
-    output.Position = mul(input.Position, WorldViewProjection);
+    output.Position = mul(input.Position, worldViewProjection);
 
 	#ifdef AMBIENT_CUBEMAP
-	output.Normal = normalize(mul(input.Normal,World)); 
+	output.Normal = normalize(mul(input.Normal,instanceTransform)); 
 	#endif
 #endif
 
@@ -405,12 +411,10 @@ ReconstructVertexShaderOutput ReconstructVertexShaderFunction(ReconstructVertexS
     return output;
 }
 
-float4 ReconstructPixelShaderFunction(ReconstructVertexShaderOutput input):COLOR0
+
+float4 ReconstructPixelShader(ReconstructVertexShaderOutput input):COLOR0
 {
 	PixelShaderOutput output = (PixelShaderOutput)1;   
-	// Find the screen space texture coordinate and offset it
-	float2 screenPos = PostProjectionSpaceToScreenSpace(input.TexCoordScreenSpace) + LightBufferPixelSize;
-
 	//read from our diffuse, specular and emissive maps
 	half4 diffuseMap = tex2D(diffuseMapSampler, input.TexCoord);
 
@@ -419,6 +423,9 @@ float4 ReconstructPixelShaderFunction(ReconstructVertexShaderOutput input):COLOR
 	clip(diffuseMap.a - AlphaReference);
 #endif
 	
+	// Find the screen space texture coordinate and offset it
+	float2 screenPos = PostProjectionSpaceToScreenSpace(input.TexCoordScreenSpace) + LightBufferPixelSize;
+
 
 
 	half3 emissiveMap = tex2D(emissiveMapSampler, input.TexCoord).rgb;
@@ -479,8 +486,7 @@ struct ShadowMapVertexShaderOutput
 };
 
 
-
-ShadowMapVertexShaderOutput OutputShadowVertexShaderFunction(ShadowMapVertexShaderInput input)
+ShadowMapVertexShaderOutput OutputShadowVertexShaderCommon(ShadowMapVertexShaderInput input, float4x4 instanceTransform)
 {
     ShadowMapVertexShaderOutput output = (ShadowMapVertexShaderOutput)0;
 	
@@ -494,9 +500,9 @@ ShadowMapVertexShaderOutput OutputShadowVertexShaderFunction(ShadowMapVertexShad
     skinTransform += Bones[input.BoneIndices.w] * input.BoneWeights.w;
 
 	float4 skinPos = mul(input.Position, skinTransform);
-    float4 clipPos = mul(skinPos, mul(World, LightViewProj));
+    float4 clipPos = mul(skinPos, mul(instanceTransform, LightViewProj));
 #else
-    float4 clipPos = mul(input.Position, mul(World, LightViewProj));
+    float4 clipPos = mul(input.Position, mul(instanceTransform, LightViewProj));
 #endif
 	//clamp to the near plane
 	clipPos.z = max(clipPos.z,0);
@@ -510,7 +516,7 @@ ShadowMapVertexShaderOutput OutputShadowVertexShaderFunction(ShadowMapVertexShad
     return output;
 }
 
-float4 OutputShadowPixelShaderFunction(ShadowMapVertexShaderOutput input) : COLOR0
+float4 OutputShadowPixelShader(ShadowMapVertexShaderOutput input) : COLOR0
 {
 #ifdef ALPHA_MASKED	
 	//read our diffuse
@@ -522,6 +528,49 @@ float4 OutputShadowPixelShaderFunction(ShadowMapVertexShaderOutput input) : COLO
     return float4(depth, 1, 1, 1); 
 }
 
+
+
+VertexShaderOutput RenderToGBufferVertexShader(VertexShaderInput input)
+{
+	return RenderToGBufferVertexCommon(input, World);
+}
+
+ReconstructVertexShaderOutput ReconstructVertexShader(ReconstructVertexShaderInput input)
+{
+	return ReconstructVertexShaderCommon(input, World);
+}
+
+ShadowMapVertexShaderOutput OutputShadowVertexShader(ShadowMapVertexShaderInput input)
+{
+	return OutputShadowVertexShaderCommon(input, World);
+}
+
+
+
+// Hardware instancing reads the per-instance world transform from a secondary vertex stream.
+VertexShaderOutput RenderToGBufferInstancedVertexShader(VertexShaderInput input,
+                                                  float4x4 instanceTransform : TEXCOORD1)
+{
+    return RenderToGBufferVertexCommon(input, transpose(instanceTransform));
+}
+
+
+ReconstructVertexShaderOutput ReconstructInstancedVertexShader(ReconstructVertexShaderInput input,
+                                                  float4x4 instanceTransform : TEXCOORD1)
+{
+	return ReconstructVertexShaderCommon(input, transpose(instanceTransform));
+}
+
+ShadowMapVertexShaderOutput OutputShadowInstancedVertexShader(ShadowMapVertexShaderInput input,
+                                                  float4x4 instanceTransform : TEXCOORD1)
+{
+	return OutputShadowVertexShaderCommon(input, transpose(instanceTransform));
+}
+
+
+
+
+
 technique RenderToGBuffer
 {
     pass RenderToGBufferPass
@@ -532,8 +581,8 @@ technique RenderToGBuffer
 		CullMode = CCW;
 	#endif
 
-        VertexShader = compile vs_3_0 VertexShaderFunction();
-        PixelShader = compile ps_3_0 PixelShaderFunction();
+        VertexShader = compile vs_3_0 RenderToGBufferVertexShader();
+        PixelShader = compile ps_3_0 RenderToGBufferPixelShader();
     }
 }
 
@@ -547,8 +596,8 @@ technique ReconstructShading
 		CullMode = CCW;
 	#endif
 
-        VertexShader = compile vs_3_0 ReconstructVertexShaderFunction();
-        PixelShader = compile ps_3_0 ReconstructPixelShaderFunction();
+        VertexShader = compile vs_3_0 ReconstructVertexShader();
+        PixelShader = compile ps_3_0 ReconstructPixelShader();
     }
 }
 
@@ -562,7 +611,54 @@ technique OutputShadow
 		CullMode = CCW;
 	#endif
 
-        VertexShader = compile vs_3_0 OutputShadowVertexShaderFunction();
-        PixelShader = compile ps_3_0 OutputShadowPixelShaderFunction();
+        VertexShader = compile vs_3_0 OutputShadowVertexShader();
+        PixelShader = compile ps_3_0 OutputShadowPixelShader();
+	}
+}
+
+
+
+technique RenderToGBufferInstanced
+{
+    pass RenderToGBufferPass
+    {
+	#ifdef ALPHA_MASKED	
+		CullMode = None;
+	#else
+		CullMode = CCW;
+	#endif
+
+        VertexShader = compile vs_3_0 RenderToGBufferInstancedVertexShader();
+        PixelShader = compile ps_3_0 RenderToGBufferPixelShader();
+    }
+}
+
+technique ReconstructShadingInstanced
+{
+	pass ReconstructShadingPass
+    {
+	#ifdef ALPHA_MASKED	
+		CullMode = None;
+	#else
+		CullMode = CCW;
+	#endif
+
+        VertexShader = compile vs_3_0 ReconstructInstancedVertexShader();
+        PixelShader = compile ps_3_0 ReconstructPixelShader();
+    }
+}
+
+technique OutputShadowInstanced
+{
+	pass OutputShadowPass
+	{		
+	#ifdef ALPHA_MASKED	
+		CullMode = None;
+	#else
+		CullMode = CCW;
+	#endif
+
+        VertexShader = compile vs_3_0 OutputShadowInstancedVertexShader();
+        PixelShader = compile ps_3_0 OutputShadowPixelShader();
 	}
 }

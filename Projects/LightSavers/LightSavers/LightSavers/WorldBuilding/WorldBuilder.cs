@@ -121,6 +121,7 @@ namespace LightSavers.WorldBuilding
             System.Diagnostics.Debug.WriteLine("Spawned cabinet at " + position.ToString());
             Mesh m = new Mesh();
             m.Model = AssetLoader.mdl_filingcabinet;
+            m.SetInstancingEnabled(true);
             m.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(angle_d)) * Matrix.CreateTranslation(position);
             game.lightAndMeshContainer.AddMesh(m);
         }

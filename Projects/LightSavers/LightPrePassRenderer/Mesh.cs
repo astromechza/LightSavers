@@ -33,8 +33,9 @@ namespace LightPrePassRenderer
             public BoundingSphere GlobalBoundingSphere;
             private BaseRenderEffect _renderEffect;
 
-            private Mesh _parent;
+            public Mesh _parent;
             public bool Enabled = true;
+            private bool _instanceEnabled = false;
 
             public Effect Effect
             {
@@ -58,7 +59,18 @@ namespace LightPrePassRenderer
                 get { return _renderEffect; }
             }
 
-          
+            public bool InstanceEnabled
+            {
+                get
+                {
+                    return _instanceEnabled;
+                }
+                set
+                {
+                    _instanceEnabled = value;
+                }
+            }
+
 
             public virtual void RenderToGBuffer(Camera camera, GraphicsDevice graphicsDevice)
             {
@@ -66,7 +78,7 @@ namespace LightPrePassRenderer
                 RenderEffect.SetMatrices(GlobalTransform, camera.EyeTransform, camera.ProjectionTransform);
                 //our first pass is responsible for rendering into GBuffer
                 RenderEffect.SetFarClip(camera.FarClip);
-                
+
                 if (_parent.BoneMatrixes != null)
                     RenderEffect.SetBones(_parent.BoneMatrixes);
 
@@ -76,18 +88,19 @@ namespace LightPrePassRenderer
                 graphicsDevice.Indices = _meshPart.IndexBuffer;
 
                 graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _meshPart.NumVertices, _meshPart.StartIndex, _meshPart.PrimitiveCount);
-                           
+
+
             }
 
             public void ReconstructShading(Camera camera, GraphicsDevice graphicsDevice)
             {
-               
+
                 //this pass uses the light diffuse and specular accumulation texture (already bound in the setup stage) and reconstruct the mesh's shading
                 //our parameters were already filled in the first pass
                 RenderEffect.SetCurrentTechnique(1);
-               
+
                 //we don't need to do this again, it was done on the previous step
-                
+
                 //_renderEffect.SetMatrices(GlobalTransform, camera.EyeTransform, camera.ProjectionTransform);
                 // if (_parent.BoneMatrixes != null)
                 //    _renderEffect.SetBones(_parent.BoneMatrixes);
@@ -98,7 +111,8 @@ namespace LightPrePassRenderer
                 graphicsDevice.Indices = _meshPart.IndexBuffer;
 
                 graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _meshPart.NumVertices, _meshPart.StartIndex, _meshPart.PrimitiveCount);
-                           
+                
+
             }
 
             /// <summary>
@@ -121,6 +135,7 @@ namespace LightPrePassRenderer
 
                 graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _meshPart.NumVertices, _meshPart.StartIndex, _meshPart.PrimitiveCount);
                 
+
             }
 
             public virtual void RenderShadowMap(ref Matrix viewProj, GraphicsDevice graphicsDevice)
@@ -142,7 +157,8 @@ namespace LightPrePassRenderer
                 graphicsDevice.Indices = _meshPart.IndexBuffer;
 
                 graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _meshPart.NumVertices, _meshPart.StartIndex, _meshPart.PrimitiveCount);
-                                
+
+
             }
 
         }
@@ -151,12 +167,12 @@ namespace LightPrePassRenderer
         /// Stores the transforms for the submeshes
         /// </summary>
         protected Matrix[] _transforms;
-        
+
         /// <summary>
         /// our global transform
         /// </summary>
         protected Matrix _transform = Matrix.Identity;
-        
+
         /// <summary>
         /// Model
         /// </summary>
@@ -167,9 +183,10 @@ namespace LightPrePassRenderer
         protected BoundingBox _localBoundingBox;
 
         private List<SubMesh> _subMeshes = new List<SubMesh>();
-        public virtual Matrix[] BoneMatrixes 
-        { 
-            get { return null; } set { }
+        public virtual Matrix[] BoneMatrixes
+        {
+            get { return null; }
+            set { }
         }
         public virtual Model Model
         {
@@ -183,7 +200,7 @@ namespace LightPrePassRenderer
                 _localBoundingBox = _metadata.BoundingBox;
                 _transforms = new Matrix[_model.Bones.Count];
                 _model.CopyAbsoluteBoneTransformsTo(_transforms);
-                
+
                 CreateSubMeshList();
                 UpdateSubMeshes();
             }
@@ -207,6 +224,15 @@ namespace LightPrePassRenderer
         public List<SubMesh> SubMeshes
         {
             get { return _subMeshes; }
+        }
+
+        public void SetInstancingEnabled(bool value)
+        {
+            for (int index = 0; index < SubMeshes.Count; index++)
+            {
+                SubMesh subMesh = SubMeshes[index];
+                subMesh.InstanceEnabled = value;
+            }
         }
 
         /// <summary>
@@ -256,6 +282,6 @@ namespace LightPrePassRenderer
             }
             UpdateSubMeshes();
         }
-        
+
     }
 }

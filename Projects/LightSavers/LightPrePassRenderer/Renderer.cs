@@ -35,7 +35,8 @@ namespace LightPrePassRenderer
         {
             public Light light;
             public ShadowRenderer.SpotShadowMapEntry spotShadowMap;
-            public bool castShadows ;
+            public ShadowRenderer.CascadeShadowMapEntry cascadeShadowMap;
+            public bool castShadows;
 
             public float sqrDistanceToCam;
             public float priority;
@@ -43,7 +44,6 @@ namespace LightPrePassRenderer
 
         #endregion
         #region Fields
-
         /// <summary>
         /// Our main graphic device, created by XNA framework
         /// </summary>
@@ -173,6 +173,7 @@ namespace LightPrePassRenderer
         /// </summary>
         private DepthStencilState _ccwDepthState;
         private DepthStencilState _cwDepthState;
+        private DepthStencilState _directionalDepthState;
         private DepthStencilState _depthStateReconstructZ;
         private DepthStencilState _depthStateDrawLights;
 
@@ -191,6 +192,8 @@ namespace LightPrePassRenderer
         private RenderTargetBinding[] _gBufferBinding = new RenderTargetBinding[2];
 
         private Camera _currentCamera;
+
+        private InstancingGroupManager _instancingGroupManager = new InstancingGroupManager();
 
         #endregion
         #region Properties
@@ -236,7 +239,6 @@ namespace LightPrePassRenderer
             get { return _graphicsDevice; }
         }
 
-
         /// <summary>
         /// This render target stores the specular component of the light buffer, the sum of all lights
         /// applied to our scene
@@ -275,6 +277,10 @@ namespace LightPrePassRenderer
             get { return _currentCamera; }
         }
 
+        public InstancingGroupManager InstancingGroupManager
+        {
+            get { return _instancingGroupManager; }
+        }
 
         #endregion
         /// <summary>
@@ -301,6 +307,11 @@ namespace LightPrePassRenderer
             _ccwDepthState = new DepthStencilState();
             _ccwDepthState.DepthBufferWriteEnable = false;
             _ccwDepthState.DepthBufferFunction = CompareFunction.GreaterEqual;
+
+            _directionalDepthState = new DepthStencilState(); ;
+            _directionalDepthState.DepthBufferWriteEnable = false;
+            _directionalDepthState.DepthBufferFunction = CompareFunction.Greater;
+
 
             _depthStateDrawLights = new DepthStencilState();
 
@@ -331,14 +342,13 @@ namespace LightPrePassRenderer
             {
                 _visibleMeshes[index] = new List<Mesh.SubMesh>();
             }
-            
-            
+
+
             CreateGBuffer();
             LoadShaders();
 
             _downsampleDepth = new DownsampleDepthEffect();
             _downsampleDepth.Init(contentManager, this);
-
         }
 
 
@@ -350,7 +360,7 @@ namespace LightPrePassRenderer
             //We could use some packing and use a 24bit buffer too, but lets start simpler
             _depthBuffer = new RenderTarget2D(GraphicsDevice, _width, _height, false, SurfaceFormat.Single,
                                               DepthFormat.None, 0, RenderTargetUsage.DiscardContents);
-            
+
             //the downsampled depth buffer must have the same format as the main one
             _halfDepth = new RenderTarget2D(GraphicsDevice, _width / 2, _height / 2, false,
                                               SurfaceFormat.Single, DepthFormat.None, 0,
@@ -412,7 +422,8 @@ namespace LightPrePassRenderer
         /// <returns></returns>
         public RenderTarget2D GetDownsampledDepth()
         {
-            if (!_depthDownsampledThisFrame) DownsampleDepthbuffer();
+            if (!_depthDownsampledThisFrame)
+                DownsampleDepthbuffer();
             return _halfDepth;
         }
 
@@ -436,12 +447,15 @@ namespace LightPrePassRenderer
         /// <returns></returns>
         public RenderTarget2D RenderScene(Camera camera, LightAndMeshContainer renderWorld, GameTime gameTime)
         {
+            InstancingGroupManager.Reset();
+
             _depthDownsampledThisFrame = false;
             _currentCamera = camera;
 
             BaseRenderEffect.TotalTime = (float)gameTime.TotalGameTime.TotalSeconds;
             //compute the frustum corners for this camera
             ComputeFrustumCorners(camera);
+
 
             //this resets the free shadow maps
             _shadowRenderer.InitFrame();
@@ -470,18 +484,18 @@ namespace LightPrePassRenderer
 
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
-            
+
             //select the visible meshes
             CullVisibleMeshes(camera, renderWorld);
-            
+
             //now, render them to the G-Buffer
             RenderToGbuffer(camera);
 
             //resolve our GBuffer and render the lights
             //clear the light buffer with black
-            GraphicsDevice.SetRenderTargets(_lightAccumBinding );
+            GraphicsDevice.SetRenderTargets(_lightAccumBinding);
             //dont be fooled by Color.Black, as its alpha is 255 (or 1.0f)
-            GraphicsDevice.Clear(new Color(0,0,0,0));
+            GraphicsDevice.Clear(new Color(0, 0, 0, 0));
 
             //dont use depth/stencil test...we dont have a depth buffer, anyway
             GraphicsDevice.DepthStencilState = DepthStencilState.None;
@@ -490,15 +504,14 @@ namespace LightPrePassRenderer
             //draw using additive blending. 
             //At first I was using BlendState.additive, but it seems to use alpha channel for modulation, 
             //and as we use alpha channel as the specular intensity, we have to create our own blend state here
-         
+
             GraphicsDevice.BlendState = _lightAddBlendState;
 
             RenderLights(camera);
 
-
             //reconstruct each object shading, using the light texture as input (and another specific parameters too)
             GraphicsDevice.SetRenderTarget(_outputTexture);
-            GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Stencil | ClearOptions.Target, Color.Black, 1.0f, 0);
+            GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Stencil, Color.Black, 1.0f, 0);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
@@ -510,8 +523,12 @@ namespace LightPrePassRenderer
             //draw objects with transparency
             DrawBlendObjects(camera);
 
+            //draw SSAO texture. It's not correct to do it here, because ideally the SSAO should affect only 
+            //the ambient light, but it looks good this way
+
             //unbind our final buffer and return it
             GraphicsDevice.SetRenderTarget(null);
+
             return _outputTexture;
         }
 
@@ -542,6 +559,11 @@ namespace LightPrePassRenderer
             _graphicsDevice.BlendState = BlendState.Additive;
             _graphicsDevice.BlendFactor = Color.White;
             _graphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+
+            Matrix projectionTransform = camera.ProjectionTransform;
+            Matrix eyeTransform = camera.EyeTransform;
+            
+
         }
 
         /// <summary>
@@ -558,7 +580,7 @@ namespace LightPrePassRenderer
             }
 
             renderWorld.GetVisibleMeshes(camera.Frustum, _visibleMeshes);
-            
+
         }
 
         /// <summary>
@@ -584,6 +606,17 @@ namespace LightPrePassRenderer
                             _lightShadowCasters.Add(entry);
                         }
                     }
+                    else if (entry.light.LightType == Light.Type.Directional)
+                    {
+                        entry.cascadeShadowMap = _shadowRenderer.GetFreeCascadeShadowMap();
+                        entry.castShadows = entry.cascadeShadowMap != null;
+                        //if we dont have that many shadow maps, it cannot cast shadows
+                        if (entry.castShadows)
+                        {
+                            _lightShadowCasters.Add(entry);
+                        }
+
+                    }
                 }
                 //assign it back, since it's a struct
                 _lightEntries[i] = entry;
@@ -599,7 +632,7 @@ namespace LightPrePassRenderer
             {
                 LightEntry lightEntry = new LightEntry();
                 lightEntry.light = _visibleLights[index];
-                lightEntry.sqrDistanceToCam = Math.Max(1,Vector3.Distance(lightEntry.light.Transform.Translation,
+                lightEntry.sqrDistanceToCam = Math.Max(1, Vector3.Distance(lightEntry.light.Transform.Translation,
                                                             camPos));
                 //compute a value to determine light order 
                 lightEntry.priority = 1000 * lightEntry.light.Radius / Math.Max(1, lightEntry.sqrDistanceToCam);
@@ -630,8 +663,12 @@ namespace LightPrePassRenderer
                 {
                     _shadowRenderer.GenerateShadowTextureSpotLight(this, renderWorld, light.light, light.spotShadowMap);
                 }
+                else if (light.light.LightType == Light.Type.Directional)
+                {
+                    _shadowRenderer.GenerateShadowTextureDirectionalLight(this, renderWorld, light.light, light.cascadeShadowMap, camera);
+                }
             }
-           
+
         }
 
         private void ReconstructZBuffer(Camera camera)
@@ -645,7 +682,7 @@ namespace LightPrePassRenderer
             _reconstructZBuffer.CurrentTechnique.Passes[0].Apply();
 
             //we need to always write to z-buffer
-           
+
             //store previous state
             BlendState oldBlendState = GraphicsDevice.BlendState;
 
@@ -659,12 +696,18 @@ namespace LightPrePassRenderer
 
         private void ReconstructShading(Camera camera)
         {
-            List<Mesh.SubMesh> meshes = _visibleMeshes[(int) MeshMetadata.ERenderQueue.Default];
+            List<Mesh.SubMesh> meshes = _visibleMeshes[(int)MeshMetadata.ERenderQueue.Default];
             for (int index = 0; index < meshes.Count; index++)
             {
                 Mesh.SubMesh visibleMesh = meshes[index];
-                visibleMesh.ReconstructShading(camera, GraphicsDevice);
+
+                if (!visibleMesh.InstanceEnabled)
+                {
+                    visibleMesh.ReconstructShading(camera, GraphicsDevice);
+                }
             }
+            //reuse the instance groups
+            InstancingGroupManager.ReconstructShading(camera, GraphicsDevice);
         }
 
         private void RenderLights(Camera camera)
@@ -672,7 +715,7 @@ namespace LightPrePassRenderer
             _lighting.Parameters["GBufferPixelSize"].SetValue(new Vector2(0.5f / _width, 0.5f / _height));
             _lighting.Parameters["DepthBuffer"].SetValue(_depthBuffer);
             _lighting.Parameters["NormalBuffer"].SetValue(_normalBuffer);
-            
+
             //just comment this line if you dont want to reconstruct the zbuffer
             ReconstructZBuffer(camera);
 
@@ -685,9 +728,11 @@ namespace LightPrePassRenderer
                 LightEntry lightEntry = _lightEntries[i];
                 Light light = lightEntry.light;
 
-                 //convert light position into viewspace
-                Vector3 viewSpaceLPos = Vector3.Transform(light.Transform.Translation, camera.EyeTransform);
-                Vector3 viewSpaceLDir = Vector3.TransformNormal(Vector3.Normalize(light.Transform.Backward), camera.EyeTransform);
+                //convert light position into viewspace
+                Vector3 viewSpaceLPos = Vector3.Transform(light.Transform.Translation,
+                                                            camera.EyeTransform);
+                Vector3 viewSpaceLDir = Vector3.TransformNormal(Vector3.Normalize(light.Transform.Backward),
+                                                            camera.EyeTransform);
                 _lighting.Parameters["LightPosition"].SetValue(viewSpaceLPos);
                 _lighting.Parameters["LightDir"].SetValue(viewSpaceLDir);
                 Vector4 lightColor = light.Color.ToVector4() * light.Intensity;
@@ -696,7 +741,7 @@ namespace LightPrePassRenderer
                 float invRadiusSqr = 1.0f / (light.Radius * light.Radius);
                 _lighting.Parameters["InvLightRadiusSqr"].SetValue(invRadiusSqr);
                 _lighting.Parameters["FarClip"].SetValue(camera.FarClip);
-                       
+
                 switch (light.LightType)
                 {
                     case Light.Type.Point:
@@ -712,18 +757,20 @@ namespace LightPrePassRenderer
                             {
                                 GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
                                 GraphicsDevice.DepthStencilState = _ccwDepthState;
+
                             }
                             else
                             {
                                 GraphicsDevice.RasterizerState = RasterizerState.CullClockwise;
                                 GraphicsDevice.DepthStencilState = _cwDepthState;
                             }
-                            
+
                             Matrix lightMatrix = Matrix.CreateScale(light.Radius);
                             lightMatrix.Translation = light.BoundingSphere.Center;
 
-                            _lighting.Parameters["WorldViewProjection"].SetValue(lightMatrix * camera.EyeProjectionTransform);
-                          
+                            _lighting.Parameters["WorldViewProjection"].SetValue(lightMatrix *
+                                                                                 camera.EyeProjectionTransform);
+
                             _lighting.CurrentTechnique = _lighting.Techniques[1];
                             _lighting.CurrentTechnique.Passes[0].Apply();
 
@@ -741,6 +788,7 @@ namespace LightPrePassRenderer
                             {
                                 GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
                                 GraphicsDevice.DepthStencilState = _ccwDepthState;
+
                             }
                             else
                             {
@@ -748,12 +796,13 @@ namespace LightPrePassRenderer
                                 GraphicsDevice.DepthStencilState = _cwDepthState;
                             }
 
-                            float tan = (float) Math.Tan(MathHelper.ToRadians(light.SpotAngle));
+                            float tan = (float)Math.Tan(MathHelper.ToRadians(light.SpotAngle));
                             Matrix lightMatrix = Matrix.CreateScale(light.Radius * tan, light.Radius * tan, light.Radius);
 
                             lightMatrix = lightMatrix * light.Transform;
 
-                            _lighting.Parameters["WorldViewProjection"].SetValue(lightMatrix * camera.EyeProjectionTransform);
+                            _lighting.Parameters["WorldViewProjection"].SetValue(lightMatrix *
+                                                                                 camera.EyeProjectionTransform);
                             float cosSpotAngle = (float)Math.Cos(MathHelper.ToRadians(light.SpotAngle));
                             _lighting.Parameters["SpotAngle"].SetValue(cosSpotAngle);
                             _lighting.Parameters["SpotExponent"].SetValue(light.SpotExponent / (1 - cosSpotAngle));
@@ -774,11 +823,47 @@ namespace LightPrePassRenderer
                             }
 
                             _lighting.CurrentTechnique.Passes[0].Apply();
-                            
+
                             _spotRenderer.BindMesh(GraphicsDevice);
                             _spotRenderer.RenderMesh(GraphicsDevice);
+
                         }
-                        break;                
+
+                        break;
+                    case Light.Type.Directional:
+
+                        GraphicsDevice.DepthStencilState = _directionalDepthState;
+                        GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+                        ApplyFrustumCorners(_lighting, -Vector2.One, Vector2.One);
+                        if (lightEntry.castShadows)
+                        {
+                            _lighting.CurrentTechnique = _lighting.Techniques[5];
+
+                            _lighting.Parameters["DepthBias"].SetValue(light.ShadowDepthBias);
+                            Vector2 shadowMapPixelSize = new Vector2(0.5f / lightEntry.cascadeShadowMap.Texture.Width, 0.5f / lightEntry.cascadeShadowMap.Texture.Height);
+                            _lighting.Parameters["ShadowMapPixelSize"].SetValue(shadowMapPixelSize);
+                            _lighting.Parameters["ShadowMapSize"].SetValue(new Vector2(lightEntry.cascadeShadowMap.Texture.Width, lightEntry.cascadeShadowMap.Texture.Height));
+                            _lighting.Parameters["ShadowMap"].SetValue(lightEntry.cascadeShadowMap.Texture);
+                            _lighting.Parameters["CameraTransform"].SetValue(camera.Transform);
+
+                            _lighting.Parameters["ClipPlanes"].SetValue(lightEntry.cascadeShadowMap.LightClipPlanes);
+                            _lighting.Parameters["MatLightViewProj"].SetValue(lightEntry.cascadeShadowMap.LightViewProjectionMatrices);
+
+                            Vector3 cascadeDistances = Vector3.Zero;
+                            cascadeDistances.X = lightEntry.cascadeShadowMap.LightClipPlanes[0].X;
+                            cascadeDistances.Y = lightEntry.cascadeShadowMap.LightClipPlanes[1].X;
+                            cascadeDistances.Z = lightEntry.cascadeShadowMap.LightClipPlanes[2].X;
+                            _lighting.Parameters["CascadeDistances"].SetValue(cascadeDistances);
+
+                        }
+                        else
+                        {
+                            _lighting.CurrentTechnique = _lighting.Techniques[2];
+
+                        }
+                        _lighting.CurrentTechnique.Passes[0].Apply();
+                        _quadRenderer.RenderQuad(GraphicsDevice, -Vector2.One, Vector2.One);
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -790,10 +875,20 @@ namespace LightPrePassRenderer
         private void RenderToGbuffer(Camera camera)
         {
             List<Mesh.SubMesh> meshes = _visibleMeshes[(int)MeshMetadata.ERenderQueue.Default];
-            foreach (Mesh.SubMesh mesh in meshes)
+            for (int index = 0; index < meshes.Count; index++)
             {
-                mesh.RenderToGBuffer(camera, GraphicsDevice);
+                Mesh.SubMesh mesh = meshes[index];
+                if (!mesh.InstanceEnabled)
+                {
+                    mesh.RenderToGBuffer(camera, GraphicsDevice);
+                }
+                else
+                {
+                    InstancingGroupManager.AddInstancedSubMesh(mesh);
+                }
             }
+            InstancingGroupManager.GenerateInstanceInfo(GraphicsDevice);
+            InstancingGroupManager.RenderToGBuffer(camera, GraphicsDevice);
         }
 
         /// <summary>
@@ -853,10 +948,10 @@ namespace LightPrePassRenderer
 
             frustumCorners.SetValue(_localFrustumCorners);
         }
-        
+
         public Texture2D GetShadowMap(int i)
         {
-            if (i < _lightShadowCasters.Count )
+            if (i < _lightShadowCasters.Count)
                 return _lightShadowCasters[i].spotShadowMap.Texture;
             return null;
         }
@@ -867,7 +962,7 @@ namespace LightPrePassRenderer
         /// <param name="mesh"></param>
         public void SetupSubMesh(Mesh.SubMesh subMesh)
         {
-            subMesh.RenderEffect.SetLightBuffer(_lightBuffer,_lightSpecularBuffer);
+            subMesh.RenderEffect.SetLightBuffer(_lightBuffer, _lightSpecularBuffer);
 
             subMesh.RenderEffect.SetLightBufferPixelSize(new Vector2(0.5f / _lightBuffer.Width, 0.5f / _lightBuffer.Height));
             subMesh.RenderEffect.SetDepthBuffer(_depthBuffer);

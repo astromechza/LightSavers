@@ -97,6 +97,7 @@
     <Compile Include="Camera.cs" />
     <Compile Include="DownsampleDepthEffect.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="InstancingGroup.cs" />
     <Compile Include="Light.cs" />
     <Compile Include="Mesh.cs" />
     <Compile Include="MeshMetadata.cs" />
