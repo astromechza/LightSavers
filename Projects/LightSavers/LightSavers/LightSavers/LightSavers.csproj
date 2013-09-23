@@ -107,6 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\MenuObjects\MenuBackground.cs" />
     <Compile Include="Components\RealGame.cs" />
     <Compile Include="Components\GameObjects\GameObject.cs" />
     <Compile Include="Components\GameObjects\PlayerObject.cs" />
@@ -122,7 +123,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="LightSaverGame.cs" />
     <Compile Include="ScreenManagement\Layers\GameLayer.cs" />
-    <Compile Include="ScreenManagement\Layers\Menus\MainMenu.cs" />
+    <Compile Include="ScreenManagement\Layers\Menus\MainMenuLayer.cs" />
     <Compile Include="ScreenManagement\ScreenLayer.cs" />
     <Compile Include="ScreenManagement\ScreenManager.cs" />
     <Compile Include="Utils\FPScounter.cs" />
