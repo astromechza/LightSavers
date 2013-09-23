@@ -640,7 +640,7 @@ namespace LightPrePassRenderer
             for (int index = 0; index < _lightShadowCasters.Count; index++)
             {
                 LightEntry light = _lightShadowCasters[index];
-                //only spot and directional
+                //only spot
                 if (light.light.LightType == Light.Type.Spot)
                 {
                     _shadowRenderer.GenerateShadowTextureSpotLight(this, renderWorld, light.light, light.spotShadowMap);
@@ -707,10 +707,8 @@ namespace LightPrePassRenderer
                 Light light = lightEntry.light;
 
                 //convert light position into viewspace
-                Vector3 viewSpaceLPos = Vector3.Transform(light.Transform.Translation,
-                                                            camera.EyeTransform);
-                Vector3 viewSpaceLDir = Vector3.TransformNormal(Vector3.Normalize(light.Transform.Backward),
-                                                            camera.EyeTransform);
+                Vector3 viewSpaceLPos = Vector3.Transform(light.Transform.Translation, camera.EyeTransform);
+                Vector3 viewSpaceLDir = Vector3.TransformNormal(Vector3.Normalize(light.Transform.Backward), camera.EyeTransform);
                 _lighting.Parameters["LightPosition"].SetValue(viewSpaceLPos);
                 _lighting.Parameters["LightDir"].SetValue(viewSpaceLDir);
                 Vector4 lightColor = light.Color.ToVector4() * light.Intensity;
