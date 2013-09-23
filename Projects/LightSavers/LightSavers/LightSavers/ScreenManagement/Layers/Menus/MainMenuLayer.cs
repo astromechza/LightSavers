@@ -121,11 +121,11 @@ namespace LightSavers.ScreenManagement.Layers.Menus
 
         private void CheckControls()
         {
-            if (Globals.inputController.isButtonReleased(Buttons.Back, null))
+            if (Globals.inputController.isButtonReleased(Buttons.B, null))
             {
                 this.StartTransitionOff();
             }
-            else if (Globals.inputController.isButtonReleased(Buttons.Start, null))
+            else if (Globals.inputController.isButtonReleased(Buttons.A, null))
             {
                 this.fadeOutCompleteCallback = StartGame;
                 this.StartTransitionOff();

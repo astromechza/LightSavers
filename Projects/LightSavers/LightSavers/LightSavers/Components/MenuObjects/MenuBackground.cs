@@ -28,7 +28,7 @@ namespace LightSavers.Components.MenuObjects
             renderer = new Renderer(Globals.graphics.GraphicsDevice, Globals.content, viewport.Width, viewport.Height);
 
             // The light and mesh container is used to store mesh and light obejcts. This is just for RENDERING. Not for DRAWING
-            lightAndMeshContainer = new SimpleLightAndMeshContainer();
+            lightAndMeshContainer = new SimpleLightAndMeshContainer(); 
             lightAndMeshContainer.SetSubMeshDelegate(delegate(Mesh.SubMesh subMesh)
             {
                 renderer.SetupSubMesh(subMesh);
