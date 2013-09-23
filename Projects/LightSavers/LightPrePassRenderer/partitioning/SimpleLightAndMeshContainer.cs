@@ -6,28 +6,29 @@ using System.Text;
 
 namespace LightPrePassRenderer.partitioning
 {
-    public class LightAndMeshContainer
+    public class SimpleLightAndMeshContainer : BaseLightAndMeshContainer
     {
-        # region Delegate Defines
-        public delegate void AddSubMeshDelegate(Mesh.SubMesh subMesh);
-        public delegate void AddLightDelegate(Light light);
-        #endregion
-
         #region Properties
-        private AddSubMeshDelegate addSubMeshFunc;
-        private AddLightDelegate addLightFunc;
+        private BaseLightAndMeshContainer.AddSubMeshDelegate addSubMeshFunc;
+        private BaseLightAndMeshContainer.AddLightDelegate addLightFunc;
 
         private List<Mesh.SubMesh> _worldSubMeshes = new List<Mesh.SubMesh>(100);
         private List<Light> _worldLights = new List<Light>(20);
         #endregion
 
-        public LightAndMeshContainer(AddSubMeshDelegate subMeshD, AddLightDelegate lightD)
+        public SimpleLightAndMeshContainer() { }
+
+        public override void SetSubMeshDelegate(BaseLightAndMeshContainer.AddSubMeshDelegate subMeshD)
         {
             addSubMeshFunc = subMeshD;
+        }
+
+        public override void SetLightDelegate(BaseLightAndMeshContainer.AddLightDelegate lightD)
+        {
             addLightFunc = lightD;
         }
 
-        public void AddMesh(Mesh mesh)
+        public override void AddMesh(Mesh mesh)
         {
             for (int index = 0; index < mesh.SubMeshes.Count; index++)
             {
@@ -36,30 +37,30 @@ namespace LightPrePassRenderer.partitioning
             }            
         }
 
-        public void AddSubMesh(Mesh.SubMesh subMesh)
+        public override void AddSubMesh(Mesh.SubMesh subMesh)
         {
             addSubMeshFunc(subMesh);
             _worldSubMeshes.Add(subMesh);
         }
 
-        public void RemoveSubMesh(Mesh.SubMesh subMesh)
+        public override void RemoveSubMesh(Mesh.SubMesh subMesh)
         {
             _worldSubMeshes.Remove(subMesh);
         }
 
 
-        public void AddLight(Light light)
+        public override void AddLight(Light light)
         {
             addLightFunc(light);
             _worldLights.Add(light);
         }
 
-        public void RemoveLight(Light light)
+        public override void RemoveLight(Light light)
         {
             _worldLights.Remove(light);
         }
 
-        public void GetVisibleMeshes(BoundingFrustum frustum, List<Mesh.SubMesh>[] visibleSubMeshes)
+        public override void GetVisibleMeshes(BoundingFrustum frustum, List<Mesh.SubMesh>[] visibleSubMeshes)
         {
             for (int index = 0; index < _worldSubMeshes.Count; index++)
             {
@@ -73,7 +74,7 @@ namespace LightPrePassRenderer.partitioning
             }
         }
 
-        public void GetVisibleMeshes(BoundingFrustum frustum, List<Mesh.SubMesh> visibleSubMeshes)
+        public override void GetVisibleMeshes(BoundingFrustum frustum, List<Mesh.SubMesh> visibleSubMeshes)
         {
             for (int index = 0; index < _worldSubMeshes.Count; index++)
             {
@@ -87,7 +88,7 @@ namespace LightPrePassRenderer.partitioning
             }
         }
 
-        public void GetShadowCasters(BoundingFrustum frustum, List<Mesh.SubMesh> visibleSubMeshes)
+        public override void GetShadowCasters(BoundingFrustum frustum, List<Mesh.SubMesh> visibleSubMeshes)
         {
             for (int index = 0; index < _worldSubMeshes.Count; index++)
             {
@@ -107,7 +108,7 @@ namespace LightPrePassRenderer.partitioning
         /// <param name="frustum"></param>
         /// <param name="additionalPlanes"></param>
         /// <param name="visibleSubMeshes"></param>
-        public void GetShadowCasters(BoundingFrustum frustum, Plane[] additionalPlanes, List<Mesh.SubMesh> visibleSubMeshes)
+        public override void GetShadowCasters(BoundingFrustum frustum, Plane[] additionalPlanes, List<Mesh.SubMesh> visibleSubMeshes)
         {
             for (int index = 0; index < _worldSubMeshes.Count; index++)
             {
@@ -139,7 +140,7 @@ namespace LightPrePassRenderer.partitioning
             }
         }
 
-        public void GetVisibleLights(BoundingFrustum frustum, List<Light> visibleLights)
+        public override void GetVisibleLights(BoundingFrustum frustum, List<Light> visibleLights)
         {
             foreach (Light light in _worldLights)
             {

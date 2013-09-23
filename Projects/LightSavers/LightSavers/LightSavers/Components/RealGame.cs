@@ -17,9 +17,9 @@ namespace LightSavers.Components
     {
         private PlayerObject[] players;
 
-        public LightAndMeshContainer lightAndMeshContainer;
+        public SimpleLightAndMeshContainer lightAndMeshContainer;
 
-        public RealGame(int numberOfSections, LightAndMeshContainer lightAndMeshContainer)
+        public RealGame(int numberOfSections, SimpleLightAndMeshContainer lightAndMeshContainer)
         {
             this.lightAndMeshContainer = lightAndMeshContainer;
 

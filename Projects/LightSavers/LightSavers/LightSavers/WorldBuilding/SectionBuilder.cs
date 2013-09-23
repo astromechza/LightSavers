@@ -12,7 +12,7 @@ namespace LightSavers.WorldBuilding
 {
     public class SectionBuilder
     {
-        public static void Build(string filename, Vector3 origin, LightAndMeshContainer lamc)
+        public static void Build(string filename, Vector3 origin, SimpleLightAndMeshContainer lamc)
         {
 
             // First add the environment mesh itself

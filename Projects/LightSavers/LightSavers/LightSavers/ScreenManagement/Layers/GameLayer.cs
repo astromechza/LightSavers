@@ -20,7 +20,7 @@ namespace LightSavers.ScreenManagement.Layers
 
         private Renderer renderer;
         private CameraController cameraController;
-        private LightAndMeshContainer lightAndMeshContainer;
+        private SimpleLightAndMeshContainer lightAndMeshContainer;
 
         public GameLayer() : base()
         {
@@ -50,16 +50,16 @@ namespace LightSavers.ScreenManagement.Layers
             renderer = new Renderer(Globals.graphics.GraphicsDevice, Globals.content, viewport.Width, viewport.Height);
 
             // The light and mesh container is used to store mesh and light obejcts. This is just for RENDERING. Not for DRAWING
-            lightAndMeshContainer = new LightAndMeshContainer(
-            delegate(Mesh.SubMesh subMesh) 
+            lightAndMeshContainer = new SimpleLightAndMeshContainer();
+            lightAndMeshContainer.SetSubMeshDelegate(delegate(Mesh.SubMesh subMesh) 
             {
                 renderer.SetupSubMesh(subMesh);
                 subMesh.RenderEffect.AmbientParameter.SetValue(Vector4.Zero);
-            }, 
-            delegate(Light l) { });
+            });
+            lightAndMeshContainer.SetLightDelegate(delegate(Light l) { });
 
             // Load the Game
-            game = new RealGame(10, lightAndMeshContainer);
+            game = new RealGame(3, lightAndMeshContainer);
 
             Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-75)) * Matrix.CreateTranslation(new Vector3(4, 16, 8));
             cameraController = new CameraController(viewport, temp);

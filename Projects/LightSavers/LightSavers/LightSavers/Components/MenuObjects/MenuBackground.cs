@@ -15,7 +15,7 @@ namespace LightSavers.Components.MenuObjects
         private Viewport viewport;
 
         private Renderer renderer;
-        private LightAndMeshContainer lightAndMeshContainer;
+        private SimpleLightAndMeshContainer lightAndMeshContainer;
         private Camera camera;
 
         //construct
@@ -28,13 +28,13 @@ namespace LightSavers.Components.MenuObjects
             renderer = new Renderer(Globals.graphics.GraphicsDevice, Globals.content, viewport.Width, viewport.Height);
 
             // The light and mesh container is used to store mesh and light obejcts. This is just for RENDERING. Not for DRAWING
-            lightAndMeshContainer = new LightAndMeshContainer(
-            delegate(Mesh.SubMesh subMesh)
+            lightAndMeshContainer = new SimpleLightAndMeshContainer();
+            lightAndMeshContainer.SetSubMeshDelegate(delegate(Mesh.SubMesh subMesh)
             {
                 renderer.SetupSubMesh(subMesh);
                 subMesh.RenderEffect.AmbientParameter.SetValue(Vector4.Zero);
-            },
-            delegate(Light l) { });
+            });
+            lightAndMeshContainer.SetLightDelegate(delegate(Light l) { });
 
             camera = new Camera();
             camera.Aspect = viewport.AspectRatio;

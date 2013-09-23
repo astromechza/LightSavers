@@ -126,7 +126,7 @@ namespace LightPrePassRenderer
         /// <param name="meshes"></param>
         /// <param name="light"></param>
         /// <param name="shadowMap"></param>
-        public void GenerateShadowTextureSpotLight(Renderer renderer, LightAndMeshContainer renderWorld, Light light, SpotShadowMapEntry shadowMap)
+        public void GenerateShadowTextureSpotLight(Renderer renderer, BaseLightAndMeshContainer renderWorld, Light light, SpotShadowMapEntry shadowMap)
         {
             //bind the render target
             renderer.GraphicsDevice.SetRenderTarget(shadowMap.Texture);
@@ -167,7 +167,7 @@ namespace LightPrePassRenderer
         /// <param name="light"></param>
         /// <param name="cascadeShadowMap"></param>
         /// <param name="camera"></param>
-        public void GenerateShadowTextureDirectionalLight(Renderer renderer, LightAndMeshContainer renderWorld, Light light, CascadeShadowMapEntry cascadeShadowMap, Camera camera)
+        public void GenerateShadowTextureDirectionalLight(Renderer renderer, SimpleLightAndMeshContainer renderWorld, Light light, CascadeShadowMapEntry cascadeShadowMap, Camera camera)
         {
             //bind the render target
             renderer.GraphicsDevice.SetRenderTarget(cascadeShadowMap.Texture);

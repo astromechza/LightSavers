@@ -438,7 +438,7 @@ namespace LightPrePassRenderer
         /// <param name="gameTime"></param>
         /// <param name="lights">Visible lights</param>
         /// <returns></returns>
-        public RenderTarget2D RenderScene(Camera camera, LightAndMeshContainer renderWorld, GameTime gameTime)
+        public RenderTarget2D RenderScene(Camera camera, BaseLightAndMeshContainer renderWorld, GameTime gameTime)
         {
             InstancingGroupManager.Reset();
 
@@ -564,7 +564,7 @@ namespace LightPrePassRenderer
         /// </summary>
         /// <param name="camera"></param>
         /// <param name="meshes"></param>
-        private void CullVisibleMeshes(Camera camera, LightAndMeshContainer renderWorld)
+        private void CullVisibleMeshes(Camera camera, BaseLightAndMeshContainer renderWorld)
         {
             for (int index = 0; index < _visibleMeshes.Length; index++)
             {
@@ -635,7 +635,7 @@ namespace LightPrePassRenderer
         /// <param name="camera"></param>
         /// <param name="meshes"></param>
         /// <param name="renderWorld"></param>
-        private void GenerateShadows(Camera camera, LightAndMeshContainer renderWorld)
+        private void GenerateShadows(Camera camera, BaseLightAndMeshContainer renderWorld)
         {
             for (int index = 0; index < _lightShadowCasters.Count; index++)
             {
