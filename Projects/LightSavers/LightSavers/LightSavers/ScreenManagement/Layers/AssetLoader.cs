@@ -88,7 +88,7 @@ namespace LightSavers
             // remove the loading layer since its not needed
             Globals.screenManager.Pop();
             // add main menu screen
-            Globals.screenManager.Push(new MainMenu());
+            Globals.screenManager.Push(new MainMenuLayer());
             return true;
         }
 
@@ -101,7 +101,7 @@ namespace LightSavers
             num_assets += CountSections();
             LoadSections();
             // assets
-            mdl_menuscene = loadModel("models/menuscene");
+            mdl_menuscene = loadModel("models/menuscene/MenuScene");
             mdl_character = loadModel("animatedmodels/Archetype_Rig");
             mdl_sphere = loadModel("models/sphere");
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
