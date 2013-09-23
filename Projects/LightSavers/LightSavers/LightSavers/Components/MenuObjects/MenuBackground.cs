@@ -49,11 +49,13 @@ namespace LightSavers.Components.MenuObjects
             lightAndMeshContainer.AddMesh(m);
 
             Light mainlight = new Light();
-            mainlight.LightType = Light.Type.Point;
-            mainlight.Color = Color.White;
-            mainlight.Transform = Matrix.CreateTranslation(0, 5f, 0);
-            mainlight.Radius = 10;
-            mainlight.Intensity = 1;
+            mainlight.LightType = Light.Type.Spot;
+            mainlight.Color = Color.AntiqueWhite;
+            mainlight.Transform = Matrix.CreateFromYawPitchRoll(MathHelper.ToRadians(170),-0.7f,0) * Matrix.CreateTranslation(0, 5f, -4);
+            mainlight.SpotAngle = 50;
+            mainlight.SpotExponent = 1;
+            mainlight.Radius = 13;
+            mainlight.Intensity = 2f;
             lightAndMeshContainer.AddLight(mainlight);
         }
 

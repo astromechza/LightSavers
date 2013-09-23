@@ -90,7 +90,7 @@ namespace LightSavers.ScreenManagement.Layers.Menus
             menuBackground.Draw(canvas);
 
             //draw menu here
-            canvas.Draw(AssetLoader.tex_black, new Rectangle(50, 0, 300, viewport.Height), new Color(0, 0, 0, 150));
+            //canvas.Draw(AssetLoader.tex_black, new Rectangle(50, 0, 300, viewport.Height), new Color(0, 0, 0, 150));
 
             canvas.DrawString(AssetLoader.fnt_assetloadscreen, "Start", new Vector2(60, 400), Color.White);
 
