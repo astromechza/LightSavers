@@ -27,7 +27,7 @@ namespace LightPrePassRenderer
         private List<SpotShadowMapEntry> _spotShadowMaps = new List<SpotShadowMapEntry>();
         private List<Mesh.SubMesh> _visibleMeshes = new List<Mesh.SubMesh>(100);
         private const int NUM_SPOT_SHADOWS = 4;
-        private const int SPOT_SHADOW_RESOLUTION = 512;
+        private const int SPOT_SHADOW_RESOLUTION = 256;
 
         private int _currentFreeSpotShadowMap;
 
