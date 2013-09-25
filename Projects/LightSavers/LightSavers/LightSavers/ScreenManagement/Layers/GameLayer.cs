@@ -20,7 +20,7 @@ namespace LightSavers.ScreenManagement.Layers
 
         private Renderer renderer;
         private CameraController cameraController;
-        private SimpleLightAndMeshContainer lightAndMeshContainer;
+        private AwesomeSceneGraph sceneGraph;
 
         public GameLayer() : base()
         {
@@ -50,16 +50,16 @@ namespace LightSavers.ScreenManagement.Layers
             renderer = new Renderer(Globals.graphics.GraphicsDevice, Globals.content, viewport.Width, viewport.Height);
 
             // The light and mesh container is used to store mesh and light obejcts. This is just for RENDERING. Not for DRAWING
-            lightAndMeshContainer = new SimpleLightAndMeshContainer();
-            lightAndMeshContainer.SetSubMeshDelegate(delegate(Mesh.SubMesh subMesh) 
+            sceneGraph = new AwesomeSceneGraph();
+            sceneGraph.SetSubMeshDelegate(delegate(Mesh.SubMesh subMesh) 
             {
                 renderer.SetupSubMesh(subMesh);
                 subMesh.RenderEffect.AmbientParameter.SetValue(Vector4.Zero);
             });
-            lightAndMeshContainer.SetLightDelegate(delegate(Light l) { });
+            sceneGraph.SetLightDelegate(delegate(Light l) { });
 
             // Load the Game
-            game = new RealGame(3, lightAndMeshContainer);
+            game = new RealGame(10, sceneGraph);
 
             Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-75)) * Matrix.CreateTranslation(new Vector3(4, 16, 8));
             cameraController = new CameraController(viewport, temp);
@@ -73,7 +73,7 @@ namespace LightSavers.ScreenManagement.Layers
             Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
             Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-            RenderTarget2D o = renderer.RenderScene(cameraController.Camera, lightAndMeshContainer, new GameTime());
+            RenderTarget2D o = renderer.RenderScene(cameraController.Camera, sceneGraph, new GameTime());
             
             // Now switch back to the main render device
             Globals.graphics.GraphicsDevice.SetRenderTarget(null);
@@ -94,13 +94,15 @@ namespace LightSavers.ScreenManagement.Layers
         public override void Update(float ms)
         {
             cameraController.HandleInput(ms);
-            
+
             game.Update(ms);
 
             if (Globals.inputController.isButtonReleased(Microsoft.Xna.Framework.Input.Buttons.Back, null))
             {
                 this.StartTransitionOff();
             }
+
+
 
 
             base.Update(ms);

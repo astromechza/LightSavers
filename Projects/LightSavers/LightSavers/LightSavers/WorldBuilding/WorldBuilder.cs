@@ -48,7 +48,7 @@ namespace LightSavers.WorldBuilding
             Mesh mesh = new Mesh();
             mesh.Model = AssetLoader.mdl_section[index];
             mesh.Transform = Matrix.CreateTranslation(corigin);
-            this.game.lightAndMeshContainer.AddMesh(mesh);
+            this.game.sceneGraph.AddMesh(mesh);
 
             SpawnEntities(index, corigin);
         }
@@ -92,19 +92,16 @@ namespace LightSavers.WorldBuilding
                             }
                         }
                     }
-
-
                 }
             }
         }
 
         public void SpawnOverheadLight(Vector3 position)
         {
-            System.Diagnostics.Debug.WriteLine("Spawned light at " + position.ToString());
             Mesh m = new Mesh();
             m.Model = AssetLoader.mdl_ceilinglight;
             m.Transform = Matrix.CreateTranslation(position + Vector3.Up * 4);
-            game.lightAndMeshContainer.AddMesh(m);
+            game.sceneGraph.AddMesh(m);
 
             Light l = new Light();
             l.LightType = Light.Type.Point;
@@ -113,17 +110,16 @@ namespace LightSavers.WorldBuilding
 
             
             l.Transform = Matrix.CreateTranslation(position + Vector3.Up * 4);
-            game.lightAndMeshContainer.AddLight(l);
+            game.sceneGraph.AddLight(l);
         }
 
         public void SpawnFilingCabinet(Vector3 position, int angle_d)
         {
-            System.Diagnostics.Debug.WriteLine("Spawned cabinet at " + position.ToString());
             Mesh m = new Mesh();
             m.Model = AssetLoader.mdl_filingcabinet;
             m.SetInstancingEnabled(true);
             m.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(angle_d)) * Matrix.CreateTranslation(position);
-            game.lightAndMeshContainer.AddMesh(m);
+            game.sceneGraph.AddMesh(m);
         }
         
 

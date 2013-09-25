@@ -1,4 +1,5 @@
 ﻿using LightPrePassRenderer;
+using LightPrePassRenderer.partitioning;
 using LightSavers.Utils;
 using Microsoft.Xna.Framework;
 using SkinnedModel;
@@ -40,6 +41,13 @@ namespace LightSavers.Components.GameObjects
 
         private AnimationPlayer aplayer;
 
+        // Scenegraphstuff
+        private AwesomeSceneGraph sceneGraph;
+        private MeshSceneGraphReceipt modelReceipt;
+        private LightSceneGraphReceipt light1receipt;
+        private LightSceneGraphReceipt light2receipt;
+        private LightSceneGraphReceipt light3receipt;
+
         public PlayerObject(PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
             this.playerIndex = playerIndex;
@@ -67,9 +75,9 @@ namespace LightSavers.Components.GameObjects
             mesh.BoneMatrixes = aplayer.GetSkinTransforms();
 
             mesh.Transform = Matrix.CreateScale(PLAYER_SCALE) * Matrix.CreateRotationY(rotation+(float)Math.PI) * Matrix.CreateTranslation(position + new Vector3(0, PLAYER_YORIGIN, 0));
+            
             halolight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, HALO_HEIGHT, 0));
             haloemitlight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, 2, 0));
-
             torchlight.Transform = Matrix.CreateTranslation(new Vector3(0, 0, -0.5f)) * Matrix.CreateRotationX(-0.1f) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
             
         }
@@ -139,12 +147,23 @@ namespace LightSavers.Components.GameObjects
 
             }
 
-           
-
-           
-
 
             UpdateTransform(ms);
+
+            // check if it has moved into another box
+            int oldx = (int)modelReceipt.oldGlobalTransform.Translation.X / 32;
+            int newx = (int)mesh.Transform.Translation.X / 32;
+
+            if (oldx != newx)
+            {
+                modelReceipt.parentlist.Remove(mesh);
+                light1receipt.parentlist.Remove(torchlight);
+                light2receipt.parentlist.Remove(halolight);
+                light3receipt.parentlist.Remove(haloemitlight);
+
+                AddToSG(sceneGraph);
+            }
+
         }
 
         public void SetupLights()
@@ -199,6 +218,16 @@ namespace LightSavers.Components.GameObjects
         public override RectangleF GetBoundRect()
         {
             return new RectangleF();
+        }
+
+        internal void AddToSG(AwesomeSceneGraph lightAndMeshContainer)
+        {
+            sceneGraph = lightAndMeshContainer;
+            
+            modelReceipt = sceneGraph.AddMesh(mesh);
+            light1receipt = sceneGraph.AddLight(torchlight);
+            light2receipt = sceneGraph.AddLight(halolight);
+            light3receipt = sceneGraph.AddLight(haloemitlight);
         }
     }
 }

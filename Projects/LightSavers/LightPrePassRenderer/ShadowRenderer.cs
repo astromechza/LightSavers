@@ -71,7 +71,7 @@ namespace LightPrePassRenderer
         /// <param name="meshes"></param>
         /// <param name="light"></param>
         /// <param name="shadowMap"></param>
-        public void GenerateShadowTextureSpotLight(Renderer renderer, BaseLightAndMeshContainer renderWorld, Light light, SpotShadowMapEntry shadowMap)
+        public void GenerateShadowTextureSpotLight(Renderer renderer, BaseSceneGraph renderWorld, Light light, SpotShadowMapEntry shadowMap)
         {
             //bind the render target
             renderer.GraphicsDevice.SetRenderTarget(shadowMap.Texture);

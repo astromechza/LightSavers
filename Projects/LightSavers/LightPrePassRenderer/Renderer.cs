@@ -433,12 +433,12 @@ namespace LightPrePassRenderer
         /// <param name="camera">Current camera</param>
         /// <param name="visibleLights"></param>
         /// <param name="meshes">All meshes</param>
-        /// <param name="renderWorld"></param>
+        /// <param name="sceneGraph"></param>
         /// <param name="particleSystems"></param>
         /// <param name="gameTime"></param>
         /// <param name="lights">Visible lights</param>
         /// <returns></returns>
-        public RenderTarget2D RenderScene(Camera camera, BaseLightAndMeshContainer renderWorld, GameTime gameTime)
+        public RenderTarget2D RenderScene(Camera camera, BaseSceneGraph sceneGraph, GameTime gameTime)
         {
             InstancingGroupManager.Reset();
 
@@ -454,13 +454,13 @@ namespace LightPrePassRenderer
             _shadowRenderer.InitFrame();
 
             _visibleLights.Clear();
-            renderWorld.GetVisibleLights(camera.Frustum, _visibleLights);
+            sceneGraph.GetVisibleLights(camera.Frustum, _visibleLights);
             //sort lights, choose the shadow casters
             SortLights(camera);
             SelectShadowCasters();
 
             //generate all shadow maps
-            GenerateShadows(camera, renderWorld);
+            GenerateShadows(camera, sceneGraph);
 
             //first of all, we must bind our GBuffer and reset all states
             GraphicsDevice.SetRenderTargets(_gBufferBinding);
@@ -479,7 +479,7 @@ namespace LightPrePassRenderer
             GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
 
             //select the visible meshes
-            CullVisibleMeshes(camera, renderWorld);
+            CullVisibleMeshes(camera, sceneGraph);
 
             //now, render them to the G-Buffer
             RenderToGbuffer(camera);
@@ -564,7 +564,7 @@ namespace LightPrePassRenderer
         /// </summary>
         /// <param name="camera"></param>
         /// <param name="meshes"></param>
-        private void CullVisibleMeshes(Camera camera, BaseLightAndMeshContainer renderWorld)
+        private void CullVisibleMeshes(Camera camera, BaseSceneGraph sceneGraph)
         {
             for (int index = 0; index < _visibleMeshes.Length; index++)
             {
@@ -572,7 +572,7 @@ namespace LightPrePassRenderer
                 visibleMesh.Clear();
             }
 
-            renderWorld.GetVisibleMeshes(camera.Frustum, _visibleMeshes);
+            sceneGraph.GetVisibleMeshes(camera.Frustum, _visibleMeshes);
 
         }
 
@@ -635,7 +635,7 @@ namespace LightPrePassRenderer
         /// <param name="camera"></param>
         /// <param name="meshes"></param>
         /// <param name="renderWorld"></param>
-        private void GenerateShadows(Camera camera, BaseLightAndMeshContainer renderWorld)
+        private void GenerateShadows(Camera camera, BaseSceneGraph sceneGraph)
         {
             for (int index = 0; index < _lightShadowCasters.Count; index++)
             {
@@ -643,7 +643,7 @@ namespace LightPrePassRenderer
                 //only spot
                 if (light.light.LightType == Light.Type.Spot)
                 {
-                    _shadowRenderer.GenerateShadowTextureSpotLight(this, renderWorld, light.light, light.spotShadowMap);
+                    _shadowRenderer.GenerateShadowTextureSpotLight(this, sceneGraph, light.light, light.spotShadowMap);
                 }
             }
 

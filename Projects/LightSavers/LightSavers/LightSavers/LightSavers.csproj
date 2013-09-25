@@ -128,7 +128,6 @@
     <Compile Include="ScreenManagement\ScreenManager.cs" />
     <Compile Include="Utils\FPScounter.cs" />
     <Compile Include="Utils\Tuple.cs" />
-    <Compile Include="WorldBuilding\SectionBuilder.cs" />
     <Compile Include="WorldBuilding\WorldBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
