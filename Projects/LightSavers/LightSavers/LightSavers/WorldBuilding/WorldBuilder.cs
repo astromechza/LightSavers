@@ -45,11 +45,13 @@ namespace LightSavers.WorldBuilding
 
         public void BuildSection(int index, Vector3 corigin)
         {
+            System.Diagnostics.Debug.WriteLine("Building Section @ " + corigin.ToString());
             Mesh mesh = new Mesh();
             mesh.Model = AssetLoader.mdl_section[index];
             mesh.Transform = Matrix.CreateTranslation(corigin);
             this.game.sceneGraph.AddMesh(mesh);
 
+            System.Diagnostics.Debug.WriteLine("Spawning Entities");
             SpawnEntities(index, corigin);
         }
 
@@ -59,6 +61,8 @@ namespace LightSavers.WorldBuilding
             Texture2D t = AssetLoader.tex_section_ent[index];
             Color[] colours = new Color[32*32];
             t.GetData<Color>(colours);
+
+            Random ra = new Random();
 
             for (int y = 0; y < 32; y++)
             {
@@ -73,22 +77,27 @@ namespace LightSavers.WorldBuilding
 
                     if (c == Color.White)
                     {
-                        if (x > 0 && y > 0)
+
+                        if (ra.Next(5) == 1)
                         {
-                            if (x < 31 && y < 31)
+
+                            if (x > 0 && y > 0)
                             {
-                                Color u = colours[(y - 1) * 32 + x];
-                                Color d = colours[(y + 1) * 32 + x];
-                                Color l = colours[(y) * 32 + x-1];
-                                Color r = colours[(y) * 32 + x+1];
-                                if ( u == Color.Black)
-                                    SpawnFilingCabinet(center, 180);
-                                else if (d == Color.Black)
+                                if (x < 31 && y < 31)
+                                {
+                                    Color u = colours[(y - 1) * 32 + x];
+                                    Color d = colours[(y + 1) * 32 + x];
+                                    Color l = colours[(y) * 32 + x - 1];
+                                    Color r = colours[(y) * 32 + x + 1];
+                                    if (u == Color.Black)
+                                        SpawnFilingCabinet(center, 180);
+                                    else if (d == Color.Black)
                                         SpawnFilingCabinet(center, 0);
-                                else if (l == Color.Black)
-                                    SpawnFilingCabinet(center, -90);
-                                else if (r == Color.Black)
-                                    SpawnFilingCabinet(center, 90);
+                                    else if (l == Color.Black)
+                                        SpawnFilingCabinet(center, -90);
+                                    else if (r == Color.Black)
+                                        SpawnFilingCabinet(center, 90);
+                                }
                             }
                         }
                     }
