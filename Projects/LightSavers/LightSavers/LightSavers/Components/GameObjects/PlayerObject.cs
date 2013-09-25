@@ -18,7 +18,7 @@ namespace LightSavers.Components.GameObjects
         float PLAYER_SCALE = 0.6f;
 
         // Light stuff
-        float TORCH_HEIGHT = 0.6f;
+        float TORCH_HEIGHT = 1.6f;
         float HALO_HEIGHT = 6.0f;
         #endregion
 
@@ -41,15 +41,17 @@ namespace LightSavers.Components.GameObjects
 
         private AnimationPlayer aplayer;
 
+        private RealGame game;
+
         // Scenegraphstuff
-        private AwesomeSceneGraph sceneGraph;
         private MeshSceneGraphReceipt modelReceipt;
         private LightSceneGraphReceipt light1receipt;
         private LightSceneGraphReceipt light2receipt;
         private LightSceneGraphReceipt light3receipt;
 
-        public PlayerObject(PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
+        public PlayerObject(RealGame game, PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
+            this.game = game;
             this.playerIndex = playerIndex;
             this.color = color;
 
@@ -78,12 +80,14 @@ namespace LightSavers.Components.GameObjects
             
             halolight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, HALO_HEIGHT, 0));
             haloemitlight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, 2, 0));
-            torchlight.Transform = Matrix.CreateTranslation(new Vector3(0, 0, -0.5f)) * Matrix.CreateRotationX(-0.1f) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
+            torchlight.Transform = Matrix.CreateTranslation(new Vector3(0, 0, 0.0f)) * Matrix.CreateRotationX(-0.2f) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
             
         }
 
         public override void Update(float ms)
         {
+
+            Vector3 newposition = new Vector3(position.X, position.Y, position.Z);
 
             // 1. == Update Movement
             // movement is done via analog sticks
@@ -118,7 +122,7 @@ namespace LightSavers.Components.GameObjects
                 Vector3 pdelta = new Vector3(vleft.X, 0, -vleft.Y);
                 pdelta.Normalize();
                 // modifies the horizantal direction
-                position += pdelta * ms / 300;
+                newposition += pdelta * ms / 300;
 
                 // 1.3 = If no rotation was changed, pull player angle toward forward vector
                 if (vright.Length() < 0.1f)
@@ -147,22 +151,55 @@ namespace LightSavers.Components.GameObjects
 
             }
 
-
-            UpdateTransform(ms);
-
-            // check if it has moved into another box
-            int oldx = (int)modelReceipt.oldGlobalTransform.Translation.X / 32;
-            int newx = (int)mesh.Transform.Translation.X / 32;
-
-            if (oldx != newx)
+            // collision stuff
+            if (position != newposition)
             {
-                modelReceipt.parentlist.Remove(mesh);
-                light1receipt.parentlist.Remove(torchlight);
-                light2receipt.parentlist.Remove(halolight);
-                light3receipt.parentlist.Remove(haloemitlight);
+                Vector3 cd = new Vector3(position.X, 0, position.Z);
+                if (newposition.X < position.X) cd.X -= 0.2f;
+                else if (newposition.X > position.X) cd.X += 0.2f;
 
-                AddToSG(sceneGraph);
+
+                if (newposition.Z < position.Z) cd.Z -=0.2f;
+                else if (newposition.Z > position.Z) cd.Z += 0.2f;
+
+                if (game.cellCollider.GetCollision(cd.X, position.Z))
+                {
+                    newposition.X = position.X;
+                }
+
+                if (game.cellCollider.GetCollision(position.X, cd.Z))
+                {
+                    newposition.Z = position.Z;
+                }
+
+                if (position != newposition)
+                {
+
+                    position = newposition;
+                    UpdateTransform(ms);
+
+                    // check if it has moved into another box
+                    int oldx = (int)modelReceipt.oldGlobalTransform.Translation.X / 32;
+                    int newx = (int)mesh.Transform.Translation.X / 32;
+
+                    if (oldx != newx)
+                    {
+                        modelReceipt.parentlist.Remove(mesh);
+                        light1receipt.parentlist.Remove(torchlight);
+                        light2receipt.parentlist.Remove(halolight);
+                        light3receipt.parentlist.Remove(haloemitlight);
+
+                        AddToSG(game.sceneGraph);
+                    }
+                }
+
+
             }
+
+
+
+
+            
 
         }
 
@@ -171,7 +208,7 @@ namespace LightSavers.Components.GameObjects
 
             torchlight = new Light();
             torchlight.LightType = Light.Type.Spot;
-            torchlight.ShadowDepthBias = 0.005f;
+            torchlight.ShadowDepthBias = 0.002f;
             torchlight.Radius = 15;
             torchlight.SpotAngle = 25;
             torchlight.Intensity = 1.0f;
@@ -220,14 +257,12 @@ namespace LightSavers.Components.GameObjects
             return new RectangleF();
         }
 
-        internal void AddToSG(AwesomeSceneGraph lightAndMeshContainer)
+        public void AddToSG(AwesomeSceneGraph lightAndMeshContainer)
         {
-            sceneGraph = lightAndMeshContainer;
-            
-            modelReceipt = sceneGraph.AddMesh(mesh);
-            light1receipt = sceneGraph.AddLight(torchlight);
-            light2receipt = sceneGraph.AddLight(halolight);
-            light3receipt = sceneGraph.AddLight(haloemitlight);
+            modelReceipt = game.sceneGraph.AddMesh(mesh);
+            light1receipt = game.sceneGraph.AddLight(torchlight);
+            light2receipt = game.sceneGraph.AddLight(halolight);
+            light3receipt = game.sceneGraph.AddLight(haloemitlight);
         }
     }
 }

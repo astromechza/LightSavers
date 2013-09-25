@@ -107,6 +107,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collisions\CellCollider.cs" />
+    <Compile Include="Collisions\CollisionManager.cs" />
     <Compile Include="Components\MenuObjects\MenuBackground.cs" />
     <Compile Include="Components\RealGame.cs" />
     <Compile Include="Components\GameObjects\GameObject.cs" />

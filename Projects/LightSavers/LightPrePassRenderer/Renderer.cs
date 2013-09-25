@@ -614,17 +614,17 @@ namespace LightPrePassRenderer
             {
                 LightEntry lightEntry = new LightEntry();
                 lightEntry.light = _visibleLights[index];
-                lightEntry.sqrDistanceToCam = Math.Max(1, Vector3.Distance(lightEntry.light.Transform.Translation,
-                                                            camPos));
+                //lightEntry.sqrDistanceToCam = Math.Max(1, Vector3.Distance(lightEntry.light.Transform.Translation,
+                //                                            camPos));
                 //compute a value to determine light order 
-                lightEntry.priority = 1000 * lightEntry.light.Radius / Math.Max(1, lightEntry.sqrDistanceToCam);
+                //lightEntry.priority = 1000 * lightEntry.light.Radius / Math.Max(1, lightEntry.sqrDistanceToCam);
                 _lightEntries.Add(lightEntry);
             }
 
-            _lightEntries.Sort(delegate(LightEntry p1, LightEntry p2)
-            {
-                return (int)(p2.priority - p1.priority);
-            });
+            //_lightEntries.Sort(delegate(LightEntry p1, LightEntry p2)
+            //{
+            //    return (int)(p2.priority - p1.priority);
+            //});
         }
 
         /// <summary>
