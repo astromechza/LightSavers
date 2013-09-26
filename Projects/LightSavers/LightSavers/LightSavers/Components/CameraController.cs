@@ -54,8 +54,6 @@ namespace LightSavers.Components
         public void Fit(List<Vector2> list)
         {
             
-
-
             float minx = 10000;
             float maxx = 0;
             float minz = 32;
@@ -74,7 +72,6 @@ namespace LightSavers.Components
 
             float dx = (X - minx);
             float dz = (Z - minz);
-            float ny = 0;
 
             float r = Math.Max(dx, dz);
 
