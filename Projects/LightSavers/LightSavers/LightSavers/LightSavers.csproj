@@ -113,7 +113,6 @@
     <Compile Include="Components\RealGame.cs" />
     <Compile Include="Components\GameObjects\GameObject.cs" />
     <Compile Include="Components\GameObjects\PlayerObject.cs" />
-    <Compile Include="Components\Player.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Input\KeyboardInputController.cs" />
     <Compile Include="Input\XBoxInputController.cs" />

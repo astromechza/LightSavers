@@ -73,7 +73,7 @@ namespace LightSavers.Components
             float dx = (X - minx);
             float dz = (Z - minz);
 
-            float r = Math.Max(dx, dz);
+            float r = Math.Max(dx, dz) + 1.5f;
 
             float Y = Math.Abs(r / (float)Math.Sin(22.5f));
 

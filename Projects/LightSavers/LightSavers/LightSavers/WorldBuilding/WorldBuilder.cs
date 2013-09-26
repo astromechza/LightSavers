@@ -59,66 +59,38 @@ namespace LightSavers.WorldBuilding
         {
 
             Texture2D t = AssetLoader.tex_section_ent[index];
-            Color[] colours = new Color[32*32];
+            Color[] colours = new Color[96*96];
             t.GetData<Color>(colours);
-
+            
             Random ra = new Random();
 
             for (int y = 0; y < 32; y++)
             {
                 for (int x = 0; x < 32; x++)
                 {
-                    Color c = colours[y * 32 + x];
+                    int pixelX = x * 3;
+                    int pixelY = y * 3;
+                    int pixelIndex = pixelY * 96 + pixelX;
+
+
+                    Color c = colours[pixelIndex];
                     Vector3 center = corigin + new Vector3(0.5f + x, 0, 0.5f + y);
+
 
                     if (c == Color.Black)
                     {
                         game.cellCollider.SetCollision(center.X, center.Z, true);
                     }
-
-                    if (c == Color.Yellow)
+                    else if (c == Color.Yellow)
                     {
                         SpawnOverheadLight(center);
                     }
-
-                    if (c == Color.White)
+                    else if (c == Color.Red)
                     {
-
-                        if (ra.Next(5) == 1)
-                        {
-
-                            if (x > 0 && y > 0)
-                            {
-                                if (x < 31 && y < 31)
-                                {
-                                    Color u = colours[(y - 1) * 32 + x];
-                                    Color d = colours[(y + 1) * 32 + x];
-                                    Color l = colours[(y) * 32 + x - 1];
-                                    Color r = colours[(y) * 32 + x + 1];
-                                    if (u == Color.Black)
-                                    {
-                                        SpawnFilingCabinet(center, 180);
-                                        game.cellCollider.SetCollision(center.X, center.Z, true);
-                                    }
-                                    else if (d == Color.Black)
-                                    {
-                                        SpawnFilingCabinet(center, 0);
-                                        game.cellCollider.SetCollision(center.X, center.Z, true);
-                                    }
-                                    else if (l == Color.Black)
-                                    {
-                                        SpawnFilingCabinet(center, -90);
-                                        game.cellCollider.SetCollision(center.X, center.Z, true);
-                                    }
-                                    else if (r == Color.Black)
-                                    {
-                                        SpawnFilingCabinet(center, 90);
-                                        game.cellCollider.SetCollision(center.X, center.Z, true);
-                                    }
-                                }
-                            }
-                        }
+                        SpawnFilingCabinet(center, colours, pixelX, pixelY);
                     }
+
+
                 }
             }
         }
@@ -140,12 +112,38 @@ namespace LightSavers.WorldBuilding
             game.sceneGraph.AddLight(l);
         }
 
-        public void SpawnFilingCabinet(Vector3 position, int angle_d)
+        public void SpawnFilingCabinet(Vector3 center, Color[] data, int x, int y)
         {
+            game.cellCollider.SetCollision(center.X, center.Z, true);
+
+            Color u = data[y * 96 + x+1];
+            Color d = data[(y + 2) * 96 + x+1];
+            Color l = data[(y+1) * 96 + x];
+            Color r = data[(y+1) * 96 + x + 2];
+
+            float angle_d = 0;
+
+            if (u != Color.Red)
+            {
+                angle_d = 0;
+            }
+            else if (d != Color.Red)
+            {
+                angle_d = 180;
+            }
+            else if (l != Color.Red)
+            {
+                angle_d = 90;
+            }
+            else if (r != Color.Red)
+            {
+                angle_d = -90;
+            }
+
             Mesh m = new Mesh();
             m.Model = AssetLoader.mdl_filingcabinet;
             m.SetInstancingEnabled(true);
-            m.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(angle_d)) * Matrix.CreateTranslation(position);
+            m.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(angle_d)) * Matrix.CreateTranslation(center);
             game.sceneGraph.AddMesh(m);
         }
         
