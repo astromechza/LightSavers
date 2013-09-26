@@ -15,6 +15,8 @@ namespace LightSavers.Components
         private Camera camera;
         public Camera Camera { get { return camera; } }
 
+        private Vector3 targetXYZ;
+
         // == Constructors ===
         public CameraController(Viewport v)
         {
@@ -24,6 +26,7 @@ namespace LightSavers.Components
             camera.FarClip = 1000;
             camera.Viewport = v;
             camera.Transform = Matrix.Identity;
+            targetXYZ = camera.Transform.Translation;
         }
 
         public CameraController(Viewport v, Matrix initialTransform)
@@ -33,12 +36,26 @@ namespace LightSavers.Components
             camera.NearClip = 0.1f;
             camera.FarClip = 1000;
             camera.Viewport = v;
-
             camera.Transform = initialTransform;
+            targetXYZ = camera.Transform.Translation;
+        }
+
+        public void Update(float ms)
+        {
+            Matrix cam = camera.Transform;
+            Vector3 to = targetXYZ;
+
+            Vector3 too = Vector3.Lerp(cam.Translation, to, 0.03f);
+            cam.Translation = too;
+
+            camera.Transform = cam;
         }
 
         public void Fit(List<Vector2> list)
         {
+            
+
+
             float minx = 10000;
             float maxx = 0;
             float minz = 32;
@@ -57,25 +74,13 @@ namespace LightSavers.Components
 
             float dx = (X - minx);
             float dz = (Z - minz);
+            float ny = 0;
 
-            if (dx > dz)
-            {
-                float ny = dx * 2 * (float)Math.Tan(MathHelper.ToRadians(50));
+            float r = Math.Max(dx, dz);
 
-                float Y = MathHelper.Clamp(ny, 5, 128);
-                camera.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(X, Y+3, Z);
-            }
-            else
-            {
-                float ny = dz * 2 * (float)Math.Tan(MathHelper.ToRadians(50));
+            float Y = Math.Abs(r / (float)Math.Sin(22.5f));
 
-                float Y = MathHelper.Clamp(ny, 5, 128);
-
-                camera.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(X, Y+3, Z);
-            }
-
-
-
+            targetXYZ = new Vector3(X, Y + 3, Z);
 
         }
     }

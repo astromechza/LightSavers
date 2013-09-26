@@ -61,7 +61,7 @@ namespace LightSavers.ScreenManagement.Layers
             // Load the Game
             game = new RealGame(10, sceneGraph);
 
-            Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-75)) * Matrix.CreateTranslation(new Vector3(4, 16, 8));
+            Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(new Vector3(4, 16, 8));
             cameraController = new CameraController(viewport, temp);
             
         }
@@ -102,6 +102,7 @@ namespace LightSavers.ScreenManagement.Layers
             }
 
             cameraController.Fit(game.GetCriticalPoints());
+            cameraController.Update(ms);
 
             base.Update(ms);
         }

@@ -270,7 +270,7 @@ namespace LightSavers.Components.GameObjects
         {
             outputPoints.Add(new Vector2(position.X, position.Z));
 
-            Vector3 v = new Vector3(0, 0, -8);
+            Vector3 v = new Vector3(0, 0, -7);
             Matrix m = Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position);
             Vector3 t = Vector3.Transform(v, m);
             outputPoints.Add(new Vector2(t.X,t.Z));
