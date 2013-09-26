@@ -176,7 +176,6 @@ namespace LightSavers.Components.GameObjects
                 {
 
                     position = newposition;
-                    UpdateTransform(ms);
 
                     // check if it has moved into another box
                     int oldx = (int)modelReceipt.oldGlobalTransform.Translation.X / 32;
@@ -195,6 +194,8 @@ namespace LightSavers.Components.GameObjects
 
 
             }
+
+            UpdateTransform(ms);
 
 
 
