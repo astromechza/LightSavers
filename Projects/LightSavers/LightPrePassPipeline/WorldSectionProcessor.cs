@@ -40,7 +40,7 @@ namespace LightPrePassProcessor
 
             nodeContent.Children.Add(buildFloorMesh(bmpInput));
             nodeContent.Children.Add(buildWallMesh(bmpInput));
-            nodeContent.Children.Add(buildBlackMesh(bmpInput));           
+            nodeContent.Children.Add(buildBlackMesh(bmpInput));
 
             return context.Convert<NodeContent, ModelContent>(nodeContent, typeof(LightPrePassProcessor).Name);
         }
@@ -65,13 +65,14 @@ namespace LightPrePassProcessor
             
             // loop through all the pixels
             int quadcount = 0;
-            for (int z = 0; z < bitmap.Height; z++)
+            for (int y = 0; y < 32; y++)
             {
-                for (int x = 0; x < bitmap.Width; x++)
+                for (int x = 0; x < 32; x++)
                 {
-                    if (IsFloorTile(bitmap, x, z))
+
+                    if (IsFloorTile(bitmap, x, y))
                     {
-                        quadcount += AddQuadVertexPositions(mb, new Vector3(x, 0.0f, z), new Vector3(x + 1.0f, 0.0f, z + 1.0f));
+                        quadcount += AddQuadVertexPositions(mb, new Vector3(x, 0, y), new Vector3(x + 1.0f, 0, y + 1.0f));
                     }
                 }
             }            
@@ -98,41 +99,40 @@ namespace LightPrePassProcessor
             
             mb.SetMaterial(material);
 
-
             int channel_texCoord0 = mb.CreateVertexChannel<Vector2>(VertexChannelNames.TextureCoordinate(0));
 
             // First create vertex data
             // loop through all the pixels
             int quadcount = 0;
-            for (int z = 0; z < bitmap.Height; z++)
+            for (int y = 0; y < 32; y++)
             {
-                for (int x = 0; x < bitmap.Width; x++)
+                for (int x = 0; x < 32; x++)
                 {
-                    if (IsWallTile(bitmap, x, z))
+                    if (IsWallTile(bitmap, x, y))
                     {
-                        bool leftWall = IsFloorTileSafe(bitmap, x - 1, z);
-                        bool rightWall = IsFloorTileSafe(bitmap, x + 1, z);
-                        bool backWall = IsFloorTileSafe(bitmap, x, z - 1);
-                        bool frontWall = IsFloorTileSafe(bitmap, x, z + 1);
+                        bool leftWall = IsFloorTileSafe(bitmap, x - 1, y);
+                        bool rightWall = IsFloorTileSafe(bitmap, x + 1, y);
+                        bool backWall = IsFloorTileSafe(bitmap, x, y - 1);
+                        bool frontWall = IsFloorTileSafe(bitmap, x, y + 1);
 
                         if (leftWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, z), new Vector3(x, 0.0f, z + 1.0f));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, y), new Vector3(x, 0.0f, y + 1.0f));
                         }
 
                         if (rightWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, y + 1.0f), new Vector3(x + 1.0f, 0.0f, y));
                         }
 
                         if (frontWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z + 1.0f));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, y + 1.0f), new Vector3(x + 1.0f, 0.0f, y + 1.0f));
                         }
 
                         if (backWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, z), new Vector3(x, 0.0f, z));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, y), new Vector3(x, 0.0f, y));
                         }
                     }
                 }
@@ -166,38 +166,38 @@ namespace LightPrePassProcessor
             // First create vertex data
             // loop through all the pixels
             int quadcount = 0;
-            for (int z = 0; z < bitmap.Height; z++)
+            for (int y = 0; y < 32; y++)
             {
-                for (int x = 0; x < bitmap.Width; x++)
+                for (int x = 0; x < 32; x++)
                 {
-                    if (IsWallTile(bitmap, x, z))
+                    if (IsWallTile(bitmap, x, y))
                     {
 
-                        quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, z), new Vector3(x + 1.0f, WallHeight, z + 1.0f));
+                        quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, y), new Vector3(x + 1.0f, WallHeight, y + 1.0f));
 
-                        bool leftWall = IsNullTileSafe(bitmap, x-1, z);
-                        bool rightWall = IsNullTileSafe(bitmap, x + 1, z);
-                        bool backWall = IsNullTileSafe(bitmap, x, z - 1);
-                        bool frontWall = IsNullTileSafe(bitmap, x, z + 1);
+                        bool leftWall = IsNullTileSafe(bitmap, x-1, y);
+                        bool rightWall = IsNullTileSafe(bitmap, x + 1, y);
+                        bool backWall = IsNullTileSafe(bitmap, x, y - 1);
+                        bool frontWall = IsNullTileSafe(bitmap, x, y + 1);
 
                         if (leftWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, z), new Vector3(x, 0.0f, z + 1.0f));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, y), new Vector3(x, 0.0f, y + 1.0f));
                         }
 
                         if (rightWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, y + 1.0f), new Vector3(x + 1.0f, 0.0f, y));
                         }
 
                         if (frontWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, z + 1.0f), new Vector3(x + 1.0f, 0.0f, z + 1.0f));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, y + 1.0f), new Vector3(x + 1.0f, 0.0f, y + 1.0f));
                         }
 
                         if (backWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, z), new Vector3(x, 0.0f, z));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, y), new Vector3(x, 0.0f, y));
                         }
                     }
                 }
@@ -259,18 +259,17 @@ namespace LightPrePassProcessor
 
         private bool IsFloorTile(PixelBitmapContent<Color> bitmap, int x, int y)
         {
-            //return bitmap.GetPixel(x, y) == Color.White || bitmap.GetPixel(x, y) == Color.Green;
             return !(IsWallTile(bitmap, x, y) || IsNullTile(bitmap, x, y));
         }
 
         private bool IsWallTile(PixelBitmapContent<Color> bitmap, int x, int y)
         {
-            return bitmap.GetPixel(x, y) == Color.Blue;
+            return bitmap.GetPixel(x * 3, y * 3) == Color.Blue;
         }
 
         private bool IsNullTile(PixelBitmapContent<Color> bitmap, int x, int y)
         {
-            return bitmap.GetPixel(x, y) == Color.Black;
+            return bitmap.GetPixel(x * 3, y * 3) == Color.Black;
         }
 
         // Safe type checking : checks if the tile is in the bitmap and handles accordingly
@@ -298,8 +297,8 @@ namespace LightPrePassProcessor
         {
             if (x < 0) return true;
             if (y < 0) return true;
-            if (x > bitmap.Width - 1) return true;
-            if (y > bitmap.Height - 1) return true;
+            if (x > 31) return true;
+            if (y > 31) return true;
             return false;
         }
     

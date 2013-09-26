@@ -56,47 +56,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\geometry\s2.bmp">
-      <Name>s2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\geometry\s0begin.bmp">
-      <Name>s0begin</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="levels\geometry\s1.bmp">
-      <Name>s1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\geometry\s3.bmp">
-      <Name>s3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\geometry\s4.bmp">
-      <Name>s4</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\geometry\s5.bmp">
-      <Name>s5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="textures\black.bmp">
       <Name>black</Name>
       <Importer>TextureImporter</Importer>
@@ -210,20 +169,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\geometry\s6.bmp">
-      <Name>s6</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\geometry\s0end.bmp">
-      <Name>s0end</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="models\sphere.fbx">
       <Name>sphere</Name>
       <Importer>FbxImporter</Importer>
@@ -248,63 +193,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\entities\s0begin.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Name>s0begin</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\entities\s0end.bmp">
-      <Name>s0end</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\entities\s1.bmp">
-      <Name>s1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\entities\s2.bmp">
-      <Name>s2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\entities\s3.bmp">
-      <Name>s3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\entities\s4.bmp">
-      <Name>s4</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\entities\s5.bmp">
-      <Name>s5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\entities\s6.bmp">
-      <Name>s6</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="models\desk\Desk.fbx">
       <Name>Desk</Name>
       <Importer>FbxImporter</Importer>
@@ -317,6 +205,90 @@
       <Name>MenuScene</Name>
       <Importer>FbxImporter</Importer>
       <Processor>LightPrePassProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\entities\s0begin.png">
+      <Name>s0begin</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\entities\s0end.png">
+      <Name>s0end</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\entities\s1.png">
+      <Name>s1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\entities\s2.png">
+      <Name>s2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\entities\s3.png">
+      <Name>s3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\entities\s4.png">
+      <Name>s4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\entities\s5.png">
+      <Name>s5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\entities\s6.png">
+      <Name>s6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s0begin.png">
+      <Name>s0begin</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\geometry\s0end.png">
+      <Name>s0end</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\geometry\s1.png">
+      <Name>s1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\geometry\s2.png">
+      <Name>s2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\geometry\s3.png">
+      <Name>s3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\geometry\s4.png">
+      <Name>s4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\geometry\s5.png">
+      <Name>s5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\geometry\s6.png">
+      <Name>s6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
