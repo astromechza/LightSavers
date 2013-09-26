@@ -96,13 +96,25 @@ namespace LightSavers.WorldBuilding
                                     Color l = colours[(y) * 32 + x - 1];
                                     Color r = colours[(y) * 32 + x + 1];
                                     if (u == Color.Black)
+                                    {
                                         SpawnFilingCabinet(center, 180);
+                                        game.cellCollider.SetCollision(center.X, center.Z, true);
+                                    }
                                     else if (d == Color.Black)
+                                    {
                                         SpawnFilingCabinet(center, 0);
+                                        game.cellCollider.SetCollision(center.X, center.Z, true);
+                                    }
                                     else if (l == Color.Black)
+                                    {
                                         SpawnFilingCabinet(center, -90);
+                                        game.cellCollider.SetCollision(center.X, center.Z, true);
+                                    }
                                     else if (r == Color.Black)
+                                    {
                                         SpawnFilingCabinet(center, 90);
+                                        game.cellCollider.SetCollision(center.X, center.Z, true);
+                                    }
                                 }
                             }
                         }
@@ -121,7 +133,7 @@ namespace LightSavers.WorldBuilding
             Light l = new Light();
             l.LightType = Light.Type.Point;
             l.Radius = 7;
-            l.Intensity = 0.5f;
+            l.Intensity = 0.2f;
 
             
             l.Transform = Matrix.CreateTranslation(position + Vector3.Up * 4);

@@ -36,51 +36,46 @@ namespace LightSavers.Components
 
             camera.Transform = initialTransform;
         }
-                
-        public void HandleInput(float ms)
+
+        public void Fit(List<Vector2> list)
         {
-            // Handle LEFT analog stick (TFGH)
-            Vector2 v = Globals.inputController.getAnalogVector(AnalogStick.Left, null);
-            if (v.Length() > 0.1f)
+            float minx = 10000;
+            float maxx = 0;
+            float minz = 32;
+            float maxz = 0;
+
+            foreach( Vector2 p in list)
             {
-                // modifies the horizantal direction
-                Vector3 pdelta = new Vector3(v.X, 0, -v.Y);
-                pdelta.Normalize();
-
-                Vector3 v3 = pdelta * ms / 300;
-
-                Matrix t = camera.Transform;
-
-                t.Translation += v3;
-
-                camera.Transform = t;
+                minx = Math.Min(p.X, minx);
+                minz = Math.Min(p.Y, minz);
+                maxx = Math.Max(p.X, maxx);
+                maxz = Math.Max(p.Y, maxz);
             }
 
-            // Handle button A
-            if (Globals.inputController.isButtonDown(Buttons.A, null))
+            float X = (minx + maxx) / 2;
+            float Z = (minz + maxz) / 2;
+
+            float dx = (X - minx);
+            float dz = (Z - minz);
+
+            if (dx > dz)
             {
-                // modifies the vertical direction
-                Vector3 v3 = new Vector3(0, 1, 0) * ms / 100;
+                float ny = dx * 2 * (float)Math.Tan(MathHelper.ToRadians(50));
 
-                Matrix t = camera.Transform;
+                float Y = MathHelper.Clamp(ny, 5, 128);
+                camera.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(X, Y+3, Z);
+            }
+            else
+            {
+                float ny = dz * 2 * (float)Math.Tan(MathHelper.ToRadians(50));
 
-                t.Translation += v3;
+                float Y = MathHelper.Clamp(ny, 5, 128);
 
-                camera.Transform = t;
+                camera.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(X, Y+3, Z);
             }
 
-            // Handle button B
-            if (Globals.inputController.isButtonDown(Buttons.B, null))
-            {
-                // modifies the vertical direction
-                Vector3 v3 = new Vector3(0, -1, 0) * ms / 100;
 
-                Matrix t = camera.Transform;
 
-                t.Translation += v3;
-
-                camera.Transform = t;
-            }
 
         }
     }

@@ -264,5 +264,15 @@ namespace LightSavers.Components.GameObjects
             light2receipt = game.sceneGraph.AddLight(halolight);
             light3receipt = game.sceneGraph.AddLight(haloemitlight);
         }
+
+        public void AddCriticalPoints(List<Vector2> outputPoints)
+        {
+            outputPoints.Add(new Vector2(position.X, position.Z));
+
+            Vector3 v = new Vector3(0, 0, -8);
+            Matrix m = Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position);
+            Vector3 t = Vector3.Transform(v, m);
+            outputPoints.Add(new Vector2(t.X,t.Z));
+        }
     }
 }

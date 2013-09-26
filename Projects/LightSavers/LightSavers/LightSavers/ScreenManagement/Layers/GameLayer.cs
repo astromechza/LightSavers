@@ -93,7 +93,6 @@ namespace LightSavers.ScreenManagement.Layers
 
         public override void Update(float ms)
         {
-            cameraController.HandleInput(ms);
 
             game.Update(ms);
 
@@ -102,8 +101,7 @@ namespace LightSavers.ScreenManagement.Layers
                 this.StartTransitionOff();
             }
 
-
-
+            cameraController.Fit(game.GetCriticalPoints());
 
             base.Update(ms);
         }

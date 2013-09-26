@@ -47,6 +47,18 @@ namespace LightSavers.Components
         public void Update(float ms)
         {
             players[0].Update(ms);
+
+
+            
+
+        }
+
+        public List<Vector2> GetCriticalPoints()
+        {
+            List<Vector2> o = new List<Vector2>(10);
+            players[0].AddCriticalPoints(o);
+            players[1].AddCriticalPoints(o);
+            return o;
         }
 
     }
