@@ -77,7 +77,7 @@ namespace LightSavers.WorldBuilding
                     Vector3 center = corigin + new Vector3(0.5f + x, 0, 0.5f + y);
 
 
-                    if (c == Color.Black)
+                    if (c == Color.Black || c == Color.Blue)
                     {
                         game.cellCollider.SetCollision(center.X, center.Z, true);
                     }
