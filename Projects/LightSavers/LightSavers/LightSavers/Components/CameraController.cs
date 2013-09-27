@@ -45,7 +45,7 @@ namespace LightSavers.Components
             Matrix cam = camera.Transform;
             Vector3 to = targetXYZ;
 
-            Vector3 too = Vector3.Lerp(cam.Translation, to, 0.03f);
+            Vector3 too = Vector3.Lerp(cam.Translation, to, ms / 300);
             cam.Translation = too;
 
             camera.Transform = cam;

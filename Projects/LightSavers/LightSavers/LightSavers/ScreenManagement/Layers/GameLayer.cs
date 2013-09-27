@@ -59,7 +59,7 @@ namespace LightSavers.ScreenManagement.Layers
             sceneGraph.SetLightDelegate(delegate(Light l) { });
 
             // Load the Game
-            game = new RealGame(10, sceneGraph);
+            game = new RealGame(10, 1,  sceneGraph);
 
             Matrix temp = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(new Vector3(4, 16, 8));
             cameraController = new CameraController(viewport, temp);

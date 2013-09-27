@@ -109,7 +109,7 @@ namespace LightSavers.Components.GameObjects
                     deltarotation += MathHelper.TwoPi;
 
                 // add difference
-                rotation += 0.1f * deltarotation;
+                rotation += (ms / 300) * deltarotation;
 
                 // sanitise rotation
                 if (rotation > MathHelper.TwoPi) rotation -= MathHelper.TwoPi;
@@ -140,7 +140,7 @@ namespace LightSavers.Components.GameObjects
                         deltarotation += MathHelper.TwoPi;
 
                     // add difference
-                    rotation += 0.1f * deltarotation;
+                    rotation += (ms / 300) * deltarotation;
 
                     // sanitise rotation
                     if (rotation > MathHelper.TwoPi) rotation -= MathHelper.TwoPi;

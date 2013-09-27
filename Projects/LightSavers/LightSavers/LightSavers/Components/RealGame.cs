@@ -24,40 +24,43 @@ namespace LightSavers.Components
 
         public CellCollider cellCollider;
 
-        public RealGame(int numberOfSections, AwesomeSceneGraph sg)
+        public RealGame(int numberOfSections, int numPlayers, AwesomeSceneGraph sg)
         {
             this.sceneGraph = sg;
 
             cellCollider = new CellCollider(32, numberOfSections * 32);
 
             worldBuilder = new WorldBuilder(this, numberOfSections, Vector3.Zero);
+            
+            players = new PlayerObject[numPlayers];
 
+            Color[] playerColours = new Color[] {
+                new Color(0.5f, 1.0f, 0.5f),
+                new Color(0.5f, 0.6f, 1.0f)
+            };
 
-            players = new PlayerObject[2];
-            players[0] = new PlayerObject(this, PlayerIndex.One, new Color(0.5f, 1.0f, 0.5f), new Vector3(4, 0, 4), (float)Math.PI * 1.2f);
-            players[1] = new PlayerObject(this, PlayerIndex.Two, new Color(0.5f, 0.6f, 1.0f), new Vector3(4, 0, 10), (float)Math.PI * 1.8f);
+            Vector3[] spawns = new Vector3[] {
+                new Vector3(4, 0, 4),
+                new Vector3(4, 0, 10)
+            };
 
-            players[0].AddToSG(sg);
-            players[1].AddToSG(sg);
-           
-           
+            for (int i = 0; i < numPlayers; i++)
+            {
+                players[i] = new PlayerObject(this, (i==0) ? PlayerIndex.One : PlayerIndex.Two, playerColours[i], spawns[i], 0);
+                players[i].AddToSG(sg);
+            }
 
         }
 
         public void Update(float ms)
         {
-            players[0].Update(ms);
-
-
-            
-
+            foreach (PlayerObject p in players) p.Update(ms);
         }
 
         public List<Vector2> GetCriticalPoints()
         {
             List<Vector2> o = new List<Vector2>(10);
-            players[0].AddCriticalPoints(o);
-            players[1].AddCriticalPoints(o);
+            foreach (PlayerObject p in players) p.AddCriticalPoints(o);
             return o;
         }
 
