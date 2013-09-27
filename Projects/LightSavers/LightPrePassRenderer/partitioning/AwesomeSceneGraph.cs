@@ -214,7 +214,7 @@ namespace LightPrePassRenderer.partitioning
                 for (int index = 0; index < meshes.Count; index++)
                 {
                     Mesh m = meshes[index];
-                    if (frustum.Intersects(m.GlobalBoundingBox))
+                    if (m.GetCastShadows() && frustum.Intersects(m.GlobalBoundingBox))
                     {
                         for (int si = 0; si < m.SubMeshes.Count; si++)
                         {

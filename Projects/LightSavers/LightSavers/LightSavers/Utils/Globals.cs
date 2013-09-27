@@ -22,6 +22,7 @@ namespace LightSavers.Utils
         public static ContentManager content;
         public static InputManager inputController;
         public static Viewport viewport;
+        public static Random random;
 
     }
 }

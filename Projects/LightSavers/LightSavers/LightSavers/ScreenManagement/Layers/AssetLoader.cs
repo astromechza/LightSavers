@@ -32,6 +32,7 @@ namespace LightSavers
         public static Model mdl_ceilinglight;
         public static Model mdl_filingcabinet;
         public static Model mdl_menuscene;
+        public static Model mdl_bullet;
         public static Texture2D tex_black;
         public static Texture2D tex_white;
         public static SpriteFont fnt_assetloadscreen;
@@ -106,6 +107,7 @@ namespace LightSavers
             mdl_sphere = loadModel("models/sphere");
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
             mdl_filingcabinet = loadModel("models/filing/Filing");
+            mdl_bullet = loadModel("projectiles/StandardBullet");
 
             // once its loaded, fade out
             StartTransitionOff();

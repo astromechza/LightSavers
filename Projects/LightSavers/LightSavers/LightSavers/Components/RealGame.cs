@@ -17,6 +17,7 @@ namespace LightSavers.Components
     public class RealGame
     {
         private PlayerObject[] players;
+        private List<StandardBullet> bullets = new List<StandardBullet>();
 
         public AwesomeSceneGraph sceneGraph;
 
@@ -52,9 +53,26 @@ namespace LightSavers.Components
 
         }
 
+        public void SpawnBullet(StandardBullet b)
+        {
+            bullets.Add(b);
+        }
+
         public void Update(float ms)
         {
             foreach (PlayerObject p in players) p.Update(ms);
+            for (int i = 0; i < bullets.Count; i++)
+            {
+                bullets[i].Update(ms);
+
+                // TODO: Faster bullet deleting, queue them up
+                if (bullets[i].mustBeDeleted)
+                {
+                    bullets.RemoveAt(i);
+                    System.Diagnostics.Debug.WriteLine("db");
+                    i--;
+                }
+            }
         }
 
         public List<Vector2> GetCriticalPoints()

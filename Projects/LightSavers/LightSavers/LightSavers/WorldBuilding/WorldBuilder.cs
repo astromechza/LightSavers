@@ -6,6 +6,7 @@ using LightSavers.Components;
 using Microsoft.Xna.Framework;
 using LightPrePassRenderer;
 using Microsoft.Xna.Framework.Graphics;
+using LightSavers.Utils;
 
 namespace LightSavers.WorldBuilding
 {
@@ -30,16 +31,17 @@ namespace LightSavers.WorldBuilding
             corigin += Vector3.Right * 32;
 
             // add middles
-            Random r = new Random();
             for (int i=0;i<size-2;i++)
             {
-                int ri = 2 + r.Next(AssetLoader.mdl_section.Length-2);
+                int ri = 2 + Globals.random.Next(AssetLoader.mdl_section.Length-2);
                 BuildSection(ri, corigin);
                 corigin += Vector3.Right * 32;
             }            
 
             // add end
             BuildSection(1, corigin);
+
+
 
         }
 
@@ -61,8 +63,6 @@ namespace LightSavers.WorldBuilding
             Texture2D t = AssetLoader.tex_section_ent[index];
             Color[] colours = new Color[96*96];
             t.GetData<Color>(colours);
-            
-            Random ra = new Random();
 
             for (int y = 0; y < 32; y++)
             {

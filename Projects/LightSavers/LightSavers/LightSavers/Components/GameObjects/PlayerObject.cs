@@ -151,6 +151,16 @@ namespace LightSavers.Components.GameObjects
 
             }
 
+            if (Globals.inputController.isTriggerReleased(Triggers.Right, playerIndex))
+            {
+                System.Diagnostics.Debug.WriteLine("bullet!");
+
+                float r = (float)Globals.random.NextDouble()*0.1f - 0.05f; 
+
+                game.SpawnBullet(new StandardBullet(game, position + new Vector3(0,1+r,0), rotation+MathHelper.PiOver2 + r));
+            }
+
+
             // collision stuff
             if (position != newposition)
             {
