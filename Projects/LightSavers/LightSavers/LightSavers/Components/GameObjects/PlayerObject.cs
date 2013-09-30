@@ -151,9 +151,8 @@ namespace LightSavers.Components.GameObjects
 
             }
 
-            if (Globals.inputController.isTriggerReleased(Triggers.Right, playerIndex))
+            if (Globals.inputController.isTriggerDown(Triggers.Right, playerIndex))
             {
-                System.Diagnostics.Debug.WriteLine("bullet!");
 
                 float r = (float)Globals.random.NextDouble()*0.1f - 0.05f; 
 

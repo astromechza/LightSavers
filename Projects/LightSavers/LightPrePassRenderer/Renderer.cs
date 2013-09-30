@@ -573,7 +573,6 @@ namespace LightPrePassRenderer
 
             sceneGraph.GetVisibleMeshes(camera.Frustum, _visibleMeshes);
 
-            System.Diagnostics.Debug.WriteLine("visible Meshes: " + _visibleMeshes[0].Count);
         }
 
         /// <summary>

@@ -18,7 +18,11 @@ namespace LightSavers.Components.GameObjects
 
         private Mesh mesh;
 
+        public float ageMs;
+        public bool aging;
         public bool mustBeDeleted;
+
+
         private MeshSceneGraphReceipt modelReceipt;
 
         // projectile state
@@ -33,6 +37,9 @@ namespace LightSavers.Components.GameObjects
             this.delta = Vector3.Transform(new Vector3(0.4f, 0, 0), rotationM);
 
             this.mustBeDeleted = false;
+            this.aging = false;
+            this.ageMs = 0;
+
 
             this.mesh = new Mesh();
             this.mesh.Model = AssetLoader.mdl_bullet;
@@ -45,7 +52,16 @@ namespace LightSavers.Components.GameObjects
 
         public void Update(float ms)
         {
-            if (!mustBeDeleted)
+            if (aging)
+            {
+                ageMs += ms;
+                if (ageMs > 1000)
+                {
+                    mustBeDeleted = true;
+                    modelReceipt.parentlist.Remove(mesh);
+                } 
+            }
+            else
             {
                 Vector3 newposition = new Vector3(position.X, position.Y, position.Z);
 
@@ -53,7 +69,7 @@ namespace LightSavers.Components.GameObjects
 
                 if (game.cellCollider.GetCollision(newposition.X, newposition.Z))
                 {
-                    mustBeDeleted = true;
+                    aging = true;
                 }
 
                 if (position != newposition)

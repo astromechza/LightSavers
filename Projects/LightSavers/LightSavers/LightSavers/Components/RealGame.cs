@@ -64,6 +64,10 @@ namespace LightSavers.Components
             for (int i = 0; i < bullets.Count; i++)
             {
                 bullets[i].Update(ms);
+                if (bullets[i].mustBeDeleted)
+                {
+                    bullets.RemoveAt(i--);
+                }
             }
         }
 

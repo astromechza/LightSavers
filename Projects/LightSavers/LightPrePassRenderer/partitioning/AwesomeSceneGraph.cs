@@ -74,8 +74,6 @@ namespace LightPrePassRenderer.partitioning
 
             minx = (int)MathHelper.Clamp(minx / 32, 0, blocks.Count);
             maxx = (int)MathHelper.Clamp(maxx / 32, 0, blocks.Count);
-
-            System.Diagnostics.Debug.WriteLine("minx " + minx + " maxx " + maxx);
             
             for(int x=minx;x<=maxx;x++) blocks[x].GetVisibleMeshes(frustum, visibleSubMeshes);
         }
