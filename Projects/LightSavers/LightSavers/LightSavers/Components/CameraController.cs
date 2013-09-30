@@ -15,6 +15,7 @@ namespace LightSavers.Components
         private Camera camera;
         public Camera Camera { get { return camera; } }
 
+        private Vector3 lastXYZ;
         private Vector3 targetXYZ;
 
         // == Constructors ===
@@ -27,6 +28,7 @@ namespace LightSavers.Components
             camera.Viewport = v;
             camera.Transform = Matrix.Identity;
             targetXYZ = camera.Transform.Translation;
+            lastXYZ = targetXYZ;
         }
 
         public CameraController(Viewport v, Matrix initialTransform)
@@ -38,17 +40,14 @@ namespace LightSavers.Components
             camera.Viewport = v;
             camera.Transform = initialTransform;
             targetXYZ = camera.Transform.Translation;
+            lastXYZ = targetXYZ;
         }
 
         public void Update(float ms)
         {
-            Matrix cam = camera.Transform;
-            Vector3 to = targetXYZ;
+            lastXYZ = Vector3.Lerp(lastXYZ, targetXYZ, ms / 300);
 
-            Vector3 too = Vector3.Lerp(cam.Translation, to, ms / 300);
-            cam.Translation = too;
-
-            camera.Transform = cam;
+            camera.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(lastXYZ) * Matrix.CreateRotationX(MathHelper.ToRadians(15));
         }
 
         public void Fit(List<Vector2> list)
