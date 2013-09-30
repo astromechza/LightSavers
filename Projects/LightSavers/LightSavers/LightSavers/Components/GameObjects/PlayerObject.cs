@@ -187,19 +187,12 @@ namespace LightSavers.Components.GameObjects
 
                     position = newposition;
 
-                    // check if it has moved into another box
-                    int oldx = (int)modelReceipt.oldGlobalTransform.Translation.X / 32;
-                    int newx = (int)mesh.Transform.Translation.X / 32;
+                    modelReceipt.parentlist.Remove(mesh);
+                    light1receipt.parentlist.Remove(torchlight);
+                    light2receipt.parentlist.Remove(halolight);
+                    light3receipt.parentlist.Remove(haloemitlight);
 
-                    if (oldx != newx)
-                    {
-                        modelReceipt.parentlist.Remove(mesh);
-                        light1receipt.parentlist.Remove(torchlight);
-                        light2receipt.parentlist.Remove(halolight);
-                        light3receipt.parentlist.Remove(haloemitlight);
-
-                        AddToSG(game.sceneGraph);
-                    }
+                    AddToSG();
                 }
 
 
@@ -268,7 +261,7 @@ namespace LightSavers.Components.GameObjects
             return new RectangleF();
         }
 
-        public void AddToSG(AwesomeSceneGraph lightAndMeshContainer)
+        public void AddToSG()
         {
             modelReceipt = game.sceneGraph.AddMesh(mesh);
             light1receipt = game.sceneGraph.AddLight(torchlight);

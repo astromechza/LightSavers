@@ -17,8 +17,12 @@ namespace LightSavers.Components.GameObjects
         private Vector3 delta;
 
         private Mesh mesh;
+
         public bool mustBeDeleted;
         private MeshSceneGraphReceipt modelReceipt;
+
+        // projectile state
+
 
         public StandardBullet(RealGame game, Vector3 startPos, float rotation)
         {
@@ -45,7 +49,7 @@ namespace LightSavers.Components.GameObjects
             {
                 Vector3 newposition = new Vector3(position.X, position.Y, position.Z);
 
-                newposition += delta;
+                newposition += delta * ms / 16;
 
                 if (game.cellCollider.GetCollision(newposition.X, newposition.Z))
                 {
@@ -59,6 +63,7 @@ namespace LightSavers.Components.GameObjects
                     int newx = (int)newposition.X / 32;
 
                     position = newposition;
+                    mesh.Transform = rotationM * Matrix.CreateTranslation(position);
 
                     if (oldx != newx)
                     {
@@ -66,7 +71,6 @@ namespace LightSavers.Components.GameObjects
                         modelReceipt = game.sceneGraph.AddMesh(mesh);
                     }
 
-                    mesh.Transform = rotationM * Matrix.CreateTranslation(position);
                 }
             }
 

@@ -27,7 +27,7 @@ namespace LightSavers.Components
 
         public RealGame(int numberOfSections, int numPlayers, AwesomeSceneGraph sg)
         {
-            this.sceneGraph = sg;
+            sceneGraph = sg;
 
             cellCollider = new CellCollider(32, numberOfSections * 32);
 
@@ -48,7 +48,7 @@ namespace LightSavers.Components
             for (int i = 0; i < numPlayers; i++)
             {
                 players[i] = new PlayerObject(this, (i==0) ? PlayerIndex.One : PlayerIndex.Two, playerColours[i], spawns[i], 0);
-                players[i].AddToSG(sg);
+                players[i].AddToSG();
             }
 
         }
@@ -64,14 +64,6 @@ namespace LightSavers.Components
             for (int i = 0; i < bullets.Count; i++)
             {
                 bullets[i].Update(ms);
-
-                // TODO: Faster bullet deleting, queue them up
-                if (bullets[i].mustBeDeleted)
-                {
-                    bullets.RemoveAt(i);
-                    System.Diagnostics.Debug.WriteLine("db");
-                    i--;
-                }
             }
         }
 

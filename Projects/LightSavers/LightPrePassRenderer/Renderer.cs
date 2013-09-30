@@ -449,7 +449,6 @@ namespace LightPrePassRenderer
             //compute the frustum corners for this camera
             ComputeFrustumCorners(camera);
 
-
             //this resets the free shadow maps
             _shadowRenderer.InitFrame();
 
@@ -574,6 +573,7 @@ namespace LightPrePassRenderer
 
             sceneGraph.GetVisibleMeshes(camera.Frustum, _visibleMeshes);
 
+            System.Diagnostics.Debug.WriteLine("visible Meshes: " + _visibleMeshes[0].Count);
         }
 
         /// <summary>

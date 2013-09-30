@@ -15,7 +15,7 @@ namespace LightPrePassRenderer.partitioning
 
         public AwesomeSceneGraph()
         {
-            blocks = new List<SceneGraphBlock>();
+            blocks = new List<SceneGraphBlock>(10);
         }
 
         private void EnsureBlocks(int i)
@@ -69,11 +69,14 @@ namespace LightPrePassRenderer.partitioning
 
             float dx = (corners[2].Y * xx) / yy;
 
-            int minx = (int)MathHelper.Clamp(corners[0].X - dx, 0, 319);
-            int maxx = (int)MathHelper.Clamp(corners[2].X + dx, 0, 319);
+            int minx = (int)(corners[0].X - dx);
+            int maxx = (int)(corners[2].X + dx);
 
-            minx /= 32;
-            maxx /= 32;
+            minx = (int)MathHelper.Clamp(minx / 32, 0, blocks.Count);
+            maxx = (int)MathHelper.Clamp(maxx / 32, 0, blocks.Count);
+
+            System.Diagnostics.Debug.WriteLine("minx " + minx + " maxx " + maxx);
+            
             for(int x=minx;x<=maxx;x++) blocks[x].GetVisibleMeshes(frustum, visibleSubMeshes);
         }
 
@@ -86,11 +89,12 @@ namespace LightPrePassRenderer.partitioning
 
             float dx = (corners[2].Y * xx) / yy;
 
-            int minx = (int)MathHelper.Clamp(corners[0].X - dx, 0, 319);
-            int maxx = (int)MathHelper.Clamp(corners[2].X + dx, 0, 319);
+            int minx = (int)(corners[0].X - dx);
+            int maxx = (int)(corners[2].X + dx);
 
-            minx /= 32;
-            maxx /= 32;
+            minx = (int)MathHelper.Clamp(minx / 32, 0, blocks.Count);
+            maxx = (int)MathHelper.Clamp(maxx / 32, 0, blocks.Count);
+
             for (int x = minx; x <= maxx; x++) blocks[x].GetVisibleMeshes(frustum, visibleSubMeshes);
         }
 
@@ -103,11 +107,12 @@ namespace LightPrePassRenderer.partitioning
 
             float dx = (corners[2].Y * xx) / yy;
 
-            int minx = (int)MathHelper.Clamp(corners[0].X - dx, 0, 319);
-            int maxx = (int)MathHelper.Clamp(corners[2].X + dx, 0, 319);
+            int minx = (int)(corners[0].X - dx);
+            int maxx = (int)(corners[2].X + dx);
 
-            minx /= 32;
-            maxx /= 32;
+            minx = (int)MathHelper.Clamp(minx / 32, 0, blocks.Count);
+            maxx = (int)MathHelper.Clamp(maxx / 32, 0, blocks.Count);
+
             for (int x = minx; x <= maxx; x++) blocks[x].GetShadowCasters(frustum, visibleSubMeshes);
 
         }
@@ -121,11 +126,11 @@ namespace LightPrePassRenderer.partitioning
 
             float dx = (corners[2].Y * xx) / yy;
 
-            int minx = (int)MathHelper.Clamp(corners[0].X - dx, 0, 319);
-            int maxx = (int)MathHelper.Clamp(corners[2].X + dx, 0, 319);
+            int minx = (int)(corners[0].X - dx);
+            int maxx = (int)(corners[2].X + dx);
 
-            minx /= 32;
-            maxx /= 32;
+            minx = (int)MathHelper.Clamp(minx/32, 0, blocks.Count);
+            maxx = (int)MathHelper.Clamp(maxx/32, 0, blocks.Count);
 
             for (int x = minx; x <= maxx; x++) blocks[x].GetVisibleLights(frustum, visibleLights);
         }
@@ -137,8 +142,8 @@ namespace LightPrePassRenderer.partitioning
 
             public SceneGraphBlock()
             {
-                meshes = new List<Mesh>();
-                lights = new List<Light>();
+                meshes = new List<Mesh>(100);
+                lights = new List<Light>(20);
             }
 
             public MeshSceneGraphReceipt AddMesh(Mesh m)

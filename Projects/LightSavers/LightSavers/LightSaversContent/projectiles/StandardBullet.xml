@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
   <Asset Type="LightPrePassProcessor.ProjectileXML">
-    <leftX>-0.1</leftX>
+    <leftX>-0.25</leftX>
     <rightX>0.25</rightX>
-    <radius>0.02</radius>    
+    <radius>0.02</radius>
+    <texture>projectiles/blue.png</texture>
   </Asset>
 </XnaContent>

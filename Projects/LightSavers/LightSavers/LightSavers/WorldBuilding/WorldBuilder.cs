@@ -50,7 +50,7 @@ namespace LightSavers.WorldBuilding
             System.Diagnostics.Debug.WriteLine("Building Section @ " + corigin.ToString());
             Mesh mesh = new Mesh();
             mesh.Model = AssetLoader.mdl_section[index];
-            mesh.Transform = Matrix.CreateTranslation(corigin);
+            mesh.Transform = Matrix.CreateTranslation(corigin + new Vector3(16,0,16));
             this.game.sceneGraph.AddMesh(mesh);
 
             System.Diagnostics.Debug.WriteLine("Spawning Entities");

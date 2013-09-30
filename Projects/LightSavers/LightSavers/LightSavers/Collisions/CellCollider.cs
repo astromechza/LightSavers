@@ -15,7 +15,7 @@ namespace LightSavers.Collisions
         public CellCollider(int height, int width)
         {
             collision = new bool[height, width];
-            xmax = width * 32;
+            xmax = width+1 * 32;
             ymax = height * 32;
         }
 

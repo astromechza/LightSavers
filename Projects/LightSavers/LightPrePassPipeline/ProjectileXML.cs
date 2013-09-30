@@ -10,5 +10,6 @@ namespace LightPrePassProcessor
         public float leftX;
         public float rightX;
         public float radius;
+        public string texture;
     }
 }

@@ -41,7 +41,7 @@ namespace LightPrePassRenderer
             {
                 set
                 {
-                    _renderEffect = new BaseRenderEffect(value);
+                    _renderEffect = new BaseRenderEffect(value.Clone());
                 }
             }
             public bool CastShadows

@@ -72,7 +72,7 @@ namespace LightPrePassProcessor
 
                     if (IsFloorTile(bitmap, x, y))
                     {
-                        quadcount += AddQuadVertexPositions(mb, new Vector3(x, 0, y), new Vector3(x + 1.0f, 0, y + 1.0f));
+                        quadcount += AddQuadVertexPositions(mb, new Vector3(-16 + x, 0, -16 + y), new Vector3(-16 + x + 1.0f, 0, -16 + y + 1.0f));
                     }
                 }
             }            
@@ -117,22 +117,22 @@ namespace LightPrePassProcessor
 
                         if (leftWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, y), new Vector3(x, 0.0f, y + 1.0f));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(-16 + x, WallHeight, -16 + y), new Vector3(-16 + x, 0.0f, -16 + y + 1.0f));
                         }
 
                         if (rightWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, y + 1.0f), new Vector3(x + 1.0f, 0.0f, y));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(-16 + x + 1.0f, WallHeight, -16 + y + 1.0f), new Vector3(-16 + x + 1.0f, 0.0f, -16 + y));
                         }
 
                         if (frontWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, y + 1.0f), new Vector3(x + 1.0f, 0.0f, y + 1.0f));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(-16 + x, WallHeight, -16 + y + 1.0f), new Vector3(-16 + x + 1.0f, 0.0f, -16 + y + 1.0f));
                         }
 
                         if (backWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, y), new Vector3(x, 0.0f, y));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(-16 + x + 1.0f, WallHeight, -16 + y), new Vector3(-16 + x, 0.0f, -16 + y));
                         }
                     }
                 }
@@ -173,7 +173,7 @@ namespace LightPrePassProcessor
                     if (IsWallTile(bitmap, x, y))
                     {
 
-                        quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, y), new Vector3(x + 1.0f, WallHeight, y + 1.0f));
+                        quadcount += AddQuadVertexPositions(mb, new Vector3(-16 + x, WallHeight, -16 + y), new Vector3(-16 + x + 1.0f, WallHeight, -16 + y + 1.0f));
 
                         bool leftWall = IsNullTileSafe(bitmap, x-1, y);
                         bool rightWall = IsNullTileSafe(bitmap, x + 1, y);
@@ -182,22 +182,22 @@ namespace LightPrePassProcessor
 
                         if (leftWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, y), new Vector3(x, 0.0f, y + 1.0f));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(-16 + x, WallHeight, -16 + y), new Vector3(-16 + x, 0.0f, -16 + y + 1.0f));
                         }
 
                         if (rightWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, y + 1.0f), new Vector3(x + 1.0f, 0.0f, y));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(-16 + x + 1.0f, WallHeight, -16 + y + 1.0f), new Vector3(-16 + x + 1.0f, 0.0f, -16 + y));
                         }
 
                         if (frontWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x, WallHeight, y + 1.0f), new Vector3(x + 1.0f, 0.0f, y + 1.0f));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(-16 + x, WallHeight, -16 + y + 1.0f), new Vector3(-16 + x + 1.0f, 0.0f, -16 + y + 1.0f));
                         }
 
                         if (backWall)
                         {
-                            quadcount += AddQuadVertexPositions(mb, new Vector3(x + 1.0f, WallHeight, y), new Vector3(x, 0.0f, y));
+                            quadcount += AddQuadVertexPositions(mb, new Vector3(-16 + x + 1.0f, WallHeight, -16 + y), new Vector3(-16 + x, 0.0f, -16 + y));
                         }
                     }
                 }

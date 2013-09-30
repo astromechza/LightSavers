@@ -34,8 +34,8 @@ namespace LightPrePassProcessor
 
             BasicMaterialContent material = new BasicMaterialContent();
 
-            material.Textures.Add(LightPrePassProcessor.DiffuseMapKey, new ExternalReference<TextureContent>(diffusetexturefile));
-            material.Textures.Add(LightPrePassProcessor.EmissiveMapKey, new ExternalReference<TextureContent>(emittexturefile));
+            material.Textures.Add(LightPrePassProcessor.DiffuseMapKey, new ExternalReference<TextureContent>(p.texture));
+            material.Textures.Add(LightPrePassProcessor.EmissiveMapKey, new ExternalReference<TextureContent>(p.texture));
 
             mb.SetMaterial(material);
 
