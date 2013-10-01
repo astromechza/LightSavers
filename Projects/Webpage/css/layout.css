@@ -14,23 +14,43 @@
 
 body
 {
-	/*padding:60px;*/
-background-color:#7b848a;
-background-image: -moz-linear-gradient(360deg, #7b848a, #d7e0eb 100.0%);
-background-image: -webkit-linear-gradient(360deg, #7b848a, #d7e0eb 100.0%);
-background-image: -o-linear-gradient(360deg, #7b848a, #d7e0eb 100.0%);
-background-image: -ms-linear-gradient(360deg, #7b848a, #d7e0eb 100.0%);
-background-image: linear-gradient(360deg, #7b848a, #d7e0eb 100.0%)
-
-	
+	/*padding:60px;
+	#000015*/
+background: #2e2e2e url("../img/examples/carpet.png") no-repeat;
+	background-repeat:no-repeat;
+background-attachment:fixed;
+background-position:center; 
+background-position:top; 		
 }
-.mainPanel
+
+.background
 {
-	width:80%;
-	margin:auto;
-	background-color:white;
-	border-radius:5px;
-	margin:10px;
+	
+	vertical-align:middle;
+	text-align:center;	
+}
+
+.mainPanel
+{	
+	background: url("../img/examples/carpet.png");
+	padding-left:10px;
+	padding-right:10px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+}
+
+.header
+{	
+	background-image: -moz-linear-gradient(360deg, #09090d, #1c1c1f 100.0%);
+	background-image: -webkit-linear-gradient(360deg, #09090d, #1c1c1f 100.0%);
+	background-image: -o-linear-gradient(360deg, #09090d, #1c1c1f 100.0%);
+	background-image: -ms-linear-gradient(360deg, #09090d, #1c1c1f 100.0%);
+	background-image: linear-gradient(360deg, #09090d, #1c1c1f 100.0%);
+	
+	
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	
 }
 
 /* CUSTOMIZE THE NAVBAR
@@ -216,6 +236,7 @@ background-image: linear-gradient(360deg, #7b848a, #d7e0eb 100.0%)
       font-weight: 300;
       line-height: 1;
       letter-spacing: -1px;
+	  /*color: #808080;*/
     }
 
 /* RESPONSIVE CSS

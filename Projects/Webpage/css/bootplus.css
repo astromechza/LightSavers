@@ -230,7 +230,7 @@ body {
   font-family: Roboto, arial, sans-serif;
   font-size: 13px;
   line-height: 20px;
-  color: #444444;
+  color: #666666;
   background-color: #e5e5e5;
 }
 
@@ -294,6 +294,7 @@ a:focus {
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
   width: 940px;
+  
 }
 
 .span12 {
@@ -680,7 +681,7 @@ cite {
 }
 
 .muted {
-  color: #999999;
+  color: #a6a6a6;
 }
 
 a.muted:hover,
@@ -4275,7 +4276,7 @@ input[type="submit"].btn.btn-mini {
 .navbar-inverse .nav > li > a:hover,
 .navbar-inverse .brand:focus,
 .navbar-inverse .nav > li > a:focus {
-  color: #262626;
+  /* HOVER COLOUR color: #262626;*/
 }
 
 .navbar-inverse .brand {
@@ -6358,7 +6359,7 @@ input.search-query {
 
 .navbar-inverse .brand:hover,
 .navbar-inverse .brand:focus {
-  color: #262626;
+  /*HOVER COLOUR color: #262626;*/
 }
 
 .navbar-inverse .navbar-search .search-query {
