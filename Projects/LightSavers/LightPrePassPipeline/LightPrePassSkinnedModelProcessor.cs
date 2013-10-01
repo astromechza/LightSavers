@@ -136,7 +136,17 @@ namespace LightPrePassProcessor
                 string boneName = bones[i].Name;
 
                 if (!string.IsNullOrEmpty(boneName))
-                    boneMap.Add(boneName, i);
+                {
+                    try
+                    {
+                        boneMap.Add(boneName, i);
+                    }
+                    catch( ArgumentException e)
+                    {
+                        throw new Exception("bone: " + boneName + " already added!");
+                    }
+
+                }
             }
 
             // Convert each animation in turn.
