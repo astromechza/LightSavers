@@ -372,6 +372,11 @@
     <None Include="animatedmodels\alien04\Alien04 Animations .txt">
       <Name>Alien04 Animations</Name>
     </None>
+    <Compile Include="models\weapons\pistol\Pistol.fbx">
+      <Name>Pistol</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="animatedmodels\alien03\Alien03 Animations.txt">
@@ -387,6 +392,13 @@
     <None Include="animatedmodels\alien01\Alien01 Animations.txt">
       <Name>Alien01 Animations</Name>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\weapons\pistol\PistolUVs.jpg">
+      <Name>PistolUVs</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
