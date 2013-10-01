@@ -372,6 +372,11 @@
     <None Include="animatedmodels\alien04\Alien04 Animations .txt">
       <Name>Alien04 Animations</Name>
     </None>
+    <Compile Include="models\weapons\shotgun\Shottie.fbx">
+      <Name>Shottie</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
+    </Compile>
     <Compile Include="models\weapons\pistol\Pistol.fbx">
       <Name>Pistol</Name>
       <Importer>FbxImporter</Importer>
@@ -396,6 +401,13 @@
   <ItemGroup>
     <Compile Include="models\weapons\pistol\PistolUVs.jpg">
       <Name>PistolUVs</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\weapons\shotgun\ShottiUVs.jpg">
+      <Name>ShottiUVs</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
