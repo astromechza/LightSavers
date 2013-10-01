@@ -1,0 +1,4 @@
+idle: 1 - 125
+moving: 126 - 150	
+range spray attack: 151 - 200   (sprays out the holes on its head)
+death: 201 - 225

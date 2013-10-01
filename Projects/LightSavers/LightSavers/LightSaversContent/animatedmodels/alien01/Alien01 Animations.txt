@@ -1,0 +1,4 @@
+idle: 1 - 125
+moving: 126 - 150	
+attacking: 151 - 200
+death: 201 - 225

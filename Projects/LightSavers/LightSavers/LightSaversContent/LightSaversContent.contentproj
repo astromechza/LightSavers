@@ -312,6 +312,82 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animatedmodels\alien01\alien01 texture WIP.png">
+      <Name>alien01 texture WIP</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animatedmodels\alien01\alien01_2.fbx">
+      <Name>alien01_2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animatedmodels\alien02\alien02 texture WIP.png">
+      <Name>alien02 texture WIP</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animatedmodels\alien02\alien02_2.fbx">
+      <Name>alien02_2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animatedmodels\alien03\alien03 texture WIP.png">
+      <Name>alien03 texture WIP</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animatedmodels\alien03\alien03_2.fbx">
+      <Name>alien03_2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animatedmodels\alien04\alien04 texture WIP.png">
+      <Name>alien04 texture WIP</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animatedmodels\alien04\alien04_2.fbx">
+      <Name>alien04_2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="animatedmodels\alien04\Alien04 Animations .txt">
+      <Name>Alien04 Animations</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="animatedmodels\alien03\Alien03 Animations.txt">
+      <Name>Alien03 Animations</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="animatedmodels\alien02\Alien02 Animations.txt">
+      <Name>Alien02 Animations</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="animatedmodels\alien01\Alien01 Animations.txt">
+      <Name>Alien01 Animations</Name>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

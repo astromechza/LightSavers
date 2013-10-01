@@ -1,0 +1,5 @@
+idle: 1 - 125
+moving: 126 - 150	
+melee attack: 151 - 175
+range attack: 176 - 200  (shoots out its arse XD)
+death: 201 - 225

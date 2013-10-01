@@ -1,0 +1,7 @@
+idle: 1 - 125
+moving: 126 - 150
+charging: 151 - 175
+impact: 176 - 200     (after charging)	
+attacking: 201 - 225 
+death: 226 - 275
+
