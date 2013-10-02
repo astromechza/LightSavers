@@ -30,9 +30,6 @@ namespace LightSavers.Components.GameObjects
 
         private SkinnedMesh mesh;
 
-        // Transform info
-        private Vector3 position;
-
         private float rotation;
 
         // Lighting variables

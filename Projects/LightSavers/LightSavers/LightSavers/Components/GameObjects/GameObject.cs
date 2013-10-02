@@ -8,7 +8,8 @@ namespace LightSavers.Components
 {
     public abstract class GameObject
     {
-        public Vector3 Position;
+        protected Vector3 position;
+        public Vector3 Position { get { return position; } }
 
         public abstract RectangleF GetBoundRect();
 

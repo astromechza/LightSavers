@@ -18,7 +18,6 @@ namespace LightSavers.Components
     public class RealGame
     {
         private PlayerObject[] players;
-        private List<StandardBullet> bullets = new List<StandardBullet>();
 
         private ProjectileManager projectileManager;
 
@@ -27,6 +26,8 @@ namespace LightSavers.Components
         public WorldBuilder worldBuilder;
 
         public CellCollider cellCollider;
+
+        public Door d1;
 
         public RealGame(int numberOfSections, int numPlayers, AwesomeSceneGraph sg)
         {
@@ -56,6 +57,8 @@ namespace LightSavers.Components
                 players[i].AddToSG();
             }
 
+            d1 = new Door(this, new Vector3(10, 0, 10));
+
         }
 
         public void SpawnBullet(StandardBullet b)
@@ -67,6 +70,7 @@ namespace LightSavers.Components
         {
             foreach (PlayerObject p in players) p.Update(ms);
             projectileManager.Update(ms);
+            d1.Update(ms);
         }
 
         public List<Vector2> GetCriticalPoints()
@@ -76,5 +80,16 @@ namespace LightSavers.Components
             return o;
         }
 
+
+        public PlayerObject GetClosestPlayer(Vector3 position)
+        {
+            float d = Vector3.DistanceSquared(position, players[0].Position);
+            if (players.Length > 0)
+            {
+                float d2 = Vector3.DistanceSquared(position, players[1].Position);
+                if (d2 < d) return players[1];
+            }
+            return players[0];
+        }
     }
 }

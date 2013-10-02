@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collisions\CellCollider.cs" />
+    <Compile Include="Components\GameObjects\Door.cs" />
     <Compile Include="Components\Projectiles\StandardBullet.cs" />
     <Compile Include="Components\MenuObjects\MenuBackground.cs" />
     <Compile Include="Components\Projectiles\ProjectileManager.cs" />

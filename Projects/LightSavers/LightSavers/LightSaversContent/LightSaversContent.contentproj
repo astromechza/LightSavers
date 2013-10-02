@@ -387,6 +387,16 @@
       <Importer>FbxImporter</Importer>
       <Processor>LightPrePassSkinnedModelProcessor</Processor>
     </Compile>
+    <Compile Include="models\door\doorBase.fbx">
+      <Name>doorBase</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
+    </Compile>
+    <Compile Include="models\door\doorPanel.fbx">
+      <Name>doorPanel</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="animatedmodels\alien03\Alien03 Animations.txt">
@@ -420,6 +430,20 @@
   <ItemGroup>
     <Compile Include="animatedmodels\player\spacemanTexture.png">
       <Name>spacemanTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\door\doorBaseTex.png">
+      <Name>doorBaseTex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\door\doorPanelTex.png">
+      <Name>doorPanelTex</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
