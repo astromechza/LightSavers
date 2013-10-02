@@ -66,6 +66,10 @@ namespace LightSavers.Components
                 maxz = Math.Max(p.Y, maxz);
             }
 
+            //arb tweaks
+            minz = minz - 2;
+            maxz = maxz + 1;
+
             float X = (minx + maxx) / 2;
             float Z = (minz + maxz) / 2;
 
