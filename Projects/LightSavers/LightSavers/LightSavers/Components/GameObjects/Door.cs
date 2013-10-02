@@ -24,6 +24,9 @@ namespace LightSavers.Components.GameObjects
         private Mesh doorLeftMesh;
         private Mesh doorRightMesh;
 
+        private Light lightLeft;
+        private Light lightRight;
+
         private RealGame game;
 
         private Vector3 position;
@@ -53,6 +56,21 @@ namespace LightSavers.Components.GameObjects
             game.sceneGraph.AddMesh(doorLeftMesh);
             game.sceneGraph.AddMesh(doorRightMesh);
 
+            lightLeft = new Light();
+            lightLeft.LightType = Light.Type.Point;
+            lightLeft.Color = Color.Red;
+            lightLeft.Radius = 2;
+            lightLeft.Transform = Matrix.CreateTranslation(position + new Vector3(-0.6f, 1.5f, -1.4f));
+
+            lightRight = new Light();
+            lightRight.LightType = Light.Type.Point;
+            lightRight.Color = Color.Red;
+            lightRight.Radius = 2;
+            lightRight.Transform = Matrix.CreateTranslation(position + new Vector3(-0.6f, 1.5f, 1.4f));
+
+            game.sceneGraph.AddLight(lightRight);
+            game.sceneGraph.AddLight(lightLeft);
+
             state = DoorState.OPENING;
             openPercent = MINOPEN;
             UpdatePanelPositions();
@@ -68,10 +86,14 @@ namespace LightSavers.Components.GameObjects
                 if (d < DISTANCE)
                 {
                     state = DoorState.OPENING;
+                    lightRight.Color = Color.Green;
+                    lightLeft.Color = Color.Green;
                 }
                 else
                 {
                     state = DoorState.CLOSING;
+                    lightRight.Color = Color.Red;
+                    lightLeft.Color = Color.Red;
                 }
             }  
 
