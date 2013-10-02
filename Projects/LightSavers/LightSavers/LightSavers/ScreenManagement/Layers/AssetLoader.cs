@@ -103,7 +103,7 @@ namespace LightSavers
             LoadSections();
             // assets
             mdl_menuscene = loadModel("models/menuscene/MenuScene");
-            mdl_character = loadModel("animatedmodels/Archetype_Rig");
+            mdl_character = loadModel("animatedmodels/player/spacemanAnimated");
             mdl_sphere = loadModel("models/sphere");
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
             mdl_filingcabinet = loadModel("models/filing/Filing");

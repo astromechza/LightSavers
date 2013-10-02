@@ -382,6 +382,11 @@
       <Importer>FbxImporter</Importer>
       <Processor>LightPrePassProcessor</Processor>
     </Compile>
+    <Compile Include="animatedmodels\player\spacemanAnimated.fbx">
+      <Name>spacemanAnimated</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="animatedmodels\alien03\Alien03 Animations.txt">
@@ -408,6 +413,13 @@
   <ItemGroup>
     <Compile Include="models\weapons\shotgun\ShottiUVs.jpg">
       <Name>ShottiUVs</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animatedmodels\player\spacemanTexture.png">
+      <Name>spacemanTexture</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
