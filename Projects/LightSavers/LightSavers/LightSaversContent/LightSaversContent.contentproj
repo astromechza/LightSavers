@@ -250,48 +250,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\geometry\s0begin.png">
-      <Name>s0begin</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\geometry\s0end.png">
-      <Name>s0end</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\geometry\s1.png">
-      <Name>s1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\geometry\s2.png">
-      <Name>s2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\geometry\s3.png">
-      <Name>s3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\geometry\s4.png">
-      <Name>s4</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\geometry\s5.png">
-      <Name>s5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\geometry\s6.png">
-      <Name>s6</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="projectiles\StandardBullet.xml">
       <Name>StandardBullet</Name>
       <Importer>XmlImporter</Importer>
@@ -446,6 +404,62 @@
       <Name>doorPanelTex</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s0begin.png">
+      <Name>s0begin</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s0end.png">
+      <Name>s0end</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s1.png">
+      <Name>s1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s2.png">
+      <Name>s2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s3.png">
+      <Name>s3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s4.png">
+      <Name>s4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s5.png">
+      <Name>s5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s6.png">
+      <Name>s6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

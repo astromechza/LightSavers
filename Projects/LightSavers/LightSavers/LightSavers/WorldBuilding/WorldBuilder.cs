@@ -7,12 +7,15 @@ using Microsoft.Xna.Framework;
 using LightPrePassRenderer;
 using Microsoft.Xna.Framework.Graphics;
 using LightSavers.Utils;
+using LightSavers.Components.GameObjects;
 
 namespace LightSavers.WorldBuilding
 {
 
     public class WorldBuilder
     {
+        // extra colours
+        private Color PureGreen = new Color(0, 255, 0);
         
         public RealGame game;
         public Vector3 origin;
@@ -88,6 +91,16 @@ namespace LightSavers.WorldBuilding
                     else if (c == Color.Red)
                     {
                         SpawnFilingCabinet(center, colours, pixelX, pixelY);
+                    }
+                    else if (c == PureGreen)
+                    {
+                        int pi2 = (pixelY+1) * 96 + pixelX+1;
+
+                        Color cc = colours[pi2];
+                        if (cc == PureGreen)
+                        {
+                            game.doors.Add(new Door(game, center));
+                        }
                     }
 
 

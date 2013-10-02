@@ -27,11 +27,13 @@ namespace LightSavers.Components
 
         public CellCollider cellCollider;
 
-        public Door d1;
+        public List<Door> doors;
 
         public RealGame(int numberOfSections, int numPlayers, AwesomeSceneGraph sg)
         {
             sceneGraph = sg;
+
+            doors = new List<Door>();
 
             cellCollider = new CellCollider(32, numberOfSections * 32);
 
@@ -40,6 +42,7 @@ namespace LightSavers.Components
             projectileManager = new ProjectileManager();
             
             players = new PlayerObject[numPlayers];
+
 
             Color[] playerColours = new Color[] {
                 new Color(0.5f, 1.0f, 0.5f),
@@ -57,7 +60,6 @@ namespace LightSavers.Components
                 players[i].AddToSG();
             }
 
-            d1 = new Door(this, new Vector3(10, 0, 10));
 
         }
 
@@ -70,7 +72,7 @@ namespace LightSavers.Components
         {
             foreach (PlayerObject p in players) p.Update(ms);
             projectileManager.Update(ms);
-            d1.Update(ms);
+            foreach (Door d in doors) d.Update(ms);
         }
 
         public List<Vector2> GetCriticalPoints()
