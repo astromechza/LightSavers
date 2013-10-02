@@ -2,6 +2,7 @@
 using LightPrePassRenderer.partitioning;
 using LightSavers.Collisions;
 using LightSavers.Components.GameObjects;
+using LightSavers.Components.Projectiles;
 using LightSavers.Utils;
 using LightSavers.WorldBuilding;
 using Microsoft.Xna.Framework;
@@ -19,6 +20,8 @@ namespace LightSavers.Components
         private PlayerObject[] players;
         private List<StandardBullet> bullets = new List<StandardBullet>();
 
+        private ProjectileManager projectileManager;
+
         public AwesomeSceneGraph sceneGraph;
 
         public WorldBuilder worldBuilder;
@@ -32,6 +35,8 @@ namespace LightSavers.Components
             cellCollider = new CellCollider(32, numberOfSections * 32);
 
             worldBuilder = new WorldBuilder(this, numberOfSections, Vector3.Zero);
+
+            projectileManager = new ProjectileManager();
             
             players = new PlayerObject[numPlayers];
 
@@ -55,20 +60,13 @@ namespace LightSavers.Components
 
         public void SpawnBullet(StandardBullet b)
         {
-            bullets.Add(b);
+            projectileManager.Add(b);
         }
 
         public void Update(float ms)
         {
             foreach (PlayerObject p in players) p.Update(ms);
-            for (int i = 0; i < bullets.Count; i++)
-            {
-                bullets[i].Update(ms);
-                if (bullets[i].mustBeDeleted)
-                {
-                    bullets.RemoveAt(i--);
-                }
-            }
+            projectileManager.Update(ms);
         }
 
         public List<Vector2> GetCriticalPoints()

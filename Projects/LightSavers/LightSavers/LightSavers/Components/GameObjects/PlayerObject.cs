@@ -1,5 +1,6 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
+using LightSavers.Components.Projectiles;
 using LightSavers.Utils;
 using Microsoft.Xna.Framework;
 using SkinnedModel;

@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LightSavers.Components.GameObjects
+namespace LightSavers.Components.Projectiles
 {
-    public class StandardBullet
+    public class StandardBullet : IProjectile
     {
         private RealGame game;
         private Vector3 position;
@@ -18,9 +18,9 @@ namespace LightSavers.Components.GameObjects
 
         private Mesh mesh;
 
-        public float ageMs;
-        public bool aging;
-        public bool mustBeDeleted;
+        private float ageMs;
+        private bool aging;
+        private bool mustBeDeleted;
 
 
         private MeshSceneGraphReceipt modelReceipt;
@@ -92,5 +92,9 @@ namespace LightSavers.Components.GameObjects
 
         }
 
+        public bool MustBeDeleted()
+        {
+            return mustBeDeleted;
+        }
     }
 }
