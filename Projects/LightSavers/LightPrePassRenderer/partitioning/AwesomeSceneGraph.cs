@@ -13,6 +13,10 @@ namespace LightPrePassRenderer.partitioning
 
         private List<SceneGraphBlock> blocks;
 
+        // frame things
+        private int leftFrameBlock;
+        private int rightFrameBlock;
+
         public AwesomeSceneGraph()
         {
             blocks = new List<SceneGraphBlock>(10);
@@ -60,7 +64,7 @@ namespace LightPrePassRenderer.partitioning
             addLightFunc = lightD;
         }
 
-        public override void GetVisibleMeshes(BoundingFrustum frustum, List<Mesh.SubMesh>[] visibleSubMeshes)
+        public override void DoPreFrameWork(BoundingFrustum frustum)
         {
             Vector3[] corners = frustum.GetCorners();
 
@@ -74,63 +78,31 @@ namespace LightPrePassRenderer.partitioning
 
             minx = (int)MathHelper.Clamp(minx / 32, 0, blocks.Count);
             maxx = (int)MathHelper.Clamp(maxx / 32, 0, blocks.Count);
-            
-            for(int x=minx;x<=maxx;x++) blocks[x].GetVisibleMeshes(frustum, visibleSubMeshes);
+
+            leftFrameBlock = minx;
+            rightFrameBlock = maxx;
+
+        }
+
+
+        public override void GetVisibleMeshes(BoundingFrustum frustum, List<Mesh.SubMesh>[] visibleSubMeshes)
+        {
+            for (int x = leftFrameBlock; x <= rightFrameBlock; x++) blocks[x].GetVisibleMeshes(frustum, visibleSubMeshes);
         }
 
         public override void GetVisibleMeshes(BoundingFrustum frustum, List<Mesh.SubMesh> visibleSubMeshes)
         {
-            Vector3[] corners = frustum.GetCorners();
-
-            float xx = corners[6].X - corners[2].X;
-            float yy = corners[2].Y - corners[6].Y;
-
-            float dx = (corners[2].Y * xx) / yy;
-
-            int minx = (int)(corners[0].X - dx);
-            int maxx = (int)(corners[2].X + dx);
-
-            minx = (int)MathHelper.Clamp(minx / 32, 0, blocks.Count);
-            maxx = (int)MathHelper.Clamp(maxx / 32, 0, blocks.Count);
-
-            for (int x = minx; x <= maxx; x++) blocks[x].GetVisibleMeshes(frustum, visibleSubMeshes);
+            for (int x = leftFrameBlock; x <= rightFrameBlock; x++) blocks[x].GetVisibleMeshes(frustum, visibleSubMeshes);
         }
 
         public override void GetShadowCasters(BoundingFrustum frustum, List<Mesh.SubMesh> visibleSubMeshes)
         {
-            Vector3[] corners = frustum.GetCorners();
-
-            float xx = corners[6].X - corners[2].X;
-            float yy = corners[2].Y - corners[6].Y;
-
-            float dx = (corners[2].Y * xx) / yy;
-
-            int minx = (int)(corners[0].X - dx);
-            int maxx = (int)(corners[2].X + dx);
-
-            minx = (int)MathHelper.Clamp(minx / 32, 0, blocks.Count);
-            maxx = (int)MathHelper.Clamp(maxx / 32, 0, blocks.Count);
-
-            for (int x = minx; x <= maxx; x++) blocks[x].GetShadowCasters(frustum, visibleSubMeshes);
-
+            for (int x = leftFrameBlock; x <= rightFrameBlock; x++) blocks[x].GetShadowCasters(frustum, visibleSubMeshes);
         }
 
         public override void GetVisibleLights(BoundingFrustum frustum, List<Light> visibleLights)
         {
-            Vector3[] corners = frustum.GetCorners();
-
-            float xx = corners[6].X - corners[2].X;
-            float yy = corners[2].Y - corners[6].Y;
-
-            float dx = (corners[2].Y * xx) / yy;
-
-            int minx = (int)(corners[0].X - dx);
-            int maxx = (int)(corners[2].X + dx);
-
-            minx = (int)MathHelper.Clamp(minx/32, 0, blocks.Count);
-            maxx = (int)MathHelper.Clamp(maxx/32, 0, blocks.Count);
-
-            for (int x = minx; x <= maxx; x++) blocks[x].GetVisibleLights(frustum, visibleLights);
+            for (int x = leftFrameBlock; x <= rightFrameBlock; x++) blocks[x].GetVisibleLights(frustum, visibleLights);
         }
 
         public class SceneGraphBlock

@@ -60,6 +60,11 @@ namespace LightPrePassRenderer.partitioning
             _worldLights.Remove(light);
         }
 
+        public override void DoPreFrameWork(BoundingFrustum frustum)
+        {
+            // do nothing
+        }
+
         public override void GetVisibleMeshes(BoundingFrustum frustum, List<Mesh.SubMesh>[] visibleSubMeshes)
         {
             for (int index = 0; index < _worldSubMeshes.Count; index++)
