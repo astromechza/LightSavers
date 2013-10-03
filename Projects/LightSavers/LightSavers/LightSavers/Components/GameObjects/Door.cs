@@ -87,9 +87,7 @@ namespace LightSavers.Components.GameObjects
                 float d = Vector3.DistanceSquared(p.Position, position);
                 if (d < DISTANCE)
                 {
-                    state = DoorState.OPENING;
-                    lightRight.Color = Color.Green;
-                    lightLeft.Color = Color.Green;
+                    Open();
                 }
             }  
 
@@ -119,6 +117,8 @@ namespace LightSavers.Components.GameObjects
             if (state == DoorState.CLOSED || state == DoorState.CLOSING)
             {
                 state = DoorState.OPENING;
+                lightRight.Color = Color.Green;
+                lightLeft.Color = Color.Green;
             }
         }
 
@@ -127,6 +127,8 @@ namespace LightSavers.Components.GameObjects
             if (state == DoorState.OPENING || state == DoorState.OPEN)
             {
                 state = DoorState.CLOSING;
+                lightRight.Color = Color.Red;
+                lightLeft.Color = Color.Red;
             }
         }
 
