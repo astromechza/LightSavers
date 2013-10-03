@@ -7,7 +7,7 @@ using LightSavers.ScreenManagement;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
-using LightSavers.ScreenManagement.Layers.Menus;
+using LightSavers.ScreenManagement.Layers;
 using LightSavers.Utils;
 using System.IO;
 
