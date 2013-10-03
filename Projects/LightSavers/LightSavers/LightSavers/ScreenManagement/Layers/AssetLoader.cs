@@ -28,6 +28,7 @@ namespace LightSavers
     {
         /************* ASSETS **************/
         public static Model mdl_character;
+        public static Model mdl_character_idle;
         public static Model mdl_sphere;
         public static Model mdl_ceilinglight;
         public static Model mdl_filingcabinet;
@@ -108,6 +109,7 @@ namespace LightSavers
             // assets
             mdl_menuscene = loadModel("models/menuscene/MenuScene");
             mdl_character = loadModel("animatedmodels/player/spacemanAnimated");
+            mdl_character_idle = loadModel("animatedmodels/alien01/alien01_2idle");
             mdl_sphere = loadModel("models/sphere");
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
             mdl_filingcabinet = loadModel("models/filing/Filing");

@@ -327,6 +327,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="animatedmodels\alien01\alien01_2idle.fbx">
+      <Name>alien01_2idle</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+    </Compile>
     <None Include="animatedmodels\alien04\Alien04 Animations .txt">
       <Name>Alien04 Animations</Name>
     </None>
