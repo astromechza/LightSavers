@@ -366,6 +366,11 @@
       <Processor>LightPrePassProcessor</Processor>
       <ProcessorParameters_Scale>0.5</ProcessorParameters_Scale>
     </Compile>
+    <Compile Include="animatedmodels\player\spacemanAnimatedwalk.fbx">
+      <Name>spacemanAnimatedwalk</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="animatedmodels\alien03\Alien03 Animations.txt">

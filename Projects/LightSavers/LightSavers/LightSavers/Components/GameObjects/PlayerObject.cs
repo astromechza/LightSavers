@@ -61,10 +61,10 @@ namespace LightSavers.Components.GameObjects
             mesh.Model = AssetLoader.mdl_character;
             SkinnedMesh idleAnim = new SkinnedMesh();
             idleAnim.Model = AssetLoader.mdl_character_idle;
-            mesh.SkinningData.AnimationClips.Add("idle", idleAnim.SkinningData.AnimationClips["Take 001"]);
+            mesh.SkinningData.AnimationClips.Add("idle1", idleAnim.SkinningData.AnimationClips["Take 001"]);
            
             aplayer = new AnimationPlayer(mesh.SkinningData);
-            aplayer.StartClip(mesh.SkinningData.AnimationClips["idle"]);
+            aplayer.StartClip(mesh.SkinningData.AnimationClips["idle1"]);
 
             SetupLights();
             UpdateTransform(0);
