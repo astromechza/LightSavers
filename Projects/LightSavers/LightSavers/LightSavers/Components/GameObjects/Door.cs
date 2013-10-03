@@ -9,15 +9,17 @@ namespace LightSavers.Components.GameObjects
 {
     public class Door
     {
+        #region CONSTANTS AND ENUMS
         public enum DoorState { OPEN, CLOSING, CLOSED, OPENING };
-        private Matrix FLIP180 = Matrix.CreateRotationX((float)Math.PI);
-
+        private Matrix FLIP180X = Matrix.CreateRotationX((float)Math.PI);
+        private Matrix FLIP90Y = Matrix.CreateRotationY(MathHelper.PiOver2);
         private const float MAXOPEN = 1.3f;
         private const float MINOPEN = 0.0f;
         private const float ALMOSTOPEN = MAXOPEN - 0.05f;
         private const float ALMOSTCLOSED = MINOPEN + 0.05f;
-        private const float SPEED = 1.0f/2000; // float per second
-        private const float DISTANCE = 6;
+        private const float SPEED = 1.0f/1500; // float per second
+        private const float DISTANCE = 8;
+        #endregion
 
         // Meshes
         private Mesh doorBaseMesh;
@@ -42,15 +44,15 @@ namespace LightSavers.Components.GameObjects
 
             doorBaseMesh = new Mesh();
             doorBaseMesh.Model = AssetLoader.mdl_doorBase;
-            doorBaseMesh.Transform = Matrix.CreateTranslation(position);
+            doorBaseMesh.Transform = FLIP90Y * Matrix.CreateTranslation(position);
 
             doorLeftMesh = new Mesh();
             doorLeftMesh.Model = AssetLoader.mdl_doorPanel;
-            doorLeftMesh.Transform = Matrix.CreateTranslation(position);
+            doorLeftMesh.Transform = FLIP90Y * Matrix.CreateTranslation(position);
 
             doorRightMesh = new Mesh();
             doorRightMesh.Model = AssetLoader.mdl_doorPanel;
-            doorRightMesh.Transform = FLIP180 * Matrix.CreateTranslation(position + new Vector3(0, 2.5f, 0));
+            doorRightMesh.Transform = FLIP180X * FLIP90Y * Matrix.CreateTranslation(position + new Vector3(0, 2.5f, 0));
 
             game.sceneGraph.AddMesh(doorBaseMesh);
             game.sceneGraph.AddMesh(doorLeftMesh);
@@ -71,7 +73,7 @@ namespace LightSavers.Components.GameObjects
             game.sceneGraph.AddLight(lightRight);
             game.sceneGraph.AddLight(lightLeft);
 
-            state = DoorState.OPENING;
+            state = DoorState.CLOSED;
             openPercent = MINOPEN;
             UpdatePanelPositions();
         }
@@ -79,7 +81,7 @@ namespace LightSavers.Components.GameObjects
         public void Update(float ms)
         {
             // TODO: remove once we have events firing properly
-            if (true)
+            if (state == DoorState.CLOSED)
             {
                 PlayerObject p = game.GetClosestPlayer(position);
                 float d = Vector3.DistanceSquared(p.Position, position);
@@ -88,12 +90,6 @@ namespace LightSavers.Components.GameObjects
                     state = DoorState.OPENING;
                     lightRight.Color = Color.Green;
                     lightLeft.Color = Color.Green;
-                }
-                else
-                {
-                    state = DoorState.CLOSING;
-                    lightRight.Color = Color.Red;
-                    lightLeft.Color = Color.Red;
                 }
             }  
 
@@ -113,8 +109,8 @@ namespace LightSavers.Components.GameObjects
 
         private void UpdatePanelPositions()
         {
-            doorLeftMesh.Transform = Matrix.CreateTranslation(position + new Vector3(0, 0, openPercent));
-            doorRightMesh.Transform = FLIP180 * Matrix.CreateTranslation(position + new Vector3(0, 2.5f, -openPercent));
+            doorLeftMesh.Transform = FLIP90Y * Matrix.CreateTranslation(position + new Vector3(0, 0, openPercent));
+            doorRightMesh.Transform = FLIP90Y * FLIP180X * Matrix.CreateTranslation(position + new Vector3(0, 2.5f, -openPercent));
 
         }
 
