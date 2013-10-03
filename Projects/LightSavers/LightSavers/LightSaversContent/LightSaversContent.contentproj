@@ -197,7 +197,7 @@
       <Name>Desk</Name>
       <Importer>FbxImporter</Importer>
       <Processor>LightPrePassProcessor</Processor>
-      <ProcessorParameters_Scale>0.5</ProcessorParameters_Scale>
+      <ProcessorParameters_Scale>0.57</ProcessorParameters_Scale>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -355,6 +355,12 @@
       <Importer>FbxImporter</Importer>
       <Processor>LightPrePassProcessor</Processor>
     </Compile>
+    <Compile Include="models\pipe\pipe.fbx">
+      <Name>pipe</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
+      <ProcessorParameters_Scale>0.5</ProcessorParameters_Scale>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="animatedmodels\alien03\Alien03 Animations.txt">
@@ -460,6 +466,13 @@
       <Name>s6</Name>
       <Importer>TextureImporter</Importer>
       <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\pipe\pipeTexture.png">
+      <Name>pipeTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
