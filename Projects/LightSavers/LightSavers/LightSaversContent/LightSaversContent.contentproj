@@ -197,7 +197,7 @@
       <Name>Desk</Name>
       <Importer>FbxImporter</Importer>
       <Processor>LightPrePassProcessor</Processor>
-      <ProcessorParameters_Scale>0.5</ProcessorParameters_Scale>
+      <ProcessorParameters_Scale>0.57</ProcessorParameters_Scale>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -247,48 +247,6 @@
       <Name>s6</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\geometry\s0begin.png">
-      <Name>s0begin</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\geometry\s0end.png">
-      <Name>s0end</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\geometry\s1.png">
-      <Name>s1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\geometry\s2.png">
-      <Name>s2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\geometry\s3.png">
-      <Name>s3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\geometry\s4.png">
-      <Name>s4</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\geometry\s5.png">
-      <Name>s5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\geometry\s6.png">
-      <Name>s6</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>WorldSectionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -369,9 +327,50 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="animatedmodels\alien01\alien01_2idle.fbx">
+      <Name>alien01_2idle</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+    </Compile>
     <None Include="animatedmodels\alien04\Alien04 Animations .txt">
       <Name>Alien04 Animations</Name>
     </None>
+    <Compile Include="models\weapons\shotgun\Shottie.fbx">
+      <Name>Shottie</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
+    </Compile>
+    <Compile Include="models\weapons\pistol\Pistol.fbx">
+      <Name>Pistol</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
+    </Compile>
+    <Compile Include="animatedmodels\player\spacemanAnimated.fbx">
+      <Name>spacemanAnimated</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\door\doorBase.fbx">
+      <Name>doorBase</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
+    </Compile>
+    <Compile Include="models\door\doorPanel.fbx">
+      <Name>doorPanel</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
+    </Compile>
+    <Compile Include="models\pipe\pipe.fbx">
+      <Name>pipe</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
+      <ProcessorParameters_Scale>0.5</ProcessorParameters_Scale>
+    </Compile>
+    <Compile Include="animatedmodels\player\spacemanAnimatedwalk.fbx">
+      <Name>spacemanAnimatedwalk</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="animatedmodels\alien03\Alien03 Animations.txt">
@@ -387,6 +386,104 @@
     <None Include="animatedmodels\alien01\Alien01 Animations.txt">
       <Name>Alien01 Animations</Name>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\weapons\pistol\PistolUVs.jpg">
+      <Name>PistolUVs</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\weapons\shotgun\ShottiUVs.jpg">
+      <Name>ShottiUVs</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animatedmodels\player\spacemanTexture.png">
+      <Name>spacemanTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\door\doorBaseTex.png">
+      <Name>doorBaseTex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\door\doorPanelTex.png">
+      <Name>doorPanelTex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s0begin.png">
+      <Name>s0begin</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s0end.png">
+      <Name>s0end</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s1.png">
+      <Name>s1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s2.png">
+      <Name>s2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s3.png">
+      <Name>s3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s4.png">
+      <Name>s4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s5.png">
+      <Name>s5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\geometry\s6.png">
+      <Name>s6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>WorldSectionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\pipe\pipeTexture.png">
+      <Name>pipeTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

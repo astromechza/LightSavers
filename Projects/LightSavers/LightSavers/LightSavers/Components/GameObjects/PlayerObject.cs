@@ -1,5 +1,6 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
+using LightSavers.Components.Projectiles;
 using LightSavers.Utils;
 using Microsoft.Xna.Framework;
 using SkinnedModel;
@@ -28,9 +29,6 @@ namespace LightSavers.Components.GameObjects
         private Color color;
 
         private SkinnedMesh mesh;
-
-        // Transform info
-        private Vector3 position;
 
         private float rotation;
 
@@ -61,9 +59,12 @@ namespace LightSavers.Components.GameObjects
 
             mesh = new SkinnedMesh();
             mesh.Model = AssetLoader.mdl_character;
-
+            SkinnedMesh idleAnim = new SkinnedMesh();
+            idleAnim.Model = AssetLoader.mdl_character_idle;
+            mesh.SkinningData.AnimationClips.Add("idle1", idleAnim.SkinningData.AnimationClips["Take 001"]);
+           
             aplayer = new AnimationPlayer(mesh.SkinningData);
-            aplayer.StartClip(mesh.SkinningData.AnimationClips["Take 001"]);
+            aplayer.StartClip(mesh.SkinningData.AnimationClips["idle1"]);
 
             SetupLights();
             UpdateTransform(0);

@@ -7,7 +7,7 @@ using LightSavers.ScreenManagement;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
-using LightSavers.ScreenManagement.Layers.Menus;
+using LightSavers.ScreenManagement.Layers;
 using LightSavers.Utils;
 using System.IO;
 
@@ -28,11 +28,16 @@ namespace LightSavers
     {
         /************* ASSETS **************/
         public static Model mdl_character;
+        public static Model mdl_character_idle;
         public static Model mdl_sphere;
         public static Model mdl_ceilinglight;
         public static Model mdl_filingcabinet;
         public static Model mdl_menuscene;
         public static Model mdl_bullet;
+        public static Model mdl_doorPanel;
+        public static Model mdl_doorBase;
+        public static Model mdl_desk;
+        public static Model mdl_pipe;
         public static Texture2D tex_black;
         public static Texture2D tex_white;
         public static SpriteFont fnt_assetloadscreen;
@@ -98,16 +103,24 @@ namespace LightSavers
         private void LoadAssets()
         {
             // number of assets to be loaded. (used to compute progress bar size)
-            num_assets = 5;
+            num_assets = 8;
             num_assets += CountSections();
             LoadSections();
             // assets
             mdl_menuscene = loadModel("models/menuscene/MenuScene");
-            mdl_character = loadModel("animatedmodels/Archetype_Rig");
+            mdl_character = loadModel("animatedmodels/player/spacemanAnimated");
+            mdl_character_idle = loadModel("animatedmodels/player/spacemanAnimatedwalk");
             mdl_sphere = loadModel("models/sphere");
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
             mdl_filingcabinet = loadModel("models/filing/Filing");
             mdl_bullet = loadModel("projectiles/StandardBullet");
+
+            mdl_doorPanel = loadModel("models/door/doorPanel");
+            mdl_doorBase = loadModel("models/door/doorBase");
+
+            mdl_desk = loadModel("models/desk/Desk");
+
+            mdl_pipe = loadModel("models/pipe/pipe");
 
             // once its loaded, fade out
             StartTransitionOff();

@@ -2,6 +2,7 @@
 using LightPrePassRenderer.partitioning;
 using LightSavers.Collisions;
 using LightSavers.Components.GameObjects;
+using LightSavers.Components.Projectiles;
 using LightSavers.Utils;
 using LightSavers.WorldBuilding;
 using Microsoft.Xna.Framework;
@@ -17,7 +18,8 @@ namespace LightSavers.Components
     public class RealGame
     {
         private PlayerObject[] players;
-        private List<StandardBullet> bullets = new List<StandardBullet>();
+
+        private ProjectileManager projectileManager;
 
         public AwesomeSceneGraph sceneGraph;
 
@@ -25,15 +27,22 @@ namespace LightSavers.Components
 
         public CellCollider cellCollider;
 
+        public List<Door> doors;
+
         public RealGame(int numberOfSections, int numPlayers, AwesomeSceneGraph sg)
         {
             sceneGraph = sg;
 
+            doors = new List<Door>();
+
             cellCollider = new CellCollider(32, numberOfSections * 32);
 
             worldBuilder = new WorldBuilder(this, numberOfSections, Vector3.Zero);
+
+            projectileManager = new ProjectileManager();
             
             players = new PlayerObject[numPlayers];
+
 
             Color[] playerColours = new Color[] {
                 new Color(0.5f, 1.0f, 0.5f),
@@ -51,24 +60,19 @@ namespace LightSavers.Components
                 players[i].AddToSG();
             }
 
+
         }
 
         public void SpawnBullet(StandardBullet b)
         {
-            bullets.Add(b);
+            projectileManager.Add(b);
         }
 
         public void Update(float ms)
         {
             foreach (PlayerObject p in players) p.Update(ms);
-            for (int i = 0; i < bullets.Count; i++)
-            {
-                bullets[i].Update(ms);
-                if (bullets[i].mustBeDeleted)
-                {
-                    bullets.RemoveAt(i--);
-                }
-            }
+            projectileManager.Update(ms);
+            foreach (Door d in doors) d.Update(ms);
         }
 
         public List<Vector2> GetCriticalPoints()
@@ -78,5 +82,16 @@ namespace LightSavers.Components
             return o;
         }
 
+
+        public PlayerObject GetClosestPlayer(Vector3 position)
+        {
+            float d = Vector3.DistanceSquared(position, players[0].Position);
+            if (players.Length > 1)
+            {
+                float d2 = Vector3.DistanceSquared(position, players[1].Position);
+                if (d2 < d) return players[1];
+            }
+            return players[0];
+        }
     }
 }

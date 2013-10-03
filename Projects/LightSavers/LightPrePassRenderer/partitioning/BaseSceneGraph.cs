@@ -14,11 +14,11 @@ namespace LightPrePassRenderer.partitioning
         public abstract void SetSubMeshDelegate(BaseSceneGraph.AddSubMeshDelegate subMeshD);
         public abstract void SetLightDelegate(BaseSceneGraph.AddLightDelegate lightD);
 
+        public abstract void DoPreFrameWork(BoundingFrustum frustum);
+
         public abstract void GetVisibleMeshes(BoundingFrustum frustum, List<Mesh.SubMesh>[] visibleSubMeshes);
         public abstract void GetVisibleMeshes(BoundingFrustum frustum, List<Mesh.SubMesh> visibleSubMeshes);
-
         public abstract void GetShadowCasters(BoundingFrustum frustum, List<Mesh.SubMesh> visibleSubMeshes);
-        
         public abstract void GetVisibleLights(BoundingFrustum frustum, List<Light> visibleLights);
     }
 }

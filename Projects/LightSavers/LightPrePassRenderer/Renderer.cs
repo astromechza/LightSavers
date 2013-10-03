@@ -442,6 +442,8 @@ namespace LightPrePassRenderer
         {
             InstancingGroupManager.Reset();
 
+            sceneGraph.DoPreFrameWork(camera.Frustum);
+
             _depthDownsampledThisFrame = false;
             _currentCamera = camera;
 
