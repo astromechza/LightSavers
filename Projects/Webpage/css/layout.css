@@ -16,7 +16,7 @@ body
 {
 	/*padding:60px;
 	#000015*/
-background: #2e2e2e url("../img/examples/carpet.png") no-repeat;
+background: #2e2e2e;
 	background-repeat:no-repeat;
 background-attachment:fixed;
 background-position:center; 
@@ -25,7 +25,6 @@ background-position:top;
 
 .background
 {
-	
 	vertical-align:middle;
 	text-align:center;	
 }
@@ -121,6 +120,7 @@ background-position:top;
     /* Carousel base class */
     .carousel {
       margin-bottom: 60px;
+	  margin-top:0px;
     }
 
     .carousel .container {
