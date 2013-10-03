@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using LightSavers.Utils;
 using LightSavers.Components.MenuObjects;
 
-namespace LightSavers.ScreenManagement.Layers.Menus
+namespace LightSavers.ScreenManagement.Layers
 {
     public class MainMenuLayer : ScreenLayer
     {
@@ -17,6 +17,12 @@ namespace LightSavers.ScreenManagement.Layers.Menus
         private SpriteBatch canvas;
 
         private MenuBackground menuBackground;
+
+        // list of submenues
+        private List<Submenu> submenus;
+        // current index
+        private int currentSubMenuIndex;
+
 
         /// <summary>
         /// The constructor for the Main Menu.
@@ -58,6 +64,25 @@ namespace LightSavers.ScreenManagement.Layers.Menus
 
         private void ConstructSubMenus()
         {
+            submenus = new List<Submenu>();
+
+            Submenu s1 = new Submenu();
+
+            s1.AddItem(new TransitionItem("New Game", 1));
+            s1.AddItem(new DummyItem("About"));
+            s1.AddItem(new TransitionItem("Exit", -1));
+
+            submenus.Add(s1);
+
+            Submenu s2 = new Submenu();
+            s2.AddItem(new ToggleItem("Players", new String[] { "1", "2" }));
+            s2.AddItem(new ToggleItem("Level Length", new String[] { "Short", "Medium", "Tiring" }));
+            s2.AddItem(new DelegateItem("Start Game", StartGame));
+            s2.AddItem(new TransitionItem("Back", 0));
+
+            submenus.Add(s2);           
+
+            currentSubMenuIndex = 0;
 
         }
 

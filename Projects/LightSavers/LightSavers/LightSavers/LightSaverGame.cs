@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using LightSavers.ScreenManagement;
-using LightSavers.ScreenManagement.Layers.Menus;
+using LightSavers.ScreenManagement.Layers;
 using LightSavers.Utils;
 using LightSavers.Components;
 
