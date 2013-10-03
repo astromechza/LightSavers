@@ -86,7 +86,7 @@ namespace LightSavers.Components
         public PlayerObject GetClosestPlayer(Vector3 position)
         {
             float d = Vector3.DistanceSquared(position, players[0].Position);
-            if (players.Length > 0)
+            if (players.Length > 1)
             {
                 float d2 = Vector3.DistanceSquared(position, players[1].Position);
                 if (d2 < d) return players[1];
