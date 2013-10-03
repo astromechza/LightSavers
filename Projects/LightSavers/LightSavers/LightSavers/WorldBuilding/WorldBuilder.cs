@@ -102,10 +102,81 @@ namespace LightSavers.WorldBuilding
                             game.doors.Add(new Door(game, center));
                         }
                     }
+                    else if (c == Color.DarkMagenta)
+                    {
+                        int pi2 = (pixelY + 2) * 96 + pixelX + 1;
 
+                        if (colours[pi2] != Color.DarkMagenta)
+                        {
+                            Mesh m = new Mesh();
+                            m.Model = AssetLoader.mdl_desk;
+                            m.SetInstancingEnabled(true);
+                            m.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(0)) * Matrix.CreateTranslation(center + new Vector3(0,0,0.5f));
+
+                            game.cellCollider.SetCollision(center.X, center.Z, true);
+                            game.cellCollider.SetCollision(center.X, center.Z + 1, true);
+
+                            game.sceneGraph.AddMesh(m);
+                        }
+
+                        int pi3 = (pixelY + 1) * 96 + pixelX + 2;
+
+                        if (colours[pi3] != Color.DarkMagenta)
+                        {
+                            Mesh m = new Mesh();
+                            m.Model = AssetLoader.mdl_desk;
+                            m.SetInstancingEnabled(true);
+                            m.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(90)) * Matrix.CreateTranslation(center + new Vector3(0.5f, 0, 0));
+
+                            game.cellCollider.SetCollision(center.X, center.Z, true);
+                            game.cellCollider.SetCollision(center.X, center.Z + 1, true);
+                            
+                            game.sceneGraph.AddMesh(m);
+                        }
+
+                    }
+                    else if (c == Color.Turquoise)
+                    {
+                        float a = GetAngleToAWall(colours, pixelX, pixelY);
+                        Mesh m = new Mesh();
+                        m.Model = AssetLoader.mdl_pipe;
+                        m.SetInstancingEnabled(true);
+                        m.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(a)) * Matrix.CreateTranslation(center);
+
+                        game.cellCollider.SetCollision(center.X, center.Z, true);
+
+                        game.sceneGraph.AddMesh(m);
+
+                    }
 
                 }
             }
+        }
+
+        private float GetAngleToAWall(Color[] data, int x, int y)
+        {
+            Color u = data[(y - 3) * 96 + x];
+            Color d = data[(y + 3) * 96 + x];
+            Color l = data[y * 96 + x - 3];
+            Color r = data[y * 96 + x + 3];
+            
+            if (u == Color.Blue || u == Color.Black)
+            {
+                return 0;
+            }
+            else if (d == Color.Blue || d == Color.Black)
+            {
+                return 180;
+            }
+            else if (l == Color.Blue || l == Color.Black)
+            {
+                return 90;
+            }
+            else if (r == Color.Blue || r == Color.Black)
+            {
+                return -90;
+            }
+            return 0;
         }
 
         public void SpawnOverheadLight(Vector3 position)
@@ -118,7 +189,7 @@ namespace LightSavers.WorldBuilding
             Light l = new Light();
             l.LightType = Light.Type.Point;
             l.Radius = 7;
-            l.Intensity = 0.2f;
+            l.Intensity = 0.4f;
 
             
             l.Transform = Matrix.CreateTranslation(position + Vector3.Up * 4);

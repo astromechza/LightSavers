@@ -35,6 +35,8 @@ namespace LightSavers
         public static Model mdl_bullet;
         public static Model mdl_doorPanel;
         public static Model mdl_doorBase;
+        public static Model mdl_desk;
+        public static Model mdl_pipe;
         public static Texture2D tex_black;
         public static Texture2D tex_white;
         public static SpriteFont fnt_assetloadscreen;
@@ -113,6 +115,10 @@ namespace LightSavers
 
             mdl_doorPanel = loadModel("models/door/doorPanel");
             mdl_doorBase = loadModel("models/door/doorBase");
+
+            mdl_desk = loadModel("models/desk/Desk");
+
+            mdl_pipe = loadModel("models/pipe/pipe");
 
             // once its loaded, fade out
             StartTransitionOff();
