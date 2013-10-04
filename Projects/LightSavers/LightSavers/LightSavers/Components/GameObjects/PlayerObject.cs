@@ -103,7 +103,7 @@ namespace LightSavers.Components.GameObjects
             Vector2 vleft = Globals.inputController.getAnalogVector(AnalogStick.Left, playerIndex);
             Vector2 vright = Globals.inputController.getAnalogVector(AnalogStick.Right, playerIndex);
             // 1.1 = Update player rotation based on RIGHT analog stick
-            if (vright.Length() > 0.01f)
+            if (vright.LengthSquared() > 0.01f)
             {
                 // get target angle
                 float targetrotation = (float)Math.Atan2(vright.Y, vright.X) - MathHelper.PiOver2;
@@ -126,7 +126,7 @@ namespace LightSavers.Components.GameObjects
             }
 
             // 1.2 = Update player movement based on LEFT analog stick
-            if (vleft.Length() > 0.1f)
+            if (vleft.LengthSquared() > 0.1f)
             {
                 Vector3 pdelta = new Vector3(vleft.X, 0, -vleft.Y);
                 pdelta.Normalize();
@@ -134,7 +134,7 @@ namespace LightSavers.Components.GameObjects
                 newposition += pdelta * ms / 300;
 
                 // 1.3 = If no rotation was changed, pull player angle toward forward vector
-                if (vright.Length() < 0.1f)
+                if (vright.LengthSquared() < 0.01f)
                 {
                     // get target angle
                     float targetrotation = (float)Math.Atan2(vleft.Y, vleft.X) - MathHelper.PiOver2;
