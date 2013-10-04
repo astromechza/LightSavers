@@ -381,6 +381,11 @@
       <Importer>FbxImporter</Importer>
       <Processor>LightPrePassProcessor</Processor>
     </Compile>
+    <Compile Include="models\weapons\sword\Sword.fbx">
+      <Name>Sword</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="animatedmodels\alien03\Alien03 Animations.txt">
@@ -505,6 +510,13 @@
   <ItemGroup>
     <Compile Include="models\weapons\sniperrifle\sniperRifleTexture.png">
       <Name>sniperRifleTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\weapons\sword\swordTexture.png">
+      <Name>swordTexture</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
