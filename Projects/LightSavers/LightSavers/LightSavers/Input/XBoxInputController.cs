@@ -145,5 +145,18 @@ namespace LightSavers.Components
             }
         }
 
+        public override bool isDBGKeyboardKeyPressed(Keys k)
+        {
+            return false;
+        }
+        public override bool isDBGKeyboardKeyDown(Keys k)
+        {
+            return false;
+        }
+        public override bool isDBGKeyboardKeyReleased(Keys k)
+        {
+            return false;
+        }
+
     }
 }
