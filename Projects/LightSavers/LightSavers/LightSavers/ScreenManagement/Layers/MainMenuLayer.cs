@@ -117,7 +117,7 @@ namespace LightSavers.ScreenManagement.Layers
             //draw menu here
             //canvas.Draw(AssetLoader.tex_black, new Rectangle(50, 0, 300, viewport.Height), new Color(0, 0, 0, 150));
 
-            canvas.DrawString(AssetLoader.fnt_assetloadscreen, "Start", new Vector2(60, 400), Color.White);
+            submenus[currentSubMenuIndex].Draw(canvas, 60, 400);
 
             if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)
             {

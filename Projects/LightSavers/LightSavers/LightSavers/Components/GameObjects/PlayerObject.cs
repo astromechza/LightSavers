@@ -15,12 +15,16 @@ namespace LightSavers.Components.GameObjects
     {
         #region CONSTANTS
         // Player orientation
-        float PLAYER_YORIGIN = 0.8f;
-        float PLAYER_SCALE = 0.6f;
+        const float PLAYER_YORIGIN = 0.8f;
+        const float PLAYER_SCALE = 0.6f;
 
         // Light stuff
         float TORCH_HEIGHT = 1.6f;
         float HALO_HEIGHT = 6.0f;
+
+        Matrix mPlayerScale = Matrix.CreateScale(PLAYER_SCALE);
+        Matrix mHaloPitch = Matrix.CreateRotationX(-90);
+        Matrix mTorchPitch = Matrix.CreateRotationX(-0.2f);
         #endregion
 
 
@@ -67,21 +71,25 @@ namespace LightSavers.Components.GameObjects
             aplayer.StartClip(mesh.SkinningData.AnimationClips["idle1"]);
 
             SetupLights();
-            UpdateTransform(0);
+            UpdateAnimation(0);
+            UpdateMajorTransforms(0);
         }
 
-        private void UpdateTransform(float ms)
+        private void UpdateAnimation(float ms)
         {
             TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int) ms);
 
             aplayer.Update(ts, true, Matrix.Identity);
             mesh.BoneMatrixes = aplayer.GetSkinTransforms();
+        }
 
-            mesh.Transform = Matrix.CreateScale(PLAYER_SCALE) * Matrix.CreateRotationY(rotation+(float)Math.PI) * Matrix.CreateTranslation(position + new Vector3(0, PLAYER_YORIGIN, 0));
-            
-            halolight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, HALO_HEIGHT, 0));
-            haloemitlight.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(position + new Vector3(0, 2, 0));
-            torchlight.Transform = Matrix.CreateTranslation(new Vector3(0, 0, 0.0f)) * Matrix.CreateRotationX(-0.2f) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
+        private void UpdateMajorTransforms(float ms)
+        {
+            mesh.Transform = mPlayerScale * Matrix.CreateRotationY(rotation+(float)Math.PI) * Matrix.CreateTranslation(position + new Vector3(0, PLAYER_YORIGIN, 0));
+
+            halolight.Transform = mHaloPitch * Matrix.CreateTranslation(position + new Vector3(0, HALO_HEIGHT, 0));
+            haloemitlight.Transform = mHaloPitch * Matrix.CreateTranslation(position + new Vector3(0, 2, 0));
+            torchlight.Transform = mTorchPitch * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
             
         }
 
@@ -194,11 +202,11 @@ namespace LightSavers.Components.GameObjects
 
                     AddToSG();
                 }
-
+                UpdateMajorTransforms(ms);
 
             }
 
-            UpdateTransform(ms);
+            UpdateAnimation(ms);
 
 
 

@@ -110,6 +110,7 @@
     <Compile Include="Collisions\CellCollider.cs" />
     <Compile Include="Components\GameObjects\Door.cs" />
     <Compile Include="Components\MenuObjects\BaseMenuItem.cs" />
+    <Compile Include="Components\MenuObjects\BlankMenuItem.cs" />
     <Compile Include="Components\MenuObjects\DelegateItem.cs" />
     <Compile Include="Components\MenuObjects\DummyItem.cs" />
     <Compile Include="Components\MenuObjects\Submenu.cs" />
