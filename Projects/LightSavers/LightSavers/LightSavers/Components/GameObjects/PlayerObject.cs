@@ -19,8 +19,8 @@ namespace LightSavers.Components.GameObjects
         const float PLAYER_SCALE = 0.6f;
 
         // Light stuff
-        float TORCH_HEIGHT = 1.6f;
-        float HALO_HEIGHT = 6.0f;
+        const float TORCH_HEIGHT = 1.6f;
+        const float HALO_HEIGHT = 6.0f;
 
         Matrix mPlayerScale = Matrix.CreateScale(PLAYER_SCALE);
         Matrix mHaloPitch = Matrix.CreateRotationX(-90);
@@ -51,6 +51,10 @@ namespace LightSavers.Components.GameObjects
         private LightSceneGraphReceipt light2receipt;
         private LightSceneGraphReceipt light3receipt;
 
+        private Mesh guntest;
+        private MeshSceneGraphReceipt guntestReceipt;
+        private Matrix gunhandT = Matrix.CreateScale(0.5f) * Matrix.CreateRotationZ(MathHelper.ToRadians(-90)) * Matrix.CreateRotationY(MathHelper.ToRadians(90)) * Matrix.CreateTranslation(-0.3f,0,0);
+
         public PlayerObject(RealGame game, PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
             this.game = game;
@@ -63,12 +67,12 @@ namespace LightSavers.Components.GameObjects
 
             mesh = new SkinnedMesh();
             mesh.Model = AssetLoader.mdl_character;
-            SkinnedMesh idleAnim = new SkinnedMesh();
-            idleAnim.Model = AssetLoader.mdl_character_idle;
-            mesh.SkinningData.AnimationClips.Add("idle1", idleAnim.SkinningData.AnimationClips["Take 001"]);
            
             aplayer = new AnimationPlayer(mesh.SkinningData);
-            aplayer.StartClip(mesh.SkinningData.AnimationClips["idle1"]);
+            aplayer.StartClip(mesh.SkinningData.AnimationClips["Take 001"]);
+
+            guntest = new Mesh();
+            guntest.Model = AssetLoader.mdl_pistol;
 
             SetupLights();
             UpdateAnimation(0);
@@ -81,6 +85,9 @@ namespace LightSavers.Components.GameObjects
 
             aplayer.Update(ts, true, Matrix.Identity);
             mesh.BoneMatrixes = aplayer.GetSkinTransforms();
+
+            guntest.Transform = gunhandT * aplayer.GetWorldTransforms()[31] * Matrix.CreateRotationY(rotation + (float)Math.PI) * mPlayerScale * Matrix.CreateTranslation(position + new Vector3(0, PLAYER_YORIGIN, 0)); ;
+
         }
 
         private void UpdateMajorTransforms(float ms)
@@ -163,12 +170,11 @@ namespace LightSavers.Components.GameObjects
             if (Globals.inputController.isTriggerDown(Triggers.Right, playerIndex))
             {
 
-                float r = (float)Globals.random.NextDouble()*0.1f - 0.05f; 
+                float r = (float)Globals.random.NextDouble()*0.1f - 0.05f;
 
-                game.SpawnBullet(new StandardBullet(game, position + new Vector3(0,1+r,0), rotation+MathHelper.PiOver2 + r));
+                game.SpawnBullet(new StandardBullet(game, guntest.Transform.Translation, rotation + MathHelper.PiOver2 + r));
             }
-
-
+            
             // collision stuff
             if (position != newposition)
             {
@@ -199,13 +205,14 @@ namespace LightSavers.Components.GameObjects
                     light1receipt.parentlist.Remove(torchlight);
                     light2receipt.parentlist.Remove(halolight);
                     light3receipt.parentlist.Remove(haloemitlight);
+                    guntestReceipt.parentlist.Remove(guntest);
 
                     AddToSG();
                 }
-                UpdateMajorTransforms(ms);
 
             }
 
+            UpdateMajorTransforms(ms);
             UpdateAnimation(ms);
 
 
@@ -275,6 +282,8 @@ namespace LightSavers.Components.GameObjects
             light1receipt = game.sceneGraph.AddLight(torchlight);
             light2receipt = game.sceneGraph.AddLight(halolight);
             light3receipt = game.sceneGraph.AddLight(haloemitlight);
+            guntestReceipt = game.sceneGraph.AddMesh(guntest);
+
         }
 
         public void AddCriticalPoints(List<Vector2> outputPoints)

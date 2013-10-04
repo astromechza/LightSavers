@@ -38,6 +38,8 @@ namespace LightSavers
         public static Model mdl_doorBase;
         public static Model mdl_desk;
         public static Model mdl_pipe;
+        public static Model mdl_pistol;
+        public static Model mdl_shotgun;
         public static Texture2D tex_black;
         public static Texture2D tex_white;
         public static SpriteFont fnt_assetloadscreen;
@@ -103,7 +105,7 @@ namespace LightSavers
         private void LoadAssets()
         {
             // number of assets to be loaded. (used to compute progress bar size)
-            num_assets = 8;
+            num_assets = 13;
             num_assets += CountSections();
             LoadSections();
             // assets
@@ -121,6 +123,9 @@ namespace LightSavers
             mdl_desk = loadModel("models/desk/Desk");
 
             mdl_pipe = loadModel("models/pipe/pipe");
+
+            mdl_pistol = loadModel("models/weapons/pistol/Pistol");
+            mdl_shotgun = loadModel("models/weapons/shotgun/Shottie");
 
             // once its loaded, fade out
             StartTransitionOff();
