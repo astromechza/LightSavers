@@ -70,16 +70,17 @@ namespace LightSavers.Components
 
         public void Update(float ms)
         {
-            foreach (PlayerObject p in players) p.Update(ms);
+            for (int i = 0; i < players.Length; i++) players[i].Update(ms);
             projectileManager.Update(ms);
-            foreach (Door d in doors) d.Update(ms);
+            for (int i = 0; i < doors.Count; i++) doors[i].Update(ms);
         }
 
+        private List<Vector2> criticalPoints = new List<Vector2>(8);
         public List<Vector2> GetCriticalPoints()
         {
-            List<Vector2> o = new List<Vector2>(10);
-            foreach (PlayerObject p in players) p.AddCriticalPoints(o);
-            return o;
+            criticalPoints.Clear();
+            for (int i = 0; i < players.Length; i++) players[i].AddCriticalPoints(criticalPoints);
+            return criticalPoints;
         }
 
 

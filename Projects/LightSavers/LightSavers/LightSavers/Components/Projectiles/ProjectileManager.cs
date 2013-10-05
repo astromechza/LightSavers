@@ -30,8 +30,9 @@ namespace LightSavers.Components.Projectiles
         public void Update(float ms)
         {
             List<IProjectile> temp = new List<IProjectile>(MAX_PROJECTILES);
-            foreach (IProjectile p in allProjectiles)
+            for(int i=0;i<allProjectiles.Count;i++)
             {
+                IProjectile p = allProjectiles[i];
                 p.Update(ms);
                 if (!p.MustBeDeleted())
                 {

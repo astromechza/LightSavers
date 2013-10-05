@@ -58,12 +58,12 @@ namespace LightSavers.Components
             float minz = 32;
             float maxz = 0;
 
-            foreach( Vector2 p in list)
+            for(int i=0;i<list.Count;i++)
             {
-                minx = Math.Min(p.X, minx);
-                minz = Math.Min(p.Y, minz);
-                maxx = Math.Max(p.X, maxx);
-                maxz = Math.Max(p.Y, maxz);
+                minx = Math.Min(list[i].X, minx);
+                minz = Math.Min(list[i].Y, minz);
+                maxx = Math.Max(list[i].X, maxx);
+                maxz = Math.Max(list[i].Y, maxz);
             }
 
             //arb tweaks
