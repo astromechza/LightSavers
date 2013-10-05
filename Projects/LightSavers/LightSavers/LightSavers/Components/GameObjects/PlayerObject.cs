@@ -70,7 +70,7 @@ namespace LightSavers.Components.GameObjects
             mesh.SkinningData.setNewAnimations(AssetLoader.ani_character);
 
             aplayer = new AnimationPlayer(mesh.SkinningData);
-            aplayer.StartClip(mesh.SkinningData.AnimationClips["run_assault"]);
+            aplayer.StartClip(mesh.SkinningData.AnimationClips["run_snipshot_shoot"]);
 
             guntest = new Mesh();
             guntest.Model = AssetLoader.mdl_pistol;
