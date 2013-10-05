@@ -1,5 +1,6 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
+using LightSavers.Components.Guns;
 using LightSavers.Components.Projectiles;
 using LightSavers.Utils;
 using Microsoft.Xna.Framework;
@@ -15,16 +16,16 @@ namespace LightSavers.Components.GameObjects
     {
         #region CONSTANTS
         // Player orientation
-        const float PLAYER_YORIGIN = 0.8f;
-        const float PLAYER_SCALE = 0.6f;
+        const float PLAYER_YORIGIN = 1f;
+        const float PLAYER_SCALE = 0.75f;
 
         // Light stuff
-        const float TORCH_HEIGHT = 1.6f;
+        const float TORCH_HEIGHT = 1.7f;
         const float HALO_HEIGHT = 6.0f;
 
         Matrix mPlayerScale = Matrix.CreateScale(PLAYER_SCALE);
         Matrix mHaloPitch = Matrix.CreateRotationX(-90);
-        Matrix mTorchPitch = Matrix.CreateRotationX(-0.2f);
+        Matrix mTorchPitch = Matrix.CreateRotationX(-0.1f);
         #endregion
 
 
@@ -45,15 +46,15 @@ namespace LightSavers.Components.GameObjects
 
         private RealGame game;
 
+
         // Scenegraphstuff
         private MeshSceneGraphReceipt modelReceipt;
         private LightSceneGraphReceipt light1receipt;
         private LightSceneGraphReceipt light2receipt;
         private LightSceneGraphReceipt light3receipt;
 
-        private Mesh guntest;
-        private MeshSceneGraphReceipt guntestReceipt;
-        private Matrix gunhandT = Matrix.CreateScale(0.5f) * Matrix.CreateRotationZ(MathHelper.ToRadians(-90)) * Matrix.CreateRotationY(MathHelper.ToRadians(90)) * Matrix.CreateTranslation(-0.3f,0,0);
+
+        private BaseGun gun;
 
         public PlayerObject(RealGame game, PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
@@ -72,12 +73,13 @@ namespace LightSavers.Components.GameObjects
             aplayer = new AnimationPlayer(mesh.SkinningData);
             aplayer.StartClip(mesh.SkinningData.AnimationClips["run_snipshot_shoot"]);
 
-            guntest = new Mesh();
-            guntest.Model = AssetLoader.mdl_pistol;
+            gun = new Pistol();
 
             SetupLights();
             UpdateAnimation(0);
             UpdateMajorTransforms(0);
+            gun.SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
+            gun.RenewReceipt(game.sceneGraph);
         }
 
         private void UpdateAnimation(float ms)
@@ -86,8 +88,6 @@ namespace LightSavers.Components.GameObjects
 
             aplayer.Update(ts, true, Matrix.Identity);
             mesh.BoneMatrixes = aplayer.GetSkinTransforms();
-
-            guntest.Transform = gunhandT * aplayer.GetWorldTransforms()[31] * Matrix.CreateRotationY(rotation + (float)Math.PI) * mPlayerScale * Matrix.CreateTranslation(position + new Vector3(0, PLAYER_YORIGIN, 0)); ;
 
         }
 
@@ -98,7 +98,6 @@ namespace LightSavers.Components.GameObjects
             halolight.Transform = mHaloPitch * Matrix.CreateTranslation(position + new Vector3(0, HALO_HEIGHT, 0));
             haloemitlight.Transform = mHaloPitch * Matrix.CreateTranslation(position + new Vector3(0, 2, 0));
             torchlight.Transform = mTorchPitch * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
-            
         }
 
         public override void Update(float ms)
@@ -172,9 +171,10 @@ namespace LightSavers.Components.GameObjects
 
                 float r = (float)Globals.random.NextDouble()*0.1f - 0.05f;
 
-                game.SpawnBullet(new StandardBullet(game, guntest.Transform.Translation, rotation + MathHelper.PiOver2 + r));
+                game.SpawnBullet(new StandardBullet(game, gun.emmitterPosition, rotation + MathHelper.PiOver2 + r));
             }
-            
+
+
             // collision stuff
             if (position != newposition)
             {
@@ -205,16 +205,19 @@ namespace LightSavers.Components.GameObjects
                     light1receipt.parentlist.Remove(torchlight);
                     light2receipt.parentlist.Remove(halolight);
                     light3receipt.parentlist.Remove(haloemitlight);
-                    guntestReceipt.parentlist.Remove(guntest);
 
                     AddToSG();
+
+                    gun.RenewReceipt(game.sceneGraph);
                 }
 
             }
 
-            UpdateMajorTransforms(ms);
             UpdateAnimation(ms);
+            UpdateMajorTransforms(ms);
 
+            gun.SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
+            gun.RenewReceipt(game.sceneGraph);
 
 
 
@@ -282,7 +285,6 @@ namespace LightSavers.Components.GameObjects
             light1receipt = game.sceneGraph.AddLight(torchlight);
             light2receipt = game.sceneGraph.AddLight(halolight);
             light3receipt = game.sceneGraph.AddLight(haloemitlight);
-            guntestReceipt = game.sceneGraph.AddMesh(guntest);
 
         }
 
