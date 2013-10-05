@@ -41,6 +41,18 @@ namespace LightSavers
         static string[] alien01AnimationsList = new string[] { "idle", "death", "moving", "attacking" };
         public static Dictionary<string, AnimationClip> ani_alien1;
 
+        public static Model mdl_alien2;
+        public string[] alien02AnimationsList = new string[] { "idle" , "moving", "attacking", "death" };
+        public static Dictionary<string, AnimationClip> ani_alien2;
+
+        public static Model mdl_alien3;
+        public string[] alien03AnimationsList = new string[] { "idle", "attacking_melee", "attacking_range", "death", "moving" };
+        public static Dictionary<string, AnimationClip> ani_alien3;
+
+        public static Model mdl_alien4;
+        public string[] alien04AnimationsList = new string[] { "attacking", "charging", "death", "idle", "impact", "moving" };
+        public static Dictionary<string, AnimationClip> ani_alien4;
+
         public static Model mdl_sphere;
         public static Model mdl_ceilinglight;
         public static Model mdl_filingcabinet;
@@ -151,6 +163,14 @@ namespace LightSavers
             mdl_alien1 = loadModel("animatedmodels/alien01/alien01_2");
             ani_alien1 = generateAnimations("animatedmodels/alien01/alien01_2", alien01AnimationsList);
 
+            mdl_alien2 = loadModel("animatedmodels/alien02/alien02_2");
+            ani_alien2 = generateAnimations("animatedmodels/alien02/alien02_2", alien02AnimationsList);
+
+            mdl_alien3 = loadModel("animatedmodels/alien03/alien03_2");
+            ani_alien3 = generateAnimations("animatedmodels/alien03/alien03_2", alien03AnimationsList);
+
+            mdl_alien4 = loadModel("animatedmodels/alien04/alien04_2");
+            ani_alien4 = generateAnimations("animatedmodels/alien04/alien04_2", alien04AnimationsList);
             
             mdl_sphere = loadModel("models/sphere");
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
