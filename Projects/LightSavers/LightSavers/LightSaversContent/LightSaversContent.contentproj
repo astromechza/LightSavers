@@ -327,8 +327,23 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="animatedmodels\alien01\alien01_2idle.fbx">
-      <Name>alien01_2idle</Name>
+    <Compile Include="animatedmodels\alien01\alien01_2-attacking.fbx">
+      <Name>alien01_2-attacking</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+    </Compile>
+    <Compile Include="animatedmodels\alien01\alien01_2-death.fbx">
+      <Name>alien01_2-death</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+    </Compile>
+    <Compile Include="animatedmodels\alien01\alien01_2-idle.fbx">
+      <Name>alien01_2-idle</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+    </Compile>
+    <Compile Include="animatedmodels\alien01\alien01_2-moving.fbx">
+      <Name>alien01_2-moving</Name>
       <Importer>FbxImporter</Importer>
       <Processor>LightPrePassSkinnedModelProcessor</Processor>
     </Compile>
