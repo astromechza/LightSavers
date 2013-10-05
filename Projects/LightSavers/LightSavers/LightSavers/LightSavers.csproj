@@ -109,6 +109,12 @@
   <ItemGroup>
     <Compile Include="Collisions\CellCollider.cs" />
     <Compile Include="Components\GameObjects\Door.cs" />
+    <Compile Include="Components\Guns\AssaultRifle.cs" />
+    <Compile Include="Components\Guns\BaseGun.cs" />
+    <Compile Include="Components\Guns\Pistol.cs" />
+    <Compile Include="Components\Guns\Shotgun.cs" />
+    <Compile Include="Components\Guns\SniperRifle.cs" />
+    <Compile Include="Components\Guns\Sword.cs" />
     <Compile Include="Components\MenuObjects\BaseMenuItem.cs" />
     <Compile Include="Components\MenuObjects\BlankMenuItem.cs" />
     <Compile Include="Components\MenuObjects\DelegateItem.cs" />
