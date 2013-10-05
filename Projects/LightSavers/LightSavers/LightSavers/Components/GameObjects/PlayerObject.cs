@@ -68,9 +68,10 @@ namespace LightSavers.Components.GameObjects
 
             mesh = new SkinnedMesh();
             mesh.Model = AssetLoader.mdl_character;
-           
+            mesh.SkinningData.setNewAnimations(AssetLoader.ani_character);
+
             aplayer = new AnimationPlayer(mesh.SkinningData);
-            aplayer.StartClip(mesh.SkinningData.AnimationClips["Take 001"]);
+            aplayer.StartClip(mesh.SkinningData.AnimationClips["run_assault"]);
 
             gun = new Sword();
 
@@ -160,7 +161,6 @@ namespace LightSavers.Components.GameObjects
                     // sanitise rotation
                     if (rotation > MathHelper.TwoPi) rotation -= MathHelper.TwoPi;
                     if (rotation < -MathHelper.TwoPi) rotation += MathHelper.TwoPi;
-
                 }
 
 

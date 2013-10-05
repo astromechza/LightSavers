@@ -51,6 +51,10 @@ namespace SkinnedModel
         [ContentSerializer]
         public Dictionary<string, AnimationClip> AnimationClips { get; private set; }
 
+        public void setNewAnimations(Dictionary<string, AnimationClip> newAnimations)
+        {
+            AnimationClips = newAnimations;
+        }
 
         /// <summary>
         /// Bindpose matrices for each bone in the skeleton,
