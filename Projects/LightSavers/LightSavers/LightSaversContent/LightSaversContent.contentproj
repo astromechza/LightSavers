@@ -366,11 +366,6 @@
       <Processor>LightPrePassProcessor</Processor>
       <ProcessorParameters_Scale>0.5</ProcessorParameters_Scale>
     </Compile>
-    <Compile Include="animatedmodels\player\spacemanAnimatedwalk.fbx">
-      <Name>spacemanAnimatedwalk</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
     <Compile Include="models\weapons\assaultrifle\AssaultRifle.fbx">
       <Name>AssaultRifle</Name>
       <Importer>FbxImporter</Importer>
@@ -385,6 +380,21 @@
       <Name>Sword</Name>
       <Importer>FbxImporter</Importer>
       <Processor>LightPrePassProcessor</Processor>
+    </Compile>
+    <Compile Include="animatedmodels\player\spacemanAnimated-idle_assault.fbx">
+      <Name>spacemanAnimated-idle_assault</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+    </Compile>
+    <Compile Include="animatedmodels\player\spacemanAnimated-walk_assault.fbx">
+      <Name>spacemanAnimated-walk_assault</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+    </Compile>
+    <Compile Include="animatedmodels\player\spacemanAnimated-run_assault.fbx">
+      <Name>spacemanAnimated-run_assault</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassSkinnedModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>

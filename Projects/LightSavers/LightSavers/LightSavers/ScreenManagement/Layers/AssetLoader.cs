@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using LightSavers.ScreenManagement.Layers;
 using LightSavers.Utils;
+using LightPrePassRenderer;
+using SkinnedModel;
 using System.IO;
 
 namespace LightSavers
@@ -28,7 +30,11 @@ namespace LightSavers
     {
         /************* ASSETS **************/
         public static Model mdl_character;
-        public static Model mdl_character_idle;
+        
+        public static Model mdl_character_idle_assault;
+        static string[] characterAnimationsList = new string[] {"idle_assault", "walk_assault", "run_assault"};
+        public static Dictionary<string, AnimationClip> ani_character;
+
         public static Model mdl_sphere;
         public static Model mdl_ceilinglight;
         public static Model mdl_filingcabinet;
@@ -91,6 +97,23 @@ namespace LightSavers
             return true;
         }
 
+        public Dictionary<string, AnimationClip> generateAnimations(string prefix, string[] animations)
+        {
+            Dictionary<string, AnimationClip> newAnimations = new Dictionary<string, AnimationClip>();
+
+            foreach (string ani in animations)
+            {
+                Model tempModel = loadModel(String.Format("{0}-{1}",prefix, ani));
+                SkinnedMesh tempMesh = new SkinnedMesh();
+                tempMesh.Model = tempModel;
+
+                newAnimations.Add(ani, tempMesh.SkinningData.AnimationClips["Take 001"]);
+
+            }
+            return newAnimations;
+        }
+
+
         public bool DisplayMainMenu()
         {
             // remove the loading layer since its not needed
@@ -110,8 +133,11 @@ namespace LightSavers
             LoadSections();
             // assets
             mdl_menuscene = loadModel("models/menuscene/MenuScene");
+
+            //Load Character and animations
             mdl_character = loadModel("animatedmodels/player/spacemanAnimated");
-            mdl_character_idle = loadModel("animatedmodels/player/spacemanAnimatedwalk");
+            ani_character = generateAnimations("animatedmodels/player/spacemanAnimated", characterAnimationsList);
+            
             mdl_sphere = loadModel("models/sphere");
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
             mdl_filingcabinet = loadModel("models/filing/Filing");
