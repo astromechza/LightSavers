@@ -14,6 +14,7 @@ namespace LightSavers.Components.Guns
         {
             SetModel(AssetLoader.mdl_sniper_rifle);
             SetHoldTransform(Matrix.Identity);
+            SetEmmitterVector(new Vector3(-0.7f, 0, 0));
         }
     }
 }

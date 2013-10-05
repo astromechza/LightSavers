@@ -73,12 +73,12 @@ namespace LightSavers.Components.GameObjects
             aplayer = new AnimationPlayer(mesh.SkinningData);
             aplayer.StartClip(mesh.SkinningData.AnimationClips["run_assault"]);
 
-            gun = new Sword();
+            gun = new SniperRifle();
 
             SetupLights();
             UpdateAnimation(0);
             UpdateMajorTransforms(0);
-            gun.SetTransform(aplayer.GetWorldTransforms()[31] * mesh.Transform);
+            gun.SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
             gun.RenewReceipt(game.sceneGraph);
         }
 
@@ -216,7 +216,7 @@ namespace LightSavers.Components.GameObjects
             UpdateAnimation(ms);
             UpdateMajorTransforms(ms);
 
-            gun.SetTransform(aplayer.GetWorldTransforms()[31] * mesh.Transform);
+            gun.SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
             gun.RenewReceipt(game.sceneGraph);
 
 

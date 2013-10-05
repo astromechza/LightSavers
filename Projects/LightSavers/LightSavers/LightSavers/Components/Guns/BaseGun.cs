@@ -15,12 +15,14 @@ namespace LightSavers.Components.Guns
         public MeshSceneGraphReceipt receipt;
         public Matrix holdTransform;
         public Vector3 emmitterPosition;
+        public Vector3 emmitterVector;
 
         public BaseGun()
         {
             mesh = null;
             receipt = null;
             holdTransform = Matrix.Identity;
+            emmitterVector = Vector3.Zero;
             emmitterPosition = Vector3.Zero;
         }
 
@@ -36,10 +38,15 @@ namespace LightSavers.Components.Guns
             mesh.Model = m;
         }
 
-        public void SetTransform(Matrix m)
+        public void SetEmmitterVector(Vector3 v)
         {
-            mesh.Transform = holdTransform * m;
-            emmitterPosition = mesh.Transform.Translation;
+            emmitterVector = v;
+        }
+
+        public void SetTransform(Matrix handTransform, Matrix playerTransform)
+        {
+            mesh.Transform = holdTransform * handTransform * playerTransform;
+            emmitterPosition = Vector3.Transform(emmitterVector, mesh.Transform);
         }
 
         public void SetHoldTransform(Matrix t)
