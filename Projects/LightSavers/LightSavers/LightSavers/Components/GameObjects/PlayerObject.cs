@@ -16,8 +16,8 @@ namespace LightSavers.Components.GameObjects
     {
         #region CONSTANTS
         // Player orientation
-        const float PLAYER_YORIGIN = 0.85f;
-        const float PLAYER_SCALE = 0.65f;
+        const float PLAYER_YORIGIN = 1f;
+        const float PLAYER_SCALE = 0.75f;
 
         // Light stuff
         const float TORCH_HEIGHT = 1.7f;
@@ -73,7 +73,7 @@ namespace LightSavers.Components.GameObjects
             aplayer = new AnimationPlayer(mesh.SkinningData);
             aplayer.StartClip(mesh.SkinningData.AnimationClips["run_assault"]);
 
-            gun = new SniperRifle();
+            gun = new Pistol();
 
             SetupLights();
             UpdateAnimation(0);
