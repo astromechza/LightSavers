@@ -133,6 +133,8 @@
     <Compile Include="Input\KeyboardInputController.cs" />
     <Compile Include="Input\XBoxInputController.cs" />
     <Compile Include="Components\CameraController.cs" />
+    <Compile Include="Utils\GObjectPool.cs" />
+    <Compile Include="Utils\IPoolable.cs" />
     <Compile Include="Utils\RectangleF.cs" />
     <Compile Include="ScreenManagement\Layers\AssetLoader.cs" />
     <Compile Include="Utils\Globals.cs" />
