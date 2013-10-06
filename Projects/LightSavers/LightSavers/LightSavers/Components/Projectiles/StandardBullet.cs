@@ -1,6 +1,7 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
 using Microsoft.Xna.Framework;
+using ObjectPool;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace LightSavers.Components.Projectiles
 {
-    public class StandardBullet : IProjectile
+    public class StandardBullet : IProjectile, IPoolable
     {
         private RealGame game;
         private Vector3 position;
@@ -26,9 +27,17 @@ namespace LightSavers.Components.Projectiles
         private MeshSceneGraphReceipt modelReceipt;
 
         // projectile state
+        public int PoolIndex { get; set; }
 
+        public StandardBullet() 
+        {
+            this.mesh = new Mesh();
+            this.mesh.Model = AssetLoader.mdl_bullet;
+            this.mesh.SetInstancingEnabled(true);
+            this.mesh.SetCastShadows(false);
+        }
 
-        public StandardBullet(RealGame game, Vector3 startPos, float rotation)
+        public void Construct(RealGame game, Vector3 startPos, float rotation)
         {
             this.game = game;
             this.position = startPos;
@@ -39,13 +48,7 @@ namespace LightSavers.Components.Projectiles
             this.mustBeDeleted = false;
             this.aging = false;
             this.ageMs = 0;
-
-
-            this.mesh = new Mesh();
-            this.mesh.Model = AssetLoader.mdl_bullet;
             this.mesh.Transform = rotationM * Matrix.CreateTranslation(this.position);
-            this.mesh.SetInstancingEnabled(true);
-            this.mesh.SetCastShadows(false);
 
             this.modelReceipt = game.sceneGraph.AddMesh(mesh);
         }

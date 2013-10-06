@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ObjectPool;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,16 +13,17 @@ namespace LightSavers.Components.Projectiles
     /// </summary>
     public class ProjectileManager
     {
+
         //maximum number of projectiles expected live at any point in time
         private const int MAX_PROJECTILES = 1000;
 
-        private List<IProjectile> allProjectiles;
+        public GObjectPool<StandardBullet> allProjectiles;
 
         public ProjectileManager()
         {
-            allProjectiles = new List<IProjectile>(MAX_PROJECTILES);
+            allProjectiles = new GObjectPool<StandardBullet>(MAX_PROJECTILES);
         }
-
+        
         /// <summary>
         /// Update all of the bullets held in the list. 
         /// Add the ones that are still alive to a new list. 
@@ -29,27 +31,19 @@ namespace LightSavers.Components.Projectiles
         /// <param name="ms">Milliseconds passed since last update</param>
         public void Update(float ms)
         {
-            List<IProjectile> temp = new List<IProjectile>(MAX_PROJECTILES);
-            for(int i=0;i<allProjectiles.Count;i++)
+            int i = allProjectiles.GetFirst();
+            while (i != -1)
             {
-                IProjectile p = allProjectiles[i];
-                p.Update(ms);
-                if (!p.MustBeDeleted())
+                StandardBullet b = allProjectiles.GetByIndex(i);
+                b.Update(ms);
+                i = allProjectiles.NextIndex(b);
+                if (b.MustBeDeleted())
                 {
-                    temp.Add(p);
+                    allProjectiles.Dispose(b);
                 }
             }
-            allProjectiles = temp;
         }
 
-        /// <summary>
-        /// Add a new Projectile to this container
-        /// </summary>
-        /// <param name="p">The projectile to add</param>
-        public void Add(IProjectile p)
-        {
-            allProjectiles.Add(p);
-        }
 
     }
 }
