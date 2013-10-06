@@ -125,7 +125,7 @@
     <Compile Include="Components\Projectiles\StandardBullet.cs" />
     <Compile Include="Components\MenuObjects\MenuBackground.cs" />
     <Compile Include="Components\Projectiles\ProjectileManager.cs" />
-    <Compile Include="Components\Projectiles\Projectile.cs" />
+    <Compile Include="Components\Projectiles\IProjectile.cs" />
     <Compile Include="Components\RealGame.cs" />
     <Compile Include="Components\GameObjects\GameObject.cs" />
     <Compile Include="Components\GameObjects\PlayerObject.cs" />
