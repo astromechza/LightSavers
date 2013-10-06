@@ -19,7 +19,7 @@ namespace LightSavers.Components
     {
         private PlayerObject[] players;
 
-        private ProjectileManager projectileManager;
+        public ProjectileManager projectileManager;
 
         public AwesomeSceneGraph sceneGraph;
 
@@ -60,12 +60,6 @@ namespace LightSavers.Components
                 players[i].AddToSG();
             }
 
-
-        }
-
-        public void SpawnBullet(StandardBullet b)
-        {
-            projectileManager.Add(b);
         }
 
         public void Update(float ms)

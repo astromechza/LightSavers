@@ -171,7 +171,8 @@ namespace LightSavers.Components.GameObjects
 
                 float r = (float)Globals.random.NextDouble()*0.1f - 0.05f;
 
-                game.SpawnBullet(new StandardBullet(game, gun.emmitterPosition, rotation + MathHelper.PiOver2 + r));
+                StandardBullet b = game.projectileManager.allProjectiles.Provide();
+                b.Construct(game, gun.emmitterPosition, rotation + MathHelper.PiOver2 + r);
             }
 
 
