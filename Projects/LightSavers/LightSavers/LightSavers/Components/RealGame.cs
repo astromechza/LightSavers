@@ -21,7 +21,7 @@ namespace LightSavers.Components
 
         public ProjectileManager projectileManager;
 
-        public AwesomeSceneGraph sceneGraph;
+        public BlockBasedSceneGraph sceneGraph;
 
         public WorldBuilder worldBuilder;
 
@@ -29,7 +29,7 @@ namespace LightSavers.Components
 
         public List<Door> doors;
 
-        public RealGame(int numberOfSections, int numPlayers, AwesomeSceneGraph sg)
+        public RealGame(int numberOfSections, int numPlayers, BlockBasedSceneGraph sg)
         {
             sceneGraph = sg;
 
@@ -57,7 +57,6 @@ namespace LightSavers.Components
             for (int i = 0; i < numPlayers; i++)
             {
                 players[i] = new PlayerObject(this, (i==0) ? PlayerIndex.One : PlayerIndex.Two, playerColours[i], spawns[i], 0);
-                players[i].AddToSG();
             }
 
         }

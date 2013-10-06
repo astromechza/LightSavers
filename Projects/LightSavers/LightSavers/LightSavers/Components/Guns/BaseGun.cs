@@ -26,12 +26,6 @@ namespace LightSavers.Components.Guns
             emmitterPosition = Vector3.Zero;
         }
 
-        public void RenewReceipt(AwesomeSceneGraph b)
-        {
-            if (receipt != null) receipt.parentlist.Remove(mesh);
-            receipt = b.AddMesh(mesh);
-        }
-
         public void SetModel(Model m)
         {
             mesh = new Mesh();

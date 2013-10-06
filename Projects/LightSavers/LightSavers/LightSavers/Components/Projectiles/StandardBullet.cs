@@ -50,7 +50,7 @@ namespace LightSavers.Components.Projectiles
             this.ageMs = 0;
             this.mesh.Transform = rotationM * Matrix.CreateTranslation(this.position);
 
-            this.modelReceipt = game.sceneGraph.AddMesh(mesh);
+            this.modelReceipt = game.sceneGraph.Add(mesh);
         }
 
         public void Update(float ms)
@@ -61,7 +61,7 @@ namespace LightSavers.Components.Projectiles
                 if (ageMs > 1000)
                 {
                     mustBeDeleted = true;
-                    modelReceipt.parentlist.Remove(mesh);
+                    modelReceipt.graph.Remove(modelReceipt);
                 } 
             }
             else
@@ -86,8 +86,7 @@ namespace LightSavers.Components.Projectiles
 
                     if (oldx != newx)
                     {
-                        modelReceipt.parentlist.Remove(mesh);
-                        modelReceipt = game.sceneGraph.AddMesh(mesh);
+                        modelReceipt.graph.Renew(modelReceipt);
                     }
 
                 }

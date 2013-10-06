@@ -53,7 +53,6 @@ namespace LightSavers.Components.GameObjects
         private LightSceneGraphReceipt light2receipt;
         private LightSceneGraphReceipt light3receipt;
 
-
         private BaseGun gun;
 
         public PlayerObject(RealGame game, PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
@@ -66,6 +65,8 @@ namespace LightSavers.Components.GameObjects
             position = pos;
             rotation = initialYRot;
 
+            SetupLights();
+
             mesh = new SkinnedMesh();
             mesh.Model = AssetLoader.mdl_character;
             mesh.SkinningData.setNewAnimations(AssetLoader.ani_character);
@@ -73,13 +74,20 @@ namespace LightSavers.Components.GameObjects
             aplayer = new AnimationPlayer(mesh.SkinningData);
             aplayer.StartClip(mesh.SkinningData.AnimationClips["run_snipshot_shoot"]);
 
-            gun = new Pistol();
-
-            SetupLights();
             UpdateAnimation(0);
             UpdateMajorTransforms(0);
+
+            gun = new Pistol();
             gun.SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
-            gun.RenewReceipt(game.sceneGraph);
+
+            game.sceneGraph.Setup(mesh);
+            modelReceipt = game.sceneGraph.Add(mesh);
+            light1receipt = game.sceneGraph.Add(torchlight);
+            light2receipt = game.sceneGraph.Add(haloemitlight);
+            light3receipt = game.sceneGraph.Add(halolight);
+
+            game.sceneGraph.Setup(gun.mesh);
+            gun.receipt = game.sceneGraph.Add(gun.mesh);
         }
 
         private void UpdateAnimation(float ms)
@@ -199,17 +207,12 @@ namespace LightSavers.Components.GameObjects
 
                 if (position != newposition)
                 {
-
                     position = newposition;
 
-                    modelReceipt.parentlist.Remove(mesh);
-                    light1receipt.parentlist.Remove(torchlight);
-                    light2receipt.parentlist.Remove(halolight);
-                    light3receipt.parentlist.Remove(haloemitlight);
-
-                    AddToSG();
-
-                    gun.RenewReceipt(game.sceneGraph);
+                    modelReceipt.graph.Renew(modelReceipt);
+                    light1receipt.graph.Renew(light1receipt);
+                    light2receipt.graph.Renew(light2receipt);
+                    light3receipt.graph.Renew(light3receipt);
                 }
 
             }
@@ -218,11 +221,7 @@ namespace LightSavers.Components.GameObjects
             UpdateMajorTransforms(ms);
 
             gun.SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
-            gun.RenewReceipt(game.sceneGraph);
-
-
-
-            
+            gun.receipt.graph.Renew(gun.receipt);
 
         }
 
@@ -278,15 +277,6 @@ namespace LightSavers.Components.GameObjects
         public override RectangleF GetBoundRect()
         {
             return new RectangleF();
-        }
-
-        public void AddToSG()
-        {
-            modelReceipt = game.sceneGraph.AddMesh(mesh);
-            light1receipt = game.sceneGraph.AddLight(torchlight);
-            light2receipt = game.sceneGraph.AddLight(halolight);
-            light3receipt = game.sceneGraph.AddLight(haloemitlight);
-
         }
 
         public void AddCriticalPoints(List<Vector2> outputPoints)
