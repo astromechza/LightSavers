@@ -179,7 +179,7 @@ namespace LightSavers.Components.GameObjects
                 {
                     float r = (float)Globals.random.NextDouble() * 0.1f - 0.05f;
 
-                    StandardBullet b = game.projectileManager.allProjectiles.Provide();
+                    StandardBullet b = game.projectileManager.standardBulletPool.Provide();
                     b.Construct(game, weapons[currentWeapon].emmitterPosition, rotation + MathHelper.PiOver2 + r);
                 }
             }
@@ -265,7 +265,7 @@ namespace LightSavers.Components.GameObjects
             BaseGun g = weapons[to];
             g.SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
 
-            if (g.receipt != null) game.sceneGraph.Renew(g.receipt);
+            if (g.receipt != null) game.sceneGraph.Remove(g.receipt);
             g.receipt = game.sceneGraph.Add(g.mesh);
         }
 
