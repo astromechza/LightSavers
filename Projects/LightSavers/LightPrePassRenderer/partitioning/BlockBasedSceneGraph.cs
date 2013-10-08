@@ -125,8 +125,8 @@ namespace LightPrePassRenderer.partitioning
             int minx = (int)(corners[0].X - dx);
             int maxx = (int)(corners[2].X + dx);
 
-            minx = (int)MathHelper.Clamp(minx / 32, 0, blocks.Length);
-            maxx = (int)MathHelper.Clamp(maxx / 32, 0, blocks.Length);
+            minx = (int)MathHelper.Clamp(minx / 32, 0, blocks.Length-1);
+            maxx = (int)MathHelper.Clamp(maxx / 32, 0, blocks.Length-1);
 
             leftFrameBlock = minx;
             rightFrameBlock = maxx;
