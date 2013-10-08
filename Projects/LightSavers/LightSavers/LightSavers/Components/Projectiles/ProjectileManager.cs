@@ -18,11 +18,11 @@ namespace LightSavers.Components.Projectiles
         private const int MAX_PROJECTILES = 1000;
         private const int PRE_BUILD = 50;
 
-        public GObjectPool<StandardBullet> allProjectiles;
+        public GObjectPool<StandardBullet> standardBulletPool;
 
         public ProjectileManager()
         {
-            allProjectiles = new GObjectPool<StandardBullet>(MAX_PROJECTILES, PRE_BUILD);
+            standardBulletPool = new GObjectPool<StandardBullet>(MAX_PROJECTILES, PRE_BUILD);
         }
 
         /// <summary>
@@ -32,15 +32,15 @@ namespace LightSavers.Components.Projectiles
         /// <param name="ms">Milliseconds passed since last update</param>
         public void Update(float ms)
         {
-            int i = allProjectiles.GetFirst();
+            int i = standardBulletPool.GetFirst();
             while (i != -1)
             {
-                StandardBullet b = allProjectiles.GetByIndex(i);
+                StandardBullet b = standardBulletPool.GetByIndex(i);
                 b.Update(ms);
-                i = allProjectiles.NextIndex(b);
+                i = standardBulletPool.NextIndex(b);
                 if (b.MustBeDeleted())
                 {
-                    allProjectiles.Dispose(b);
+                    standardBulletPool.Dispose(b);
                 }
             }
         }
