@@ -69,10 +69,10 @@ namespace LightSavers.Components.GameObjects
 
             mesh = new SkinnedMesh();
             mesh.Model = AssetLoader.mdl_character;
-            //mesh.SkinningData.setNewAnimations(AssetLoader.ani_character);
+            mesh.SkinningData.setNewAnimations(AssetLoader.ani_character);
 
             aplayer = new AnimationPlayer(mesh.SkinningData);
-            aplayer.StartClip(mesh.SkinningData.AnimationClips["Take 001"]);
+            aplayer.StartClip(mesh.SkinningData.AnimationClips["run_pistol"]);
 
             UpdateAnimation(0);
             UpdateMajorTransforms(0);

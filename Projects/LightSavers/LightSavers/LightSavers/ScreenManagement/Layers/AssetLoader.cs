@@ -132,10 +132,7 @@ namespace LightSavers
             foreach (string ani in animations)
             {
                 Model tempModel = loadModel(String.Format("{0}-{1}",prefix, ani));
-                SkinnedMesh tempMesh = new SkinnedMesh();
-                tempMesh.Model = tempModel;
-
-                newAnimations.Add(ani, tempMesh.SkinningData.AnimationClips["Take 001"]);
+                newAnimations.Add(ani, ((MeshMetadata)tempModel.Tag).SkinningData.AnimationClips["Take 001"]);
 
             }
             return newAnimations;
@@ -156,8 +153,13 @@ namespace LightSavers
         private void LoadAssets()
         {
             // number of assets to be loaded. (used to compute progress bar size)
-            num_assets = 16;
+            num_assets = 24;
             num_assets += CountSections();
+            num_assets += characterAnimationsList.Length;
+            num_assets += alien01AnimationsList.Length;
+            num_assets += alien02AnimationsList.Length;
+            num_assets += alien03AnimationsList.Length;
+            num_assets += alien04AnimationsList.Length;
             LoadSections();
             // assets
             mdl_menuscene = loadModel("models/menuscene/MenuScene");
