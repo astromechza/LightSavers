@@ -53,7 +53,8 @@ namespace LightSavers.Components.GameObjects
         private LightSceneGraphReceipt light2receipt;
         private LightSceneGraphReceipt light3receipt;
 
-        private BaseGun gun;
+        private BaseGun[] weapons;
+        private int currentWeapon;
 
         public PlayerObject(RealGame game, PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
@@ -77,17 +78,15 @@ namespace LightSavers.Components.GameObjects
             UpdateAnimation(0);
             UpdateMajorTransforms(0);
 
-            gun = new Shotgun();
-            gun.SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
-
             game.sceneGraph.Setup(mesh);
             modelReceipt = game.sceneGraph.Add(mesh);
             light1receipt = game.sceneGraph.Add(torchlight);
             light2receipt = game.sceneGraph.Add(haloemitlight);
             light3receipt = game.sceneGraph.Add(halolight);
 
-            game.sceneGraph.Setup(gun.mesh);
-            gun.receipt = game.sceneGraph.Add(gun.mesh);
+            SetupWeapons();
+            SwitchWeapon(0);
+
         }
 
         private void UpdateAnimation(float ms)
@@ -176,11 +175,19 @@ namespace LightSavers.Components.GameObjects
 
             if (Globals.inputController.isTriggerDown(Triggers.Right, playerIndex))
             {
+                if (currentWeapon > -1)
+                {
+                    float r = (float)Globals.random.NextDouble() * 0.1f - 0.05f;
 
-                float r = (float)Globals.random.NextDouble()*0.1f - 0.05f;
+                    StandardBullet b = game.projectileManager.allProjectiles.Provide();
+                    b.Construct(game, weapons[currentWeapon].emmitterPosition, rotation + MathHelper.PiOver2 + r);
+                }
+            }
 
-                StandardBullet b = game.projectileManager.allProjectiles.Provide();
-                b.Construct(game, gun.emmitterPosition, rotation + MathHelper.PiOver2 + r);
+            if(Globals.inputController.isButtonPressed(Microsoft.Xna.Framework.Input.Buttons.Y, playerIndex))
+            {
+                int nw = (currentWeapon + 1) % 5;
+                SwitchWeapon(nw);
             }
 
 
@@ -220,9 +227,46 @@ namespace LightSavers.Components.GameObjects
             UpdateAnimation(ms);
             UpdateMajorTransforms(ms);
 
-            gun.SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
-            gun.receipt.graph.Renew(gun.receipt);
+            if (currentWeapon > -1)
+            {
+                weapons[currentWeapon].SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
+                weapons[currentWeapon].receipt.graph.Renew(weapons[currentWeapon].receipt);
+            }
 
+        }
+
+        public void SetupWeapons()
+        {
+            weapons = new BaseGun[5];
+            weapons[0] = new Pistol();
+            game.sceneGraph.Setup(weapons[0].mesh);
+            weapons[1] = new Shotgun();
+            game.sceneGraph.Setup(weapons[1].mesh);
+            weapons[2] = new AssaultRifle();
+            game.sceneGraph.Setup(weapons[2].mesh);
+            weapons[3] = new SniperRifle();
+            game.sceneGraph.Setup(weapons[3].mesh);
+            weapons[4] = new Sword();
+            game.sceneGraph.Setup(weapons[4].mesh);
+
+            currentWeapon = -1;
+            
+        }
+
+        public void SwitchWeapon(int to)
+        {
+            //disable current weapon
+            if (currentWeapon > -1)
+            {
+                game.sceneGraph.Remove(weapons[currentWeapon].receipt);
+            }
+
+            currentWeapon = to;
+            BaseGun g = weapons[to];
+            g.SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
+
+            if (g.receipt != null) game.sceneGraph.Renew(g.receipt);
+            g.receipt = game.sceneGraph.Add(g.mesh);
         }
 
         public void SetupLights()
