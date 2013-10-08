@@ -25,6 +25,8 @@ namespace LightSavers.ScreenManagement.Layers
 
         private Color transitionColour;
 
+        private Rectangle titleRect;
+
         /// <summary>
         /// The constructor for the Main Menu.
         /// </summary>
@@ -62,6 +64,10 @@ namespace LightSavers.ScreenManagement.Layers
                 DepthFormat.Depth24,
                 0,
                 RenderTargetUsage.DiscardContents);
+
+
+            int tx = (viewport.Width - 800) / 2;
+            titleRect = new Rectangle(tx, 100, 800, 230);
         }
 
         private void ConstructSubMenus()
@@ -117,7 +123,9 @@ namespace LightSavers.ScreenManagement.Layers
         {
             
             menuBackground.Draw(canvas);
-            
+
+            canvas.Draw(AssetLoader.title2, titleRect, Color.White);
+
             submenus[currentSubMenuIndex].Draw(canvas, 60, 400);
             
             if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)

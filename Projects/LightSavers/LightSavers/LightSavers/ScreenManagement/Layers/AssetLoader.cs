@@ -68,6 +68,7 @@ namespace LightSavers
         public static Model mdl_sniper_rifle;
         public static Model mdl_sword;
 
+        public static Texture2D title2;
         public static Texture2D tex_black;
         public static Texture2D tex_white;
         public static SpriteFont fnt_assetloadscreen;
@@ -81,8 +82,9 @@ namespace LightSavers
         private String loading_msg = "Loading Assets";
         private int loading_bar_length = 0;
         private int loaded_assets = 0;
-        private int num_assets = -1;            
+        private int num_assets = -1;
 
+        private Rectangle titleRect;
         private Viewport viewport;
         private SpriteBatch spriteBatch;
         
@@ -100,6 +102,8 @@ namespace LightSavers
             tex_white = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
             tex_white.SetData(new Color[] { Color.White });
 
+            title2 = Globals.content.Load<Texture2D>("textures/title2");
+
             // Fade times
             transitionOnTime = TimeSpan.FromSeconds(0.6);
             transitionOffTime = TimeSpan.FromSeconds(0.5);      
@@ -110,6 +114,8 @@ namespace LightSavers
             fadeInCompleteCallback = Start;
             fadeOutCompleteCallback = DisplayMainMenu;
 
+            int tx = (viewport.Width - 800) / 2;
+            titleRect = new Rectangle(tx, 100, 800, 230);
         }
         
         public bool Start()
@@ -218,14 +224,17 @@ namespace LightSavers
         // A black background + text + progress bar
         public override void Draw()
         {
+            Color talpha = new Color(transitionPercent, transitionPercent, transitionPercent, transitionPercent);
+
             spriteBatch.Begin();
-            spriteBatch.Draw(tex_black, viewport.Bounds, new Color(transitionPercent, transitionPercent, transitionPercent, transitionPercent));
 
-            spriteBatch.DrawString(fnt_assetloadscreen, loading_msg, new Vector2((viewport.Width - fnt_assetloadscreen.MeasureString(loading_msg).X) / 2, drawingY), Color.White);
+            spriteBatch.Draw(tex_black, viewport.Bounds, talpha);
 
-            spriteBatch.Draw(tex_white, new Rectangle(0, drawingY + 50-2, viewport.Width, 6), Color.Gray); 
+            spriteBatch.Draw(title2, titleRect, talpha);
 
-            spriteBatch.Draw(tex_white, new Rectangle(0, drawingY + 50, loading_bar_length, 2), Color.White); 
+            spriteBatch.DrawString(fnt_assetloadscreen, loading_msg, new Vector2((viewport.Width - fnt_assetloadscreen.MeasureString(loading_msg).X) / 2, drawingY), talpha);
+
+            spriteBatch.Draw(tex_white, new Rectangle(20, drawingY + 50, loading_bar_length, 2), talpha); 
 
             spriteBatch.End();
         }
@@ -233,7 +242,7 @@ namespace LightSavers
         // Update the size of the loading bar
         public override void Update(float ms)
         {
-            loading_bar_length = (int)((loaded_assets / (float)num_assets) * viewport.Width);
+            loading_bar_length = (int)((loaded_assets / (float)num_assets) * (viewport.Width-20));
             base.Update(ms);
         }
 
