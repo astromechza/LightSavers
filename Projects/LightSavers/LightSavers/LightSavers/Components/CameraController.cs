@@ -19,7 +19,9 @@ namespace LightSavers.Components
         private Vector3 targetXYZ;
 
         private Matrix CAMERA_PITCH = Matrix.CreateRotationX(MathHelper.ToRadians(15));
-        private Matrix CAMERA_DOWN = Matrix.CreateRotationX(MathHelper.ToRadians(-90)); 
+        private Matrix CAMERA_DOWN = Matrix.CreateRotationX(MathHelper.ToRadians(-90));
+
+        private float sinFOVOverTwo = (float)Math.Sin(22.5f);
 
         // == Constructors ===
         public CameraController(Viewport v)
@@ -50,7 +52,7 @@ namespace LightSavers.Components
         {
             lastXYZ = Vector3.Lerp(lastXYZ, targetXYZ, ms / 300);
 
-            camera.Transform = CAMERA_DOWN * Matrix.CreateTranslation(lastXYZ);
+            camera.Transform = CAMERA_DOWN * Matrix.CreateTranslation(lastXYZ) * CAMERA_PITCH;
         }
 
         public void Fit(List<Vector2> list)
@@ -71,7 +73,7 @@ namespace LightSavers.Components
 
             //arb tweaks
             minz = minz - 2;
-            maxz = maxz + 1;
+            maxz = maxz + 2;
 
             float X = (minx + maxx) / 2;
             float Z = (minz + maxz) / 2;
@@ -81,7 +83,7 @@ namespace LightSavers.Components
 
             float r = Math.Max(dx, dz) + 1.5f;
 
-            float Y = Math.Abs(r / (float)Math.Sin(22.5f));
+            float Y = Math.Abs(r / sinFOVOverTwo);
 
             targetXYZ = new Vector3(X, Y + 3, Z);
 
@@ -89,7 +91,7 @@ namespace LightSavers.Components
 
         public void MoveToTarget()
         {
-            camera.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(targetXYZ) * Matrix.CreateRotationX(MathHelper.ToRadians(15));
+            camera.Transform = CAMERA_DOWN * Matrix.CreateTranslation(targetXYZ) * CAMERA_PITCH;
         }
     }
 }

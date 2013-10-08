@@ -60,12 +60,11 @@ namespace LightSavers.Components.MenuObjects
         }
 
         //draw
+        private RenderTarget2D temp;
         public void Draw(SpriteBatch canvas)
         {
-
-            RenderTarget2D o = renderer.RenderScene(camera, lightAndMeshContainer, new GameTime());
-            
-            canvas.Draw(o, viewport.Bounds, Color.White);
+            temp = renderer.RenderScene(camera, lightAndMeshContainer);
+            canvas.Draw(temp, viewport.Bounds, Color.White);
         }
 
         //camera modification

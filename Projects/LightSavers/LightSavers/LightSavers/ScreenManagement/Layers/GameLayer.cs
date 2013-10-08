@@ -70,24 +70,23 @@ namespace LightSavers.ScreenManagement.Layers
         private RenderTarget2D temp;
         public override void Draw()
         {
-
+            
             // reset these because spritebatch can do nasty stuff
             Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
             Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-            temp = renderer.RenderScene(cameraController.Camera, sceneGraph, new GameTime());
+            temp = renderer.RenderScene(cameraController.Camera, sceneGraph);
             
             // Now switch back to the main render device
             Globals.graphics.GraphicsDevice.SetRenderTarget(null);
             Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
             Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-
+            
             // Draw the layers
             canvas.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
 
             // draw the 3d scene
             canvas.Draw(temp, viewport.Bounds, Color.White);
-
 
             canvas.End();
             
@@ -95,7 +94,7 @@ namespace LightSavers.ScreenManagement.Layers
 
         public override void Update(float ms)
         {
-
+            
             game.Update(ms);
 
             if (Globals.inputController.isButtonReleased(Microsoft.Xna.Framework.Input.Buttons.Back, null))
@@ -105,7 +104,7 @@ namespace LightSavers.ScreenManagement.Layers
 
             cameraController.Fit(game.GetCriticalPoints());
             cameraController.Update(ms);
-
+            
             base.Update(ms);
         }
 

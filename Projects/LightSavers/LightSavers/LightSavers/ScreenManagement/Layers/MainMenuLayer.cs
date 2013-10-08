@@ -23,6 +23,7 @@ namespace LightSavers.ScreenManagement.Layers
         // current index
         private int currentSubMenuIndex;
 
+        private Color transitionColour;
 
         /// <summary>
         /// The constructor for the Main Menu.
@@ -36,6 +37,7 @@ namespace LightSavers.ScreenManagement.Layers
             ConstructDrawingObjects();
 
             ConstructSubMenus();
+
         }
 
         #region == constructor submethods ==
@@ -103,7 +105,9 @@ namespace LightSavers.ScreenManagement.Layers
             Draw2DLayers();
 
             // finish drawing
-            canvas.End();            
+            canvas.End();
+
+            transitionColour = new Color(0, 0, 0);
         }
 
         #region == drawing submethods ==
@@ -111,18 +115,16 @@ namespace LightSavers.ScreenManagement.Layers
 
         private void Draw2DLayers()
         {
-
+            
             menuBackground.Draw(canvas);
-
-            //draw menu here
-            //canvas.Draw(AssetLoader.tex_black, new Rectangle(50, 0, 300, viewport.Height), new Color(0, 0, 0, 150));
-
+            
             submenus[currentSubMenuIndex].Draw(canvas, 60, 400);
-
+            
             if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)
             {
                 int trans = (int)((1 - transitionPercent) * 255.0f);
-                canvas.Draw(AssetLoader.tex_black, viewport.Bounds, new Color(trans, trans, trans, trans));
+                transitionColour = new Color(trans, trans, trans, trans);
+                canvas.Draw(AssetLoader.tex_black, viewport.Bounds, transitionColour);
             }
         }
 
