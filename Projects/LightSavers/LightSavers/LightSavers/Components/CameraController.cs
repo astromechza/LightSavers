@@ -18,6 +18,9 @@ namespace LightSavers.Components
         private Vector3 lastXYZ;
         private Vector3 targetXYZ;
 
+        private Matrix CAMERA_PITCH = Matrix.CreateRotationX(MathHelper.ToRadians(15));
+        private Matrix CAMERA_DOWN = Matrix.CreateRotationX(MathHelper.ToRadians(-90)); 
+
         // == Constructors ===
         public CameraController(Viewport v)
         {
@@ -47,7 +50,7 @@ namespace LightSavers.Components
         {
             lastXYZ = Vector3.Lerp(lastXYZ, targetXYZ, ms / 300);
 
-            camera.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(lastXYZ) * Matrix.CreateRotationX(MathHelper.ToRadians(15));
+            camera.Transform = CAMERA_DOWN * Matrix.CreateTranslation(lastXYZ);
         }
 
         public void Fit(List<Vector2> list)
