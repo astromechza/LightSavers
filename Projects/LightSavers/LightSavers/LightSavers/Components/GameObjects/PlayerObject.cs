@@ -20,12 +20,12 @@ namespace LightSavers.Components.GameObjects
         const float PLAYER_SCALE = 0.75f;
 
         // Light stuff
-        const float TORCH_HEIGHT = 1.7f;
+        const float TORCH_HEIGHT = 2.5f;
         const float HALO_HEIGHT = 6.0f;
 
         Matrix mPlayerScale = Matrix.CreateScale(PLAYER_SCALE);
         Matrix mHaloPitch = Matrix.CreateRotationX(-90);
-        Matrix mTorchPitch = Matrix.CreateRotationX(-0.1f);
+        Matrix mTorchPitch = Matrix.CreateRotationX(-0.4f);
         #endregion
 
 
@@ -69,15 +69,15 @@ namespace LightSavers.Components.GameObjects
 
             mesh = new SkinnedMesh();
             mesh.Model = AssetLoader.mdl_character;
-            mesh.SkinningData.setNewAnimations(AssetLoader.ani_character);
+            //mesh.SkinningData.setNewAnimations(AssetLoader.ani_character);
 
             aplayer = new AnimationPlayer(mesh.SkinningData);
-            aplayer.StartClip(mesh.SkinningData.AnimationClips["run_snipshot_shoot"]);
+            aplayer.StartClip(mesh.SkinningData.AnimationClips["Take 001"]);
 
             UpdateAnimation(0);
             UpdateMajorTransforms(0);
 
-            gun = new Pistol();
+            gun = new Shotgun();
             gun.SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
 
             game.sceneGraph.Setup(mesh);
@@ -105,7 +105,7 @@ namespace LightSavers.Components.GameObjects
 
             halolight.Transform = mHaloPitch * Matrix.CreateTranslation(position + new Vector3(0, HALO_HEIGHT, 0));
             haloemitlight.Transform = mHaloPitch * Matrix.CreateTranslation(position + new Vector3(0, 2, 0));
-            torchlight.Transform = mTorchPitch * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
+            torchlight.Transform = mTorchPitch * Matrix.CreateTranslation(0, 0, 0.3f) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
         }
 
         public override void Update(float ms)
