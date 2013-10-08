@@ -13,9 +13,6 @@ namespace LightPrePassProcessor
     public class ProjectileModelProcessor : ContentProcessor<ProjectileXML, ModelContent>
     {
 
-        private const string diffusetexturefile = "projectiles/green.png";
-        private const string emittexturefile = "projectiles/green.png";
-
         public override ModelContent Process(ProjectileXML input, ContentProcessorContext context)
         {
             if (input == null) throw new ArgumentNullException("input");
@@ -34,8 +31,8 @@ namespace LightPrePassProcessor
 
             BasicMaterialContent material = new BasicMaterialContent();
 
-            material.Textures.Add(LightPrePassProcessor.DiffuseMapKey, new ExternalReference<TextureContent>(p.texture));
-            material.Textures.Add(LightPrePassProcessor.EmissiveMapKey, new ExternalReference<TextureContent>(p.texture));
+            material.Textures.Add(LightPrePassProcessor.DiffuseMapKey, new ExternalReference<TextureContent>(p.diffuse_texture));
+            material.Textures.Add(LightPrePassProcessor.EmissiveMapKey, new ExternalReference<TextureContent>(p.emissive_texture));
 
             mb.SetMaterial(material);
 

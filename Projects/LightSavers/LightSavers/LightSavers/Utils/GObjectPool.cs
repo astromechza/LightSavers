@@ -81,7 +81,7 @@ namespace ObjectPool
         private int first;
         private int last;
 
-        public GObjectPool(int size)
+        public GObjectPool(int size, int prebuild)
         {
             // set size, this is required all over the place
             this.size = size;
@@ -103,6 +103,12 @@ namespace ObjectPool
             //setup next and previous things
             previouses = new int[size];
             nexts = new int[size];
+
+            for (int i = 0; i < 50; i++)
+            {
+                pool[i] = new T();
+                pool[i].PoolIndex = i;
+            }
         }
 
         /// <summary>

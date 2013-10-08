@@ -16,14 +16,15 @@ namespace LightSavers.Components.Projectiles
 
         //maximum number of projectiles expected live at any point in time
         private const int MAX_PROJECTILES = 1000;
+        private const int PRE_BUILD = 50;
 
         public GObjectPool<StandardBullet> allProjectiles;
 
         public ProjectileManager()
         {
-            allProjectiles = new GObjectPool<StandardBullet>(MAX_PROJECTILES);
+            allProjectiles = new GObjectPool<StandardBullet>(MAX_PROJECTILES, PRE_BUILD);
         }
-        
+
         /// <summary>
         /// Update all of the bullets held in the list. 
         /// Add the ones that are still alive to a new list. 
