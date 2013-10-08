@@ -52,7 +52,7 @@ namespace LightSavers.ScreenManagement.Layers
             // The light and mesh container is used to store mesh and light obejcts. This is just for RENDERING. Not for DRAWING
             sceneGraph = new BlockBasedSceneGraph(10);
             sceneGraph.SetSubMeshDelegate(delegate(Mesh.SubMesh subMesh) 
-            {
+            {                
                 renderer.SetupSubMesh(subMesh);
                 subMesh.RenderEffect.AmbientParameter.SetValue(Vector4.Zero);
             });
@@ -66,6 +66,7 @@ namespace LightSavers.ScreenManagement.Layers
             
         }
 
+        private RenderTarget2D temp;
         public override void Draw()
         {
 
@@ -73,7 +74,7 @@ namespace LightSavers.ScreenManagement.Layers
             Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
             Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-            RenderTarget2D o = renderer.RenderScene(cameraController.Camera, sceneGraph, new GameTime());
+            temp = renderer.RenderScene(cameraController.Camera, sceneGraph, new GameTime());
             
             // Now switch back to the main render device
             Globals.graphics.GraphicsDevice.SetRenderTarget(null);
@@ -84,7 +85,7 @@ namespace LightSavers.ScreenManagement.Layers
             canvas.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
 
             // draw the 3d scene
-            canvas.Draw(o, viewport.Bounds, Color.White);
+            canvas.Draw(temp, viewport.Bounds, Color.White);
 
 
             canvas.End();
