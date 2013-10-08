@@ -83,5 +83,10 @@ namespace LightSavers.Components
             targetXYZ = new Vector3(X, Y + 3, Z);
 
         }
+
+        public void MoveToTarget()
+        {
+            camera.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(targetXYZ) * Matrix.CreateRotationX(MathHelper.ToRadians(15));
+        }
     }
 }
