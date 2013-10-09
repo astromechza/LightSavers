@@ -2,6 +2,7 @@
 using LightPrePassRenderer.partitioning;
 using LightSavers.Collisions;
 using LightSavers.Components.GameObjects;
+using LightSavers.Components.GameObjects.Aliens;
 using LightSavers.Components.Projectiles;
 using LightSavers.Utils;
 using LightSavers.WorldBuilding;
@@ -27,8 +28,7 @@ namespace LightSavers.Components
         public CellCollider cellCollider;
         public List<Door> doors;
 
-        public Alien alien1;
-        public List<Alien> aliens;
+        public List<AlienOne> aliens;
 
         public RealGame(int numberOfSections, int numPlayers, BlockBasedSceneGraph sg)
         {
@@ -63,10 +63,10 @@ namespace LightSavers.Components
             }
 
 
-            aliens = new List<Alien>();
+            aliens = new List<AlienOne>();
             for (int i = 0; i < 15; i++)
             {
-                aliens.Add(new Alien(this, new Vector3(6, 0, 6)));
+                aliens.Add(new AlienOne(this, new Vector3(6, 0, 6)));
             }
 
         }

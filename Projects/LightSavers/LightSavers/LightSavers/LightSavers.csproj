@@ -108,7 +108,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collisions\CellCollider.cs" />
-    <Compile Include="Components\GameObjects\Alien.cs" />
+    <Compile Include="Components\GameObjects\Aliens\AlienOne.cs" />
+    <Compile Include="Components\GameObjects\Aliens\BaseAlien.cs" />
     <Compile Include="Components\GameObjects\Door.cs" />
     <Compile Include="Components\Guns\AssaultRifle.cs" />
     <Compile Include="Components\Guns\BaseGun.cs" />
@@ -195,9 +196,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\GameObjects\Aliens\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

@@ -63,7 +63,7 @@ namespace LightSavers.Components.GameObjects
             this.color = color;
 
             // initial transform
-            position = pos;
+            this._position = pos;
             rotation = initialYRot;
 
             SetupLights();
@@ -103,17 +103,17 @@ namespace LightSavers.Components.GameObjects
 
         private void UpdateMajorTransforms(float ms)
         {
-            mesh.Transform = mPlayerScale * Matrix.CreateRotationY(rotation+(float)Math.PI) * Matrix.CreateTranslation(position + new Vector3(0, PLAYER_YORIGIN, 0));
+            mesh.Transform = mPlayerScale * Matrix.CreateRotationY(rotation + (float)Math.PI) * Matrix.CreateTranslation(_position + new Vector3(0, PLAYER_YORIGIN, 0));
 
-            halolight.Transform = mHaloPitch * Matrix.CreateTranslation(position + new Vector3(0, HALO_HEIGHT, 0));
-            haloemitlight.Transform = mHaloPitch * Matrix.CreateTranslation(position + new Vector3(0, 2, 0));
-            torchlight.Transform = mTorchPitch * Matrix.CreateTranslation(0, 0, 0.3f) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
+            halolight.Transform = mHaloPitch * Matrix.CreateTranslation(_position + new Vector3(0, HALO_HEIGHT, 0));
+            haloemitlight.Transform = mHaloPitch * Matrix.CreateTranslation(_position + new Vector3(0, 2, 0));
+            torchlight.Transform = mTorchPitch * Matrix.CreateTranslation(0, 0, 0.3f) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(_position + new Vector3(0, TORCH_HEIGHT, 0));
         }
 
         public override void Update(float ms)
         {
 
-            Vector3 newposition = new Vector3(position.X, position.Y, position.Z);
+            Vector3 newposition = new Vector3(_position.X, _position.Y, _position.Z);
 
             // 1. == Update Movement
             // movement is done via analog sticks
@@ -195,29 +195,29 @@ namespace LightSavers.Components.GameObjects
 
 
             // collision stuff
-            if (position != newposition)
+            if (_position != newposition)
             {
-                Vector3 cd = new Vector3(position.X, 0, position.Z);
-                if (newposition.X < position.X) cd.X -= 0.2f;
-                else if (newposition.X > position.X) cd.X += 0.2f;
+                Vector3 cd = new Vector3(_position.X, 0, _position.Z);
+                if (newposition.X < _position.X) cd.X -= 0.2f;
+                else if (newposition.X > _position.X) cd.X += 0.2f;
 
 
-                if (newposition.Z < position.Z) cd.Z -=0.2f;
-                else if (newposition.Z > position.Z) cd.Z += 0.2f;
+                if (newposition.Z < _position.Z) cd.Z -= 0.2f;
+                else if (newposition.Z > _position.Z) cd.Z += 0.2f;
 
-                if (game.cellCollider.GetCollision(cd.X, position.Z))
+                if (game.cellCollider.GetCollision(cd.X, _position.Z))
                 {
-                    newposition.X = position.X;
+                    newposition.X = _position.X;
                 }
 
-                if (game.cellCollider.GetCollision(position.X, cd.Z))
+                if (game.cellCollider.GetCollision(_position.X, cd.Z))
                 {
-                    newposition.Z = position.Z;
+                    newposition.Z = _position.Z;
                 }
 
-                if (position != newposition)
+                if (_position != newposition)
                 {
-                    position = newposition;
+                    _position = newposition;
 
                     modelReceipt.graph.Renew(modelReceipt);
                     light1receipt.graph.Renew(light1receipt);
@@ -321,17 +321,12 @@ namespace LightSavers.Components.GameObjects
             return mesh;
         }
 
-        public override RectangleF GetBoundRect()
-        {
-            return new RectangleF();
-        }
-
         public void AddCriticalPoints(List<Vector2> outputPoints)
         {
-            outputPoints.Add(new Vector2(position.X, position.Z));
+            outputPoints.Add(new Vector2(_position.X, _position.Z));
 
             Vector3 v = new Vector3(0, 0, -7);
-            Matrix m = Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position);
+            Matrix m = Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(_position);
             Vector3 t = Vector3.Transform(v, m);
             outputPoints.Add(new Vector2(t.X,t.Z));
         }
