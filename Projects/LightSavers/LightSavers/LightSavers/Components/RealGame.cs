@@ -15,19 +15,20 @@ using System.Text;
 
 namespace LightSavers.Components
 {
+    /// <summary>
+    /// RealGame is the class controlling the actual game, its entities and inter-entity operations
+    /// </summary>
     public class RealGame
     {
         private PlayerObject[] players;
-
         public ProjectileManager projectileManager;
-
         public BlockBasedSceneGraph sceneGraph;
-
         public WorldBuilder worldBuilder;
-
         public CellCollider cellCollider;
-
         public List<Door> doors;
+
+        public Alien alien1;
+        public List<Alien> aliens;
 
         public RealGame(int numberOfSections, int numPlayers, BlockBasedSceneGraph sg)
         {
@@ -40,7 +41,9 @@ namespace LightSavers.Components
             worldBuilder = new WorldBuilder(this, numberOfSections, Vector3.Zero);
 
             projectileManager = new ProjectileManager();
+
             
+
             players = new PlayerObject[numPlayers];
 
 
@@ -59,12 +62,20 @@ namespace LightSavers.Components
                 players[i] = new PlayerObject(this, (i==0) ? PlayerIndex.One : PlayerIndex.Two, playerColours[i], spawns[i], 0);
             }
 
+
+            aliens = new List<Alien>();
+            for (int i = 0; i < 15; i++)
+            {
+                aliens.Add(new Alien(this, new Vector3(6, 0, 6)));
+            }
+
         }
 
         public void Update(float ms)
         {
             for (int i = 0; i < players.Length; i++) players[i].Update(ms);
             projectileManager.Update(ms);
+            for (int i = 0; i < aliens.Count; i++) aliens[i].Update(ms);
             for (int i = 0; i < doors.Count; i++) doors[i].Update(ms);
         }
 
