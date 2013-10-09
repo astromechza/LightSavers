@@ -39,8 +39,8 @@ namespace LightSavers.Components.GameObjects
             int ms = (int)mesh.SkinningData.AnimationClips["Take 001"].Duration.TotalMilliseconds;
             float c = ms / 225.0f;
 
-            aplayer.AddDurationClip("walk", TimeSpan.FromMilliseconds(126 * c), TimeSpan.FromMilliseconds(150 * c));
-            aplayer.StartClip("walk");
+            aplayer.AddAnimationPackage = AssetLoader.ani_alien1;
+            aplayer.StartClip("moving");
 
             UpdateAnimation(0);
             UpdateMajorTransforms(0);
