@@ -40,7 +40,7 @@ namespace LightSavers
        
 
         public static Model mdl_alien1;
-        static string[] alien01AnimationsList = new string[] { "idle", "death", "moving", "attacking" };
+        static string[] alien01AnimationsList = new string[] { "idle", "moving", "attacking", "death" };
         static int[] alien01AnimationKeys = new int[] { 0, 125, 126, 150, 151, 200, 201, 225 };
         public static DurationBasedAnimator.AnimationPackage ani_alien1;
 
@@ -50,12 +50,12 @@ namespace LightSavers
         public static DurationBasedAnimator.AnimationPackage ani_alien2;
 
         public static Model mdl_alien3;
-        public string[] alien03AnimationsList = new string[] { "idle", "attacking_melee", "attacking_range", "death", "moving" };
+        public string[] alien03AnimationsList = new string[] { "idle", "moving", "attacking_melee", "attacking_range", "death" };
         static int[] alien03AnimationKeys = new int[] { 0,125,126,150,151,175,176,200,201,225};
         public static DurationBasedAnimator.AnimationPackage ani_alien3;
 
         public static Model mdl_alien4;
-        public string[] alien04AnimationsList = new string[] { "attacking", "charging", "death", "idle", "impact", "moving" };
+        public string[] alien04AnimationsList = new string[] { "idle", "moving", "charging", "impact", "attacking", "death" };
         static int[] alien04AnimationKeys = new int[] { 0, 125, 126, 150, 151, 175, 176, 200, 201, 225, 226, 300 };
         public static DurationBasedAnimator.AnimationPackage ani_alien4;
 
