@@ -67,7 +67,7 @@ namespace SkinnedModel
             if (clip == null)
                 throw new ArgumentNullException("clip");
 
-            currentClipValue = clip;
+            currentClipValue = clip;            
             currentTimeValue = TimeSpan.Zero;
             currentKeyframe = 0;
 

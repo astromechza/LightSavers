@@ -35,23 +35,29 @@ namespace LightSavers
                                                                 "idle_pistol", "walk_pistol", "run_pistol", "walk_pistol_shoot", "run_pistol_shoot", "idle_pistol_shoot",
                                                                 "idle_sword", "walk_sword", "run_sword", "walk_sword_shoot", "run_sword_shoot", "idle_sword_shoot",
                                                                 "death_1"};
-        public static Dictionary<string, AnimationClip> ani_character;
+        static int[] characterAnimationKeys = new int[] { 0, 48, 49, 76, 77, 97, 98, 125, 126, 146, 147, 173, 174, 221, 222, 249, 250, 270, 271, 298, 299, 319, 320, 367, 368, 415, 146, 443, 444, 464, 465, 492, 493, 513, 514, 561, 562, 609, 610, 637, 638, 658, 659, 686, 689, 707, 708, 748, 749, 769 };
+        public static DurationBasedAnimator.AnimationPackage ani_character;
+       
 
         public static Model mdl_alien1;
         static string[] alien01AnimationsList = new string[] { "idle", "death", "moving", "attacking" };
-        public static Dictionary<string, AnimationClip> ani_alien1;
+        static int[] alien01AnimationKeys = new int[] { 0, 125, 126, 150, 151, 200, 201, 225 };
+        public static DurationBasedAnimator.AnimationPackage ani_alien1;
 
         public static Model mdl_alien2;
         public string[] alien02AnimationsList = new string[] { "idle" , "moving", "attacking", "death" };
-        public static Dictionary<string, AnimationClip> ani_alien2;
+        static int[] alien02AnimationKeys = new int[] { 0, 125, 126, 150, 151, 200, 201, 225 };
+        public static DurationBasedAnimator.AnimationPackage ani_alien2;
 
         public static Model mdl_alien3;
         public string[] alien03AnimationsList = new string[] { "idle", "attacking_melee", "attacking_range", "death", "moving" };
-        public static Dictionary<string, AnimationClip> ani_alien3;
+        static int[] alien03AnimationKeys = new int[] { 0,125,126,150,151,175,176,200,201,225};
+        public static DurationBasedAnimator.AnimationPackage ani_alien3;
 
         public static Model mdl_alien4;
         public string[] alien04AnimationsList = new string[] { "attacking", "charging", "death", "idle", "impact", "moving" };
-        public static Dictionary<string, AnimationClip> ani_alien4;
+        static int[] alien04AnimationKeys = new int[] { 0, 125, 126, 150, 151, 175, 176, 200, 201, 225, 226, 300 };
+        public static DurationBasedAnimator.AnimationPackage ani_alien4;
 
         public static Model mdl_sphere;
         public static Model mdl_ceilinglight;
@@ -125,17 +131,25 @@ namespace LightSavers
             return true;
         }
 
-        public Dictionary<string, AnimationClip> generateAnimations(string prefix, string[] animations)
+        /// <summary>
+        /// Extracts the Animations from Take 001
+        /// </summary>
+        /// <param name="array containing the names of the animations"></param>
+        /// <param name="array containing key ranges, eg 0-48,49-75 as [0,48,49,75]"></param>
+        /// <param name="Model to be animated"></param>
+        /// <param name="How many keyframes are baked into the model (generally if the last key is 11, this would be 10)"></param>
+        /// <returns></returns>
+        public DurationBasedAnimator.AnimationPackage generateAnimationPackage(string[] names, int[] keyRanges, Model m)
         {
-            Dictionary<string, AnimationClip> newAnimations = new Dictionary<string, AnimationClip>();
+            DurationBasedAnimator.AnimationPackage newPackage = new DurationBasedAnimator.AnimationPackage(((MeshMetadata)m.Tag).SkinningData, (float)keyRanges[keyRanges.Length-1]-1);
 
-            foreach (string ani in animations)
+            for ( int i=0; i<names.Length;++i)
             {
-                Model tempModel = loadModel(String.Format("{0}-{1}",prefix, ani));
-                newAnimations.Add(ani, ((MeshMetadata)tempModel.Tag).SkinningData.AnimationClips["Take 001"]);
-
+                newPackage.AddDurationClipEasy(names[i], keyRanges[i*2], keyRanges[i*2+1]);
             }
-            return newAnimations;
+            
+
+            return newPackage;
         }
 
 
@@ -166,19 +180,19 @@ namespace LightSavers
 
             //Load Character and animations
             mdl_character = loadModel("animatedmodels/player/spacemanAnimated");
-            ani_character = generateAnimations("animatedmodels/player/spacemanAnimated", characterAnimationsList);
+            ani_character = generateAnimationPackage(characterAnimationsList, characterAnimationKeys, mdl_character);
 
             mdl_alien1 = loadModel("animatedmodels/alien01/alien01_2");
-            ani_alien1 = generateAnimations("animatedmodels/alien01/alien01_2", alien01AnimationsList);
+            ani_alien1 = generateAnimationPackage(alien01AnimationsList, alien01AnimationKeys, mdl_alien1);
 
             mdl_alien2 = loadModel("animatedmodels/alien02/alien02_2");
-            ani_alien2 = generateAnimations("animatedmodels/alien02/alien02_2", alien02AnimationsList);
+            ani_alien2 = generateAnimationPackage(alien02AnimationsList, alien02AnimationKeys, mdl_alien2);
 
             mdl_alien3 = loadModel("animatedmodels/alien03/alien03_2");
-            ani_alien3 = generateAnimations("animatedmodels/alien03/alien03_2", alien03AnimationsList);
+            ani_alien3 = generateAnimationPackage(alien03AnimationsList, alien03AnimationKeys, mdl_alien3);
 
             mdl_alien4 = loadModel("animatedmodels/alien04/alien04_2");
-            ani_alien4 = generateAnimations("animatedmodels/alien04/alien04_2", alien04AnimationsList);
+            ani_alien4 = generateAnimationPackage(alien04AnimationsList, alien04AnimationKeys, mdl_alien4);
             
             mdl_sphere = loadModel("models/sphere");
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
