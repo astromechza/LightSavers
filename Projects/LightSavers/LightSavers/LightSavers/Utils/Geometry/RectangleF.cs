@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LightSavers
+namespace LightSavers.Utils.Geometry
 {
     public class RectangleF
     {
