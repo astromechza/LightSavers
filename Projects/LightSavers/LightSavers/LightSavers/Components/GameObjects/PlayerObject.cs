@@ -42,7 +42,7 @@ namespace LightSavers.Components.GameObjects
         private Light halolight;
         private Light haloemitlight;
 
-        private AnimationPlayer aplayer;
+        private DurationBasedAnimator aplayer;
 
         private RealGame game;
 
@@ -70,10 +70,21 @@ namespace LightSavers.Components.GameObjects
 
             mesh = new SkinnedMesh();
             mesh.Model = AssetLoader.mdl_character;
-            mesh.SkinningData.setNewAnimations(AssetLoader.ani_character);
+            //mesh.SkinningData.setNewAnimations(AssetLoader.ani_character);
 
-            aplayer = new AnimationPlayer(mesh.SkinningData);
-            aplayer.StartClip(mesh.SkinningData.AnimationClips["run_pistol"]);
+            //aplayer = new AnimationPlayer(mesh.SkinningData);
+            //aplayer.StartClip(mesh.SkinningData.AnimationClips["Take 001"]);
+
+            System.Diagnostics.Debug.WriteLine(mesh.SkinningData.AnimationClips["Take 001"].Duration);
+
+            int ms = (int)mesh.SkinningData.AnimationClips["Take 001"].Duration.TotalMilliseconds;
+            float c = ms / 850.0f;
+
+            aplayer = new DurationBasedAnimator(mesh.SkinningData, mesh.SkinningData.AnimationClips["Take 001"]);
+            aplayer.AddDurationClip("idle", TimeSpan.Zero, TimeSpan.FromMilliseconds(2045));
+            aplayer.AddDurationClip("walk", TimeSpan.FromMilliseconds(49 * c), TimeSpan.FromMilliseconds(76 * c));
+            aplayer.StartClip("walk");
+
 
             UpdateAnimation(0);
             UpdateMajorTransforms(0);
