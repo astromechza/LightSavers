@@ -38,47 +38,12 @@ namespace SkinnedModel
             
             durations = new Dictionary<string, DurationClip>();
 
-            AddDurationClip("Take 001", TimeSpan.Zero, fullclip.Duration);
-            StartClip("Take 001");
+            //AddDurationClip("Take 001", TimeSpan.Zero, fullclip.Duration);
+            //StartClip("Take 001");
 
         }
 
-        public void AddDurationClip(String name, TimeSpan start, TimeSpan end)
-        {
-
-            DurationClip d = new DurationClip();
-            d.start = start;
-            d.startFrame = 0;
-            d.end = end;
-            d.endFrame = fullclip.Keyframes.Count - 1;
-            d.duration = d.end - d.start;
-            d.startPose = new Matrix[skindata.BindPose.Count];
-
-            bool searching = true;
-            for (int i = 0; i < fullclip.Keyframes.Count; i++)
-            {
-
-                if (searching && fullclip.Keyframes[i].Time >= d.start)
-                {
-                    searching = false;
-                    d.startFrame = i;
-                }
-                else if (fullclip.Keyframes[i].Time >= d.end)
-                {
-                    d.endFrame = i;
-                    break;
-                }
-                else
-                {
-                    d.startPose[fullclip.Keyframes[i].Bone] = fullclip.Keyframes[i].Transform;
-                }
-
-            }
-                        
-            durations.Add(name, d);
-
-            System.Diagnostics.Debug.WriteLine("clip: " + name + " " + d.startFrame + "->" + d.endFrame);
-        }
+        
 
         public void StartClip(String name)
         {
@@ -180,7 +145,6 @@ namespace SkinnedModel
             return worldTransforms;
         }
 
-
         /// <summary>
         /// Gets the current bone transform matrices,
         /// relative to the skinning bind pose.
@@ -188,6 +152,12 @@ namespace SkinnedModel
         public Matrix[] GetSkinTransforms()
         {
             return skinTransforms;
+        }
+
+        public AnimationPackage AddAnimationPackage
+        {
+            set { durations = value.shareAnimation; }
+
         }
         
 
@@ -201,5 +171,71 @@ namespace SkinnedModel
             public Matrix[] startPose;
         }
 
+        public class AnimationPackage
+        {
+            AnimationClip fullclip;
+            float keyframes;
+            int bpCount;
+            int ms;
+            float c;
+            Dictionary<string, DurationClip> animations;
+
+            public Dictionary<string, DurationClip> shareAnimation
+            {
+                get{return animations;}
+            }
+
+            public AnimationPackage(SkinningData skin, float keyframeCount)
+            {
+                keyframes = keyframeCount;
+                fullclip = skin.AnimationClips["Take 001"];
+                bpCount = skin.BindPose.Count;
+                ms = (int)fullclip.Duration.TotalMilliseconds;
+                c = ms / keyframeCount;
+                animations = new Dictionary<string, DurationClip>();
+            }
+
+            public void AddDurationClipEasy(string name, int start, int end)
+            {
+                AddDurationClip(name, TimeSpan.FromMilliseconds(c * start), TimeSpan.FromMilliseconds(c * end));
+            }
+
+            private void AddDurationClip(String name, TimeSpan start, TimeSpan end)
+            {
+
+                DurationClip d = new DurationClip();
+                d.start = start;
+                d.startFrame = 0;
+                d.end = end;
+                d.endFrame = fullclip.Keyframes.Count - 1;
+                d.duration = d.end - d.start;
+                d.startPose = new Matrix[bpCount];
+
+                bool searching = true;
+                for (int i = 0; i < fullclip.Keyframes.Count; i++)
+                {
+
+                    if (searching && fullclip.Keyframes[i].Time >= d.start)
+                    {
+                        searching = false;
+                        d.startFrame = i;
+                    }
+                    else if (fullclip.Keyframes[i].Time >= d.end)
+                    {
+                        d.endFrame = i;
+                        break;
+                    }
+                    else
+                    {
+                        d.startPose[fullclip.Keyframes[i].Bone] = fullclip.Keyframes[i].Transform;
+                    }
+
+                }
+
+                animations.Add(name, d);
+
+                System.Diagnostics.Debug.WriteLine("clip: " + name + " " + d.startFrame + "->" + d.endFrame);
+            }
+        }
     }
 }

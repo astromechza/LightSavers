@@ -71,14 +71,11 @@ namespace LightSavers.Components.GameObjects
             mesh = new SkinnedMesh();
             mesh.Model = AssetLoader.mdl_character;
 
-            int ms = (int)mesh.SkinningData.AnimationClips["Take 001"].Duration.TotalMilliseconds;
-            float c = ms / 850.0f;
-
             aplayer = new DurationBasedAnimator(mesh.SkinningData, mesh.SkinningData.AnimationClips["Take 001"]);
-            aplayer.AddDurationClip("idle", TimeSpan.Zero, TimeSpan.FromMilliseconds(48 * c));
-            aplayer.AddDurationClip("walk", TimeSpan.FromMilliseconds(49 * c), TimeSpan.FromMilliseconds(76 * c));
-            aplayer.AddDurationClip("run_shoot_assault", TimeSpan.FromMilliseconds(126 * c), TimeSpan.FromMilliseconds(146 * c));
-            aplayer.StartClip("run_shoot_assault");
+
+            //Load the animations from the asset loader (these are in an Animation Package)
+            aplayer.AddAnimationPackage = AssetLoader.ani_character;
+            aplayer.StartClip("run_pistol_shoot");
 
 
             UpdateAnimation(0);
