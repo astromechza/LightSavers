@@ -327,71 +327,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="animatedmodels\alien01\alien01_2-attacking.fbx">
-      <Name>alien01_2-attacking</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien01\alien01_2-death.fbx">
-      <Name>alien01_2-death</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien01\alien01_2-idle.fbx">
-      <Name>alien01_2-idle</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien01\alien01_2-moving.fbx">
-      <Name>alien01_2-moving</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien02\alien02_2-idle.fbx">
-      <Name>alien02_2-idle</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien02\alien02_2-attacking.fbx">
-      <Name>alien02_2-attacking</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien02\alien02_2-moving.fbx">
-      <Name>alien02_2-moving</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien02\alien02_2-death.fbx">
-      <Name>alien02_2-death</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien03\alien03_2-attacking_melee.fbx">
-      <Name>alien03_2-attacking_melee</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien03\alien03_2-attacking_range.fbx">
-      <Name>alien03_2-attacking_range</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien03\alien03_2-death.fbx">
-      <Name>alien03_2-death</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien03\alien03_2-idle.fbx">
-      <Name>alien03_2-idle</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien03\alien03_2-moving.fbx">
-      <Name>alien03_2-moving</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
     <None Include="animatedmodels\alien04\Alien04 Animations .txt">
       <Name>Alien04 Animations</Name>
     </None>
@@ -440,36 +375,6 @@
       <Name>Sword</Name>
       <Importer>FbxImporter</Importer>
       <Processor>LightPrePassProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien04\alien04_2-attacking.fbx">
-      <Name>alien04_2-attacking</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien04\alien04_2-charging.fbx">
-      <Name>alien04_2-charging</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien04\alien04_2-death.fbx">
-      <Name>alien04_2-death</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien04\alien04_2-idle.fbx">
-      <Name>alien04_2-idle</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien04\alien04_2-impact.fbx">
-      <Name>alien04_2-impact</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="animatedmodels\alien04\alien04_2-moving.fbx">
-      <Name>alien04_2-moving</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>

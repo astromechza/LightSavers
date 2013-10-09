@@ -56,7 +56,8 @@ namespace LightSavers
 
         public static Model mdl_alien4;
         public string[] alien04AnimationsList = new string[] { "attacking", "charging", "death", "idle", "impact", "moving" };
-        public static Dictionary<string, AnimationClip> ani_alien4;
+        static int[] alien04AnimationKeys = new int[] { 0, 125, 126, 150, 151, 175, 176, 200, 201, 225, 226, 300 };
+        public static DurationBasedAnimator.AnimationPackage ani_alien4;
 
         public static Model mdl_sphere;
         public static Model mdl_ceilinglight;
@@ -140,7 +141,7 @@ namespace LightSavers
         /// <returns></returns>
         public DurationBasedAnimator.AnimationPackage generateAnimationPackage(string[] names, int[] keyRanges, Model m)
         {
-            DurationBasedAnimator.AnimationPackage newPackage = new DurationBasedAnimator.AnimationPackage(((MeshMetadata)m.Tag).SkinningData, keyRanges[keyRanges.Length-1]-1);
+            DurationBasedAnimator.AnimationPackage newPackage = new DurationBasedAnimator.AnimationPackage(((MeshMetadata)m.Tag).SkinningData, (float)keyRanges[keyRanges.Length-1]-1);
 
             for ( int i=0; i<names.Length;++i)
             {
@@ -182,12 +183,16 @@ namespace LightSavers
             ani_character = generateAnimationPackage(characterAnimationsList, characterAnimationKeys, mdl_character);
 
             mdl_alien1 = loadModel("animatedmodels/alien01/alien01_2");
+            ani_alien1 = generateAnimationPackage(alien01AnimationsList, alien01AnimationKeys, mdl_alien1);
 
             mdl_alien2 = loadModel("animatedmodels/alien02/alien02_2");
+            ani_alien2 = generateAnimationPackage(alien02AnimationsList, alien02AnimationKeys, mdl_alien2);
 
             mdl_alien3 = loadModel("animatedmodels/alien03/alien03_2");
+            ani_alien3 = generateAnimationPackage(alien03AnimationsList, alien03AnimationKeys, mdl_alien3);
 
             mdl_alien4 = loadModel("animatedmodels/alien04/alien04_2");
+            ani_alien4 = generateAnimationPackage(alien04AnimationsList, alien04AnimationKeys, mdl_alien4);
             
             mdl_sphere = loadModel("models/sphere");
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
