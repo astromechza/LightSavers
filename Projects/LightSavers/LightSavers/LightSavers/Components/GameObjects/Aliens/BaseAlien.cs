@@ -42,7 +42,7 @@ namespace LightSavers.Components.GameObjects.Aliens
         #endregion
 
 
-        public BaseAlien(RealGame game, Vector3 spawnPosition, float rotation)
+        public virtual void Construct(RealGame game, Vector3 spawnPosition, float rotation)
         {
             this._game = game;
             this._position = spawnPosition;
