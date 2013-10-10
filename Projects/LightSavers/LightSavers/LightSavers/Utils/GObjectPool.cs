@@ -110,6 +110,11 @@ namespace ObjectPool
                 pool[i].PoolIndex = i;
             }
         }
+                
+        public bool HasAvailable()
+        {
+            return cursor < size;
+        }
 
         /// <summary>
         /// Return and Provision a pooled object

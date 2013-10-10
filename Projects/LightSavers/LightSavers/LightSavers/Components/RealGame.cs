@@ -3,6 +3,7 @@ using LightPrePassRenderer.partitioning;
 using LightSavers.Collisions;
 using LightSavers.Components.GameObjects;
 using LightSavers.Components.GameObjects.Aliens;
+using LightSavers.Components.HitParticle;
 using LightSavers.Components.Projectiles;
 using LightSavers.Utils;
 using LightSavers.WorldBuilding;
@@ -23,6 +24,7 @@ namespace LightSavers.Components
     {
         private PlayerObject[] players;
         public ProjectileManager projectileManager;
+        public DropFragmentManager fragmentManager;
         public BlockBasedSceneGraph sceneGraph;
         public WorldBuilder worldBuilder;
         public CellCollider cellCollider;
@@ -41,7 +43,7 @@ namespace LightSavers.Components
             worldBuilder = new WorldBuilder(this, numberOfSections, Vector3.Zero);
 
             projectileManager = new ProjectileManager();
-
+            fragmentManager = new DropFragmentManager(this);
             
 
             players = new PlayerObject[numPlayers];
@@ -75,8 +77,9 @@ namespace LightSavers.Components
         {
             for (int i = 0; i < players.Length; i++) players[i].Update(ms);
             projectileManager.Update(ms);
-            for (int i = 0; i < aliens.Count; i++) aliens[i].Update(ms);
+            for (int i = 0; i < aliens.Count; i++) aliens[i].Update(ms);            
             for (int i = 0; i < doors.Count; i++) doors[i].Update(ms);
+            fragmentManager.Update(ms);
         }
 
         private List<Vector2> criticalPoints = new List<Vector2>(8);

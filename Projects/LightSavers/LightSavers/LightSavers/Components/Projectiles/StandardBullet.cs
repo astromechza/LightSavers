@@ -72,6 +72,7 @@ namespace LightSavers.Components.Projectiles
                 if (game.cellCollider.PointCollides(newposition.X, newposition.Z))
                 {
                     aging = true;
+                    PreDestroy();
                 }
 
                 if (position != newposition)
@@ -100,8 +101,13 @@ namespace LightSavers.Components.Projectiles
 
         public void Destroy()
         {
-            mustBeDeleted = true;
-            modelReceipt.graph.Remove(modelReceipt);
+            this.mustBeDeleted = true;
+            this.modelReceipt.graph.Remove(this.modelReceipt);
+        }
+
+        public void PreDestroy()
+        {
+            this.game.fragmentManager.SpawnX(this.position, 5);
         }
 
         public Vector3 GetCenter()

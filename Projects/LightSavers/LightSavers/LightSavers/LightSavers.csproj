@@ -117,6 +117,8 @@
     <Compile Include="Components\Guns\Shotgun.cs" />
     <Compile Include="Components\Guns\SniperRifle.cs" />
     <Compile Include="Components\Guns\Sword.cs" />
+    <Compile Include="Components\HitParticle\DropFragment.cs" />
+    <Compile Include="Components\HitParticle\DropFragmentManager.cs" />
     <Compile Include="Components\MenuObjects\BaseMenuItem.cs" />
     <Compile Include="Components\MenuObjects\BlankMenuItem.cs" />
     <Compile Include="Components\MenuObjects\DelegateItem.cs" />

@@ -90,6 +90,7 @@ namespace LightSavers.Components.GameObjects.Aliens
             IProjectile p = _game.projectileManager.CheckHit(this);
             if (p != null)
             {
+                p.PreDestroy();
                 p.Destroy();
             }
 

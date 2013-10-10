@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="LightPrePassProcessor.ProjectileXML">
+    <leftX>-0.1</leftX>
+    <rightX>0.1</rightX>
+    <radius>0.03</radius>
+    <diffuse_texture>projectiles/red.png</diffuse_texture>
+    <emissive_texture>textures/default_emissive.tga</emissive_texture>
+  </Asset>
+</XnaContent>
