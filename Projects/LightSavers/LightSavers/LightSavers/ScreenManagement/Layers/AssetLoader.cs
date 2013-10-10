@@ -59,6 +59,7 @@ namespace LightSavers
         public static Model mdl_shotgun;
         public static Model mdl_sniper_rifle;
         public static Model mdl_sword;
+        public static Model mdl_dropfragment;
 
         public static Texture2D title2;
         public static Texture2D tex_black;
@@ -184,6 +185,8 @@ namespace LightSavers
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
             mdl_filingcabinet = loadModel("models/filing/Filing");
             mdl_bullet = loadModel("projectiles/StandardBullet");
+
+            mdl_dropfragment = loadModel("projectiles/DropFragment");
 
             mdl_doorPanel = loadModel("models/door/doorPanel");
             mdl_doorBase = loadModel("models/door/doorBase");

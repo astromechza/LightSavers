@@ -9,6 +9,7 @@ namespace LightSavers.Components.Projectiles
     public interface IProjectile
     {
         void Update(float ms);
+        void PreDestroy();
         void Destroy();
         bool MustBeDeleted();
         Vector3 GetCenter();
