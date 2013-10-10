@@ -3,7 +3,7 @@
   <Asset Type="LightPrePassProcessor.ProjectileXML">
     <leftX>-0.1</leftX>
     <rightX>0.1</rightX>
-    <radius>0.03</radius>
+    <radius>0.04</radius>
     <diffuse_texture>projectiles/red.png</diffuse_texture>
     <emissive_texture>textures/default_emissive.tga</emissive_texture>
   </Asset>

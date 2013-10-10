@@ -44,7 +44,7 @@ namespace LightSavers.Components.HitParticle
 
             this.delta = Vector3.Transform(new Vector3(0, -1, 0.4f), rotationM);
 
-            this.mesh.Transform = rotationM * Matrix.CreateTranslation(this.position);
+            this.mesh.Transform = rotationM * rotationM * Matrix.CreateTranslation(this.position);
 
             if(this.receipt != null)this.receipt.graph.Remove(this.receipt);
             this.receipt = game.sceneGraph.Add(mesh);
@@ -52,7 +52,7 @@ namespace LightSavers.Components.HitParticle
 
         public void Update(float ms)
         {
-            this.position = this.position + this.delta * (ms / 100);
+            this.position = this.position + this.delta * (ms / 200);
             if (this.position.Y < 0)
             {
                 this.receipt.graph.Remove(this.receipt);
