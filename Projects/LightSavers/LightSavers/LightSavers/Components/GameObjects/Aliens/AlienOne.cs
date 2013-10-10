@@ -14,13 +14,20 @@ namespace LightSavers.Components.GameObjects.Aliens
 {
     public class AlienOne : BaseAlien
     {
-        private Vector3 VERTICAL_OFFSET = new Vector3(0, 0.8f, 0);
-        private Matrix SCALE = Matrix.CreateScale(0.6f);
 
-
-        public AlienOne(RealGame game, Vector3 spawnPosition) : 
-            base(game, spawnPosition, (float)Globals.random.NextDouble() * MathHelper.TwoPi)
+        public AlienOne()
         {
+
+        }
+
+        public AlienOne(RealGame game, Vector3 spawnPosition)
+        {
+            Construct(game, spawnPosition, (float)Globals.random.NextDouble() * MathHelper.TwoPi);
+        }
+
+        public override void Construct(RealGame game, Vector3 spawnPosition, float rotation)
+        {
+            base.Construct(game, spawnPosition, rotation);
 
             this._mesh = new SkinnedMesh();
             this._mesh.Model = AssetLoader.mdl_alien1;
@@ -30,8 +37,8 @@ namespace LightSavers.Components.GameObjects.Aliens
             this._aplayer.AddAnimationPackage = AssetLoader.ani_alien1;
             this._aplayer.StartClip(2);
 
-            this.ScaleMatrix = SCALE;
-            this.VerticalOffset = VERTICAL_OFFSET;
+            this.VerticalOffset = new Vector3(0, 0.8f, 0);
+            this.ScaleMatrix = Matrix.CreateScale(0.6f);
 
             UpdateAnimations(0);
             UpdateMajorTransform();
@@ -42,7 +49,7 @@ namespace LightSavers.Components.GameObjects.Aliens
             this._targetPosition = new Vector3();
             AssignRandomTarget();
 
-            this._collisionRectangle = new RectangleF(0,0,1.0f,1.0f);
+            this._collisionRectangle = new RectangleF(0, 0, 1.0f, 1.0f);
             RebuildCollisionRectangle(_position);
         }
 
@@ -107,8 +114,8 @@ namespace LightSavers.Components.GameObjects.Aliens
 
         public void AssignRandomTarget()
         {
-            _targetPosition.X = (float)Globals.random.NextDouble() * 15+1;
-            _targetPosition.Z = (float)Globals.random.NextDouble() * 25+1;
+            _targetPosition.X = this._position.X + (float)Globals.random.NextDouble() * 10 - 5;
+            _targetPosition.Z = this._position.Z + (float)Globals.random.NextDouble() * 10 - 5;
             _positionDelta = _targetPosition - _position;
             _positionDelta.Normalize();
             _targetRotation = (float)Math.Atan2(-_positionDelta.Z, _positionDelta.X) + MathHelper.PiOver2;
