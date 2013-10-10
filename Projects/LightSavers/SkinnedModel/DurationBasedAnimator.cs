@@ -39,8 +39,6 @@ namespace SkinnedModel
             durations = new Dictionary<string, DurationClip>();
         }
 
-        
-
         public void StartClip(String name)
         {
             currentDurationClip = durations[name];

@@ -110,6 +110,7 @@
     <Compile Include="Collisions\CellCollider.cs" />
     <Compile Include="Components\GameObjects\Aliens\AlienOne.cs" />
     <Compile Include="Components\GameObjects\Aliens\BaseAlien.cs" />
+    <Compile Include="Components\GameObjects\Animation States.cs" />
     <Compile Include="Components\GameObjects\Door.cs" />
     <Compile Include="Components\Guns\AssaultRifle.cs" />
     <Compile Include="Components\Guns\BaseGun.cs" />

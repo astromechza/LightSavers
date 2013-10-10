@@ -10,6 +10,7 @@ using System.Diagnostics;
 using LightSavers.ScreenManagement.Layers;
 using LightSavers.Utils;
 using LightPrePassRenderer;
+using LightSavers.Components.GameObjects;
 using SkinnedModel;
 using System.IO;
 
@@ -30,33 +31,18 @@ namespace LightSavers
     {
         /************* ASSETS **************/
         public static Model mdl_character;
-        public static string[] characterAnimationsList = new string[] {"idle_assault", "walk_assault", "run_assault", "walk_assault_shoot","run_assault_shoot", "idle_assault_shoot",
-                                                                "idle_snipshot", "walk_snipshot", "run_snipshot", "walk_snipshot_shoot", "run_snipshot_shoot", "idle_snipshot_shoot",
-                                                                "idle_pistol", "walk_pistol", "run_pistol", "walk_pistol_shoot", "run_pistol_shoot", "idle_pistol_shoot",
-                                                                "idle_sword", "walk_sword", "run_sword", "walk_sword_shoot", "run_sword_shoot", "idle_sword_shoot",
-                                                                "death_1"};
-        static int[] characterAnimationKeys = new int[] { 0, 48, 49, 76, 77, 97, 98, 125, 126, 146, 147, 173, 174, 221, 222, 249, 250, 270, 271, 298, 299, 319, 320, 367, 368, 415, 146, 443, 444, 464, 465, 492, 493, 513, 514, 561, 562, 609, 610, 637, 638, 658, 659, 686, 689, 707, 708, 748, 749, 769 };
         public static DurationBasedAnimator.AnimationPackage ani_character;
-       
 
         public static Model mdl_alien1;
-        static string[] alien01AnimationsList = new string[] { "idle", "moving", "attacking", "death" };
-        static int[] alien01AnimationKeys = new int[] { 0, 125, 126, 150, 151, 200, 201, 225 };
         public static DurationBasedAnimator.AnimationPackage ani_alien1;
 
         public static Model mdl_alien2;
-        public string[] alien02AnimationsList = new string[] { "idle" , "moving", "attacking", "death" };
-        static int[] alien02AnimationKeys = new int[] { 0, 125, 126, 150, 151, 200, 201, 225 };
         public static DurationBasedAnimator.AnimationPackage ani_alien2;
 
         public static Model mdl_alien3;
-        public string[] alien03AnimationsList = new string[] { "idle", "moving", "attacking_melee", "attacking_range", "death" };
-        static int[] alien03AnimationKeys = new int[] { 0,125,126,150,151,175,176,200,201,225};
         public static DurationBasedAnimator.AnimationPackage ani_alien3;
 
         public static Model mdl_alien4;
-        public string[] alien04AnimationsList = new string[] { "idle", "moving", "charging", "impact", "attacking", "death" };
-        static int[] alien04AnimationKeys = new int[] { 0, 125, 126, 150, 151, 175, 176, 200, 201, 225, 226, 300 };
         public static DurationBasedAnimator.AnimationPackage ani_alien4;
 
         public static Model mdl_sphere;
@@ -169,30 +155,30 @@ namespace LightSavers
             // number of assets to be loaded. (used to compute progress bar size)
             num_assets = 24;
             num_assets += CountSections();
-            num_assets += characterAnimationsList.Length;
-            num_assets += alien01AnimationsList.Length;
-            num_assets += alien02AnimationsList.Length;
-            num_assets += alien03AnimationsList.Length;
-            num_assets += alien04AnimationsList.Length;
+            num_assets += Animation_States.characterAnimationsList.Length;
+            num_assets += Animation_States.alien01AnimationsList.Length;
+            num_assets += Animation_States.alien02AnimationsList.Length;
+            num_assets += Animation_States.alien03AnimationsList.Length;
+            num_assets += Animation_States.alien04AnimationsList.Length;
             LoadSections();
             // assets
             mdl_menuscene = loadModel("models/menuscene/MenuScene");
 
             //Load Character and animations
             mdl_character = loadModel("animatedmodels/player/spacemanAnimated");
-            ani_character = generateAnimationPackage(characterAnimationsList, characterAnimationKeys, mdl_character);
+            ani_character = generateAnimationPackage(Animation_States.characterAnimationsList, Animation_States.characterAnimationKeys, mdl_character);
 
             mdl_alien1 = loadModel("animatedmodels/alien01/alien01_2");
-            ani_alien1 = generateAnimationPackage(alien01AnimationsList, alien01AnimationKeys, mdl_alien1);
+            ani_alien1 = generateAnimationPackage(Animation_States.alien01AnimationsList, Animation_States.alien01AnimationKeys, mdl_alien1);
 
             mdl_alien2 = loadModel("animatedmodels/alien02/alien02_2");
-            ani_alien2 = generateAnimationPackage(alien02AnimationsList, alien02AnimationKeys, mdl_alien2);
+            ani_alien2 = generateAnimationPackage(Animation_States.alien02AnimationsList, Animation_States.alien02AnimationKeys, mdl_alien2);
 
             mdl_alien3 = loadModel("animatedmodels/alien03/alien03_2");
-            ani_alien3 = generateAnimationPackage(alien03AnimationsList, alien03AnimationKeys, mdl_alien3);
+            ani_alien3 = generateAnimationPackage(Animation_States.alien03AnimationsList, Animation_States.alien03AnimationKeys, mdl_alien3);
 
             mdl_alien4 = loadModel("animatedmodels/alien04/alien04_2");
-            ani_alien4 = generateAnimationPackage(alien04AnimationsList, alien04AnimationKeys, mdl_alien4);
+            ani_alien4 = generateAnimationPackage(Animation_States.alien04AnimationsList, Animation_States.alien04AnimationKeys, mdl_alien4);
             
             mdl_sphere = loadModel("models/sphere");
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
