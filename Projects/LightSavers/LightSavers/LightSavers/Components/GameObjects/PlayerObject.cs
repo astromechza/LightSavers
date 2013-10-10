@@ -60,6 +60,7 @@ namespace LightSavers.Components.GameObjects
         private int currentWeapon;
         private int currentAnimation;
         string[] AnimationTest = new string[] { "run_snipshot_shoot", "run_snipshot" };
+        int moving, weapon=4, shooting;
 
         public PlayerObject(RealGame game, PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
@@ -179,7 +180,11 @@ namespace LightSavers.Components.GameObjects
                     if (rotation < -MathHelper.TwoPi) rotation += MathHelper.TwoPi;
                 }
 
-
+                moving = 1;
+            }
+            else
+            {
+                moving = 0;
             }
 
             if (Globals.inputController.isTriggerDown(Triggers.Right, playerIndex))
@@ -191,13 +196,12 @@ namespace LightSavers.Components.GameObjects
                     StandardBullet b = game.projectileManager.standardBulletPool.Provide();
                     b.Construct(game, weapons[currentWeapon].emmitterPosition, rotation + MathHelper.PiOver2 + r);
                 }
+
+                shooting = 2;
             }
-
-            if (Globals.inputController.isButtonPressed(Microsoft.Xna.Framework.Input.Buttons.B, playerIndex))
+            else
             {
-                currentAnimation=(currentAnimation + 1)%AnimationTest.Length;
-                aplayer.StartClip(AnimationTest[currentAnimation]);
-
+                shooting = 0;
             }
 
             if(Globals.inputController.isButtonPressed(Microsoft.Xna.Framework.Input.Buttons.Y, playerIndex))
