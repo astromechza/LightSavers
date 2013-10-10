@@ -3,6 +3,7 @@ using LightPrePassRenderer.partitioning;
 using LightSavers.Components.Guns;
 using LightSavers.Components.Projectiles;
 using LightSavers.Utils;
+using LightSavers.Utils.Geometry;
 using Microsoft.Xna.Framework;
 using SkinnedModel;
 using System;
@@ -34,6 +35,8 @@ namespace LightSavers.Components.GameObjects
         private Color color;
 
         private SkinnedMesh mesh;
+
+        private RectangleF collisionRectangle;
 
         private float rotation;
 
@@ -90,6 +93,8 @@ namespace LightSavers.Components.GameObjects
 
             SetupWeapons();
             SwitchWeapon(0);
+
+            collisionRectangle = new RectangleF(0, 0, 0.98f, 0.98f);
 
         }
 
@@ -205,24 +210,25 @@ namespace LightSavers.Components.GameObjects
             // collision stuff
             if (_position != newposition)
             {
-                Vector3 cd = new Vector3(_position.X, 0, _position.Z);
-                if (newposition.X < _position.X) cd.X -= 0.2f;
-                else if (newposition.X > _position.X) cd.X += 0.2f;
-
-
-                if (newposition.Z < _position.Z) cd.Z -= 0.2f;
-                else if (newposition.Z > _position.Z) cd.Z += 0.2f;
-
-                if (game.cellCollider.PointCollides(cd.X, _position.Z))
+                // First test X collision
+                collisionRectangle.Left = newposition.X - 0.49f;
+                collisionRectangle.Top  = _position.Z - 0.49f;
+                if (game.cellCollider.RectangleCollides(collisionRectangle))
                 {
-                    newposition.X = _position.X;
+                    // if it does collide, pull it back
+                    newposition.X = _position.X;                    
                 }
 
-                if (game.cellCollider.PointCollides(_position.X, cd.Z))
+                // Then test Z collision
+                collisionRectangle.Left = _position.X - 0.49f;
+                collisionRectangle.Top  = newposition.Z - 0.49f;
+                if (game.cellCollider.RectangleCollides(collisionRectangle))
                 {
+                    // if it does collide, pull it back
                     newposition.Z = _position.Z;
                 }
 
+                // if there is still a new position
                 if (_position != newposition)
                 {
                     _position = newposition;
@@ -232,6 +238,7 @@ namespace LightSavers.Components.GameObjects
                     light2receipt.graph.Renew(light2receipt);
                     light3receipt.graph.Renew(light3receipt);
                 }
+
 
             }
 

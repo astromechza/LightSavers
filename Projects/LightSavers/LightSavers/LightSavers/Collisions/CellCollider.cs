@@ -103,13 +103,9 @@ namespace LightSavers.Collisions
             if (PointCollides(r.Right, r.Bottom)) return true;
 
             // test int divisors
-            int fx = (int)Math.Round(r.Left);
-            int tx = (int)Math.Round(r.Right);
-            int fy = (int)Math.Round(r.Top);
-            int ty = (int)Math.Round(r.Bottom);
 
-            for (int y = fy; y <= ty; y++)
-                for (int x = fx; x <= tx; x++)
+            for (float y = r.Top; y <= r.Bottom; y+=1)
+                for (float x = r.Left; x <= r.Right; x+=1)
                     if (PointCollides(x, y)) return true;
 
             return false;
