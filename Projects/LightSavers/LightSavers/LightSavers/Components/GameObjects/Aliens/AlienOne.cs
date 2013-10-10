@@ -1,6 +1,7 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
 using LightSavers.Utils;
+using LightSavers.Utils.Geometry;
 using Microsoft.Xna.Framework;
 using SkinnedModel;
 using System;
@@ -14,6 +15,8 @@ namespace LightSavers.Components.GameObjects.Aliens
     {
         private Vector3 VERTICAL_OFFSET = new Vector3(0, 0.8f, 0);
         private Matrix SCALE = Matrix.CreateScale(0.6f);
+
+        private RectangleF collisionRectangle;
 
 
         public AlienOne(RealGame game, Vector3 spawnPosition) : 
@@ -40,7 +43,8 @@ namespace LightSavers.Components.GameObjects.Aliens
             this._targetPosition = new Vector3();
             AssignRandomTarget();
 
-
+            this.collisionRectangle = new RectangleF(0,0,1.0f,1.0f);
+            RebuildCollisionRectangle(_position);
         }
 
         public override void Update(float ms)
@@ -63,7 +67,18 @@ namespace LightSavers.Components.GameObjects.Aliens
 
             if (deltarotation < 0.15f)
             {
-                _position += _positionDelta * 0.03f;
+                Vector3 newpos = _position + _positionDelta * 0.03f;
+                RebuildCollisionRectangle(newpos);
+
+                //TODO: collision check here
+                if (!_game.cellCollider.RectangleCollides(collisionRectangle))
+                {
+                    _position = newpos;
+                }
+                else
+                {
+                    AssignRandomTarget();
+                }
             }
 
 
@@ -71,13 +86,22 @@ namespace LightSavers.Components.GameObjects.Aliens
             UpdateMajorTransform();
         }
 
+
+        private void RebuildCollisionRectangle(Vector3 o)
+        {
+            collisionRectangle.Left = o.X - .5f;
+            collisionRectangle.Top = o.Z - .5f;
+        }
+
         public void AssignRandomTarget()
         {
-            _targetPosition.X = (float)Globals.random.NextDouble() * 10+1;
-            _targetPosition.Z = (float)Globals.random.NextDouble() * 10+1;
+            _targetPosition.X = (float)Globals.random.NextDouble() * 15+1;
+            _targetPosition.Z = (float)Globals.random.NextDouble() * 15+1;
             _positionDelta = _targetPosition - _position;
             _positionDelta.Normalize();
             _targetRotation = (float)Math.Atan2(-_positionDelta.Z, _positionDelta.X) + MathHelper.PiOver2;
         }
+
+        
     }
 }

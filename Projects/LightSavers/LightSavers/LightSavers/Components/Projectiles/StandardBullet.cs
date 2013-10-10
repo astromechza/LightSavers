@@ -70,7 +70,7 @@ namespace LightSavers.Components.Projectiles
 
                 newposition += delta * ms / 16;
 
-                if (game.cellCollider.GetCollision(newposition.X, newposition.Z))
+                if (game.cellCollider.PointCollides(newposition.X, newposition.Z))
                 {
                     aging = true;
                 }

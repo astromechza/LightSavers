@@ -45,8 +45,7 @@ namespace LightSavers.Components.GameObjects
         private DurationBasedAnimator aplayer;
 
         private RealGame game;
-
-
+        
         // Scenegraphstuff
         private MeshSceneGraphReceipt modelReceipt;
         private LightSceneGraphReceipt light1receipt;
@@ -205,12 +204,12 @@ namespace LightSavers.Components.GameObjects
                 if (newposition.Z < _position.Z) cd.Z -= 0.2f;
                 else if (newposition.Z > _position.Z) cd.Z += 0.2f;
 
-                if (game.cellCollider.GetCollision(cd.X, _position.Z))
+                if (game.cellCollider.PointCollides(cd.X, _position.Z))
                 {
                     newposition.X = _position.X;
                 }
 
-                if (game.cellCollider.GetCollision(_position.X, cd.Z))
+                if (game.cellCollider.PointCollides(_position.X, cd.Z))
                 {
                     newposition.Z = _position.Z;
                 }
