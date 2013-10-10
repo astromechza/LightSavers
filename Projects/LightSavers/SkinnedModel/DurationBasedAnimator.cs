@@ -17,7 +17,7 @@ namespace SkinnedModel
         private Matrix[] worldTransforms;
         private Matrix[] skinTransforms;
 
-        private Dictionary<String, DurationClip> durations;
+        private Dictionary<int, DurationClip> durations;
 
         DurationClip currentDurationClip;
         int currentKeyFrame;
@@ -36,10 +36,10 @@ namespace SkinnedModel
             worldTransforms = new Matrix[skin.BindPose.Count];
             skinTransforms = new Matrix[skin.BindPose.Count];
             
-            durations = new Dictionary<string, DurationClip>();
+            durations = new Dictionary<int, DurationClip>();
         }
 
-        public void StartClip(String name)
+        public void StartClip(int name)
         {
             currentDurationClip = durations[name];
             currentTimeValue = currentDurationClip.start;
@@ -172,9 +172,9 @@ namespace SkinnedModel
             int bpCount;
             int ms;
             float c;
-            Dictionary<string, DurationClip> animations;
+            Dictionary<int, DurationClip> animations;
 
-            public Dictionary<string, DurationClip> shareAnimation
+            public Dictionary<int, DurationClip> shareAnimation
             {
                 get{return animations;}
             }
@@ -186,15 +186,15 @@ namespace SkinnedModel
                 bpCount = skin.BindPose.Count;
                 ms = (int)fullclip.Duration.TotalMilliseconds;
                 c = ms / keyframeCount;
-                animations = new Dictionary<string, DurationClip>();
+                animations = new Dictionary<int, DurationClip>();
             }
 
-            public void AddDurationClipEasy(string name, int start, int end)
+            public void AddDurationClipEasy(int name, int start, int end)
             {
                 AddDurationClip(name, TimeSpan.FromMilliseconds(c * start), TimeSpan.FromMilliseconds(c * end));
             }
 
-            private void AddDurationClip(String name, TimeSpan start, TimeSpan end)
+            private void AddDurationClip(int name, TimeSpan start, TimeSpan end)
             {
 
                 DurationClip d = new DurationClip();

@@ -126,7 +126,7 @@ namespace LightSavers
         /// <param name="Model to be animated"></param>
         /// <param name="How many keyframes are baked into the model (generally if the last key is 11, this would be 10)"></param>
         /// <returns></returns>
-        public DurationBasedAnimator.AnimationPackage generateAnimationPackage(string[] names, int[] keyRanges, Model m)
+        public DurationBasedAnimator.AnimationPackage generateAnimationPackage(int[] names, int[] keyRanges, Model m)
         {
             DurationBasedAnimator.AnimationPackage newPackage = new DurationBasedAnimator.AnimationPackage(((MeshMetadata)m.Tag).SkinningData, (float)keyRanges[keyRanges.Length-1]-1);
 
