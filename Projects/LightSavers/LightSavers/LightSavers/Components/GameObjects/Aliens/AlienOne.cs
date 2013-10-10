@@ -28,7 +28,7 @@ namespace LightSavers.Components.GameObjects.Aliens
             this._aplayer = new DurationBasedAnimator(_mesh.SkinningData, _mesh.SkinningData.AnimationClips["Take 001"]);
 
             this._aplayer.AddAnimationPackage = AssetLoader.ani_alien1;
-            this._aplayer.StartClip("moving");
+            this._aplayer.StartClip(2);
 
             this.ScaleMatrix = SCALE;
             this.VerticalOffset = VERTICAL_OFFSET;

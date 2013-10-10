@@ -81,7 +81,7 @@ namespace LightSavers.Components.GameObjects
 
             //Load the animations from the asset loader (these are in an Animation Package)
             aplayer.AddAnimationPackage = AssetLoader.ani_character;
-            aplayer.StartClip("run_snipshot_shoot");
+            aplayer.StartClip(1+8+2);
 
             UpdateAnimation(0);
             UpdateMajorTransforms(0);
