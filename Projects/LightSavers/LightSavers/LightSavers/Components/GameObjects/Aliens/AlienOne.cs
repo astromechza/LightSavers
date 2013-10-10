@@ -56,7 +56,7 @@ namespace LightSavers.Components.GameObjects.Aliens
             if (deltarotation < -Math.PI) deltarotation += MathHelper.TwoPi;
 
             // add difference
-            _rotation += (ms / 200) * deltarotation;
+            _rotation += (ms / 300) * deltarotation;
 
             
             float distance = (_targetPosition - _position).LengthSquared();
@@ -67,7 +67,7 @@ namespace LightSavers.Components.GameObjects.Aliens
 
             if (deltarotation < 0.15f)
             {
-                Vector3 newpos = _position + _positionDelta * 0.03f;
+                Vector3 newpos = _position + _positionDelta * (ms / 200);
                 RebuildCollisionRectangle(newpos);
 
                 //TODO: collision check here
