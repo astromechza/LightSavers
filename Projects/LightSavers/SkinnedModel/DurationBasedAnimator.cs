@@ -37,10 +37,6 @@ namespace SkinnedModel
             skinTransforms = new Matrix[skin.BindPose.Count];
             
             durations = new Dictionary<string, DurationClip>();
-
-            //AddDurationClip("Take 001", TimeSpan.Zero, fullclip.Duration);
-            //StartClip("Take 001");
-
         }
 
         
