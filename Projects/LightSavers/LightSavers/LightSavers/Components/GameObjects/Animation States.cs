@@ -8,34 +8,34 @@ namespace LightSavers.Components.GameObjects
     /// <summary>
     /// Animations and their ranges are specified here: to be updated
     /// </summary>
-    struct Animation_States
+    public static class Animation_States
     {
-        static int idle = 0, run =1, shoot = 2, assault = 4, snipshot =8, pistol = 16, sword = 32, walk = 64, death = -1;
+        const int idle = 0, run = 1, shoot = 2, assault = 4, snipshot = 8, pistol = 16, sword = 32, walk = 64, death = -1;
 
-        static const int idle_assault = idle + assault;
-        static const int walk_assault = walk+assault;
-        static const int run_assault = run+assault;
-        static const int walk_assault_shoot = walk+assault+shoot;
-        static const int run_assault_shoot = run + assault + shoot;
-        static const int idle_assault_shoot = idle + assault+shoot;
-        static const int idle_snipshot = idle+ snipshot;
-        static const int walk_snipshot = walk+snipshot;
-        static const int run_snipshot = run+snipshot;
-        static const int walk_snipshot_shoot = walk+snipshot+shoot;
-        static const int run_snipshot_shoot = run+snipshot+shoot;
-        static const int idle_snipshot_shoot = idle+snipshot + shoot;
-        static const int idle_pistol = idle+pistol;
-        static const int walk_pistol = walk + pistol;
-        static const int run_pistol = run + pistol;
-        static const int walk_pistol_shoot = walk+pistol+shoot;
-        static const int run_pistol_shoot = run + pistol+shoot;
-        static const int idle_pistol_shoot = idle+pistol+shoot;
-        static const int idle_sword = idle+sword;
-        static const int walk_sword = walk + sword;
-        static const int run_sword = run + sword;
-        static const int walk_sword_shoot = walk + sword+shoot;
-        static const int run_sword_shoot = run + sword + shoot;
-        static const int idle_sword_shoot = idle + sword + shoot;
+        public const int idle_assault = idle + assault;
+        public const int walk_assault = walk + assault;
+        public const int run_assault = run + assault;
+        public const int walk_assault_shoot = walk + assault + shoot;
+        public const int run_assault_shoot = run + assault + shoot;
+        public const int idle_assault_shoot = idle + assault + shoot;
+        public const int idle_snipshot = idle + snipshot;
+        public const int walk_snipshot = walk + snipshot;
+        public const int run_snipshot = run + snipshot;
+        public const int walk_snipshot_shoot = walk + snipshot + shoot;
+        public const int run_snipshot_shoot = run + snipshot + shoot;
+        public const int idle_snipshot_shoot = idle + snipshot + shoot;
+        public const int idle_pistol = idle + pistol;
+        public const int walk_pistol = walk + pistol;
+        public const int run_pistol = run + pistol;
+        public const int walk_pistol_shoot = walk + pistol + shoot;
+        public const int run_pistol_shoot = run + pistol + shoot;
+        public const int idle_pistol_shoot = idle + pistol + shoot;
+        public const int idle_sword = idle + sword;
+        public const int walk_sword = walk + sword;
+        public const int run_sword = run + sword;
+        public const int walk_sword_shoot = walk + sword + shoot;
+        public const int run_sword_shoot = run + sword + shoot;
+        public const int idle_sword_shoot = idle + sword + shoot;
 
         public static string[] characterAnimationsList = new string[] {"idle_assault", "walk_assault", "run_assault", "walk_assault_shoot","run_assault_shoot", "idle_assault_shoot",
                                                                 "idle_snipshot", "walk_snipshot", "run_snipshot", "walk_snipshot_shoot", "run_snipshot_shoot", "idle_snipshot_shoot",
