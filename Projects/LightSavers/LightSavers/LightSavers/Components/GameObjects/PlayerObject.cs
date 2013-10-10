@@ -29,8 +29,6 @@ namespace LightSavers.Components.GameObjects
         Matrix mTorchPitch = Matrix.CreateRotationX(-0.4f);
         #endregion
 
-
-
         private PlayerIndex playerIndex;
         private Color color;
 
@@ -77,6 +75,7 @@ namespace LightSavers.Components.GameObjects
             mesh = new SkinnedMesh();
             mesh.Model = AssetLoader.mdl_character;
 
+            //Create a new Animation Player that will take the bone dictionaries as arguments allowing individual animation with upper and lower body
             aplayer = new DurationBasedAnimator(mesh.SkinningData, mesh.SkinningData.AnimationClips["Take 001"]);
 
             //Load the animations from the asset loader (these are in an Animation Package)

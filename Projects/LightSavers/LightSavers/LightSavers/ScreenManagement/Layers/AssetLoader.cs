@@ -180,7 +180,23 @@ namespace LightSavers
 
             mdl_alien4 = loadModel("animatedmodels/alien04/alien04_2");
             ani_alien4 = generateAnimationPackage(Animation_States.alien04AnimationsList, Animation_States.alien04AnimationKeys, mdl_alien4);
+
+            Animation_States.upperCharacterBones = new Dictionary<int, int>();
+
+            for (int i = 1; i < 48; i++)
+            {
+                Animation_States.upperCharacterBones.Add(i, 1);
+            }
+
+            Animation_States.lowerCharacterBonesandRoot = new Dictionary<int, int>();
+            Animation_States.lowerCharacterBonesandRoot.Add(0, 1);
+
+            for (int i = 48; i < 70; ++i)
+            {
+                Animation_States.lowerCharacterBonesandRoot.Add(i, 1);
+            }
             
+
             mdl_sphere = loadModel("models/sphere");
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
             mdl_filingcabinet = loadModel("models/filing/Filing");
