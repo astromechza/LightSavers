@@ -89,14 +89,14 @@ namespace LightSavers.Components.GameObjects.Aliens
 
         private void RebuildCollisionRectangle(Vector3 o)
         {
-            collisionRectangle.Left = o.X - .5f;
-            collisionRectangle.Top = o.Z - .5f;
+            collisionRectangle.Left = o.X - 0.5f;
+            collisionRectangle.Top = o.Z - 0.5f;
         }
 
         public void AssignRandomTarget()
         {
             _targetPosition.X = (float)Globals.random.NextDouble() * 15+1;
-            _targetPosition.Z = (float)Globals.random.NextDouble() * 15+1;
+            _targetPosition.Z = (float)Globals.random.NextDouble() * 25+1;
             _positionDelta = _targetPosition - _position;
             _positionDelta.Normalize();
             _targetRotation = (float)Math.Atan2(-_positionDelta.Z, _positionDelta.X) + MathHelper.PiOver2;
