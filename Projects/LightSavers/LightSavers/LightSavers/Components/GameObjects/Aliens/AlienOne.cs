@@ -1,5 +1,6 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
+using LightSavers.Components.Projectiles;
 using LightSavers.Utils;
 using LightSavers.Utils.Geometry;
 using Microsoft.Xna.Framework;
@@ -15,8 +16,6 @@ namespace LightSavers.Components.GameObjects.Aliens
     {
         private Vector3 VERTICAL_OFFSET = new Vector3(0, 0.8f, 0);
         private Matrix SCALE = Matrix.CreateScale(0.6f);
-
-        private RectangleF collisionRectangle;
 
 
         public AlienOne(RealGame game, Vector3 spawnPosition) : 
@@ -43,12 +42,13 @@ namespace LightSavers.Components.GameObjects.Aliens
             this._targetPosition = new Vector3();
             AssignRandomTarget();
 
-            this.collisionRectangle = new RectangleF(0,0,1.0f,1.0f);
+            this._collisionRectangle = new RectangleF(0,0,1.0f,1.0f);
             RebuildCollisionRectangle(_position);
         }
 
         public override void Update(float ms)
         {
+            #region TURN towards rotation target
             float deltarotation = _targetRotation - _rotation;
 
             // sanitise
@@ -57,40 +57,51 @@ namespace LightSavers.Components.GameObjects.Aliens
 
             // add difference
             _rotation += (ms / 300) * deltarotation;
+            #endregion
 
-            
+            #region CHECK distance to target, choose another if close
             float distance = (_targetPosition - _position).LengthSquared();
             if (distance < 0.4f)
             {
                 AssignRandomTarget();
             }
+            #endregion
 
+            // If target is in front, then it can move
             if (deltarotation < 0.15f)
             {
+                // calculate new position based on delta
                 Vector3 newpos = _position + _positionDelta * (ms / 200);
                 RebuildCollisionRectangle(newpos);
 
                 //TODO: collision check here
-                if (!_game.cellCollider.RectangleCollides(collisionRectangle))
+                if (!_game.cellCollider.RectangleCollides(_collisionRectangle))
                 {
                     _position = newpos;
                 }
                 else
                 {
+                    // pick another target
                     AssignRandomTarget();
                 }
             }
+            
+            // check for collision with bullet
+            IProjectile p = _game.projectileManager.CheckHit(this);
+            if (p != null)
+            {
+                p.Destroy();
+            }
 
-
-            UpdateAnimations(ms * 1.5f);
+            UpdateAnimations(ms * 1.5f); // animations are accelerated a bit
             UpdateMajorTransform();
         }
 
 
         private void RebuildCollisionRectangle(Vector3 o)
         {
-            collisionRectangle.Left = o.X - 0.5f;
-            collisionRectangle.Top = o.Z - 0.5f;
+            _collisionRectangle.Left = o.X - 0.5f;
+            _collisionRectangle.Top = o.Z - 0.5f;
         }
 
         public void AssignRandomTarget()

@@ -1,4 +1,6 @@
-﻿using ObjectPool;
+﻿using LightSavers.Components.GameObjects.Aliens;
+using LightSavers.Utils.Geometry;
+using ObjectPool;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,14 +39,24 @@ namespace LightSavers.Components.Projectiles
             {
                 StandardBullet b = standardBulletPool.GetByIndex(i);
                 b.Update(ms);
-                i = standardBulletPool.NextIndex(b);
                 if (b.MustBeDeleted())
                 {
                     standardBulletPool.Dispose(b);
                 }
+                i = standardBulletPool.NextIndex(b);
             }
         }
 
-
+        public IProjectile CheckHit(BaseAlien alien)
+        {
+            int i = standardBulletPool.GetFirst();
+            while (i != -1)
+            {
+                StandardBullet b = standardBulletPool.GetByIndex(i);
+                if (Collider.Collide(alien.GetBoundRect(), b.GetCenter())) return b;
+                i = standardBulletPool.NextIndex(b);
+            }
+            return null;
+        }
     }
 }

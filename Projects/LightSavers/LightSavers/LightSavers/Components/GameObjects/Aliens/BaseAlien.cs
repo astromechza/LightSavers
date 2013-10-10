@@ -1,5 +1,6 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
+using LightSavers.Utils.Geometry;
 using Microsoft.Xna.Framework;
 using SkinnedModel;
 using System;
@@ -26,6 +27,7 @@ namespace LightSavers.Components.GameObjects.Aliens
         public float _targetRotation;
         public Vector3 _targetPosition;
         public Vector3 _positionDelta;
+        public RectangleF _collisionRectangle;
 
         // transform vars
         private Vector3 _verticalOffset = Vector3.Zero;
@@ -61,5 +63,9 @@ namespace LightSavers.Components.GameObjects.Aliens
 
         public override void Update(float millis) { }
 
+        public RectangleF GetBoundRect()
+        {
+            return _collisionRectangle;
+        }
     }
 }

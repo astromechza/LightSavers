@@ -60,8 +60,7 @@ namespace LightSavers.Components.Projectiles
                 ageMs += ms;
                 if (ageMs > 1000)
                 {
-                    mustBeDeleted = true;
-                    modelReceipt.graph.Remove(modelReceipt);
+                    Destroy();
                 } 
             }
             else
@@ -97,6 +96,17 @@ namespace LightSavers.Components.Projectiles
         public bool MustBeDeleted()
         {
             return mustBeDeleted;
+        }
+
+        public void Destroy()
+        {
+            mustBeDeleted = true;
+            modelReceipt.graph.Remove(modelReceipt);
+        }
+
+        public Vector3 GetCenter()
+        {
+            return position;
         }
     }
 }

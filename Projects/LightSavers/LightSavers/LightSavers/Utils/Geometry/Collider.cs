@@ -44,5 +44,14 @@ namespace LightSavers.Utils.Geometry
             return true;
         }
 
+
+        public static bool Collide(RectangleF r, Vector3 p)
+        {
+            if (p.X < r.Left) return false;
+            if (p.Z < r.Top) return false;
+            if (p.Z > r.Bottom) return false;
+            if (p.X > r.Right) return false;
+            return true;
+        }
     }
 }
