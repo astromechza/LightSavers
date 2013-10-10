@@ -41,6 +41,7 @@ namespace LightSavers.Components.GameObjects
         private Light torchlight;
         private Light halolight;
         private Light haloemitlight;
+        
 
         private DurationBasedAnimator aplayer;
 
@@ -54,6 +55,8 @@ namespace LightSavers.Components.GameObjects
 
         private BaseGun[] weapons;
         private int currentWeapon;
+        private int currentAnimation;
+        string[] AnimationTest = new string[] { "run_snipshot_shoot", "run_snipshot" };
 
         public PlayerObject(RealGame game, PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
@@ -75,7 +78,6 @@ namespace LightSavers.Components.GameObjects
             //Load the animations from the asset loader (these are in an Animation Package)
             aplayer.AddAnimationPackage = AssetLoader.ani_character;
             aplayer.StartClip("run_snipshot_shoot");
-
 
             UpdateAnimation(0);
             UpdateMajorTransforms(0);
@@ -184,6 +186,13 @@ namespace LightSavers.Components.GameObjects
                     StandardBullet b = game.projectileManager.standardBulletPool.Provide();
                     b.Construct(game, weapons[currentWeapon].emmitterPosition, rotation + MathHelper.PiOver2 + r);
                 }
+            }
+
+            if (Globals.inputController.isButtonPressed(Microsoft.Xna.Framework.Input.Buttons.B, playerIndex))
+            {
+                currentAnimation=(currentAnimation + 1)%AnimationTest.Length;
+                aplayer.StartClip(AnimationTest[currentAnimation]);
+
             }
 
             if(Globals.inputController.isButtonPressed(Microsoft.Xna.Framework.Input.Buttons.Y, playerIndex))
