@@ -52,7 +52,7 @@ namespace LightSavers.Components
         {
             lastXYZ = Vector3.Lerp(lastXYZ, targetXYZ, ms / 300);
 
-            camera.Transform = CAMERA_DOWN * Matrix.CreateTranslation(lastXYZ) * CAMERA_PITCH;
+            MoveToTarget();
         }
 
         public void Fit(List<Vector2> list)
@@ -91,7 +91,7 @@ namespace LightSavers.Components
 
         public void MoveToTarget()
         {
-            camera.Transform = CAMERA_DOWN * Matrix.CreateTranslation(targetXYZ) * CAMERA_PITCH;
+            camera.Transform = CAMERA_DOWN * Matrix.CreateTranslation(targetXYZ);
         }
     }
 }
