@@ -64,7 +64,7 @@ namespace LightSavers.Components
 
 
             aliens = new List<AlienOne>();
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 2; i++)
             {
                 aliens.Add(new AlienOne(this, new Vector3(6, 0, 6)));
             }
