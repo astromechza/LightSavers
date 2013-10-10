@@ -9,13 +9,35 @@ namespace LightSavers.Utils.Geometry
     {
         float _x, _y, _width, _length;
 
-        public float x { get { return _x; } }
-        public float y { get { return _y; } }
-        public float width { get { return _width; } }
-        public float length { get { return _length; } }
 
-        public float x2 { get { return _x + _width; } }
-        public float y2 { get { return _y + _length; } }
+        public float Left 
+        { 
+            get { return _x; }
+            set { _x = value; }
+        }
+        public float Top 
+        { 
+            get { return _y; }
+            set { _y = value; }
+        }
+        public float Width
+        {
+            get { return _width; }
+            set { _width = value; }
+        }
+        public float Length
+        {
+            get { return _length; }
+            set { _length = value; }
+        }
+        public float Right 
+        { 
+            get { return _x + _width; } 
+        }
+        public float Bottom 
+        { 
+            get { return _y + _length; } 
+        }
 
 
         public RectangleF()
@@ -33,17 +55,6 @@ namespace LightSavers.Utils.Geometry
             _width = width;
             _length = length;
         }
-
-        public void setX(float x)
-        {
-            _x = x;
-        }
-
-        public void setY(float y)
-        {
-            _y = y;
-        }
-
 
     }
 }

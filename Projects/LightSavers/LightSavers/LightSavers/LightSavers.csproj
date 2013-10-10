@@ -136,6 +136,7 @@
     <Compile Include="Input\XBoxInputController.cs" />
     <Compile Include="Components\CameraController.cs" />
     <Compile Include="Utils\Geometry\CircleF.cs" />
+    <Compile Include="Utils\Geometry\Collider.cs" />
     <Compile Include="Utils\GObjectPool.cs" />
     <Compile Include="Utils\IPoolable.cs" />
     <Compile Include="Utils\Geometry\RectangleF.cs" />

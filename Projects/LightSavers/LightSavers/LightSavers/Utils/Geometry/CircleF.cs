@@ -10,9 +10,21 @@ namespace LightSavers.Utils.Geometry
 
         float _x, _y, _radius;
 
-        public float X { get { return _x; } }
-        public float Y { get { return _y; } }
-        public float Radius { get { return _radius; } }
+        public float X 
+        { 
+            get { return _x; }
+            set { _x = value; }
+        }
+        public float Y 
+        {
+            get { return _y; }
+            set { _y = value; }
+        }
+        public float Radius 
+        {
+            get { return _radius; }
+            set { _radius = value; }
+        }
 
         public CircleF()
         {
@@ -27,22 +39,5 @@ namespace LightSavers.Utils.Geometry
             _y = y;
             _radius = radius;
         }
-
-        public void SetX(float x)
-        {
-            _x = x;
-        }
-
-        public void SetY(float y)
-        {
-            _y = y;
-        }
-
-        public void SetRadius(float r)
-        {
-            _radius = r;
-        }
-                
-
     }
 }
