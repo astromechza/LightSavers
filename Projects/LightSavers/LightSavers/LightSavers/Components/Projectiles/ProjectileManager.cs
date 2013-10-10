@@ -1,4 +1,7 @@
-﻿using System;
+﻿using LightSavers.Components.GameObjects.Aliens;
+using LightSavers.Utils.Geometry;
+using ObjectPool;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,14 +15,16 @@ namespace LightSavers.Components.Projectiles
     /// </summary>
     public class ProjectileManager
     {
+
         //maximum number of projectiles expected live at any point in time
         private const int MAX_PROJECTILES = 1000;
+        private const int PRE_BUILD = 50;
 
-        private List<IProjectile> allProjectiles;
+        public GObjectPool<StandardBullet> standardBulletPool;
 
         public ProjectileManager()
         {
-            allProjectiles = new List<IProjectile>(MAX_PROJECTILES);
+            standardBulletPool = new GObjectPool<StandardBullet>(MAX_PROJECTILES, PRE_BUILD);
         }
 
         /// <summary>
@@ -29,26 +34,29 @@ namespace LightSavers.Components.Projectiles
         /// <param name="ms">Milliseconds passed since last update</param>
         public void Update(float ms)
         {
-            List<IProjectile> temp = new List<IProjectile>(MAX_PROJECTILES);
-            foreach (IProjectile p in allProjectiles)
+            int i = standardBulletPool.GetFirst();
+            while (i != -1)
             {
-                p.Update(ms);
-                if (!p.MustBeDeleted())
+                StandardBullet b = standardBulletPool.GetByIndex(i);
+                b.Update(ms);
+                if (b.MustBeDeleted())
                 {
-                    temp.Add(p);
+                    standardBulletPool.Dispose(b);
                 }
+                i = standardBulletPool.NextIndex(b);
             }
-            allProjectiles = temp;
         }
 
-        /// <summary>
-        /// Add a new Projectile to this container
-        /// </summary>
-        /// <param name="p">The projectile to add</param>
-        public void Add(IProjectile p)
+        public IProjectile CheckHit(BaseAlien alien)
         {
-            allProjectiles.Add(p);
+            int i = standardBulletPool.GetFirst();
+            while (i != -1)
+            {
+                StandardBullet b = standardBulletPool.GetByIndex(i);
+                if (Collider.Collide(alien.GetBoundRect(), b.GetCenter())) return b;
+                i = standardBulletPool.NextIndex(b);
+            }
+            return null;
         }
-
     }
 }

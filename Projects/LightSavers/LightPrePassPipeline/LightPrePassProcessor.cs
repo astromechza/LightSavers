@@ -231,7 +231,7 @@ namespace LightPrePassProcessor
                     lppMaterial.Textures.Add(NormalMapKey, texture.Value);
                 if (texture.Key.ToLower().Equals("specularmap"))
                     lppMaterial.Textures.Add(SpecularMapKey, texture.Value);
-                if (texture.Key.ToLower().Equals("emissivemap"))
+                if (texture.Key.ToLower().Equals("emissivemap") || texture.Key.ToLower().Equals("emissive"))
                     lppMaterial.Textures.Add(EmissiveMapKey, texture.Value);
 
                 if (texture.Key.ToLower().Equals("seconddiffusemap"))
@@ -244,7 +244,6 @@ namespace LightPrePassProcessor
                 if (texture.Key.ToLower().Equals("reflectionmap"))
                     lppMaterial.Textures.Add(ReflectionMapKey, texture.Value);
             }
-
            
             ExternalReference<TextureContent> externalRef;
             if (!lppMaterial.Textures.TryGetValue(DiffuseMapKey, out externalRef))

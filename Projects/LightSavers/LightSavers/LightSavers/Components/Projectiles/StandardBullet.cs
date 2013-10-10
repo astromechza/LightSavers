@@ -1,6 +1,7 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
 using Microsoft.Xna.Framework;
+using ObjectPool;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace LightSavers.Components.Projectiles
 {
-    public class StandardBullet : IProjectile
+    public class StandardBullet : IProjectile, IPoolable
     {
         private RealGame game;
         private Vector3 position;
@@ -26,9 +27,17 @@ namespace LightSavers.Components.Projectiles
         private MeshSceneGraphReceipt modelReceipt;
 
         // projectile state
+        public int PoolIndex { get; set; }
 
+        public StandardBullet() 
+        {
+            this.mesh = new Mesh();
+            this.mesh.Model = AssetLoader.mdl_bullet;
+            this.mesh.SetInstancingEnabled(true);
+            this.mesh.SetCastShadows(false);
+        }
 
-        public StandardBullet(RealGame game, Vector3 startPos, float rotation)
+        public void Construct(RealGame game, Vector3 startPos, float rotation)
         {
             this.game = game;
             this.position = startPos;
@@ -39,15 +48,9 @@ namespace LightSavers.Components.Projectiles
             this.mustBeDeleted = false;
             this.aging = false;
             this.ageMs = 0;
-
-
-            this.mesh = new Mesh();
-            this.mesh.Model = AssetLoader.mdl_bullet;
             this.mesh.Transform = rotationM * Matrix.CreateTranslation(this.position);
-            this.mesh.SetInstancingEnabled(true);
-            this.mesh.SetCastShadows(false);
 
-            this.modelReceipt = game.sceneGraph.AddMesh(mesh);
+            this.modelReceipt = game.sceneGraph.Add(mesh);
         }
 
         public void Update(float ms)
@@ -57,8 +60,7 @@ namespace LightSavers.Components.Projectiles
                 ageMs += ms;
                 if (ageMs > 1000)
                 {
-                    mustBeDeleted = true;
-                    modelReceipt.parentlist.Remove(mesh);
+                    Destroy();
                 } 
             }
             else
@@ -67,9 +69,10 @@ namespace LightSavers.Components.Projectiles
 
                 newposition += delta * ms / 16;
 
-                if (game.cellCollider.GetCollision(newposition.X, newposition.Z))
+                if (game.cellCollider.PointCollides(newposition.X, newposition.Z))
                 {
                     aging = true;
+                    PreDestroy();
                 }
 
                 if (position != newposition)
@@ -83,8 +86,7 @@ namespace LightSavers.Components.Projectiles
 
                     if (oldx != newx)
                     {
-                        modelReceipt.parentlist.Remove(mesh);
-                        modelReceipt = game.sceneGraph.AddMesh(mesh);
+                        modelReceipt.graph.Renew(modelReceipt);
                     }
 
                 }
@@ -95,6 +97,22 @@ namespace LightSavers.Components.Projectiles
         public bool MustBeDeleted()
         {
             return mustBeDeleted;
+        }
+
+        public void Destroy()
+        {
+            this.mustBeDeleted = true;
+            this.modelReceipt.graph.Remove(this.modelReceipt);
+        }
+
+        public void PreDestroy()
+        {
+            this.game.fragmentManager.SpawnX(this.position, 5);
+        }
+
+        public Vector3 GetCenter()
+        {
+            return position;
         }
     }
 }

@@ -54,9 +54,12 @@ namespace LightSavers.Components.GameObjects
             doorRightMesh.Model = AssetLoader.mdl_doorPanel;
             doorRightMesh.Transform = FLIP180X * FLIP90Y * Matrix.CreateTranslation(position + new Vector3(0, 2.5f, 0));
 
-            game.sceneGraph.AddMesh(doorBaseMesh);
-            game.sceneGraph.AddMesh(doorLeftMesh);
-            game.sceneGraph.AddMesh(doorRightMesh);
+            game.sceneGraph.Setup(doorBaseMesh);
+            game.sceneGraph.Add(doorBaseMesh);
+            game.sceneGraph.Setup(doorLeftMesh);
+            game.sceneGraph.Add(doorLeftMesh);
+            game.sceneGraph.Setup(doorRightMesh);
+            game.sceneGraph.Add(doorRightMesh);
 
             lightLeft = new Light();
             lightLeft.LightType = Light.Type.Point;
@@ -70,8 +73,8 @@ namespace LightSavers.Components.GameObjects
             lightRight.Radius = 2;
             lightRight.Transform = Matrix.CreateTranslation(position + new Vector3(-0.6f, 1.5f, 1.4f));
 
-            game.sceneGraph.AddLight(lightRight);
-            game.sceneGraph.AddLight(lightLeft);
+            game.sceneGraph.Add(lightRight);
+            game.sceneGraph.Add(lightLeft);
 
             state = DoorState.CLOSED;
             openPercent = MINOPEN;

@@ -2,6 +2,8 @@
 using LightPrePassRenderer.partitioning;
 using LightSavers.Collisions;
 using LightSavers.Components.GameObjects;
+using LightSavers.Components.GameObjects.Aliens;
+using LightSavers.Components.HitParticle;
 using LightSavers.Components.Projectiles;
 using LightSavers.Utils;
 using LightSavers.WorldBuilding;
@@ -15,21 +17,22 @@ using System.Text;
 
 namespace LightSavers.Components
 {
+    /// <summary>
+    /// RealGame is the class controlling the actual game, its entities and inter-entity operations
+    /// </summary>
     public class RealGame
     {
         private PlayerObject[] players;
-
-        private ProjectileManager projectileManager;
-
-        public AwesomeSceneGraph sceneGraph;
-
+        public ProjectileManager projectileManager;
+        public DropFragmentManager fragmentManager;
+        public BlockBasedSceneGraph sceneGraph;
         public WorldBuilder worldBuilder;
-
         public CellCollider cellCollider;
-
         public List<Door> doors;
 
-        public RealGame(int numberOfSections, int numPlayers, AwesomeSceneGraph sg)
+        public List<AlienOne> aliens;
+
+        public RealGame(int numberOfSections, int numPlayers, BlockBasedSceneGraph sg)
         {
             sceneGraph = sg;
 
@@ -40,7 +43,9 @@ namespace LightSavers.Components
             worldBuilder = new WorldBuilder(this, numberOfSections, Vector3.Zero);
 
             projectileManager = new ProjectileManager();
+            fragmentManager = new DropFragmentManager(this);
             
+
             players = new PlayerObject[numPlayers];
 
 
@@ -57,29 +62,32 @@ namespace LightSavers.Components
             for (int i = 0; i < numPlayers; i++)
             {
                 players[i] = new PlayerObject(this, (i==0) ? PlayerIndex.One : PlayerIndex.Two, playerColours[i], spawns[i], 0);
-                players[i].AddToSG();
             }
 
 
-        }
+            aliens = new List<AlienOne>();
+            for (int i = 0; i < 2; i++)
+            {
+                aliens.Add(new AlienOne(this, new Vector3(6, 0, 6)));
+            }
 
-        public void SpawnBullet(StandardBullet b)
-        {
-            projectileManager.Add(b);
         }
 
         public void Update(float ms)
         {
-            foreach (PlayerObject p in players) p.Update(ms);
+            for (int i = 0; i < players.Length; i++) players[i].Update(ms);
             projectileManager.Update(ms);
-            foreach (Door d in doors) d.Update(ms);
+            for (int i = 0; i < aliens.Count; i++) aliens[i].Update(ms);            
+            for (int i = 0; i < doors.Count; i++) doors[i].Update(ms);
+            fragmentManager.Update(ms);
         }
 
+        private List<Vector2> criticalPoints = new List<Vector2>(8);
         public List<Vector2> GetCriticalPoints()
         {
-            List<Vector2> o = new List<Vector2>(10);
-            foreach (PlayerObject p in players) p.AddCriticalPoints(o);
-            return o;
+            criticalPoints.Clear();
+            for (int i = 0; i < players.Length; i++) players[i].AddCriticalPoints(criticalPoints);
+            return criticalPoints;
         }
 
 

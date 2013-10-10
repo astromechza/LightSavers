@@ -1,7 +1,9 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
+using LightSavers.Components.Guns;
 using LightSavers.Components.Projectiles;
 using LightSavers.Utils;
+using LightSavers.Utils.Geometry;
 using Microsoft.Xna.Framework;
 using SkinnedModel;
 using System;
@@ -15,16 +17,16 @@ namespace LightSavers.Components.GameObjects
     {
         #region CONSTANTS
         // Player orientation
-        const float PLAYER_YORIGIN = 0.8f;
-        const float PLAYER_SCALE = 0.6f;
+        const float PLAYER_YORIGIN = 1f;
+        const float PLAYER_SCALE = 0.75f;
 
         // Light stuff
-        float TORCH_HEIGHT = 1.6f;
-        float HALO_HEIGHT = 6.0f;
+        const float TORCH_HEIGHT = 2.5f;
+        const float HALO_HEIGHT = 6.0f;
 
         Matrix mPlayerScale = Matrix.CreateScale(PLAYER_SCALE);
         Matrix mHaloPitch = Matrix.CreateRotationX(-90);
-        Matrix mTorchPitch = Matrix.CreateRotationX(-0.2f);
+        Matrix mTorchPitch = Matrix.CreateRotationX(-0.4f);
         #endregion
 
 
@@ -34,22 +36,31 @@ namespace LightSavers.Components.GameObjects
 
         private SkinnedMesh mesh;
 
+        private RectangleF collisionRectangle;
+
         private float rotation;
 
         // Lighting variables
         private Light torchlight;
         private Light halolight;
         private Light haloemitlight;
+        
 
-        private AnimationPlayer aplayer;
+        private DurationBasedAnimator aplayer;
 
         private RealGame game;
-
+        
         // Scenegraphstuff
         private MeshSceneGraphReceipt modelReceipt;
         private LightSceneGraphReceipt light1receipt;
         private LightSceneGraphReceipt light2receipt;
         private LightSceneGraphReceipt light3receipt;
+
+        private BaseGun[] weapons;
+        private int currentWeapon;
+        private int currentAnimation;
+        string[] AnimationTest = new string[] { "run_snipshot_shoot", "run_snipshot" };
+        int moving, weapon=4, shooting;
 
         public PlayerObject(RealGame game, PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
@@ -58,21 +69,34 @@ namespace LightSavers.Components.GameObjects
             this.color = color;
 
             // initial transform
-            position = pos;
+            this._position = pos;
             rotation = initialYRot;
+
+            SetupLights();
 
             mesh = new SkinnedMesh();
             mesh.Model = AssetLoader.mdl_character;
-            SkinnedMesh idleAnim = new SkinnedMesh();
-            idleAnim.Model = AssetLoader.mdl_character_idle;
-            mesh.SkinningData.AnimationClips.Add("idle1", idleAnim.SkinningData.AnimationClips["Take 001"]);
-           
-            aplayer = new AnimationPlayer(mesh.SkinningData);
-            aplayer.StartClip(mesh.SkinningData.AnimationClips["idle1"]);
 
-            SetupLights();
+            aplayer = new DurationBasedAnimator(mesh.SkinningData, mesh.SkinningData.AnimationClips["Take 001"]);
+
+            //Load the animations from the asset loader (these are in an Animation Package)
+            aplayer.AddAnimationPackage = AssetLoader.ani_character;
+            aplayer.StartClip("run_snipshot_shoot");
+
             UpdateAnimation(0);
             UpdateMajorTransforms(0);
+
+            game.sceneGraph.Setup(mesh);
+            modelReceipt = game.sceneGraph.Add(mesh);
+            light1receipt = game.sceneGraph.Add(torchlight);
+            light2receipt = game.sceneGraph.Add(haloemitlight);
+            light3receipt = game.sceneGraph.Add(halolight);
+
+            SetupWeapons();
+            SwitchWeapon(0);
+
+            collisionRectangle = new RectangleF(0, 0, 0.98f, 0.98f);
+
         }
 
         private void UpdateAnimation(float ms)
@@ -81,29 +105,29 @@ namespace LightSavers.Components.GameObjects
 
             aplayer.Update(ts, true, Matrix.Identity);
             mesh.BoneMatrixes = aplayer.GetSkinTransforms();
+
         }
 
         private void UpdateMajorTransforms(float ms)
         {
-            mesh.Transform = mPlayerScale * Matrix.CreateRotationY(rotation+(float)Math.PI) * Matrix.CreateTranslation(position + new Vector3(0, PLAYER_YORIGIN, 0));
+            mesh.Transform = mPlayerScale * Matrix.CreateRotationY(rotation + (float)Math.PI) * Matrix.CreateTranslation(_position + new Vector3(0, PLAYER_YORIGIN, 0));
 
-            halolight.Transform = mHaloPitch * Matrix.CreateTranslation(position + new Vector3(0, HALO_HEIGHT, 0));
-            haloemitlight.Transform = mHaloPitch * Matrix.CreateTranslation(position + new Vector3(0, 2, 0));
-            torchlight.Transform = mTorchPitch * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position + new Vector3(0, TORCH_HEIGHT, 0));
-            
+            halolight.Transform = mHaloPitch * Matrix.CreateTranslation(_position + new Vector3(0, HALO_HEIGHT, 0));
+            haloemitlight.Transform = mHaloPitch * Matrix.CreateTranslation(_position + new Vector3(0, 2, 0));
+            torchlight.Transform = mTorchPitch * Matrix.CreateTranslation(0, 0, 0.3f) * Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(_position + new Vector3(0, TORCH_HEIGHT, 0));
         }
 
         public override void Update(float ms)
         {
 
-            Vector3 newposition = new Vector3(position.X, position.Y, position.Z);
+            Vector3 newposition = new Vector3(_position.X, _position.Y, _position.Z);
 
             // 1. == Update Movement
             // movement is done via analog sticks
             Vector2 vleft = Globals.inputController.getAnalogVector(AnalogStick.Left, playerIndex);
             Vector2 vright = Globals.inputController.getAnalogVector(AnalogStick.Right, playerIndex);
             // 1.1 = Update player rotation based on RIGHT analog stick
-            if (vright.Length() > 0.01f)
+            if (vright.LengthSquared() > 0.01f)
             {
                 // get target angle
                 float targetrotation = (float)Math.Atan2(vright.Y, vright.X) - MathHelper.PiOver2;
@@ -126,7 +150,7 @@ namespace LightSavers.Components.GameObjects
             }
 
             // 1.2 = Update player movement based on LEFT analog stick
-            if (vleft.Length() > 0.1f)
+            if (vleft.LengthSquared() > 0.1f)
             {
                 Vector3 pdelta = new Vector3(vleft.X, 0, -vleft.Y);
                 pdelta.Normalize();
@@ -134,7 +158,7 @@ namespace LightSavers.Components.GameObjects
                 newposition += pdelta * ms / 300;
 
                 // 1.3 = If no rotation was changed, pull player angle toward forward vector
-                if (vright.Length() < 0.1f)
+                if (vright.LengthSquared() < 0.01f)
                 {
                     // get target angle
                     float targetrotation = (float)Math.Atan2(vleft.Y, vleft.X) - MathHelper.PiOver2;
@@ -154,65 +178,117 @@ namespace LightSavers.Components.GameObjects
                     // sanitise rotation
                     if (rotation > MathHelper.TwoPi) rotation -= MathHelper.TwoPi;
                     if (rotation < -MathHelper.TwoPi) rotation += MathHelper.TwoPi;
-
                 }
 
-
+                moving = 1;
+            }
+            else
+            {
+                moving = 0;
             }
 
             if (Globals.inputController.isTriggerDown(Triggers.Right, playerIndex))
             {
+                if (currentWeapon > -1)
+                {
+                    float r = (float)Globals.random.NextDouble() * 0.1f - 0.05f;
 
-                float r = (float)Globals.random.NextDouble()*0.1f - 0.05f; 
+                    StandardBullet b = game.projectileManager.standardBulletPool.Provide();
+                    b.Construct(game, weapons[currentWeapon].emmitterPosition, rotation + MathHelper.PiOver2 + r);
+                }
 
-                game.SpawnBullet(new StandardBullet(game, position + new Vector3(0,1+r,0), rotation+MathHelper.PiOver2 + r));
+                shooting = 2;
+            }
+            else
+            {
+                shooting = 0;
+            }
+
+            if(Globals.inputController.isButtonPressed(Microsoft.Xna.Framework.Input.Buttons.Y, playerIndex))
+            {
+                int nw = (currentWeapon + 1) % 5;
+                SwitchWeapon(nw);
             }
 
 
             // collision stuff
-            if (position != newposition)
+            if (_position != newposition)
             {
-                Vector3 cd = new Vector3(position.X, 0, position.Z);
-                if (newposition.X < position.X) cd.X -= 0.2f;
-                else if (newposition.X > position.X) cd.X += 0.2f;
-
-
-                if (newposition.Z < position.Z) cd.Z -=0.2f;
-                else if (newposition.Z > position.Z) cd.Z += 0.2f;
-
-                if (game.cellCollider.GetCollision(cd.X, position.Z))
+                // First test X collision
+                collisionRectangle.Left = newposition.X - 0.49f;
+                collisionRectangle.Top  = _position.Z - 0.49f;
+                if (game.cellCollider.RectangleCollides(collisionRectangle))
                 {
-                    newposition.X = position.X;
+                    // if it does collide, pull it back
+                    newposition.X = _position.X;                    
                 }
 
-                if (game.cellCollider.GetCollision(position.X, cd.Z))
+                // Then test Z collision
+                collisionRectangle.Left = _position.X - 0.49f;
+                collisionRectangle.Top  = newposition.Z - 0.49f;
+                if (game.cellCollider.RectangleCollides(collisionRectangle))
                 {
-                    newposition.Z = position.Z;
+                    // if it does collide, pull it back
+                    newposition.Z = _position.Z;
                 }
 
-                if (position != newposition)
+                // if there is still a new position
+                if (_position != newposition)
                 {
+                    _position = newposition;
 
-                    position = newposition;
-
-                    modelReceipt.parentlist.Remove(mesh);
-                    light1receipt.parentlist.Remove(torchlight);
-                    light2receipt.parentlist.Remove(halolight);
-                    light3receipt.parentlist.Remove(haloemitlight);
-
-                    AddToSG();
+                    modelReceipt.graph.Renew(modelReceipt);
+                    light1receipt.graph.Renew(light1receipt);
+                    light2receipt.graph.Renew(light2receipt);
+                    light3receipt.graph.Renew(light3receipt);
                 }
-                UpdateMajorTransforms(ms);
+
 
             }
 
             UpdateAnimation(ms);
+            UpdateMajorTransforms(ms);
 
+            if (currentWeapon > -1)
+            {
+                weapons[currentWeapon].SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
+                weapons[currentWeapon].receipt.graph.Renew(weapons[currentWeapon].receipt);
+            }
 
+        }
 
+        public void SetupWeapons()
+        {
+            weapons = new BaseGun[5];
+            weapons[0] = new Pistol();
+            game.sceneGraph.Setup(weapons[0].mesh);
+            weapons[1] = new Shotgun();
+            game.sceneGraph.Setup(weapons[1].mesh);
+            weapons[2] = new AssaultRifle();
+            game.sceneGraph.Setup(weapons[2].mesh);
+            weapons[3] = new SniperRifle();
+            game.sceneGraph.Setup(weapons[3].mesh);
+            weapons[4] = new Sword();
+            game.sceneGraph.Setup(weapons[4].mesh);
 
+            currentWeapon = -1;
             
+        }
 
+        public void SwitchWeapon(int to)
+        {
+            //disable current weapon
+            if (currentWeapon > -1)
+            {
+                game.sceneGraph.Remove(weapons[currentWeapon].receipt);
+            }
+
+            currentWeapon = to;
+            BaseGun g = weapons[to];
+            g.SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
+
+            if (g.receipt != null) game.sceneGraph.Remove(g.receipt);
+            g.receipt = game.sceneGraph.Add(g.mesh);
         }
 
         public void SetupLights()
@@ -264,25 +340,12 @@ namespace LightSavers.Components.GameObjects
             return mesh;
         }
 
-        public override RectangleF GetBoundRect()
-        {
-            return new RectangleF();
-        }
-
-        public void AddToSG()
-        {
-            modelReceipt = game.sceneGraph.AddMesh(mesh);
-            light1receipt = game.sceneGraph.AddLight(torchlight);
-            light2receipt = game.sceneGraph.AddLight(halolight);
-            light3receipt = game.sceneGraph.AddLight(haloemitlight);
-        }
-
         public void AddCriticalPoints(List<Vector2> outputPoints)
         {
-            outputPoints.Add(new Vector2(position.X, position.Z));
+            outputPoints.Add(new Vector2(_position.X, _position.Z));
 
             Vector3 v = new Vector3(0, 0, -7);
-            Matrix m = Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(position);
+            Matrix m = Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(_position);
             Vector3 t = Vector3.Transform(v, m);
             outputPoints.Add(new Vector2(t.X,t.Z));
         }

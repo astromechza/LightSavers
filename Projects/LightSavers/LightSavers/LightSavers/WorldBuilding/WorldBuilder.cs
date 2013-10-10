@@ -53,8 +53,9 @@ namespace LightSavers.WorldBuilding
             System.Diagnostics.Debug.WriteLine("Building Section @ " + corigin.ToString());
             Mesh mesh = new Mesh();
             mesh.Model = AssetLoader.mdl_section[index];
-            mesh.Transform = Matrix.CreateTranslation(corigin + new Vector3(16,0,16));
-            this.game.sceneGraph.AddMesh(mesh);
+            mesh.Transform = Matrix.CreateTranslation(corigin + new Vector3(16, 0, 16));
+            game.sceneGraph.Setup(mesh);
+            game.sceneGraph.Add(mesh);
 
             System.Diagnostics.Debug.WriteLine("Spawning Entities");
             SpawnEntities(index, corigin);
@@ -116,7 +117,8 @@ namespace LightSavers.WorldBuilding
                             game.cellCollider.SetCollision(center.X, center.Z, true);
                             game.cellCollider.SetCollision(center.X, center.Z + 1, true);
 
-                            game.sceneGraph.AddMesh(m);
+                            game.sceneGraph.Setup(m);
+                            game.sceneGraph.Add(m);
                         }
 
                         int pi3 = (pixelY + 1) * 96 + pixelX + 2;
@@ -130,8 +132,9 @@ namespace LightSavers.WorldBuilding
 
                             game.cellCollider.SetCollision(center.X, center.Z, true);
                             game.cellCollider.SetCollision(center.X, center.Z + 1, true);
-                            
-                            game.sceneGraph.AddMesh(m);
+
+                            game.sceneGraph.Setup(m);
+                            game.sceneGraph.Add(m);
                         }
 
                     }
@@ -145,7 +148,8 @@ namespace LightSavers.WorldBuilding
 
                         game.cellCollider.SetCollision(center.X, center.Z, true);
 
-                        game.sceneGraph.AddMesh(m);
+                        game.sceneGraph.Setup(m);
+                        game.sceneGraph.Add(m);
 
                     }
 
@@ -184,7 +188,7 @@ namespace LightSavers.WorldBuilding
             Mesh m = new Mesh();
             m.Model = AssetLoader.mdl_ceilinglight;
             m.Transform = Matrix.CreateTranslation(position + Vector3.Up * 4);
-            game.sceneGraph.AddMesh(m);
+            game.sceneGraph.Add(m);
 
             Light l = new Light();
             l.LightType = Light.Type.Point;
@@ -193,7 +197,7 @@ namespace LightSavers.WorldBuilding
 
             
             l.Transform = Matrix.CreateTranslation(position + Vector3.Up * 4);
-            game.sceneGraph.AddLight(l);
+            game.sceneGraph.Add(l);
         }
 
         public void SpawnFilingCabinet(Vector3 center, Color[] data, int x, int y)
@@ -228,7 +232,8 @@ namespace LightSavers.WorldBuilding
             m.Model = AssetLoader.mdl_filingcabinet;
             m.SetInstancingEnabled(true);
             m.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(angle_d)) * Matrix.CreateTranslation(center);
-            game.sceneGraph.AddMesh(m);
+            game.sceneGraph.Setup(m);
+            game.sceneGraph.Add(m);
         }
         
 

@@ -327,11 +327,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="animatedmodels\alien01\alien01_2idle.fbx">
-      <Name>alien01_2idle</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
-    </Compile>
     <None Include="animatedmodels\alien04\Alien04 Animations .txt">
       <Name>Alien04 Animations</Name>
     </None>
@@ -366,10 +361,20 @@
       <Processor>LightPrePassProcessor</Processor>
       <ProcessorParameters_Scale>0.5</ProcessorParameters_Scale>
     </Compile>
-    <Compile Include="animatedmodels\player\spacemanAnimatedwalk.fbx">
-      <Name>spacemanAnimatedwalk</Name>
+    <Compile Include="models\weapons\assaultrifle\AssaultRifle.fbx">
+      <Name>AssaultRifle</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>LightPrePassSkinnedModelProcessor</Processor>
+      <Processor>LightPrePassProcessor</Processor>
+    </Compile>
+    <Compile Include="models\weapons\sniperrifle\SniperRifle.fbx">
+      <Name>SniperRifle</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
+    </Compile>
+    <Compile Include="models\weapons\sword\Sword.fbx">
+      <Name>Sword</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -483,6 +488,41 @@
       <Name>pipeTexture</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\weapons\assaultrifle\assaultRifltTexture.png">
+      <Name>assaultRifltTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\weapons\sniperrifle\sniperRifleTexture.png">
+      <Name>sniperRifleTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\weapons\sword\swordTexture.png">
+      <Name>swordTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="textures\title2.png">
+      <Name>title2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="projectiles\DropFragment.xml">
+      <Name>DropFragment</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>ProjectileModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

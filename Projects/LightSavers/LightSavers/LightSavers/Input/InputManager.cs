@@ -83,6 +83,22 @@ namespace LightSavers.Components
             return controller.getAnalogVector(a, pi);
         }
 
+
+        public bool isDBGKeyboardKeyPressed(Keys k)
+        {
+            return controller.isDBGKeyboardKeyPressed(k);
+        }
+
+        public bool isDBGKeyboardKeyDown(Keys k)
+        {
+            return controller.isDBGKeyboardKeyDown(k);
+        }
+
+        public bool isDBGKeyboardKeyReleased(Keys k)
+        {
+            return controller.isDBGKeyboardKeyReleased(k);
+        }
+
     }
 
 
@@ -97,6 +113,10 @@ namespace LightSavers.Components
         public abstract bool isTriggerDown(Triggers t, PlayerIndex? pi);
         public abstract bool isTriggerReleased(Triggers t, PlayerIndex? pi);
         public abstract Vector2 getAnalogVector(AnalogStick a, PlayerIndex? pi);
+        public abstract bool isDBGKeyboardKeyPressed(Keys k);
+        public abstract bool isDBGKeyboardKeyDown(Keys k);
+        public abstract bool isDBGKeyboardKeyReleased(Keys k);
+        
     }
 
 

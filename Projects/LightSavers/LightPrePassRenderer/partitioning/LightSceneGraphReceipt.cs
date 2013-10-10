@@ -8,8 +8,8 @@ namespace LightPrePassRenderer.partitioning
 {
     public class LightSceneGraphReceipt
     {
+        public BlockBasedSceneGraph graph;
         public Light light;
-        public ICollection<Light> parentlist;
-        public Matrix oldGlobalTransform;
+        public int ReceivedIndex { get; set; }
     }
 }

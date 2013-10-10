@@ -108,7 +108,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collisions\CellCollider.cs" />
+    <Compile Include="Components\GameObjects\Aliens\AlienOne.cs" />
+    <Compile Include="Components\GameObjects\Aliens\BaseAlien.cs" />
+    <Compile Include="Components\GameObjects\Animation States.cs" />
     <Compile Include="Components\GameObjects\Door.cs" />
+    <Compile Include="Components\Guns\AssaultRifle.cs" />
+    <Compile Include="Components\Guns\BaseGun.cs" />
+    <Compile Include="Components\Guns\Pistol.cs" />
+    <Compile Include="Components\Guns\Shotgun.cs" />
+    <Compile Include="Components\Guns\SniperRifle.cs" />
+    <Compile Include="Components\Guns\Sword.cs" />
+    <Compile Include="Components\HitParticle\DropFragment.cs" />
+    <Compile Include="Components\HitParticle\DropFragmentManager.cs" />
     <Compile Include="Components\MenuObjects\BaseMenuItem.cs" />
     <Compile Include="Components\MenuObjects\BlankMenuItem.cs" />
     <Compile Include="Components\MenuObjects\DelegateItem.cs" />
@@ -119,7 +130,7 @@
     <Compile Include="Components\Projectiles\StandardBullet.cs" />
     <Compile Include="Components\MenuObjects\MenuBackground.cs" />
     <Compile Include="Components\Projectiles\ProjectileManager.cs" />
-    <Compile Include="Components\Projectiles\Projectile.cs" />
+    <Compile Include="Components\Projectiles\IProjectile.cs" />
     <Compile Include="Components\RealGame.cs" />
     <Compile Include="Components\GameObjects\GameObject.cs" />
     <Compile Include="Components\GameObjects\PlayerObject.cs" />
@@ -127,7 +138,11 @@
     <Compile Include="Input\KeyboardInputController.cs" />
     <Compile Include="Input\XBoxInputController.cs" />
     <Compile Include="Components\CameraController.cs" />
-    <Compile Include="Utils\RectangleF.cs" />
+    <Compile Include="Utils\Geometry\CircleF.cs" />
+    <Compile Include="Utils\Geometry\Collider.cs" />
+    <Compile Include="Utils\GObjectPool.cs" />
+    <Compile Include="Utils\IPoolable.cs" />
+    <Compile Include="Utils\Geometry\RectangleF.cs" />
     <Compile Include="ScreenManagement\Layers\AssetLoader.cs" />
     <Compile Include="Utils\Globals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

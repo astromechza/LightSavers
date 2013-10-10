@@ -109,8 +109,9 @@ namespace LightPrePassRenderer.partitioning
 
         public override void GetVisibleLights(BoundingFrustum frustum, List<Light> visibleLights)
         {
-            foreach (Light light in _worldLights)
+            for(int i=0;i<_worldLights.Count;i++)
             {
+                Light light = _worldLights[i];
                 if (light.Enabled)
                 {
                     switch (light.LightType)

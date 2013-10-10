@@ -18,6 +18,11 @@ namespace LightSavers.Components
         private Vector3 lastXYZ;
         private Vector3 targetXYZ;
 
+        private Matrix CAMERA_PITCH = Matrix.CreateRotationX(MathHelper.ToRadians(15));
+        private Matrix CAMERA_DOWN = Matrix.CreateRotationX(MathHelper.ToRadians(-90));
+
+        private float sinFOVOverTwo = (float)Math.Sin(22.5f);
+
         // == Constructors ===
         public CameraController(Viewport v)
         {
@@ -47,7 +52,7 @@ namespace LightSavers.Components
         {
             lastXYZ = Vector3.Lerp(lastXYZ, targetXYZ, ms / 300);
 
-            camera.Transform = Matrix.CreateRotationX(MathHelper.ToRadians(-90)) * Matrix.CreateTranslation(lastXYZ) * Matrix.CreateRotationX(MathHelper.ToRadians(15));
+            MoveToTarget();
         }
 
         public void Fit(List<Vector2> list)
@@ -58,17 +63,17 @@ namespace LightSavers.Components
             float minz = 32;
             float maxz = 0;
 
-            foreach( Vector2 p in list)
+            for(int i=0;i<list.Count;i++)
             {
-                minx = Math.Min(p.X, minx);
-                minz = Math.Min(p.Y, minz);
-                maxx = Math.Max(p.X, maxx);
-                maxz = Math.Max(p.Y, maxz);
+                minx = Math.Min(list[i].X, minx);
+                minz = Math.Min(list[i].Y, minz);
+                maxx = Math.Max(list[i].X, maxx);
+                maxz = Math.Max(list[i].Y, maxz);
             }
 
             //arb tweaks
             minz = minz - 2;
-            maxz = maxz + 1;
+            maxz = maxz + 2;
 
             float X = (minx + maxx) / 2;
             float Z = (minz + maxz) / 2;
@@ -78,10 +83,15 @@ namespace LightSavers.Components
 
             float r = Math.Max(dx, dz) + 1.5f;
 
-            float Y = Math.Abs(r / (float)Math.Sin(22.5f));
+            float Y = Math.Abs(r / sinFOVOverTwo);
 
             targetXYZ = new Vector3(X, Y + 3, Z);
 
+        }
+
+        public void MoveToTarget()
+        {
+            camera.Transform = CAMERA_DOWN * Matrix.CreateTranslation(targetXYZ);
         }
     }
 }

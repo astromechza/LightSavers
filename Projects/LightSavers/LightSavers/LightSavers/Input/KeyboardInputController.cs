@@ -193,6 +193,19 @@ namespace LightSavers.Components
             }
         }
 
+        public override bool isDBGKeyboardKeyPressed(Keys k)
+        {
+            return LastKeyboardState.IsKeyUp(k) && CurrentKeyboardState.IsKeyDown(k);
+        }
+        public override bool isDBGKeyboardKeyDown(Keys k)
+        {
+            return LastKeyboardState.IsKeyDown(k) && CurrentKeyboardState.IsKeyDown(k);
+        }
+        public override bool isDBGKeyboardKeyReleased(Keys k)
+        {
+            return LastKeyboardState.IsKeyDown(k) && CurrentKeyboardState.IsKeyUp(k);
+        }
+
 
 
 

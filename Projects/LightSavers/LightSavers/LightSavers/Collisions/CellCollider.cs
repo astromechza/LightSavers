@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LightSavers.Utils.Geometry;
+using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -49,7 +51,7 @@ namespace LightSavers.Collisions
         /// <param name="x">X coordinate</param>
         /// <param name="y">Y coordinate in 2D space, Z coordinate when using 3D</param>
         /// <returns>True if there is a collision here</returns>
-        public bool GetCollision(float x, float y)
+        public bool PointCollides(float x, float y)
         {
             // check range
             if (x < 0) return true;
@@ -63,6 +65,50 @@ namespace LightSavers.Collisions
 
             // return
             return collision[yi, xi];
+        }
+
+        public bool PointCollides(Vector2 v)
+        {
+            return PointCollides(v.X, v.Y);
+        }
+
+        public bool PointCollides(Vector3 v)
+        {
+            return PointCollides(v.X, v.Z);
+        }
+
+        /// <summary>
+        /// Return whether the given circle collides with any wall cells.
+        /// </summary>
+        public bool CircleCollides(float radius, Vector3 center)
+        {
+            // if the center point collides
+            if (PointCollides(center)) return true;
+            if (PointCollides(center.X + radius, center.Z)) return true;
+            if (PointCollides(center.X - radius, center.Z)) return true;
+            if (PointCollides(center.X, center.Z + radius)) return true;
+            if (PointCollides(center.X, center.Z - radius)) return true;
+
+            //TODO : More checks here
+
+            return false;
+        }
+
+        public bool RectangleCollides(RectangleF r)
+        {
+            // test corners
+            if (PointCollides(r.Left, r.Top)) return true;
+            if (PointCollides(r.Left, r.Bottom)) return true;
+            if (PointCollides(r.Right, r.Top)) return true;
+            if (PointCollides(r.Right, r.Bottom)) return true;
+
+            // test int divisors
+
+            for (float y = r.Top; y <= r.Bottom; y+=1)
+                for (float x = r.Left; x <= r.Right; x+=1)
+                    if (PointCollides(x, y)) return true;
+
+            return false;
         }
 
     }

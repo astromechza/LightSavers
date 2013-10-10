@@ -438,31 +438,36 @@ namespace LightPrePassRenderer
         /// <param name="gameTime"></param>
         /// <param name="lights">Visible lights</param>
         /// <returns></returns>
-        public RenderTarget2D RenderScene(Camera camera, BaseSceneGraph sceneGraph, GameTime gameTime)
+        public RenderTarget2D RenderScene(Camera camera, BaseSceneGraph sceneGraph)
         {
+            
             InstancingGroupManager.Reset();
 
             sceneGraph.DoPreFrameWork(camera.Frustum);
-
+            
+            
             _depthDownsampledThisFrame = false;
             _currentCamera = camera;
 
-            BaseRenderEffect.TotalTime = (float)gameTime.TotalGameTime.TotalSeconds;
+            
             //compute the frustum corners for this camera
             ComputeFrustumCorners(camera);
 
             //this resets the free shadow maps
             _shadowRenderer.InitFrame();
+            
+            
 
             _visibleLights.Clear();
             sceneGraph.GetVisibleLights(camera.Frustum, _visibleLights);
             //sort lights, choose the shadow casters
-            SortLights(camera);
+            BuildLightEntries(camera);
             SelectShadowCasters();
 
             //generate all shadow maps
             GenerateShadows(camera, sceneGraph);
 
+            
             //first of all, we must bind our GBuffer and reset all states
             GraphicsDevice.SetRenderTargets(_gBufferBinding);
 
@@ -478,7 +483,7 @@ namespace LightPrePassRenderer
 
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
-
+            
             //select the visible meshes
             CullVisibleMeshes(camera, sceneGraph);
 
@@ -519,10 +524,10 @@ namespace LightPrePassRenderer
 
             //draw SSAO texture. It's not correct to do it here, because ideally the SSAO should affect only 
             //the ambient light, but it looks good this way
-
+                        
             //unbind our final buffer and return it
             GraphicsDevice.SetRenderTarget(null);
-
+            
             return _outputTexture;
         }
 
@@ -569,8 +574,7 @@ namespace LightPrePassRenderer
         {
             for (int index = 0; index < _visibleMeshes.Length; index++)
             {
-                List<Mesh.SubMesh> visibleMesh = _visibleMeshes[index];
-                visibleMesh.Clear();
+                _visibleMeshes[index].Clear();
             }
 
             sceneGraph.GetVisibleMeshes(camera.Frustum, _visibleMeshes);
@@ -606,26 +610,16 @@ namespace LightPrePassRenderer
             }
         }
 
-        private void SortLights(Camera camera)
+        private void BuildLightEntries(Camera camera)
         {
             _lightEntries.Clear();
 
-            Vector3 camPos = camera.Transform.Translation;
             for (int index = 0; index < _visibleLights.Count; index++)
             {
                 LightEntry lightEntry = new LightEntry();
                 lightEntry.light = _visibleLights[index];
-                //lightEntry.sqrDistanceToCam = Math.Max(1, Vector3.Distance(lightEntry.light.Transform.Translation,
-                //                                            camPos));
-                //compute a value to determine light order 
-                //lightEntry.priority = 1000 * lightEntry.light.Radius / Math.Max(1, lightEntry.sqrDistanceToCam);
                 _lightEntries.Add(lightEntry);
             }
-
-            //_lightEntries.Sort(delegate(LightEntry p1, LightEntry p2)
-            //{
-            //    return (int)(p2.priority - p1.priority);
-            //});
         }
 
         /// <summary>
