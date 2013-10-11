@@ -159,11 +159,6 @@ namespace LightSavers
             // number of assets to be loaded. (used to compute progress bar size)
             num_assets = 24;
             num_assets += CountSections();
-            num_assets += Animation_States.characterAnimationsList.Length;
-            num_assets += Animation_States.alien01AnimationsList.Length;
-            num_assets += Animation_States.alien02AnimationsList.Length;
-            num_assets += Animation_States.alien03AnimationsList.Length;
-            num_assets += Animation_States.alien04AnimationsList.Length;
             LoadSections();
             // assets
             mdl_menuscene = loadModel("models/menuscene/MenuScene");
