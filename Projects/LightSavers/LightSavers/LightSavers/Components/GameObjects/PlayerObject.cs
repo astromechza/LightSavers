@@ -98,7 +98,12 @@ namespace LightSavers.Components.GameObjects
             SetupWeapons();
             SwitchWeapon(0);
 
-            collisionRectangle = new RectangleF(0, 0, 0.98f, 0.98f);
+            collisionRectangle = new RectangleF(
+                _position.X - 0.49f,
+                _position.Y - 0.49f,
+                0.98f,
+                0.98f
+            );
 
         }
 
@@ -360,10 +365,6 @@ namespace LightSavers.Components.GameObjects
                 halolight, 
                 haloemitlight 
             };
-        }
-        public Mesh GetMesh()
-        {
-            return mesh;
         }
 
         public void AddCriticalPoints(List<Vector2> outputPoints)
