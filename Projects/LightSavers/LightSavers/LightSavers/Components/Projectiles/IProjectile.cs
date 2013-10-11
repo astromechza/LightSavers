@@ -13,5 +13,6 @@ namespace LightSavers.Components.Projectiles
         void Destroy();
         bool MustBeDeleted();
         Vector3 GetCenter();
+        int GetDamage();
     }
 }

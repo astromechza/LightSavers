@@ -24,6 +24,12 @@ namespace SkinnedModel
         int currentKeyFrame;
         TimeSpan startTimeValue, endTimeValue, currentTimeValue;
 
+        /// <summary>
+        /// Duration Based Animation constructor
+        /// </summary>
+        /// <param name="skin"></param>
+        /// <param name="clip"></param>
+        /// <param name="Dictionary of valid bones - null if all bones are valid"></param>
         public DurationBasedAnimator(SkinningData skin, AnimationClip clip, Dictionary<int, int> validBones)
         {
             // store skin data
@@ -50,6 +56,13 @@ namespace SkinnedModel
             currentDurationClip.startPose.CopyTo(boneTransforms, 0);
         }
 
+        /// <summary>
+        /// Updates the Animation
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="relativeToCurrentTime"></param>
+        /// <param name="rootTransform"></param>
+        /// <param name="worldTransform, set to identity if model is animatied with one animation player"></param>
         public void Update(TimeSpan time, bool relativeToCurrentTime, Matrix rootTransform, Matrix worldTransform)
         {
             UpdateBoneTransforms(time, relativeToCurrentTime);
@@ -88,8 +101,6 @@ namespace SkinnedModel
                 if (keyframe.Time > currentTimeValue)
                     break;
 
-                // Use this keyframe.
-                //if (validBones == null || validBones.ContainsKey(keyframe.Bone))
                 boneTransforms[keyframe.Bone] = keyframe.Transform;
 
                 currentKeyFrame++;
@@ -100,6 +111,8 @@ namespace SkinnedModel
         /// <summary>
         /// Helper used by the Update method to refresh the WorldTransforms data.
         /// </summary>
+        /// <param name="rootTransform"></param>
+        /// <param name="worldTransform"></param>
         public void UpdateWorldTransforms(Matrix rootTransform, Matrix worldTransform)
         {
             // Root bone.
@@ -137,6 +150,11 @@ namespace SkinnedModel
             return boneTransforms;
         }
 
+        /// <summary>
+        /// Merge the skin transforms of the top and bottom animations
+        /// </summary>
+        /// <param name="Skinned transforms of the other animation player"></param>
+        /// <returns></returns>
         public Matrix[] MergeTransforms( Matrix[] skinned1)
         {
             for (int i = 0; i < skinned1.Length; ++i)
@@ -147,7 +165,6 @@ namespace SkinnedModel
             }
             return skinTransforms;
         }
-
 
         /// <summary>
         /// Gets the current bone transform matrices, in absolute format.
@@ -166,13 +183,11 @@ namespace SkinnedModel
             return skinTransforms;
         }
 
-
         public AnimationPackage AddAnimationPackage
         {
             set { durations = value.shareAnimation; }
 
         }
-        
 
         public class DurationClip
         {
@@ -184,6 +199,9 @@ namespace SkinnedModel
             public Matrix[] startPose;
         }
 
+        /// <summary>
+        /// Class used to contain the Animation subsets ( a package of animations )
+        /// </summary>
         public class AnimationPackage
         {
             AnimationClip fullclip;

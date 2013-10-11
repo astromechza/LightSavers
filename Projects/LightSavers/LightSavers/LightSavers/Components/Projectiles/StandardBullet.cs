@@ -114,5 +114,10 @@ namespace LightSavers.Components.Projectiles
         {
             return position;
         }
+
+        public int GetDamage()
+        {
+            return 30;
+        }
     }
 }

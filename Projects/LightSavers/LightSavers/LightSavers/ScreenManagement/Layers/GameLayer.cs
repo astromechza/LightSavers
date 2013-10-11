@@ -59,7 +59,7 @@ namespace LightSavers.ScreenManagement.Layers
             sceneGraph.SetLightDelegate(delegate(Light l) { });
 
             // Load the Game
-            game = new RealGame(10, 2, sceneGraph);
+            game = new RealGame(10, 1, sceneGraph);
 
             cameraController = new CameraController(viewport, Matrix.Identity);
             cameraController.Fit(game.GetCriticalPoints());

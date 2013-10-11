@@ -33,6 +33,11 @@ namespace LightSavers.Components.GameObjects.Aliens
         private Vector3 _verticalOffset = Vector3.Zero;
         private Matrix _scaleTransform = Matrix.Identity;
 
+        // spawning / dying / destruction
+        public int _health;
+        public BaseSpawner _spawner;
+        public bool _mustBeDeleted;
+
         #region ACCESSORS
 
         public Vector3 VerticalOffset { get { return _verticalOffset;} set {_verticalOffset = value;} }
@@ -42,11 +47,13 @@ namespace LightSavers.Components.GameObjects.Aliens
         #endregion
 
 
-        public virtual void Construct(RealGame game, Vector3 spawnPosition, float rotation)
+        public virtual void Construct(RealGame game, Vector3 spawnPosition, float rotation, BaseSpawner spawner)
         {
+            this._mustBeDeleted = false;
             this._game = game;
             this._position = spawnPosition;
             this._rotation = rotation;
+            this._spawner = spawner;
         }
 
         public void UpdateAnimations(float ms)
@@ -66,6 +73,16 @@ namespace LightSavers.Components.GameObjects.Aliens
         public RectangleF GetBoundRect()
         {
             return _collisionRectangle;
+        }
+
+        public void UpdateReceipt()
+        {
+            _modelReceipt.graph.Renew(_modelReceipt);
+        }
+
+        public void DestroyReceipt()
+        {
+            _modelReceipt.graph.Remove(_modelReceipt);
         }
     }
 }

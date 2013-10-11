@@ -59,7 +59,7 @@ namespace LightSavers.Components.GameObjects
         private int currentWeapon;
         private int currentAnimation;
         private int currentFiringAnimation;
-        int moving=0, weapon=8, shooting=0;
+        int moving=0, weapon=Animation_States.pistol, shooting=0;
 
         public PlayerObject(RealGame game, PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
@@ -183,11 +183,11 @@ namespace LightSavers.Components.GameObjects
                     if (rotation < -MathHelper.TwoPi) rotation += MathHelper.TwoPi;
                 }
 
-                moving = 1;
+                moving = Animation_States.run;
             }
             else
             {
-                moving = 0;
+                moving = Animation_States.idle;
             }
 
             if (Globals.inputController.isTriggerDown(Triggers.Right, playerIndex))
@@ -200,16 +200,27 @@ namespace LightSavers.Components.GameObjects
                     b.Construct(game, weapons[currentWeapon].emmitterPosition, rotation + MathHelper.PiOver2 + r);
                 }
 
-                shooting = 2;
+                shooting = Animation_States.shoot;
             }
             else
             {
-                shooting = 0;
+                shooting = 0; // not shooting
             }
 
             if(Globals.inputController.isButtonPressed(Microsoft.Xna.Framework.Input.Buttons.Y, playerIndex))
             {
                 int nw = (currentWeapon + 1) % 5;
+                //Switch weapon animations
+
+                if (nw == 1 || nw == 3)
+                    weapon = Animation_States.snipshot;
+                else if (nw == 0)
+                    weapon = Animation_States.pistol;
+                else if (nw == 2)
+                    weapon = Animation_States.assault;
+                else if (nw == 4)
+                    weapon = Animation_States.sword;
+                
                 SwitchWeapon(nw);
             }
 
@@ -256,13 +267,14 @@ namespace LightSavers.Components.GameObjects
                 weapons[currentWeapon].receipt.graph.Renew(weapons[currentWeapon].receipt);
             }
 
+            // Update Top half of body
             if (currentFiringAnimation != moving + shooting + weapon)
             {
                 currentFiringAnimation = moving + shooting + weapon;
                 upPlayer.StartClip(currentFiringAnimation);
-                
             }
 
+            //Update Bottom half of body
             if (currentAnimation != moving + weapon)
             {
                 currentAnimation = moving + weapon;
