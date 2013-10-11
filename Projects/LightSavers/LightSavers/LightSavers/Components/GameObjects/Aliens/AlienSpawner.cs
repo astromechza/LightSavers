@@ -19,13 +19,10 @@ namespace LightSavers.Components.GameObjects.Aliens
 
         private DateTime nextSpawnAttempt;
 
-        private RealGame game;
-
         private List<AlienType> population;
 
-        public AlienSpawner(RealGame game, int startPopulation, int maxPopulation, int majorInterval, int intervalVariance)
+        public AlienSpawner(int startPopulation, int maxPopulation, int majorInterval, int intervalVariance)
         {
-            this.game = game;
             this.startPopulation = startPopulation;
             this.maxPopulation = maxPopulation;
             this.majorInterval = majorInterval;
@@ -84,9 +81,9 @@ namespace LightSavers.Components.GameObjects.Aliens
             float maxx = Int32.MinValue;
 
             //loop through active players
-            for (int i = 0; i < game.players.Length; i++)
+            for (int i = 0; i < Globals.gameInstance.players.Length; i++)
             {
-                PlayerObject p = game.players[i];
+                PlayerObject p = Globals.gameInstance.players[i];
                 if (p.Position.X > maxx) maxx = p.Position.X;
                 if (p.Position.X < minx) minx = p.Position.X;
             }
@@ -110,15 +107,15 @@ namespace LightSavers.Components.GameObjects.Aliens
                 RectangleF rr = new RectangleF(r.X - 0.5f, r.Z - 0.5f, 1.0f, 1.0f);
                 
                 // check collision
-                if (game.cellCollider.RectangleCollides(rr)) continue;
+                if (Globals.gameInstance.cellCollider.RectangleCollides(rr)) continue;
 
                 // check range
-                PlayerObject p = game.GetClosestPlayer(r);
+                PlayerObject p = Globals.gameInstance.GetClosestPlayer(r);
                 float d = (p.Position - r).LengthSquared();
                 if (d < MIN_RANGE_FROM_PLAYERS*MIN_RANGE_FROM_PLAYERS) continue;
 
                 AlienType a = new AlienType();
-                a.Construct(this.game, r, (float)Math.Pow(Globals.random.NextDouble(),2) * MathHelper.TwoPi, this);
+                a.Construct(r, (float)Math.Pow(Globals.random.NextDouble(),2) * MathHelper.TwoPi, this);
                 population.Add(a);
 
                 // yay!

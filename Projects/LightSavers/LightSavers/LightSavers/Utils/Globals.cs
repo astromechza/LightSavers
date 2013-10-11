@@ -23,6 +23,7 @@ namespace LightSavers.Utils
         public static InputManager inputController;
         public static Viewport viewport;
         public static Random random;
+        public static RealGame gameInstance;
 
     }
 }

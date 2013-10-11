@@ -23,11 +23,8 @@ namespace LightSavers.Components.HitParticle
 
         public GObjectPool<DropFragment> fragments;
 
-        private RealGame game;
-
-        public DropFragmentManager(RealGame game)
+        public DropFragmentManager()
         {
-            this.game = game;
             this.fragments = new GObjectPool<DropFragment>(MAX_PROJECTILES, PRE_BUILD);
         }
 
@@ -56,7 +53,7 @@ namespace LightSavers.Components.HitParticle
             if (!this.fragments.HasAvailable()) this.fragments.Dispose(this.fragments.GetFirst());
             
             DropFragment b = this.fragments.Provide();
-            b.Construct(game, o);
+            b.Construct(o);
         }
     }
 }

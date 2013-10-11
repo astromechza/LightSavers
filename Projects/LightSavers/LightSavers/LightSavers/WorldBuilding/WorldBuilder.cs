@@ -17,12 +17,10 @@ namespace LightSavers.WorldBuilding
         // extra colours
         private Color PureGreen = new Color(0, 255, 0);
         
-        public RealGame game;
         public Vector3 origin;
 
-        public WorldBuilder(RealGame game, int size, Vector3 origin)
+        public WorldBuilder(int size, Vector3 origin)
         {
-            this.game = game;
             this.origin = origin;
 
             if (size < 2) size = 2;
@@ -54,8 +52,8 @@ namespace LightSavers.WorldBuilding
             Mesh mesh = new Mesh();
             mesh.Model = AssetLoader.mdl_section[index];
             mesh.Transform = Matrix.CreateTranslation(corigin + new Vector3(16, 0, 16));
-            game.sceneGraph.Setup(mesh);
-            game.sceneGraph.Add(mesh);
+            Globals.gameInstance.sceneGraph.Setup(mesh);
+            Globals.gameInstance.sceneGraph.Add(mesh);
 
             System.Diagnostics.Debug.WriteLine("Spawning Entities");
             SpawnEntities(index, corigin);
@@ -83,7 +81,7 @@ namespace LightSavers.WorldBuilding
 
                     if (c == Color.Black || c == Color.Blue)
                     {
-                        game.cellCollider.SetCollision(center.X, center.Z, true);
+                        Globals.gameInstance.cellCollider.SetCollision(center.X, center.Z, true);
                     }
                     else if (c == Color.Yellow)
                     {
@@ -100,7 +98,7 @@ namespace LightSavers.WorldBuilding
                         Color cc = colours[pi2];
                         if (cc == PureGreen)
                         {
-                            game.campaignManager.AddDoor(new Door(game, center));
+                            Globals.gameInstance.campaignManager.AddDoor(new Door(center));
                         }
                     }
                     else if (c == Color.DarkMagenta)
@@ -114,11 +112,11 @@ namespace LightSavers.WorldBuilding
                             m.SetInstancingEnabled(true);
                             m.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(0)) * Matrix.CreateTranslation(center + new Vector3(0,0,0.5f));
 
-                            game.cellCollider.SetCollision(center.X, center.Z, true);
-                            game.cellCollider.SetCollision(center.X, center.Z + 1, true);
+                            Globals.gameInstance.cellCollider.SetCollision(center.X, center.Z, true);
+                            Globals.gameInstance.cellCollider.SetCollision(center.X, center.Z + 1, true);
 
-                            game.sceneGraph.Setup(m);
-                            game.sceneGraph.Add(m);
+                            Globals.gameInstance.sceneGraph.Setup(m);
+                            Globals.gameInstance.sceneGraph.Add(m);
                         }
 
                         int pi3 = (pixelY + 1) * 96 + pixelX + 2;
@@ -130,11 +128,11 @@ namespace LightSavers.WorldBuilding
                             m.SetInstancingEnabled(true);
                             m.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(90)) * Matrix.CreateTranslation(center + new Vector3(0.5f, 0, 0));
 
-                            game.cellCollider.SetCollision(center.X, center.Z, true);
-                            game.cellCollider.SetCollision(center.X, center.Z + 1, true);
+                            Globals.gameInstance.cellCollider.SetCollision(center.X, center.Z, true);
+                            Globals.gameInstance.cellCollider.SetCollision(center.X, center.Z + 1, true);
 
-                            game.sceneGraph.Setup(m);
-                            game.sceneGraph.Add(m);
+                            Globals.gameInstance.sceneGraph.Setup(m);
+                            Globals.gameInstance.sceneGraph.Add(m);
                         }
 
                     }
@@ -146,10 +144,10 @@ namespace LightSavers.WorldBuilding
                         m.SetInstancingEnabled(true);
                         m.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(a)) * Matrix.CreateTranslation(center);
 
-                        game.cellCollider.SetCollision(center.X, center.Z, true);
+                        Globals.gameInstance.cellCollider.SetCollision(center.X, center.Z, true);
 
-                        game.sceneGraph.Setup(m);
-                        game.sceneGraph.Add(m);
+                        Globals.gameInstance.sceneGraph.Setup(m);
+                        Globals.gameInstance.sceneGraph.Add(m);
 
                     }
 
@@ -188,7 +186,7 @@ namespace LightSavers.WorldBuilding
             Mesh m = new Mesh();
             m.Model = AssetLoader.mdl_ceilinglight;
             m.Transform = Matrix.CreateTranslation(position + Vector3.Up * 4);
-            game.sceneGraph.Add(m);
+            Globals.gameInstance.sceneGraph.Add(m);
 
             Light l = new Light();
             l.LightType = Light.Type.Point;
@@ -197,12 +195,12 @@ namespace LightSavers.WorldBuilding
 
             
             l.Transform = Matrix.CreateTranslation(position + Vector3.Up * 4);
-            game.sceneGraph.Add(l);
+            Globals.gameInstance.sceneGraph.Add(l);
         }
 
         public void SpawnFilingCabinet(Vector3 center, Color[] data, int x, int y)
         {
-            game.cellCollider.SetCollision(center.X, center.Z, true);
+            Globals.gameInstance.cellCollider.SetCollision(center.X, center.Z, true);
 
             Color u = data[y * 96 + x+1];
             Color d = data[(y + 2) * 96 + x+1];
@@ -232,8 +230,8 @@ namespace LightSavers.WorldBuilding
             m.Model = AssetLoader.mdl_filingcabinet;
             m.SetInstancingEnabled(true);
             m.Transform = Matrix.CreateRotationY(MathHelper.ToRadians(angle_d)) * Matrix.CreateTranslation(center);
-            game.sceneGraph.Setup(m);
-            game.sceneGraph.Add(m);
+            Globals.gameInstance.sceneGraph.Setup(m);
+            Globals.gameInstance.sceneGraph.Add(m);
         }
         
 

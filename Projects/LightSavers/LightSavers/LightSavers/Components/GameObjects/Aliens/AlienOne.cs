@@ -16,14 +16,14 @@ namespace LightSavers.Components.GameObjects.Aliens
     {
         public AlienOne() { }
 
-        public AlienOne(RealGame game, Vector3 spawnPosition, BaseSpawner spawner)
+        public AlienOne(Vector3 spawnPosition, BaseSpawner spawner)
         {
-            Construct(game, spawnPosition, (float)Globals.random.NextDouble() * MathHelper.TwoPi, spawner);
+            Construct(spawnPosition, (float)Globals.random.NextDouble() * MathHelper.TwoPi, spawner);
         }
 
-        public override void Construct(RealGame game, Vector3 spawnPosition, float rotation, BaseSpawner spawner)
+        public override void Construct(Vector3 spawnPosition, float rotation, BaseSpawner spawner)
         {
-            base.Construct(game, spawnPosition, rotation, spawner);            
+            base.Construct(spawnPosition, rotation, spawner);            
 
             this._health = 100;
 
@@ -41,8 +41,8 @@ namespace LightSavers.Components.GameObjects.Aliens
             UpdateAnimations(0);
             UpdateMajorTransform();
 
-            this._game.sceneGraph.Setup(_mesh);
-            this._modelReceipt = game.sceneGraph.Add(_mesh);
+            Globals.gameInstance.sceneGraph.Setup(_mesh);
+            this._modelReceipt = Globals.gameInstance.sceneGraph.Add(_mesh);
 
             this._targetPosition = new Vector3();
             AssignRandomTarget();
@@ -80,7 +80,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                 RebuildCollisionRectangle(newpos);
 
                 //TODO: collision check here
-                if (!_game.cellCollider.RectangleCollides(_collisionRectangle))
+                if (!Globals.gameInstance.cellCollider.RectangleCollides(_collisionRectangle))
                 {
                     _position = newpos;
                 }
@@ -96,7 +96,7 @@ namespace LightSavers.Components.GameObjects.Aliens
             _modelReceipt.graph.Renew(_modelReceipt);
 
             // check for collision with bullet
-            IProjectile p = _game.projectileManager.CheckHit(this);
+            IProjectile p = Globals.gameInstance.projectileManager.CheckHit(this);
             if (p != null)
             {
                 p.PreDestroy();

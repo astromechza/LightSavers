@@ -46,8 +46,6 @@ namespace LightSavers.Components.GameObjects
 
         private DurationBasedAnimator upPlayer;
         private DurationBasedAnimator lowPlayer;
-
-        private RealGame game;
         
         // Scenegraphstuff
         private MeshSceneGraphReceipt modelReceipt;
@@ -61,9 +59,8 @@ namespace LightSavers.Components.GameObjects
         private int currentFiringAnimation;
         int moving=0, weapon=Animation_States.pistol, shooting=0;
 
-        public PlayerObject(RealGame game, PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
+        public PlayerObject(PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
-            this.game = game;
             this.playerIndex = playerIndex;
             this.color = color;
 
@@ -89,11 +86,11 @@ namespace LightSavers.Components.GameObjects
             UpdateAnimation(0);
             UpdateMajorTransforms(0);
 
-            game.sceneGraph.Setup(mesh);
-            modelReceipt = game.sceneGraph.Add(mesh);
-            light1receipt = game.sceneGraph.Add(torchlight);
-            light2receipt = game.sceneGraph.Add(haloemitlight);
-            light3receipt = game.sceneGraph.Add(halolight);
+            Globals.gameInstance.sceneGraph.Setup(mesh);
+            modelReceipt = Globals.gameInstance.sceneGraph.Add(mesh);
+            light1receipt = Globals.gameInstance.sceneGraph.Add(torchlight);
+            light2receipt = Globals.gameInstance.sceneGraph.Add(haloemitlight);
+            light3receipt = Globals.gameInstance.sceneGraph.Add(halolight);
 
             SetupWeapons();
             SwitchWeapon(0);
@@ -197,19 +194,12 @@ namespace LightSavers.Components.GameObjects
 
             if (Globals.inputController.isTriggerDown(Triggers.Right, playerIndex))
             {
-                if (currentWeapon > -1)
+                if (currentWeapon > -1 && weapons[currentWeapon].CanFire())
                 {
-                    float r = (float)Globals.random.NextDouble() * 0.1f - 0.05f;
-
-                    StandardBullet b = game.projectileManager.standardBulletPool.Provide();
-                    b.Construct(game, weapons[currentWeapon].emmitterPosition, rotation + MathHelper.PiOver2 + r);
+                    weapons[currentWeapon].Fire(rotation + MathHelper.PiOver2);
+                    shooting = Animation_States.shoot;
                 }
 
-                shooting = Animation_States.shoot;
-            }
-            else
-            {
-                shooting = 0; // not shooting
             }
 
             if(Globals.inputController.isButtonPressed(Microsoft.Xna.Framework.Input.Buttons.Y, playerIndex))
@@ -236,7 +226,7 @@ namespace LightSavers.Components.GameObjects
                 // First test X collision
                 collisionRectangle.Left = newposition.X - 0.49f;
                 collisionRectangle.Top  = _position.Z - 0.49f;
-                if (game.cellCollider.RectangleCollides(collisionRectangle))
+                if (Globals.gameInstance.cellCollider.RectangleCollides(collisionRectangle))
                 {
                     // if it does collide, pull it back
                     newposition.X = _position.X;                    
@@ -245,7 +235,7 @@ namespace LightSavers.Components.GameObjects
                 // Then test Z collision
                 collisionRectangle.Left = _position.X - 0.49f;
                 collisionRectangle.Top  = newposition.Z - 0.49f;
-                if (game.cellCollider.RectangleCollides(collisionRectangle))
+                if (Globals.gameInstance.cellCollider.RectangleCollides(collisionRectangle))
                 {
                     // if it does collide, pull it back
                     newposition.Z = _position.Z;
@@ -270,6 +260,9 @@ namespace LightSavers.Components.GameObjects
             {
                 weapons[currentWeapon].SetTransform(upPlayer.GetWorldTransforms()[31], mesh.Transform);
                 weapons[currentWeapon].receipt.graph.Renew(weapons[currentWeapon].receipt);
+
+                if(weapons[currentWeapon].AnimationComplete()) shooting = 0;
+
             }
 
             // Update Top half of body
@@ -292,15 +285,15 @@ namespace LightSavers.Components.GameObjects
         {
             weapons = new BaseGun[5];
             weapons[0] = new Pistol();
-            game.sceneGraph.Setup(weapons[0].mesh);
+            Globals.gameInstance.sceneGraph.Setup(weapons[0].mesh);
             weapons[1] = new Shotgun();
-            game.sceneGraph.Setup(weapons[1].mesh);
+            Globals.gameInstance.sceneGraph.Setup(weapons[1].mesh);
             weapons[2] = new AssaultRifle();
-            game.sceneGraph.Setup(weapons[2].mesh);
+            Globals.gameInstance.sceneGraph.Setup(weapons[2].mesh);
             weapons[3] = new SniperRifle();
-            game.sceneGraph.Setup(weapons[3].mesh);
+            Globals.gameInstance.sceneGraph.Setup(weapons[3].mesh);
             weapons[4] = new Sword();
-            game.sceneGraph.Setup(weapons[4].mesh);
+            Globals.gameInstance.sceneGraph.Setup(weapons[4].mesh);
 
             currentWeapon = -1;
             
@@ -311,15 +304,15 @@ namespace LightSavers.Components.GameObjects
             //disable current weapon
             if (currentWeapon > -1)
             {
-                game.sceneGraph.Remove(weapons[currentWeapon].receipt);
+                Globals.gameInstance.sceneGraph.Remove(weapons[currentWeapon].receipt);
             }
 
             currentWeapon = to;
             BaseGun g = weapons[to];
             g.SetTransform(upPlayer.GetWorldTransforms()[31], mesh.Transform);
 
-            if (g.receipt != null) game.sceneGraph.Remove(g.receipt);
-            g.receipt = game.sceneGraph.Add(g.mesh);
+            if (g.receipt != null) Globals.gameInstance.sceneGraph.Remove(g.receipt);
+            g.receipt = Globals.gameInstance.sceneGraph.Add(g.mesh);
         }
 
         public void SetupLights()

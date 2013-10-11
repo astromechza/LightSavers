@@ -1,5 +1,6 @@
 ﻿using LightSavers.Components.GameObjects;
 using LightSavers.Components.GameObjects.Aliens;
+using LightSavers.Utils;
 using LightSavers.Utils.Geometry;
 using System;
 using System.Collections.Generic;
@@ -21,12 +22,11 @@ namespace LightSavers.Components.CampainManager
         // link to parent game
         public RealGame game;
 
-        public CampaignManager(RealGame game, int numberOfSections)
+        public CampaignManager(int numberOfSections)
         {
-            this.game = game;
             this.numberOfSections = numberOfSections;
             this.doors = new List<Door>(numberOfSections);
-            this.alienOneSpawner = new AlienSpawner<AlienOne>(game, 10, 15, 2000, 1000);
+            this.alienOneSpawner = new AlienSpawner<AlienOne>(10, 15, 2000, 1000);
         }
 
         public void InitialSpawn()
@@ -41,7 +41,7 @@ namespace LightSavers.Components.CampainManager
 
         public void Update(float ms)
         {
-            RectangleF territory = game.GetPlayerTerritory();
+            RectangleF territory = Globals.gameInstance.GetPlayerTerritory();
 
             for (int i = 0; i < this.doors.Count; i++) this.doors[i].Update(ms);
 

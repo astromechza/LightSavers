@@ -1,5 +1,6 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
+using LightSavers.Utils;
 using Microsoft.Xna.Framework;
 using ObjectPool;
 using System;
@@ -11,7 +12,6 @@ namespace LightSavers.Components.Projectiles
 {
     public class StandardBullet : IProjectile, IPoolable
     {
-        private RealGame game;
         private Vector3 position;
         private float rotation;
         private Matrix rotationM;
@@ -37,9 +37,8 @@ namespace LightSavers.Components.Projectiles
             this.mesh.SetCastShadows(false);
         }
 
-        public void Construct(RealGame game, Vector3 startPos, float rotation)
+        public void Construct(Vector3 startPos, float rotation)
         {
-            this.game = game;
             this.position = startPos;
             this.rotation = rotation;
             this.rotationM = Matrix.CreateRotationY(rotation);
@@ -50,7 +49,7 @@ namespace LightSavers.Components.Projectiles
             this.ageMs = 0;
             this.mesh.Transform = rotationM * Matrix.CreateTranslation(this.position);
 
-            this.modelReceipt = game.sceneGraph.Add(mesh);
+            this.modelReceipt = Globals.gameInstance.sceneGraph.Add(mesh);
         }
 
         public void Update(float ms)
@@ -69,7 +68,7 @@ namespace LightSavers.Components.Projectiles
 
                 newposition += delta * ms / 16;
 
-                if (game.cellCollider.PointCollides(newposition.X, newposition.Z))
+                if (Globals.gameInstance.cellCollider.PointCollides(newposition.X, newposition.Z))
                 {
                     aging = true;
                     PreDestroy();
@@ -107,7 +106,7 @@ namespace LightSavers.Components.Projectiles
 
         public void PreDestroy()
         {
-            this.game.fragmentManager.SpawnX(this.position, 5);
+            Globals.gameInstance.fragmentManager.SpawnX(this.position, 5);
         }
 
         public Vector3 GetCenter()

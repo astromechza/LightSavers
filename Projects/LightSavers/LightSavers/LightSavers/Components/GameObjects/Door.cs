@@ -1,4 +1,5 @@
 ﻿using LightPrePassRenderer;
+using LightSavers.Utils;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -29,17 +30,14 @@ namespace LightSavers.Components.GameObjects
         private Light lightLeft;
         private Light lightRight;
 
-        private RealGame game;
-
         private Vector3 position;
 
         private DoorState state;
         private float openPercent;
         
 
-        public Door(RealGame game, Vector3 position)
+        public Door(Vector3 position)
         {
-            this.game = game;
             this.position = position;
 
             doorBaseMesh = new Mesh();
@@ -54,12 +52,12 @@ namespace LightSavers.Components.GameObjects
             doorRightMesh.Model = AssetLoader.mdl_doorPanel;
             doorRightMesh.Transform = FLIP180X * FLIP90Y * Matrix.CreateTranslation(position + new Vector3(0, 2.5f, 0));
 
-            game.sceneGraph.Setup(doorBaseMesh);
-            game.sceneGraph.Add(doorBaseMesh);
-            game.sceneGraph.Setup(doorLeftMesh);
-            game.sceneGraph.Add(doorLeftMesh);
-            game.sceneGraph.Setup(doorRightMesh);
-            game.sceneGraph.Add(doorRightMesh);
+            Globals.gameInstance.sceneGraph.Setup(doorBaseMesh);
+            Globals.gameInstance.sceneGraph.Add(doorBaseMesh);
+            Globals.gameInstance.sceneGraph.Setup(doorLeftMesh);
+            Globals.gameInstance.sceneGraph.Add(doorLeftMesh);
+            Globals.gameInstance.sceneGraph.Setup(doorRightMesh);
+            Globals.gameInstance.sceneGraph.Add(doorRightMesh);
 
             lightLeft = new Light();
             lightLeft.LightType = Light.Type.Point;
@@ -73,8 +71,8 @@ namespace LightSavers.Components.GameObjects
             lightRight.Radius = 2;
             lightRight.Transform = Matrix.CreateTranslation(position + new Vector3(-0.6f, 1.5f, 1.4f));
 
-            game.sceneGraph.Add(lightRight);
-            game.sceneGraph.Add(lightLeft);
+            Globals.gameInstance.sceneGraph.Add(lightRight);
+            Globals.gameInstance.sceneGraph.Add(lightLeft);
 
             state = DoorState.CLOSED;
             openPercent = MINOPEN;
@@ -86,7 +84,7 @@ namespace LightSavers.Components.GameObjects
             // TODO: remove once we have events firing properly
             if (state == DoorState.CLOSED)
             {
-                PlayerObject p = game.GetClosestPlayer(position);
+                PlayerObject p = Globals.gameInstance.GetClosestPlayer(position);
                 float d = Vector3.DistanceSquared(p.Position, position);
                 if (d < DISTANCE)
                 {

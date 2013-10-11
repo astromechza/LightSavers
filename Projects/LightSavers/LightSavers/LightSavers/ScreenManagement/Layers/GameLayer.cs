@@ -16,7 +16,6 @@ namespace LightSavers.ScreenManagement.Layers
         private Viewport viewport;
         private RenderTarget2D game3DLayer;
         private SpriteBatch canvas;
-        private RealGame game;       // the world : all objects and things
 
         private Renderer renderer;
         private CameraController cameraController;
@@ -59,10 +58,10 @@ namespace LightSavers.ScreenManagement.Layers
             sceneGraph.SetLightDelegate(delegate(Light l) { });
 
             // Load the Game
-            game = new RealGame(10, 1, sceneGraph);
+            Globals.gameInstance = new RealGame(10, 1, sceneGraph);
 
             cameraController = new CameraController(viewport, Matrix.Identity);
-            cameraController.Fit(game.GetCriticalPoints());
+            cameraController.Fit(Globals.gameInstance.GetCriticalPoints());
             cameraController.MoveToTarget();
             
         }
@@ -94,15 +93,15 @@ namespace LightSavers.ScreenManagement.Layers
 
         public override void Update(float ms)
         {
-            
-            game.Update(ms);
+
+            Globals.gameInstance.Update(ms);
 
             if (Globals.inputController.isButtonReleased(Microsoft.Xna.Framework.Input.Buttons.Back, null))
             {
                 this.StartTransitionOff();
             }
 
-            cameraController.Fit(game.GetCriticalPoints());
+            cameraController.Fit(Globals.gameInstance.GetCriticalPoints());
             cameraController.Update(ms);
             
             base.Update(ms);

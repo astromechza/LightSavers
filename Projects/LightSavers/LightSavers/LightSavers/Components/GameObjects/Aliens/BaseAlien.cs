@@ -12,8 +12,6 @@ namespace LightSavers.Components.GameObjects.Aliens
 {
     public class BaseAlien : GameObject
     {
-        // general game pointer. very useful
-        public RealGame _game;
 
         // mesh
         public SkinnedMesh _mesh;
@@ -47,10 +45,9 @@ namespace LightSavers.Components.GameObjects.Aliens
         #endregion
 
 
-        public virtual void Construct(RealGame game, Vector3 spawnPosition, float rotation, BaseSpawner spawner)
+        public virtual void Construct(Vector3 spawnPosition, float rotation, BaseSpawner spawner)
         {
             this._mustBeDeleted = false;
-            this._game = game;
             this._position = spawnPosition;
             this._rotation = rotation;
             this._spawner = spawner;

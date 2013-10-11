@@ -35,16 +35,18 @@ namespace LightSavers.Components
 
         public RealGame(int numberOfSections, int numPlayers, BlockBasedSceneGraph sg)
         {
-            campaignManager = new CampaignManager(this, numberOfSections);
+            Globals.gameInstance = this;
+
+            campaignManager = new CampaignManager(numberOfSections);
 
             sceneGraph = sg;
 
             cellCollider = new CellCollider(32, numberOfSections * 32);
 
-            worldBuilder = new WorldBuilder(this, numberOfSections, Vector3.Zero);
+            worldBuilder = new WorldBuilder(numberOfSections, Vector3.Zero);
 
             projectileManager = new ProjectileManager();
-            fragmentManager = new DropFragmentManager(this);
+            fragmentManager = new DropFragmentManager();
             
 
             players = new PlayerObject[numPlayers];
@@ -61,7 +63,7 @@ namespace LightSavers.Components
 
             for (int i = 0; i < numPlayers; i++)
             {
-                players[i] = new PlayerObject(this, (i==0) ? PlayerIndex.One : PlayerIndex.Two, playerColours[i], spawns[i], 0);
+                players[i] = new PlayerObject((i==0) ? PlayerIndex.One : PlayerIndex.Two, playerColours[i], spawns[i], 0);
             }
 
             // must be done AFTER the game has finished being created
