@@ -10,7 +10,7 @@ using System.Text;
 
 namespace LightSavers.Components.Projectiles
 {
-    public class StandardBullet : IProjectile, IPoolable
+    public class PistolBullet : IProjectile, IPoolable
     {
         private Vector3 position;
         private float rotation;
@@ -29,10 +29,10 @@ namespace LightSavers.Components.Projectiles
         // projectile state
         public int PoolIndex { get; set; }
 
-        public StandardBullet() 
+        public PistolBullet() 
         {
             this.mesh = new Mesh();
-            this.mesh.Model = AssetLoader.mdl_bullet;
+            this.mesh.Model = AssetLoader.mdl_pistolBullet;
             this.mesh.SetInstancingEnabled(true);
             this.mesh.SetCastShadows(false);
         }
