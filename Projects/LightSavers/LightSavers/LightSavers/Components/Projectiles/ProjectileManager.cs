@@ -16,17 +16,14 @@ namespace LightSavers.Components.Projectiles
     public class ProjectileManager
     {
 
-        //maximum number of projectiles expected live at any point in time
-        private const int MAX_PROJECTILES = 1000;
-        private const int PRE_BUILD = 50;
 
         public GObjectPool<PistolBullet> pistolBulletPool;
         public GObjectPool<ShotgunBullet> shotgunBulletPool;
 
         public ProjectileManager()
         {
-            pistolBulletPool = new GObjectPool<PistolBullet>(MAX_PROJECTILES, PRE_BUILD);
-            shotgunBulletPool = new GObjectPool<ShotgunBullet>(MAX_PROJECTILES, PRE_BUILD);
+            pistolBulletPool = new GObjectPool<PistolBullet>(100, 10);
+            shotgunBulletPool = new GObjectPool<ShotgunBullet>(500, 50);
         }
 
         /// <summary>

@@ -19,8 +19,8 @@ namespace LightSavers.Components.Guns
             SetModel(AssetLoader.mdl_shotgun);
             SetHoldTransform(Matrix.Identity);
             SetEmmitterVector(new Vector3(-0.5f, 0, 0));
-            this.coolDown = new TimeSpan(0, 0, 0, 0, 300);
-            this.animationCoolDown = new TimeSpan(0, 0, 0, 0, 200);
+            this.coolDown = new TimeSpan(0, 0, 0, 0, 800);
+            this.animationCoolDown = new TimeSpan(0, 0, 0, 0, 300);
         }
 
         public void SetAccuracy(float theta)
