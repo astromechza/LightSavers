@@ -21,7 +21,7 @@ namespace LightSavers.Components.Guns
 
         public override void Fire(float rotation)
         {
-            StandardBullet b = Globals.gameInstance.projectileManager.standardBulletPool.Provide();
+            PistolBullet b = Globals.gameInstance.projectileManager.standardBulletPool.Provide();
             b.Construct(emmitterPosition, rotation);
 
             base.Fire(rotation);
