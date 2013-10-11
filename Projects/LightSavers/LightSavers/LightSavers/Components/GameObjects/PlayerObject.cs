@@ -29,8 +29,6 @@ namespace LightSavers.Components.GameObjects
         Matrix mTorchPitch = Matrix.CreateRotationX(-0.4f);
         #endregion
 
-
-
         private PlayerIndex playerIndex;
         private Color color;
 
@@ -60,7 +58,7 @@ namespace LightSavers.Components.GameObjects
         private int currentWeapon;
         private int currentAnimation;
         string[] AnimationTest = new string[] { "run_snipshot_shoot", "run_snipshot" };
-        int moving, weapon=4, shooting;
+        int moving=0, weapon=4, shooting=0;
 
         public PlayerObject(RealGame game, PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
@@ -77,11 +75,12 @@ namespace LightSavers.Components.GameObjects
             mesh = new SkinnedMesh();
             mesh.Model = AssetLoader.mdl_character;
 
+            //Create a new Animation Player that will take the bone dictionaries as arguments allowing individual animation with upper and lower body
             aplayer = new DurationBasedAnimator(mesh.SkinningData, mesh.SkinningData.AnimationClips["Take 001"]);
 
             //Load the animations from the asset loader (these are in an Animation Package)
             aplayer.AddAnimationPackage = AssetLoader.ani_character;
-            aplayer.StartClip(1+8+2);
+            aplayer.StartClip(moving+shooting+weapon);
 
             UpdateAnimation(0);
             UpdateMajorTransforms(0);
@@ -255,6 +254,12 @@ namespace LightSavers.Components.GameObjects
                 weapons[currentWeapon].receipt.graph.Renew(weapons[currentWeapon].receipt);
             }
 
+            if (currentAnimation != moving + shooting + weapon)
+            {
+                currentAnimation = moving + shooting + weapon;
+                aplayer.StartClip(currentAnimation);
+            }
+            
         }
 
         public void SetupWeapons()

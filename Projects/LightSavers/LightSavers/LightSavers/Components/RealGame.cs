@@ -22,7 +22,7 @@ namespace LightSavers.Components
     /// </summary>
     public class RealGame
     {
-        private PlayerObject[] players;
+        public PlayerObject[] players;
         public ProjectileManager projectileManager;
         public DropFragmentManager fragmentManager;
         public BlockBasedSceneGraph sceneGraph;
@@ -30,7 +30,7 @@ namespace LightSavers.Components
         public CellCollider cellCollider;
         public List<Door> doors;
 
-        public List<AlienOne> aliens;
+        public AlienSpawner<AlienOne> alienOneSpawner;
 
         public RealGame(int numberOfSections, int numPlayers, BlockBasedSceneGraph sg)
         {
@@ -64,20 +64,17 @@ namespace LightSavers.Components
                 players[i] = new PlayerObject(this, (i==0) ? PlayerIndex.One : PlayerIndex.Two, playerColours[i], spawns[i], 0);
             }
 
-
-            aliens = new List<AlienOne>();
-            for (int i = 0; i < 2; i++)
-            {
-                aliens.Add(new AlienOne(this, new Vector3(6, 0, 6)));
-            }
-
+            alienOneSpawner = new AlienSpawner<AlienOne>(this, 10, 15, 2000, 1000);
         }
 
         public void Update(float ms)
         {
             for (int i = 0; i < players.Length; i++) players[i].Update(ms);
             projectileManager.Update(ms);
-            for (int i = 0; i < aliens.Count; i++) aliens[i].Update(ms);            
+
+            alienOneSpawner.UpdateAliens(ms);
+            alienOneSpawner.Update(ms);
+
             for (int i = 0; i < doors.Count; i++) doors[i].Update(ms);
             fragmentManager.Update(ms);
         }
