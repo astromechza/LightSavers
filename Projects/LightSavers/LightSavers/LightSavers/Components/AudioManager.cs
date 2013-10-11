@@ -24,13 +24,13 @@ namespace LightSavers.Components
     {
         #region Fields
 
-        readonly string soundAssetLocation = "Sounds/";
-
         // Audio Data        
         Dictionary<string, SoundEffectInstance> soundBank;
         Dictionary<string, Song> musicBank;
 
-
+        Dictionary<string,SoundEffectInstance> menuSoundBank;
+        Song menuMusic;
+        
         #endregion
 
         #region Initialization
@@ -39,6 +39,7 @@ namespace LightSavers.Components
         {
             soundBank = new Dictionary<string, SoundEffectInstance>();
             musicBank = new Dictionary<string, Song>();
+            menuSoundBank = new Dictionary<string, SoundEffectInstance>();
 
             game.Components.Add(this);
         }
@@ -46,6 +47,28 @@ namespace LightSavers.Components
         #endregion
 
         #region Loading Methodes
+
+        public void LoadMenuSound(string path, string alias)
+        {
+            SoundEffect soundEffect = Game.Content.Load<SoundEffect>(path);
+            SoundEffectInstance soundEffectInstance = soundEffect.CreateInstance();
+
+            if (!menuSoundBank.ContainsKey(alias))
+            {
+                menuSoundBank.Add(alias, soundEffectInstance);
+            }
+        }
+
+        public void LoadMenuSong(string path, string alias)
+        {
+            Song song = Game.Content.Load<Song>(path);
+
+            menuMusic = song;
+            //if (!musicBank.ContainsKey(alias))
+            //{
+            //    musicBank.Add(alias, song);
+            //}
+        }
 
 
         /// <summary>
@@ -55,9 +78,9 @@ namespace LightSavers.Components
         /// the "Sounds" folder in the content project.</param>
         /// <param name="alias">Alias to give the sound. This will be used to identify the sound uniquely.</param>
         /// <remarks>Loading a sound with an alias that is already used will have no effect.</remarks>
-        public void LoadSound(string contentName, string alias)
+        public void LoadSound(string path, string alias)
         {
-            SoundEffect soundEffect = Game.Content.Load<SoundEffect>(soundAssetLocation + contentName);
+            SoundEffect soundEffect = Game.Content.Load<SoundEffect>(path);
             SoundEffectInstance soundEffectInstance = soundEffect.CreateInstance();
 
             if (!soundBank.ContainsKey(alias))
@@ -111,6 +134,13 @@ namespace LightSavers.Components
             }
         }
 
+
+        public void PlayMenuSound(string sound)
+        {
+            // If the sound exists, start it
+            menuSoundBank[sound].Play();
+        }
+
         /// <summary>
         /// Plays a sound by name.
         /// </summary>
@@ -123,6 +153,9 @@ namespace LightSavers.Components
                 soundBank[soundName].Play();
             }
         }
+
+
+
 
         /// <summary>
         /// Plays a sound by name.
@@ -237,6 +270,22 @@ namespace LightSavers.Components
 
                 MediaPlayer.Play(musicBank[musicSoundName]);
             }
+        }
+
+        public void PlayMenuMusic()
+        {
+            // If the music sound exists
+            
+                // Stop the old music sound
+                if (MediaPlayer.State != MediaState.Stopped)
+                {
+                    MediaPlayer.Stop();
+                }
+
+                MediaPlayer.IsRepeating = true;
+
+                MediaPlayer.Play(menuMusic);
+            
         }
 
         /// <summary>

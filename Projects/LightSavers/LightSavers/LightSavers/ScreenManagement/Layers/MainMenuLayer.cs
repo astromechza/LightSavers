@@ -164,13 +164,13 @@ namespace LightSavers.ScreenManagement.Layers
             }
             else if (Globals.inputController.isButtonReleased(Buttons.A, null))
             {
+                Globals.audioManager.PlayMenuSound("menu_select");
+                Globals.audioManager.StopMusic();
                 this.fadeOutCompleteCallback = StartGame;
                 this.StartTransitionOff();
             }
         }
-
         #endregion
-
         public bool StartGame()
         {
 
