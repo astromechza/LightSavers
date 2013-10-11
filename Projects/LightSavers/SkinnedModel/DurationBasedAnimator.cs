@@ -18,12 +18,13 @@ namespace SkinnedModel
         private Matrix[] skinTransforms;
 
         private Dictionary<int, DurationClip> durations;
+        private Dictionary<int,int> validBones;
 
         DurationClip currentDurationClip;
         int currentKeyFrame;
         TimeSpan startTimeValue, endTimeValue, currentTimeValue;
 
-        public DurationBasedAnimator(SkinningData skin, AnimationClip clip)
+        public DurationBasedAnimator(SkinningData skin, AnimationClip clip, Dictionary<int, int> validBones)
         {
             // store skin data
             skindata = skin;
@@ -37,6 +38,8 @@ namespace SkinnedModel
             skinTransforms = new Matrix[skin.BindPose.Count];
             
             durations = new Dictionary<int, DurationClip>();
+
+            this.validBones = validBones;
         }
 
         public void StartClip(int name)
@@ -47,10 +50,10 @@ namespace SkinnedModel
             currentDurationClip.startPose.CopyTo(boneTransforms, 0);
         }
 
-        public void Update(TimeSpan time, bool relativeToCurrentTime, Matrix rootTransform)
+        public void Update(TimeSpan time, bool relativeToCurrentTime, Matrix rootTransform, Matrix worldTransform)
         {
             UpdateBoneTransforms(time, relativeToCurrentTime);
-            UpdateWorldTransforms(rootTransform);
+            UpdateWorldTransforms(rootTransform, worldTransform);
             UpdateSkinTransforms();
         }
 
@@ -86,6 +89,7 @@ namespace SkinnedModel
                     break;
 
                 // Use this keyframe.
+                //if (validBones == null || validBones.ContainsKey(keyframe.Bone))
                 boneTransforms[keyframe.Bone] = keyframe.Transform;
 
                 currentKeyFrame++;
@@ -96,20 +100,22 @@ namespace SkinnedModel
         /// <summary>
         /// Helper used by the Update method to refresh the WorldTransforms data.
         /// </summary>
-        public void UpdateWorldTransforms(Matrix rootTransform)
+        public void UpdateWorldTransforms(Matrix rootTransform, Matrix worldTransform)
         {
             // Root bone.
-            worldTransforms[0] = boneTransforms[0] * rootTransform;
-
+            if (validBones == null || validBones.ContainsKey(0))
+                worldTransforms[0] = boneTransforms[0] * rootTransform;
+            else
+                    this.worldTransforms[0] = worldTransform;
             // Child bones.
             for (int bone = 1; bone < worldTransforms.Length; bone++)
             {
                 int parentBone = skindata.SkeletonHierarchy[bone];
 
-                worldTransforms[bone] = boneTransforms[bone] * worldTransforms[parentBone];
+                if (validBones == null || validBones.ContainsKey(bone))
+                    worldTransforms[bone] = boneTransforms[bone] * worldTransforms[parentBone];
             }
         }
-
 
         /// <summary>
         /// Helper used by the Update method to refresh the SkinTransforms data.
@@ -118,6 +124,7 @@ namespace SkinnedModel
         {
             for (int bone = 0; bone < skinTransforms.Length; bone++)
             {
+                if (validBones == null || validBones.ContainsKey(bone))
                 skinTransforms[bone] = skindata.InverseBindPose[bone] * worldTransforms[bone];
             }
         }
@@ -128,6 +135,17 @@ namespace SkinnedModel
         public Matrix[] GetBoneTransforms()
         {
             return boneTransforms;
+        }
+
+        public Matrix[] MergeTransforms( Matrix[] skinned1)
+        {
+            for (int i = 0; i < skinned1.Length; ++i)
+            {
+                if (validBones == null || !validBones.ContainsKey(i))                
+                    skinTransforms[i] = skinned1[i];
+                
+            }
+            return skinTransforms;
         }
 
 
@@ -147,6 +165,7 @@ namespace SkinnedModel
         {
             return skinTransforms;
         }
+
 
         public AnimationPackage AddAnimationPackage
         {

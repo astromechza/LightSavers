@@ -44,7 +44,8 @@ namespace LightSavers.Components.GameObjects
         private Light haloemitlight;
         
 
-        private DurationBasedAnimator aplayer;
+        private DurationBasedAnimator upPlayer;
+        private DurationBasedAnimator lowPlayer;
 
         private RealGame game;
         
@@ -57,8 +58,8 @@ namespace LightSavers.Components.GameObjects
         private BaseGun[] weapons;
         private int currentWeapon;
         private int currentAnimation;
-        string[] AnimationTest = new string[] { "run_snipshot_shoot", "run_snipshot" };
-        int moving=0, weapon=4, shooting=0;
+        private int currentFiringAnimation;
+        int moving=0, weapon=8, shooting=0;
 
         public PlayerObject(RealGame game, PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
@@ -76,11 +77,14 @@ namespace LightSavers.Components.GameObjects
             mesh.Model = AssetLoader.mdl_character;
 
             //Create a new Animation Player that will take the bone dictionaries as arguments allowing individual animation with upper and lower body
-            aplayer = new DurationBasedAnimator(mesh.SkinningData, mesh.SkinningData.AnimationClips["Take 001"]);
-
+            upPlayer = new DurationBasedAnimator(mesh.SkinningData, mesh.SkinningData.AnimationClips["Take 001"],  Animation_States.upperCharacterBones);
+            lowPlayer = new DurationBasedAnimator(mesh.SkinningData, mesh.SkinningData.AnimationClips["Take 001"], Animation_States.lowerCharacterBonesandRoot);
             //Load the animations from the asset loader (these are in an Animation Package)
-            aplayer.AddAnimationPackage = AssetLoader.ani_character;
-            aplayer.StartClip(moving+shooting+weapon);
+            upPlayer.AddAnimationPackage = AssetLoader.ani_character;
+            upPlayer.StartClip(moving + shooting + weapon);
+            lowPlayer.AddAnimationPackage = AssetLoader.ani_character;
+            lowPlayer.StartClip(moving+weapon);
+            
 
             UpdateAnimation(0);
             UpdateMajorTransforms(0);
@@ -101,10 +105,10 @@ namespace LightSavers.Components.GameObjects
         private void UpdateAnimation(float ms)
         {
             TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int) ms);
-
-            aplayer.Update(ts, true, Matrix.Identity);
-            mesh.BoneMatrixes = aplayer.GetSkinTransforms();
-
+            lowPlayer.Update(ts, true, Matrix.Identity, Matrix.Identity);
+            upPlayer.Update(ts, true, Matrix.Identity, lowPlayer.GetWorldTransforms()[0]);
+            
+            mesh.BoneMatrixes = lowPlayer.MergeTransforms(upPlayer.GetSkinTransforms());
         }
 
         private void UpdateMajorTransforms(float ms)
@@ -241,8 +245,6 @@ namespace LightSavers.Components.GameObjects
                     light2receipt.graph.Renew(light2receipt);
                     light3receipt.graph.Renew(light3receipt);
                 }
-
-
             }
 
             UpdateAnimation(ms);
@@ -250,14 +252,21 @@ namespace LightSavers.Components.GameObjects
 
             if (currentWeapon > -1)
             {
-                weapons[currentWeapon].SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
+                weapons[currentWeapon].SetTransform(upPlayer.GetWorldTransforms()[31], mesh.Transform);
                 weapons[currentWeapon].receipt.graph.Renew(weapons[currentWeapon].receipt);
             }
 
-            if (currentAnimation != moving + shooting + weapon)
+            if (currentFiringAnimation != moving + shooting + weapon)
             {
-                currentAnimation = moving + shooting + weapon;
-                aplayer.StartClip(currentAnimation);
+                currentFiringAnimation = moving + shooting + weapon;
+                upPlayer.StartClip(currentFiringAnimation);
+                
+            }
+
+            if (currentAnimation != moving + weapon)
+            {
+                currentAnimation = moving + weapon;
+                lowPlayer.StartClip(currentAnimation);
             }
             
         }
@@ -290,7 +299,7 @@ namespace LightSavers.Components.GameObjects
 
             currentWeapon = to;
             BaseGun g = weapons[to];
-            g.SetTransform(aplayer.GetWorldTransforms()[31], mesh.Transform);
+            g.SetTransform(upPlayer.GetWorldTransforms()[31], mesh.Transform);
 
             if (g.receipt != null) game.sceneGraph.Remove(g.receipt);
             g.receipt = game.sceneGraph.Add(g.mesh);
