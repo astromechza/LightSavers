@@ -59,7 +59,7 @@ namespace LightSavers.Components.GameObjects
         private int currentWeapon;
         private int currentAnimation;
         private int currentFiringAnimation;
-        int moving=0, weapon=8, shooting=0;
+        int moving=0, weapon=Animation_States.pistol, shooting=0;
 
         public PlayerObject(RealGame game, PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
@@ -210,6 +210,17 @@ namespace LightSavers.Components.GameObjects
             if(Globals.inputController.isButtonPressed(Microsoft.Xna.Framework.Input.Buttons.Y, playerIndex))
             {
                 int nw = (currentWeapon + 1) % 5;
+                //Switch weapon animations
+
+                if (nw == 1 || nw == 3)
+                    weapon = Animation_States.snipshot;
+                else if (nw == 0)
+                    weapon = Animation_States.pistol;
+                else if (nw == 2)
+                    weapon = Animation_States.assault;
+                else if (nw == 4)
+                    weapon = Animation_States.sword;
+                
                 SwitchWeapon(nw);
             }
 
