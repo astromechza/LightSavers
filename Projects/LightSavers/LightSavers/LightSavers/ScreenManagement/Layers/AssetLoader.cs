@@ -66,6 +66,8 @@ namespace LightSavers
         public static Texture2D tex_white;
         public static SpriteFont fnt_assetloadscreen;
 
+        public static Texture2D diamond;
+
         // -- Sections
         public static Model[] mdl_section;
         public static Texture2D[] tex_section_ent;
@@ -96,6 +98,7 @@ namespace LightSavers
             tex_white.SetData(new Color[] { Color.White });
 
             title2 = Globals.content.Load<Texture2D>("textures/title2");
+            diamond = Globals.content.Load<Texture2D>("textures/diamond");
 
             // Fade times
             transitionOnTime = TimeSpan.FromSeconds(0.6);
@@ -156,11 +159,6 @@ namespace LightSavers
             // number of assets to be loaded. (used to compute progress bar size)
             num_assets = 24;
             num_assets += CountSections();
-            num_assets += Animation_States.characterAnimationsList.Length;
-            num_assets += Animation_States.alien01AnimationsList.Length;
-            num_assets += Animation_States.alien02AnimationsList.Length;
-            num_assets += Animation_States.alien03AnimationsList.Length;
-            num_assets += Animation_States.alien04AnimationsList.Length;
             LoadSections();
             // assets
             mdl_menuscene = loadModel("models/menuscene/MenuScene");

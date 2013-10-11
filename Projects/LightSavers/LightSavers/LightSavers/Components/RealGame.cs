@@ -64,7 +64,7 @@ namespace LightSavers.Components
                 players[i] = new PlayerObject(this, (i==0) ? PlayerIndex.One : PlayerIndex.Two, playerColours[i], spawns[i], 0);
             }
 
-            alienOneSpawner = new AlienSpawner<AlienOne>(this, 15, 2000, 1000);
+            alienOneSpawner = new AlienSpawner<AlienOne>(this, 10, 15, 2000, 1000);
         }
 
         public void Update(float ms)

@@ -50,7 +50,7 @@ namespace LightSavers.Components
 
         public void Update(float ms)
         {
-            lastXYZ = Vector3.Lerp(lastXYZ, targetXYZ, ms / 300);
+            lastXYZ = Vector3.Lerp(lastXYZ, targetXYZ, ms / 1000);
 
             MoveToTarget();
         }
