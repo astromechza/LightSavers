@@ -183,11 +183,11 @@ namespace LightSavers.Components.GameObjects
                     if (rotation < -MathHelper.TwoPi) rotation += MathHelper.TwoPi;
                 }
 
-                moving = 1;
+                moving = Animation_States.run;
             }
             else
             {
-                moving = 0;
+                moving = Animation_States.idle;
             }
 
             if (Globals.inputController.isTriggerDown(Triggers.Right, playerIndex))
@@ -200,11 +200,11 @@ namespace LightSavers.Components.GameObjects
                     b.Construct(game, weapons[currentWeapon].emmitterPosition, rotation + MathHelper.PiOver2 + r);
                 }
 
-                shooting = 2;
+                shooting = Animation_States.shoot;
             }
             else
             {
-                shooting = 0;
+                shooting = 0; // not shooting
             }
 
             if(Globals.inputController.isButtonPressed(Microsoft.Xna.Framework.Input.Buttons.Y, playerIndex))
@@ -267,13 +267,14 @@ namespace LightSavers.Components.GameObjects
                 weapons[currentWeapon].receipt.graph.Renew(weapons[currentWeapon].receipt);
             }
 
+            // Update Top half of body
             if (currentFiringAnimation != moving + shooting + weapon)
             {
                 currentFiringAnimation = moving + shooting + weapon;
                 upPlayer.StartClip(currentFiringAnimation);
-                
             }
 
+            //Update Bottom half of body
             if (currentAnimation != moving + weapon)
             {
                 currentAnimation = moving + weapon;
