@@ -54,7 +54,33 @@ namespace LightSavers.Components.GameObjects
                                                                 idle_pistol, walk_pistol, run_pistol, walk_pistol_shoot, run_pistol_shoot, idle_pistol_shoot,
                                                                 idle_sword, walk_sword, run_sword, walk_sword_shoot, run_sword_shoot, idle_sword_shoot,
                                                                 death};
-        public static int[] characterAnimationKeys = new int[] { 0, 48, 49, 76, 77, 97, 98, 125, 126, 146, 147, 173, 174, 221, 222, 249, 250, 270, 271, 298, 299, 319, 320, 367, 368, 415, 146, 443, 444, 464, 465, 492, 497, 513, 515, 525, 562, 609, 610, 637, 638, 658, 659, 686, 689, 707, 708, 748, 749, 769 };
+        public static int[] characterAnimationKeys = new int[] { 
+            0, 48,          //idle_assault
+            49, 76,         //walk_assault
+            77, 97,         //run_assault
+            98, 125,        //walk_assault_shoot
+            126, 146,       //run_assault_shoot
+            147, 173,       //idle_assault_shoot
+            174, 221,       //idle_snipshot
+            222, 249,       //walk_snipshot
+            250, 270,       //run_snipshot
+            271, 298,       //walk_snipshot_shoot
+            308, 319,       //run_snipshot_shoot
+            328, 367,       //idle_snipshot_shoot
+            368, 415,       //idle_sword
+            146, 443,       //walk_pistol
+            444, 464,       //run_pistol
+            465, 492,       //walk_pistol_shoot
+            497, 513,       //run_pistol_shoot
+            515, 525,       //idle_pistol_shoot
+            562, 609,       //idle_sword
+            610, 637,       //walk_sword
+            638, 658,       //run_sword
+            659, 686,       //walk_sword_shoot
+            689, 707,       //run_sword_shoot
+            708, 748,       //idle_sword_shoot
+            749, 769        //death
+        };
 
         public static int[] alien01AnimationsList = new int[] { idle, moving, attacking, death };
         public static int[] alien01AnimationKeys = new int[] { 0, 125, 126, 150, 151, 200, 201, 225 };

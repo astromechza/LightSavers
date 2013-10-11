@@ -50,6 +50,7 @@ namespace LightSavers
         public static Model mdl_filingcabinet;
         public static Model mdl_menuscene;
         public static Model mdl_pistolBullet;
+        public static Model mdl_shotgunBullet;
         public static Model mdl_doorPanel;
         public static Model mdl_doorBase;
         public static Model mdl_desk;
@@ -157,7 +158,7 @@ namespace LightSavers
         private void LoadAssets()
         {
             // number of assets to be loaded. (used to compute progress bar size)
-            num_assets = 24;
+            num_assets = 25;
             num_assets += CountSections();
             LoadSections();
             // assets
@@ -205,6 +206,8 @@ namespace LightSavers
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
             mdl_filingcabinet = loadModel("models/filing/Filing");
             mdl_pistolBullet = loadModel("projectiles/PistolBullet");
+
+            mdl_shotgunBullet = loadModel("projectiles/ShotgunBullet");
 
             mdl_dropfragment = loadModel("projectiles/DropFragment");
 
