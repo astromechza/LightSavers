@@ -32,7 +32,7 @@ namespace LightSavers.Components.GameObjects.Aliens
             this._mesh = new SkinnedMesh();
             this._mesh.Model = AssetLoader.mdl_alien1;
 
-            this._aplayer = new DurationBasedAnimator(_mesh.SkinningData, _mesh.SkinningData.AnimationClips["Take 001"]);
+            this._aplayer = new DurationBasedAnimator(_mesh.SkinningData, _mesh.SkinningData.AnimationClips["Take 001"], null);
 
             this._aplayer.AddAnimationPackage = AssetLoader.ani_alien1;
             this._aplayer.StartClip(2);

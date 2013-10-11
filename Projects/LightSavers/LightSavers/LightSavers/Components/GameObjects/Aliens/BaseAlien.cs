@@ -52,7 +52,7 @@ namespace LightSavers.Components.GameObjects.Aliens
         public void UpdateAnimations(float ms)
         {
             TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)ms);
-            _aplayer.Update(ts, true, Matrix.Identity);
+            _aplayer.Update(ts, true, Matrix.Identity, Matrix.Identity);
             _mesh.BoneMatrixes = _aplayer.GetSkinTransforms();
         }
 
