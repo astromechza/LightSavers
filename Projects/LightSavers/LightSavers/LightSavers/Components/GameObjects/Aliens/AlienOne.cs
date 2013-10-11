@@ -25,7 +25,7 @@ namespace LightSavers.Components.GameObjects.Aliens
         {
             base.Construct(spawnPosition, rotation, spawner);            
 
-            this._health = 100;
+            this._health = 90;
 
             this._mesh = new SkinnedMesh();
             this._mesh.Model = AssetLoader.mdl_alien1;
@@ -102,7 +102,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                 p.PreDestroy();
                 p.Destroy();
                 this._health -= p.GetDamage();
-                if (this._health < 0)
+                if (this._health <= 0)
                 {
                     this._mustBeDeleted = true;
                     this.DestroyReceipt();
