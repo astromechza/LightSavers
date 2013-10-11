@@ -22,7 +22,7 @@ namespace LightSavers.Components.GameObjects.Aliens
 
         private List<AlienType> population;
 
-        public AlienSpawner(RealGame game, int maxPopulation, int majorInterval, int intervalVariance)
+        public AlienSpawner(RealGame game, int startPopulation, int maxPopulation, int majorInterval, int intervalVariance)
         {
             this.game = game;
             this.maxPopulation = maxPopulation;
@@ -32,6 +32,11 @@ namespace LightSavers.Components.GameObjects.Aliens
             this.population = new List<AlienType>();
 
             GenNextSpawn();
+            for (int i = 0; i < startPopulation; i++)
+            {
+                Spawn();
+                GenNextSpawn();
+            }
         }
 
         public void GenNextSpawn()
