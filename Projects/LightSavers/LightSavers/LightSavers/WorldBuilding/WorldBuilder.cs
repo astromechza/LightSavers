@@ -100,7 +100,7 @@ namespace LightSavers.WorldBuilding
                         Color cc = colours[pi2];
                         if (cc == PureGreen)
                         {
-                            game.doors.Add(new Door(game, center));
+                            game.campaignManager.AddDoor(new Door(game, center));
                         }
                     }
                     else if (c == Color.DarkMagenta)

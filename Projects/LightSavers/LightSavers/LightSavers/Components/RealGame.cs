@@ -1,11 +1,13 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
 using LightSavers.Collisions;
+using LightSavers.Components.CampainManager;
 using LightSavers.Components.GameObjects;
 using LightSavers.Components.GameObjects.Aliens;
 using LightSavers.Components.HitParticle;
 using LightSavers.Components.Projectiles;
 using LightSavers.Utils;
+using LightSavers.Utils.Geometry;
 using LightSavers.WorldBuilding;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -28,15 +30,14 @@ namespace LightSavers.Components
         public BlockBasedSceneGraph sceneGraph;
         public WorldBuilder worldBuilder;
         public CellCollider cellCollider;
-        public List<Door> doors;
 
-        public AlienSpawner<AlienOne> alienOneSpawner;
+        public CampaignManager campaignManager;
 
         public RealGame(int numberOfSections, int numPlayers, BlockBasedSceneGraph sg)
         {
-            sceneGraph = sg;
+            campaignManager = new CampaignManager(this, numberOfSections);
 
-            doors = new List<Door>();
+            sceneGraph = sg;
 
             cellCollider = new CellCollider(32, numberOfSections * 32);
 
@@ -47,7 +48,6 @@ namespace LightSavers.Components
             
 
             players = new PlayerObject[numPlayers];
-
 
             Color[] playerColours = new Color[] {
                 new Color(0.5f, 1.0f, 0.5f),
@@ -64,7 +64,8 @@ namespace LightSavers.Components
                 players[i] = new PlayerObject(this, (i==0) ? PlayerIndex.One : PlayerIndex.Two, playerColours[i], spawns[i], 0);
             }
 
-            alienOneSpawner = new AlienSpawner<AlienOne>(this, 10, 15, 2000, 1000);
+            // must be done AFTER the game has finished being created
+            campaignManager.InitialSpawn();
         }
 
         public void Update(float ms)
@@ -72,10 +73,8 @@ namespace LightSavers.Components
             for (int i = 0; i < players.Length; i++) players[i].Update(ms);
             projectileManager.Update(ms);
 
-            alienOneSpawner.UpdateAliens(ms);
-            alienOneSpawner.Update(ms);
 
-            for (int i = 0; i < doors.Count; i++) doors[i].Update(ms);
+            campaignManager.Update(ms);
             fragmentManager.Update(ms);
         }
 
@@ -97,6 +96,24 @@ namespace LightSavers.Components
                 if (d2 < d) return players[1];
             }
             return players[0];
+        }
+
+        public RectangleF GetPlayerTerritory()
+        {
+            float left = players[0].Position.X;
+            float right = players[0].Position.X;
+            float top = players[0].Position.Y;
+            float bottom = players[0].Position.Y;
+
+            if (players.Length > 1)
+            {
+                left = Math.Min(left, players[1].Position.X);
+                right = Math.Max(right, players[1].Position.X);
+                top = Math.Min(top, players[1].Position.Y);
+                bottom = Math.Max(bottom, players[1].Position.Y);
+            }
+
+            return new RectangleF(left, right, right - left, bottom - left);
         }
     }
 }
