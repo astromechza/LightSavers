@@ -8,7 +8,7 @@ using System.Text;
 
 namespace LightSavers.Components.GameObjects.Aliens
 {
-    public class AlienSpawner<AlienType> where AlienType : BaseAlien, new()
+    public class AlienSpawner<AlienType> : BaseSpawner where AlienType : BaseAlien, new()
     {
         private const int MIN_RANGE_FROM_PLAYERS = 10;
 
@@ -29,7 +29,7 @@ namespace LightSavers.Components.GameObjects.Aliens
             this.majorInterval = majorInterval;
             this.intervalVariance = intervalVariance;
 
-            this.population = new List<AlienType>();
+            this.population = new List<AlienType>(maxPopulation);
 
             GenNextSpawn();
             for (int i = 0; i < startPopulation; i++)
@@ -44,10 +44,18 @@ namespace LightSavers.Components.GameObjects.Aliens
             int rms = majorInterval + Globals.random.Next(intervalVariance * 2) - intervalVariance;
             nextSpawnAttempt = DateTime.Now + new TimeSpan(0, 0, 0, 0, majorInterval);
         }
-
         public void UpdateAliens(float ms)
         {
-            foreach (AlienType a in this.population) a.Update(ms);
+            for (int a = 0; a < this.population.Count; a++)
+            {
+                AlienType aA = this.population[a];
+                aA.Update(ms);
+                if (aA._mustBeDeleted)
+                {
+                    this.population.RemoveAt(a);
+                    a--;
+                }
+            }
         }
 
         public void Update(float sm)
@@ -102,7 +110,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                 if (d < MIN_RANGE_FROM_PLAYERS*MIN_RANGE_FROM_PLAYERS) continue;
 
                 AlienType a = new AlienType();
-                a.Construct(this.game, r, (float)Math.Pow(Globals.random.NextDouble(),3) * MathHelper.TwoPi);
+                a.Construct(this.game, r, (float)Math.Pow(Globals.random.NextDouble(),3) * MathHelper.TwoPi, this);
                 population.Add(a);
 
                 // yay!
