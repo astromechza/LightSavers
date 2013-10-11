@@ -13,7 +13,7 @@ namespace LightSavers.Components.GameObjects
         public static Dictionary<int, int> upperCharacterBones;
         public static Dictionary<int, int> lowerCharacterBonesandRoot;
 
-        const int idle = 0, run = 1, shoot = 2, assault = 4, snipshot = 8, pistol = 16, sword = 32, walk = 64, death = -1;
+        public const int idle = 0, run = 1, shoot = 2, assault = 4, snipshot = 8, pistol = 16, sword = 32, walk = 64, death = -1;
 
         public const int idle_assault = idle + assault;
         public const int walk_assault = walk + assault;
