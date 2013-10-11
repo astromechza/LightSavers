@@ -14,20 +14,18 @@ namespace LightSavers.Components.GameObjects.Aliens
 {
     public class AlienOne : BaseAlien
     {
+        public AlienOne() { }
 
-        public AlienOne()
+        public AlienOne(RealGame game, Vector3 spawnPosition, BaseSpawner spawner)
         {
-
+            Construct(game, spawnPosition, (float)Globals.random.NextDouble() * MathHelper.TwoPi, spawner);
         }
 
-        public AlienOne(RealGame game, Vector3 spawnPosition)
+        public override void Construct(RealGame game, Vector3 spawnPosition, float rotation, BaseSpawner spawner)
         {
-            Construct(game, spawnPosition, (float)Globals.random.NextDouble() * MathHelper.TwoPi);
-        }
+            base.Construct(game, spawnPosition, rotation, spawner);            
 
-        public override void Construct(RealGame game, Vector3 spawnPosition, float rotation)
-        {
-            base.Construct(game, spawnPosition, rotation);
+            this._health = 100;
 
             this._mesh = new SkinnedMesh();
             this._mesh.Model = AssetLoader.mdl_alien1;
@@ -92,17 +90,25 @@ namespace LightSavers.Components.GameObjects.Aliens
                     AssignRandomTarget();
                 }
             }
-            
+
+            UpdateAnimations(ms * 1.5f); // animations are accelerated a bit
+            UpdateMajorTransform();
+            _modelReceipt.graph.Renew(_modelReceipt);
+
             // check for collision with bullet
             IProjectile p = _game.projectileManager.CheckHit(this);
             if (p != null)
             {
                 p.PreDestroy();
                 p.Destroy();
+                this._health -= p.GetDamage();
+                if (this._health < 0)
+                {
+                    this._mustBeDeleted = true;
+                    this.DestroyReceipt();
+                }
             }
 
-            UpdateAnimations(ms * 1.5f); // animations are accelerated a bit
-            UpdateMajorTransform();
         }
 
 
