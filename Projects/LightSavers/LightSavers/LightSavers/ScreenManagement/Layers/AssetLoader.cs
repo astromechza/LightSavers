@@ -49,7 +49,7 @@ namespace LightSavers
         public static Model mdl_ceilinglight;
         public static Model mdl_filingcabinet;
         public static Model mdl_menuscene;
-        public static Model mdl_bullet;
+        public static Model mdl_pistolBullet;
         public static Model mdl_doorPanel;
         public static Model mdl_doorBase;
         public static Model mdl_desk;
@@ -198,7 +198,7 @@ namespace LightSavers
             mdl_sphere = loadModel("models/sphere");
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
             mdl_filingcabinet = loadModel("models/filing/Filing");
-            mdl_bullet = loadModel("projectiles/StandardBullet");
+            mdl_pistolBullet = loadModel("projectiles/PistolBullet");
 
             mdl_dropfragment = loadModel("projectiles/DropFragment");
 

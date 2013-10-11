@@ -32,7 +32,7 @@ namespace LightSavers.Components.Projectiles
         public StandardBullet() 
         {
             this.mesh = new Mesh();
-            this.mesh.Model = AssetLoader.mdl_bullet;
+            this.mesh.Model = AssetLoader.mdl_pistolBullet;
             this.mesh.SetInstancingEnabled(true);
             this.mesh.SetCastShadows(false);
         }

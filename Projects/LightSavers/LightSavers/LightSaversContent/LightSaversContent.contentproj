@@ -250,8 +250,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="projectiles\StandardBullet.xml">
-      <Name>StandardBullet</Name>
+    <Compile Include="projectiles\PistolBullet.xml">
+      <Name>PistolBullet</Name>
       <Importer>XmlImporter</Importer>
       <Processor>ProjectileModelProcessor</Processor>
     </Compile>
