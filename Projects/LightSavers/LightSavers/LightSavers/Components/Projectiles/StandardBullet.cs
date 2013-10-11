@@ -106,7 +106,7 @@ namespace LightSavers.Components.Projectiles
 
         public void PreDestroy()
         {
-            Globals.gameInstance.fragmentManager.SpawnX(this.position, 5);
+            Globals.gameInstance.fragmentManager.SpawnX(this.position, 3);
         }
 
         public Vector3 GetCenter()

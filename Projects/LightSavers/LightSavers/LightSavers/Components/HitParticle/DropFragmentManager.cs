@@ -50,10 +50,13 @@ namespace LightSavers.Components.HitParticle
 
         public void SpawnX(Vector3 o, int n)
         {
-            if (!this.fragments.HasAvailable()) this.fragments.Dispose(this.fragments.GetFirst());
-            
-            DropFragment b = this.fragments.Provide();
-            b.Construct(o);
+            for (int i = 0; i < n; i++)
+            {
+                if (!this.fragments.HasAvailable()) this.fragments.Dispose(this.fragments.GetFirst());
+
+                DropFragment b = this.fragments.Provide();
+                b.Construct(o);
+            }
         }
     }
 }
