@@ -39,7 +39,6 @@ namespace LightSavers.ScreenManagement.Layers
             ConstructDrawingObjects();
 
             ConstructSubMenus();
-
         }
 
         #region == constructor submethods ==
@@ -68,6 +67,7 @@ namespace LightSavers.ScreenManagement.Layers
 
             int tx = (viewport.Width - 800) / 2;
             titleRect = new Rectangle(tx, 100, 800, 230);
+
         }
 
         private void ConstructSubMenus()
@@ -77,6 +77,7 @@ namespace LightSavers.ScreenManagement.Layers
             Submenu s1 = new Submenu();
 
             s1.AddItem(new TransitionItem("New Game", 1));
+            s1.AddItem(new DummyItem("Controls"));
             s1.AddItem(new DummyItem("About"));
             s1.AddItem(new TransitionItem("Exit", -1));
 
@@ -85,7 +86,8 @@ namespace LightSavers.ScreenManagement.Layers
             Submenu s2 = new Submenu();
             s2.AddItem(new ToggleItem("Players", new String[] { "1", "2" }));
             s2.AddItem(new ToggleItem("Level Length", new String[] { "Short", "Medium", "Tiring" }));
-            s2.AddItem(new DelegateItem("Start Game", StartGame));
+            s2.AddItem(new ToggleItem("Difficulty", new String[] { "Easy", "Medium", "Hard" }));
+            s2.AddItem(new ToggleItem("Music", new String[] { "On", "Off"}));
             s2.AddItem(new TransitionItem("Back", 0));
 
             submenus.Add(s2);           

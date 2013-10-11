@@ -66,6 +66,8 @@ namespace LightSavers
         public static Texture2D tex_white;
         public static SpriteFont fnt_assetloadscreen;
 
+        public static Texture2D diamond;
+
         // -- Sections
         public static Model[] mdl_section;
         public static Texture2D[] tex_section_ent;
@@ -96,6 +98,7 @@ namespace LightSavers
             tex_white.SetData(new Color[] { Color.White });
 
             title2 = Globals.content.Load<Texture2D>("textures/title2");
+            diamond = Globals.content.Load<Texture2D>("textures/diamond");
 
             // Fade times
             transitionOnTime = TimeSpan.FromSeconds(0.6);
