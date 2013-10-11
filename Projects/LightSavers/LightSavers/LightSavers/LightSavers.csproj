@@ -108,7 +108,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collisions\CellCollider.cs" />
-    <Compile Include="Components\AudioManager.cs" />
     <Compile Include="Components\CampainManager\CampaignManager.cs" />
     <Compile Include="Components\GameObjects\Aliens\AlienOne.cs" />
     <Compile Include="Components\GameObjects\Aliens\AlienSpawner.cs" />
@@ -131,7 +130,7 @@
     <Compile Include="Components\MenuObjects\Submenu.cs" />
     <Compile Include="Components\MenuObjects\ToggleItem.cs" />
     <Compile Include="Components\MenuObjects\TransitionItem.cs" />
-    <Compile Include="Components\Projectiles\StandardBullet.cs" />
+    <Compile Include="Components\Projectiles\PistolBullet.cs" />
     <Compile Include="Components\MenuObjects\MenuBackground.cs" />
     <Compile Include="Components\Projectiles\ProjectileManager.cs" />
     <Compile Include="Components\Projectiles\IProjectile.cs" />

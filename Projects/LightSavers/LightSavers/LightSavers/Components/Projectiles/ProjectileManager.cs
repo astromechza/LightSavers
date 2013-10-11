@@ -20,11 +20,11 @@ namespace LightSavers.Components.Projectiles
         private const int MAX_PROJECTILES = 1000;
         private const int PRE_BUILD = 50;
 
-        public GObjectPool<StandardBullet> standardBulletPool;
+        public GObjectPool<PistolBullet> standardBulletPool;
 
         public ProjectileManager()
         {
-            standardBulletPool = new GObjectPool<StandardBullet>(MAX_PROJECTILES, PRE_BUILD);
+            standardBulletPool = new GObjectPool<PistolBullet>(MAX_PROJECTILES, PRE_BUILD);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace LightSavers.Components.Projectiles
             int i = standardBulletPool.GetFirst();
             while (i != -1)
             {
-                StandardBullet b = standardBulletPool.GetByIndex(i);
+                PistolBullet b = standardBulletPool.GetByIndex(i);
                 b.Update(ms);
                 if (b.MustBeDeleted())
                 {
@@ -52,7 +52,7 @@ namespace LightSavers.Components.Projectiles
             int i = standardBulletPool.GetFirst();
             while (i != -1)
             {
-                StandardBullet b = standardBulletPool.GetByIndex(i);
+                PistolBullet b = standardBulletPool.GetByIndex(i);
                 if (Collider.Collide(alien.GetBoundRect(), b.GetCenter())) return b;
                 i = standardBulletPool.NextIndex(b);
             }
