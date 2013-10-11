@@ -14,12 +14,7 @@ namespace LightSavers.Components.GameObjects.Aliens
 {
     public class AlienOne : BaseAlien
     {
-        private int health;
-
-        public AlienOne()
-        {
-
-        }
+        public AlienOne() { }
 
         public AlienOne(RealGame game, Vector3 spawnPosition, BaseSpawner spawner)
         {
@@ -30,7 +25,7 @@ namespace LightSavers.Components.GameObjects.Aliens
         {
             base.Construct(game, spawnPosition, rotation, spawner);            
 
-            this.health = 100;
+            this._health = 100;
 
             this._mesh = new SkinnedMesh();
             this._mesh.Model = AssetLoader.mdl_alien1;
@@ -106,8 +101,8 @@ namespace LightSavers.Components.GameObjects.Aliens
             {
                 p.PreDestroy();
                 p.Destroy();
-                this.health -= p.GetDamage();
-                if (this.health < 0)
+                this._health -= p.GetDamage();
+                if (this._health < 0)
                 {
                     this._mustBeDeleted = true;
                     this.DestroyReceipt();

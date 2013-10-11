@@ -34,6 +34,7 @@ namespace LightSavers.Components.GameObjects.Aliens
         private Matrix _scaleTransform = Matrix.Identity;
 
         // spawning / dying / destruction
+        public int _health;
         public BaseSpawner _spawner;
         public bool _mustBeDeleted;
 
