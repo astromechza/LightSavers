@@ -87,7 +87,11 @@ namespace LightSavers.ScreenManagement.Layers
 
             // draw the 3d scene
             canvas.Draw(temp, viewport.Bounds, Color.White);
-
+            //canvas.Draw(AssetLoader.shot_blue, new Rectangle(0, viewport.Bounds.Height - (467 / 4), 981 / 4, 467 / 4), Color.White);
+            //canvas.Draw(AssetLoader.pistol_green, new Rectangle(viewport.Bounds.Width - (981 / 4), viewport.Bounds.Height - (467 / 4), 981 / 4, 467 / 4), Color.White);
+            
+            canvas.Draw(AssetLoader.shot_blue, new Rectangle(0, viewport.Bounds.Height - (140), 249, 140), Color.White);
+            canvas.Draw(AssetLoader.pistol_green, new Rectangle(viewport.Bounds.Width - 249, viewport.Bounds.Height - (140), 249, 140), Color.White);
             canvas.End();
             
         }
