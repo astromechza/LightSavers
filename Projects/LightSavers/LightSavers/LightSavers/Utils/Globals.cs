@@ -24,6 +24,7 @@ namespace LightSavers.Utils
         public static Viewport viewport;
         public static Random random;
         public static RealGame gameInstance;
+        public static AudioManager audioManager;
 
     }
 }

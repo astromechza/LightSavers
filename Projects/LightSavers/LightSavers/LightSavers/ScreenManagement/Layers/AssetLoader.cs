@@ -163,6 +163,10 @@ namespace LightSavers
             // assets
             mdl_menuscene = loadModel("models/menuscene/MenuScene");
 
+            //Load Music and sounds
+            Globals.audioManager.LoadSong("music/menu_music", "menu");
+            Globals.audioManager.PlayMusic("menu");
+
             //Load Character and animations
             mdl_character = loadModel("animatedmodels/player/spacemanAnimated");
             ani_character = generateAnimationPackage(Animation_States.characterAnimationsList, Animation_States.characterAnimationKeys, mdl_character);
