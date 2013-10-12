@@ -10,7 +10,7 @@ namespace LightSavers.Components.MenuObjects
     {
 
         private String label;
-        private int destination;
+        public int destination;
 
         public TransitionItem(String label, int submenu)
         {

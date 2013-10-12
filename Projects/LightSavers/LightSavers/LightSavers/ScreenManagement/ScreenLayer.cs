@@ -107,9 +107,5 @@ namespace LightSavers.ScreenManagement
         }
 
         public abstract void Draw();
-
-
-
-
     }
 }

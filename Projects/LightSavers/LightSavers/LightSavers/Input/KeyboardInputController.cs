@@ -168,10 +168,10 @@ namespace LightSavers.Components
                     return Keys.Enter;
 
                 case Buttons.LeftThumbstickLeft:
-                    return Keys.D;
+                    return Keys.A;
 
                 case Buttons.LeftThumbstickRight:
-                    return Keys.A;
+                    return Keys.D;
 
                 case Buttons.LeftThumbstickDown:
                     return Keys.S;
