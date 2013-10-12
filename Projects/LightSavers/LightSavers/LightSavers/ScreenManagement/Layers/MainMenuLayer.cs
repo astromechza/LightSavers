@@ -74,23 +74,30 @@ namespace LightSavers.ScreenManagement.Layers
         {
             submenus = new List<Submenu>();
 
-            Submenu s1 = new Submenu();
+            Submenu s0 = new Submenu();
 
-            s1.AddItem(new TransitionItem("New Game", 1));
-            s1.AddItem(new DummyItem("Controls"));
-            s1.AddItem(new DummyItem("About"));
-            s1.AddItem(new TransitionItem("Exit", -1));
+            s0.AddItem(new TransitionItem("New Game", 1));
+            s0.AddItem(new DummyItem("Controls"));
+            s0.AddItem(new TransitionItem("Settings", 2));
+            s0.AddItem(new DummyItem("About"));
+            s0.AddItem(new TransitionItem("Exit", -1));
+
+            submenus.Add(s0);
+
+            Submenu s1 = new Submenu();
+            s1.AddItem(new ToggleItem("Players", new String[] { "1", "2" }));
+            s1.AddItem(new ToggleItem("Level Length", new String[] { "Short", "Medium", "Tiring" }));
+            s1.AddItem(new ToggleItem("Difficulty", new String[] { "Easy", "Medium", "Hard" }));
+            s1.AddItem(new TransitionItem("Continue", 0));
 
             submenus.Add(s1);
 
             Submenu s2 = new Submenu();
-            s2.AddItem(new ToggleItem("Players", new String[] { "1", "2" }));
-            s2.AddItem(new ToggleItem("Level Length", new String[] { "Short", "Medium", "Tiring" }));
-            s2.AddItem(new ToggleItem("Difficulty", new String[] { "Easy", "Medium", "Hard" }));
-            s2.AddItem(new ToggleItem("Music", new String[] { "On", "Off"}));
+            s2.AddItem(new ToggleItem("Music", new String[] { "On", "Off" }));
+            s2.AddItem(new ToggleItem("Volue", new String[] { "Low", "Medium", "High" }));
             s2.AddItem(new TransitionItem("Back", 0));
 
-            submenus.Add(s2);           
+            submenus.Add(s2);  
 
             currentSubMenuIndex = 0;
 
@@ -158,16 +165,97 @@ namespace LightSavers.ScreenManagement.Layers
 
         private void CheckControls()
         {
+            //back button
             if (Globals.inputController.isButtonReleased(Buttons.B, null))
             {
                 this.StartTransitionOff();
             }
+            
+            //select (enter)
             else if (Globals.inputController.isButtonReleased(Buttons.A, null))
             {
                 //Globals.audioManager.PlayMenuSound("menu_select");
-                Globals.audioManager.StopMusic();
+                /*
                 this.fadeOutCompleteCallback = StartGame;
-                this.StartTransitionOff();
+                this.StartTransitionOff();*/
+                if (submenus[currentSubMenuIndex].items[submenus[currentSubMenuIndex].selected] is TransitionItem)
+                {
+                    TransitionItem current = (TransitionItem)submenus[currentSubMenuIndex].items[submenus[currentSubMenuIndex].selected];
+                    int destination = current.destination;
+                    if (destination == -1)
+                    {
+                        this.StartTransitionOff();
+                    }
+                    else
+                    {
+                        currentSubMenuIndex = destination;
+                    }
+                }
+            }
+
+            //GOING UP IN MENUS
+            else if (Globals.inputController.isButtonReleased(Buttons.DPadUp, null) || Globals.inputController.isButtonReleased(Buttons.LeftThumbstickUp, null))
+            {
+                int selectedIndex = submenus[currentSubMenuIndex].selected;
+                int size = submenus[currentSubMenuIndex].items.Count();
+                int newIndex = selectedIndex-1;
+
+                if (newIndex < 0)
+                {
+                    newIndex = size-1;
+                }
+
+                submenus[currentSubMenuIndex].selected = newIndex;
+            }
+            
+            //GOING DOWN IN MENUS
+            else if (Globals.inputController.isButtonReleased(Buttons.DPadDown, null) || Globals.inputController.isButtonReleased(Buttons.LeftThumbstickDown, null))
+            {
+                int selectedIndex = submenus[currentSubMenuIndex].selected;
+                int size = submenus[currentSubMenuIndex].items.Count();
+                int newIndex = ++selectedIndex;
+
+                if (newIndex == size)
+                {
+                    newIndex = 0;
+                }
+
+                submenus[currentSubMenuIndex].selected = newIndex;
+            }
+            
+            //GOING LEFT IN MENUS (TOGGLE)
+            else if (Globals.inputController.isButtonReleased(Buttons.DPadLeft, null) || Globals.inputController.isButtonReleased(Buttons.LeftThumbstickLeft, null))
+            {
+                if (submenus[currentSubMenuIndex].items[submenus[currentSubMenuIndex].selected] is ToggleItem)
+                {
+                    ToggleItem currentToggle = (ToggleItem)submenus[currentSubMenuIndex].items[submenus[currentSubMenuIndex].selected];
+
+                    int selectedIndex = currentToggle.current;
+                    int size = currentToggle.values.Count();
+                    int newIndex = selectedIndex - 1;
+
+                    if (newIndex < 0)
+                    {
+                        newIndex = size - 1;
+                    }
+                    currentToggle.current = newIndex;
+                }                
+            }
+
+            //GOING RIGHT IN MENUS (TOGGLE)
+            else if (Globals.inputController.isButtonReleased(Buttons.DPadRight, null) || Globals.inputController.isButtonReleased(Buttons.LeftThumbstickRight, null))
+            {
+                ToggleItem currentToggle = (ToggleItem)submenus[currentSubMenuIndex].items[submenus[currentSubMenuIndex].selected];
+
+                int selectedIndex = currentToggle.current;
+                int size = currentToggle.values.Count();
+                int newIndex = ++selectedIndex;
+
+                if (newIndex == size)
+                {
+                    newIndex = 0;
+                }
+                currentToggle.current = newIndex;
             }
         }
         #endregion

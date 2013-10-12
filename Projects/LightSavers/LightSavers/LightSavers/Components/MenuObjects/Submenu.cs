@@ -9,8 +9,8 @@ namespace LightSavers.Components.MenuObjects
     public class Submenu
     {
 
-        List<BaseMenuItem> items;
-        int selected = 0;
+        public List<BaseMenuItem> items;
+        public int selected = 0;
 
         public Submenu()
         {

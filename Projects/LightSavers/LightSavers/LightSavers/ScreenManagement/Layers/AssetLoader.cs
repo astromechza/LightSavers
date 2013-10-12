@@ -70,11 +70,16 @@ namespace LightSavers
         public static SoundEffect snd_shottie;
         public static SoundEffect snd_sniper;
         public static SoundEffect snd_sword;
+        public static SoundEffect snd_assault;
+
+        public static SoundEffect snd_alien_death1;
 
         public static Texture2D title2;
         public static Texture2D tex_black;
         public static Texture2D tex_white;
         public static SpriteFont fnt_assetloadscreen;
+
+        public static SpriteFont fnt_healthgamescreen;
 
         //HUDS
         public static Texture2D ammo;
@@ -119,6 +124,7 @@ namespace LightSavers
 
             // Assets required to view the loading screen
             fnt_assetloadscreen = Globals.content.Load<SpriteFont>("fonts/LoadingFont");
+            fnt_healthgamescreen = Globals.content.Load<SpriteFont>("fonts/HealthFont");
             tex_black = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
             tex_black.SetData(new Color[] { Color.Black });
             tex_white = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
@@ -194,22 +200,21 @@ namespace LightSavers
             LoadSections();
             // assets
             mdl_menuscene = loadModel("models/menuscene/MenuScene");
-            
-            //Load Music and sounds
-            Globals.audioManager.LoadMenuSong("soundz/menu/menu_music", "menu");
-            Globals.audioManager.PlayMenuMusic();
-
-            Globals.audioManager.LoadMenuSound("soundz/menu/menu_select", "menu_select");
 
             snd_pistol = Globals.content.Load<SoundEffect>("soundz/game/weapons/pistol");
             snd_shottie = Globals.content.Load<SoundEffect>("soundz/game/weapons/shottie");
             snd_sniper = Globals.content.Load<SoundEffect>("soundz/game/weapons/sniper");
             snd_sword = Globals.content.Load<SoundEffect>("soundz/game/weapons/sword");
+            snd_assault = Globals.content.Load<SoundEffect>("soundz/game/weapons/assault");
+            snd_alien_death1 = Globals.content.Load<SoundEffect>("soundz/game/creatures/deathalien1");
 
+            Globals.audioManager.LoadSong("soundz/game/music/desolate", "music");
+            Globals.audioManager.LoadEffect(snd_alien_death1, "aliendeath1",3);
             Globals.audioManager.LoadEffect(snd_pistol, "pistol", 5);
             Globals.audioManager.LoadEffect(snd_shottie, "shottie", 3);
             Globals.audioManager.LoadEffect(snd_sniper, "sniper", 3);
             Globals.audioManager.LoadEffect(snd_sword, "sword", 3);
+            Globals.audioManager.LoadEffect(snd_assault, "assault", 10);
 
             //Load Character and animations
             mdl_character = loadModel("animatedmodels/player/spacemanAnimated");

@@ -64,7 +64,10 @@ namespace LightSavers.ScreenManagement.Layers
             cameraController = new CameraController(viewport, Matrix.Identity);
             cameraController.Fit(Globals.gameInstance.GetCriticalPoints());
             cameraController.MoveToTarget();
-            
+
+            //Begin playing music.
+            Globals.audioManager.StopMusic();
+            Globals.audioManager.PlayMusic("music");
         }
 
         private RenderTarget2D temp;
@@ -111,10 +114,10 @@ namespace LightSavers.ScreenManagement.Layers
             }
             String health = "" + Globals.gameInstance.players[0].health;
 
-            Vector2 w = AssetLoader.fnt_assetloadscreen.MeasureString(health);
+            Vector2 w = AssetLoader.fnt_healthgamescreen.MeasureString(health);
 
             canvas.Draw(BlueTex, new Rectangle(0, viewport.Bounds.Height - (104), 197, 104), Color.White);
-            canvas.DrawString(AssetLoader.fnt_assetloadscreen, health, new Vector2((160 - w.X / 2), viewport.Bounds.Height - (82)), Color.White);
+            canvas.DrawString(AssetLoader.fnt_healthgamescreen, health, new Vector2((160 - w.X / 2), viewport.Bounds.Height - (78)), Color.White);
 
             
 
@@ -140,13 +143,13 @@ namespace LightSavers.ScreenManagement.Layers
                 {
                     GreenTex = AssetLoader.sword_green;
                 }
-                Globals.gameInstance.players[1].health = 120;
+                //Globals.gameInstance.players[1].health = 20;
                 health = "" + Globals.gameInstance.players[1].health;
 
-                w = AssetLoader.fnt_assetloadscreen.MeasureString(health);
+                w = AssetLoader.fnt_healthgamescreen.MeasureString(health);
 
                 canvas.Draw(GreenTex, new Rectangle(viewport.Bounds.Width - 197, viewport.Bounds.Height - (104), 197, 104), Color.White);
-                canvas.DrawString(AssetLoader.fnt_assetloadscreen, health, new Vector2(viewport.Bounds.Width - 197 + (37 - w.X / 2), viewport.Bounds.Height - (82)), Color.White);
+                canvas.DrawString(AssetLoader.fnt_healthgamescreen, health, new Vector2(viewport.Bounds.Width - 197 + (37 - w.X / 2), viewport.Bounds.Height - (78)), Color.White);
                 
             }
             //FINISHED HUDS
