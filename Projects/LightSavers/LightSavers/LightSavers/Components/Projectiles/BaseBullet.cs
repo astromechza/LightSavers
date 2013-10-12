@@ -1,5 +1,6 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
+using LightSavers.Components.GameObjects;
 using LightSavers.Utils;
 using Microsoft.Xna.Framework;
 using ObjectPool;
@@ -64,7 +65,10 @@ namespace LightSavers.Components.Projectiles
             {
                 Vector3 newposition = new Vector3(position.X, position.Y, position.Z);
                 newposition += delta * ms / 16;
-                if (Globals.gameInstance.cellCollider.PointCollides(newposition.X, newposition.Z))
+                if (
+                    Globals.gameInstance.cellCollider.PointCollides(newposition.X, newposition.Z) ||
+                    Globals.gameInstance.campaignManager.ProjectileCollidesDoor(this)
+                    )
                 {
                     aging = true;
                     PreDestroy();
