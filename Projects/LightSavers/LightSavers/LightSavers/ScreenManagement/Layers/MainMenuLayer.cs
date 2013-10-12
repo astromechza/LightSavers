@@ -166,6 +166,7 @@ namespace LightSavers.ScreenManagement.Layers
             {
                 //Globals.audioManager.PlayMenuSound("menu_select");
                 Globals.audioManager.StopMusic();
+                Globals.audioManager.PlayMusic("music");
                 this.fadeOutCompleteCallback = StartGame;
                 this.StartTransitionOff();
             }

@@ -31,7 +31,7 @@ namespace LightSavers.Components.Guns
 
         public override void Fire(float rotation)
         {
-            Globals.audioManager.PlayInstaceOf("shottie", 0.8f);
+            Globals.audioManager.PlayInstaceOf("shottie", 0.6f);
             float r;
             ShotgunBullet b;
             for (int i = 0; i < 8; i++)

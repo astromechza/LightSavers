@@ -31,6 +31,8 @@ namespace LightSavers.Components.Guns
 
         public override void Fire(float rotation)
         {
+            Globals.audioManager.PlayInstaceOf("assault",0.3f);
+
             float r = (float)Globals.random.NextDouble() * accuracy;
 
             AssaultBullet b = Globals.gameInstance.projectileManager.assaultBulletPool.Provide();
