@@ -52,6 +52,7 @@ namespace LightSavers
         public static Model mdl_pistolBullet;
         public static Model mdl_shotgunBullet;
         public static Model mdl_assaultBullet;
+        public static Model mdl_sniper_bullet;
         public static Model mdl_doorPanel;
         public static Model mdl_doorBase;
         public static Model mdl_desk;
@@ -243,6 +244,8 @@ namespace LightSavers
             mdl_shotgunBullet = loadModel("projectiles/ShotgunBullet");
 
             mdl_assaultBullet = loadModel("projectiles/AssaultBullet");
+            mdl_sniper_bullet = loadModel("projectiles/SniperBullet");
+
 
             mdl_dropfragment = loadModel("projectiles/DropFragment");
 
