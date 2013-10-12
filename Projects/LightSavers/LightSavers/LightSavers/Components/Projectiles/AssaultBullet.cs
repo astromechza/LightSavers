@@ -10,12 +10,12 @@ using System.Text;
 
 namespace LightSavers.Components.Projectiles
 {
-    public class PistolBullet : BaseBullet
+    public class AssaultBullet : BaseBullet
     {
-        public PistolBullet() 
+        public AssaultBullet()
         {
             this.mesh = new Mesh();
-            this.mesh.Model = AssetLoader.mdl_pistolBullet;
+            this.mesh.Model = AssetLoader.mdl_shotgunBullet;
             this.mesh.SetInstancingEnabled(true);
             this.mesh.SetCastShadows(false);
             this.speed = 0.4f;
@@ -23,7 +23,7 @@ namespace LightSavers.Components.Projectiles
 
         public override int GetDamage()
         {
-            return 30;
-        } 
+            return 15;
+        }
     }
 }

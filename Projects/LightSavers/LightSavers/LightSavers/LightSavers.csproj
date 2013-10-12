@@ -131,6 +131,8 @@
     <Compile Include="Components\MenuObjects\Submenu.cs" />
     <Compile Include="Components\MenuObjects\ToggleItem.cs" />
     <Compile Include="Components\MenuObjects\TransitionItem.cs" />
+    <Compile Include="Components\Projectiles\AssaultBullet.cs" />
+    <Compile Include="Components\Projectiles\BaseBullet.cs" />
     <Compile Include="Components\Projectiles\ShotgunBullet.cs" />
     <Compile Include="Components\Projectiles\PistolBullet.cs" />
     <Compile Include="Components\MenuObjects\MenuBackground.cs" />
