@@ -15,7 +15,7 @@ namespace LightSavers.Components.Projectiles
         public AssaultBullet()
         {
             this.mesh = new Mesh();
-            this.mesh.Model = AssetLoader.mdl_shotgunBullet;
+            this.mesh.Model = AssetLoader.mdl_assaultBullet;
             this.mesh.SetInstancingEnabled(true);
             this.mesh.SetCastShadows(false);
             this.speed = 0.4f;

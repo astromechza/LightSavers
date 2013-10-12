@@ -27,6 +27,7 @@ namespace LightSavers.Components.GameObjects
         Matrix mPlayerScale = Matrix.CreateScale(PLAYER_SCALE);
         Matrix mHaloPitch = Matrix.CreateRotationX(-90);
         Matrix mTorchPitch = Matrix.CreateRotationX(-0.4f);
+        const float boundingBoxSize = 0.45f;
         #endregion
 
         private PlayerIndex playerIndex;
@@ -96,10 +97,10 @@ namespace LightSavers.Components.GameObjects
             SwitchWeapon(0);
 
             collisionRectangle = new RectangleF(
-                _position.X - 0.49f,
-                _position.Y - 0.49f,
-                0.98f,
-                0.98f
+                _position.X - boundingBoxSize,
+                _position.Y - boundingBoxSize,
+                boundingBoxSize * 2,
+                boundingBoxSize * 2
             );
 
         }
@@ -224,8 +225,8 @@ namespace LightSavers.Components.GameObjects
             if (_position != newposition)
             {
                 // First test X collision
-                collisionRectangle.Left = newposition.X - 0.49f;
-                collisionRectangle.Top  = _position.Z - 0.49f;
+                collisionRectangle.Left = newposition.X - boundingBoxSize;
+                collisionRectangle.Top = _position.Z - boundingBoxSize;
                 if (Globals.gameInstance.cellCollider.RectangleCollides(collisionRectangle))
                 {
                     // if it does collide, pull it back
@@ -233,8 +234,8 @@ namespace LightSavers.Components.GameObjects
                 }
 
                 // Then test Z collision
-                collisionRectangle.Left = _position.X - 0.49f;
-                collisionRectangle.Top  = newposition.Z - 0.49f;
+                collisionRectangle.Left = _position.X - boundingBoxSize;
+                collisionRectangle.Top = newposition.Z - boundingBoxSize;
                 if (Globals.gameInstance.cellCollider.RectangleCollides(collisionRectangle))
                 {
                     // if it does collide, pull it back
@@ -364,7 +365,7 @@ namespace LightSavers.Components.GameObjects
         {
             outputPoints.Add(new Vector2(_position.X, _position.Z));
 
-            Vector3 v = new Vector3(0, 0, -7);
+            Vector3 v = new Vector3(0, 0, -6);
             Matrix m = Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(_position);
             Vector3 t = Vector3.Transform(v, m);
             outputPoints.Add(new Vector2(t.X,t.Z));
