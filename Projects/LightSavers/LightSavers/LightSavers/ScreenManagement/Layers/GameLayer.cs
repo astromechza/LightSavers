@@ -64,7 +64,10 @@ namespace LightSavers.ScreenManagement.Layers
             cameraController = new CameraController(viewport, Matrix.Identity);
             cameraController.Fit(Globals.gameInstance.GetCriticalPoints());
             cameraController.MoveToTarget();
-            
+
+            //Begin playing music.
+            Globals.audioManager.StopMusic();
+            Globals.audioManager.PlayMusic("music");
         }
 
         private RenderTarget2D temp;

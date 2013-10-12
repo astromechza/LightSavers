@@ -72,6 +72,8 @@ namespace LightSavers
         public static SoundEffect snd_sword;
         public static SoundEffect snd_assault;
 
+        public static SoundEffect snd_alien_death1;
+
         public static Texture2D title2;
         public static Texture2D tex_black;
         public static Texture2D tex_white;
@@ -204,8 +206,10 @@ namespace LightSavers
             snd_sniper = Globals.content.Load<SoundEffect>("soundz/game/weapons/sniper");
             snd_sword = Globals.content.Load<SoundEffect>("soundz/game/weapons/sword");
             snd_assault = Globals.content.Load<SoundEffect>("soundz/game/weapons/assault");
+            snd_alien_death1 = Globals.content.Load<SoundEffect>("soundz/game/creatures/deathalien1");
 
             Globals.audioManager.LoadSong("soundz/game/music/desolate", "music");
+            Globals.audioManager.LoadEffect(snd_alien_death1, "aliendeath1",3);
             Globals.audioManager.LoadEffect(snd_pistol, "pistol", 5);
             Globals.audioManager.LoadEffect(snd_shottie, "shottie", 3);
             Globals.audioManager.LoadEffect(snd_sniper, "sniper", 3);
