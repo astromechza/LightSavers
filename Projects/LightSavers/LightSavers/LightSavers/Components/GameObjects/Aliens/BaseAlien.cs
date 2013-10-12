@@ -1,5 +1,6 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
+using LightSavers.Components.CampainManager;
 using LightSavers.Utils.Geometry;
 using Microsoft.Xna.Framework;
 using SkinnedModel;
@@ -36,7 +37,7 @@ namespace LightSavers.Components.GameObjects.Aliens
 
         // spawning / dying / destruction
         public int _health;
-        public BaseSpawner _spawner;
+        public CampaignSection _section;
         public bool _mustBeDeleted;
 
         #region ACCESSORS
@@ -48,12 +49,12 @@ namespace LightSavers.Components.GameObjects.Aliens
         #endregion
 
 
-        public virtual void Construct(Vector3 spawnPosition, float rotation, BaseSpawner spawner)
+        public virtual void Construct(Vector3 spawnPosition, float rotation, CampaignSection section)
         {
             this._mustBeDeleted = false;
             this._position = spawnPosition;
             this._rotation = rotation;
-            this._spawner = spawner;
+            this._section = section;
         }
 
         public void UpdateAnimations(float ms)

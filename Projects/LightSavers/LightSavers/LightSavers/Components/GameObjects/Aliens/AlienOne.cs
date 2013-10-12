@@ -1,5 +1,6 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
+using LightSavers.Components.CampainManager;
 using LightSavers.Components.Projectiles;
 using LightSavers.Utils;
 using LightSavers.Utils.Geometry;
@@ -17,14 +18,14 @@ namespace LightSavers.Components.GameObjects.Aliens
 
         public AlienOne() { }
 
-        public AlienOne(Vector3 spawnPosition, BaseSpawner spawner)
+        public AlienOne(Vector3 spawnPosition, CampaignSection section)
         {
-            Construct(spawnPosition, (float)Globals.random.NextDouble() * MathHelper.TwoPi, spawner);
+            Construct(spawnPosition, (float)Globals.random.NextDouble() * MathHelper.TwoPi, section);
         }
 
-        public override void Construct(Vector3 spawnPosition, float rotation, BaseSpawner spawner)
+        public override void Construct(Vector3 spawnPosition, float rotation, CampaignSection section)
         {
-            base.Construct(spawnPosition, rotation, spawner);
+            base.Construct(spawnPosition, rotation, section);
 
             this._state = AlienState.ALIVE;
             this._health = 90;

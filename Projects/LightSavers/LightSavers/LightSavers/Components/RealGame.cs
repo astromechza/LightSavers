@@ -25,63 +25,60 @@ namespace LightSavers.Components
     public class RealGame
     {
         public PlayerObject[] players;
-        public ProjectileManager projectileManager;
-        public DropFragmentManager fragmentManager;
+        public ProjectileManager projectileManager = new ProjectileManager();
+        public DropFragmentManager fragmentManager = new DropFragmentManager();
         public BlockBasedSceneGraph sceneGraph;
         public WorldBuilder worldBuilder;
         public CellCollider cellCollider;
 
         public CampaignManager campaignManager;
 
-        Color[] playerColours = new Color[] {
+        private static Color[] playerColours = new Color[] {
                 new Color(0.5f, 1.0f, 0.5f),
                 new Color(0.5f, 0.6f, 1.0f)
         };
 
-        Vector3[] spawns = new Vector3[] {
-                new Vector3(4, 0, 4),
-                new Vector3(4, 0, 10)
+        private static Vector3[] spawns = new Vector3[] {
+                new Vector3(22, 0, 14),
+                new Vector3(22, 0, 20)
         };
 
-        public RealGame(int numberOfSections, int numPlayers, BlockBasedSceneGraph sg)
+        private List<Vector2> criticalPoints = new List<Vector2>(8);
+
+        public RealGame(int numberOfSections, int numPlayers, BlockBasedSceneGraph sceneGraph)
         {
+            // setup
             Globals.gameInstance = this;
+            this.sceneGraph = sceneGraph;
 
-            campaignManager = new CampaignManager(numberOfSections);
-
-            sceneGraph = sg;
-
+            // object to store collisions (the size of the world)
             cellCollider = new CellCollider(32, numberOfSections * 32);
 
-            worldBuilder = new WorldBuilder(numberOfSections, Vector3.Zero);
+            // holds links between current spawn populations, doors and lights
+            campaignManager = new CampaignManager(numberOfSections);
 
-            projectileManager = new ProjectileManager();
-            fragmentManager = new DropFragmentManager();
+            // now build all the shit
+            WorldBuilder.Build(numberOfSections, Vector3.Zero);
             
-
+            // now spawn all player
             players = new PlayerObject[numPlayers];
-
-
             for (int i = 0; i < numPlayers; i++)
-            {
-                players[i] = new PlayerObject((i==0) ? PlayerIndex.One : PlayerIndex.Two, playerColours[i], spawns[i], 0);
+            {                
+                players[i] = new PlayerObject((i==0) ? PlayerIndex.One : PlayerIndex.Two, playerColours[i], spawns[i], MathHelper.ToRadians(-90));
             }
 
-            // must be done AFTER the game has finished being created
-            campaignManager.InitialSpawn();
         }
 
         public void Update(float ms)
         {
             for (int i = 0; i < players.Length; i++) players[i].Update(ms);
             projectileManager.Update(ms);
-
-
+            
             campaignManager.Update(ms);
+
             fragmentManager.Update(ms);
         }
 
-        private List<Vector2> criticalPoints = new List<Vector2>(8);
         public List<Vector2> GetCriticalPoints()
         {
             criticalPoints.Clear();

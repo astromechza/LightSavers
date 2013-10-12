@@ -8,6 +8,7 @@ using LightPrePassRenderer;
 using Microsoft.Xna.Framework.Graphics;
 using LightSavers.Utils;
 using LightSavers.Components.GameObjects;
+using LightSavers.Components.CampainManager;
 
 namespace LightSavers.WorldBuilding
 {
@@ -15,54 +16,52 @@ namespace LightSavers.WorldBuilding
     public class WorldBuilder
     {
         // extra colours
-        private Color PureGreen = new Color(0, 255, 0);
-        
-        public Vector3 origin;
+        private static Color PureGreen = new Color(0, 255, 0);
 
-        public WorldBuilder(int size, Vector3 origin)
+        public static void Build(int size, Vector3 origin)
         {
-            this.origin = origin;
 
             if (size < 2) size = 2;
 
             Vector3 corigin = origin;
 
             // add start
-            BuildSection(0, corigin);
+            BuildSection(0, corigin, 0);
             corigin += Vector3.Right * 32;
 
             // add middles
             for (int i=0;i<size-2;i++)
             {
                 int ri = 2 + Globals.random.Next(AssetLoader.mdl_section.Length-2);
-                BuildSection(ri, corigin);
+                BuildSection(ri, corigin, i+1);
                 corigin += Vector3.Right * 32;
             }            
 
             // add end
-            BuildSection(1, corigin);
+            BuildSection(1, corigin, size-1);
 
 
 
         }
 
-        public void BuildSection(int index, Vector3 corigin)
+        public static void BuildSection(int id, Vector3 corigin, int index)
         {
             System.Diagnostics.Debug.WriteLine("Building Section @ " + corigin.ToString());
             Mesh mesh = new Mesh();
-            mesh.Model = AssetLoader.mdl_section[index];
+            mesh.Model = AssetLoader.mdl_section[id];
             mesh.Transform = Matrix.CreateTranslation(corigin + new Vector3(16, 0, 16));
             Globals.gameInstance.sceneGraph.Setup(mesh);
             Globals.gameInstance.sceneGraph.Add(mesh);
 
             System.Diagnostics.Debug.WriteLine("Spawning Entities");
-            SpawnEntities(index, corigin);
+            SpawnEntities(id, corigin, index);
         }
 
-        public void SpawnEntities(int index, Vector3 corigin)
+        public static void SpawnEntities(int id, Vector3 corigin, int index)
         {
+            CampaignSection csection = new CampaignSection(index, corigin);
 
-            Texture2D t = AssetLoader.tex_section_ent[index];
+            Texture2D t = AssetLoader.tex_section_ent[id];
             Color[] colours = new Color[96*96];
             t.GetData<Color>(colours);
 
@@ -85,7 +84,7 @@ namespace LightSavers.WorldBuilding
                     }
                     else if (c == Color.Yellow)
                     {
-                        SpawnOverheadLight(center);
+                        csection.AddOverheadLight(SpawnOverheadLight(center));
                     }
                     else if (c == Color.Red)
                     {
@@ -98,7 +97,7 @@ namespace LightSavers.WorldBuilding
                         Color cc = colours[pi2];
                         if (cc == PureGreen)
                         {
-                            Globals.gameInstance.campaignManager.AddDoor(new Door(center));
+                            csection.SetDoor(new Door(center));
                         }
                     }
                     else if (c == Color.DarkMagenta)
@@ -153,9 +152,11 @@ namespace LightSavers.WorldBuilding
 
                 }
             }
+
+            Globals.gameInstance.campaignManager.AddSection(csection);
         }
 
-        private float GetAngleToAWall(Color[] data, int x, int y)
+        private static float GetAngleToAWall(Color[] data, int x, int y)
         {
             Color u = data[(y - 3) * 96 + x];
             Color d = data[(y + 3) * 96 + x];
@@ -181,7 +182,7 @@ namespace LightSavers.WorldBuilding
             return 0;
         }
 
-        public void SpawnOverheadLight(Vector3 position)
+        public static Light SpawnOverheadLight(Vector3 position)
         {
             Mesh m = new Mesh();
             m.Model = AssetLoader.mdl_ceilinglight;
@@ -192,13 +193,15 @@ namespace LightSavers.WorldBuilding
             l.LightType = Light.Type.Point;
             l.Radius = 7;
             l.Intensity = 0.4f;
-
+            l.Enabled = false;
             
             l.Transform = Matrix.CreateTranslation(position + Vector3.Up * 4);
             Globals.gameInstance.sceneGraph.Add(l);
+
+            return l;
         }
 
-        public void SpawnFilingCabinet(Vector3 center, Color[] data, int x, int y)
+        public static void SpawnFilingCabinet(Vector3 center, Color[] data, int x, int y)
         {
             Globals.gameInstance.cellCollider.SetCollision(center.X, center.Z, true);
 

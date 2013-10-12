@@ -81,16 +81,6 @@ namespace LightSavers.Components.GameObjects
 
         public void Update(float ms)
         {
-            // TODO: remove once we have events firing properly
-            if (state == DoorState.CLOSED)
-            {
-                PlayerObject p = Globals.gameInstance.GetClosestPlayer(position);
-                float d = Vector3.DistanceSquared(p.Position, position);
-                if (d < DISTANCE)
-                {
-                    Open();
-                }
-            }  
 
             if (state == DoorState.CLOSING)
             {
