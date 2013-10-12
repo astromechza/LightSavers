@@ -28,7 +28,8 @@ namespace LightSavers
             Globals.inputController = new InputManager();
             Globals.random = new Random();
             Globals.content = Content;
-            Globals.content.RootDirectory = "Content";            
+            Globals.content.RootDirectory = "Content";
+            Globals.audioManager = new AudioManager(this);
 
             //uncap FPS
             Globals.graphics.SynchronizeWithVerticalRetrace = false; // uncheck to uncap fpx completely

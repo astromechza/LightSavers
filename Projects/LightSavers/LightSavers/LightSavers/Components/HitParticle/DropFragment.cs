@@ -22,8 +22,6 @@ namespace LightSavers.Components.HitParticle
         private Matrix rotationM;
         private Vector3 delta;
 
-        private RealGame game;
-
         public bool mustBeDeleted;
 
         public DropFragment() 
@@ -34,9 +32,8 @@ namespace LightSavers.Components.HitParticle
             this.mesh.SetCastShadows(false);
         }
 
-        public void Construct(RealGame game, Vector3 o)
+        public void Construct(Vector3 o)
         {
-            this.game = game;
             this.position = o;
             this.rotation = (float)Globals.random.NextDouble() * MathHelper.TwoPi;
             this.mustBeDeleted = false;
@@ -47,7 +44,7 @@ namespace LightSavers.Components.HitParticle
             this.mesh.Transform = rotationM * rotationM * Matrix.CreateTranslation(this.position);
 
             if(this.receipt != null)this.receipt.graph.Remove(this.receipt);
-            this.receipt = game.sceneGraph.Add(mesh);
+            this.receipt = Globals.gameInstance.sceneGraph.Add(mesh);
         }
 
         public void Update(float ms)

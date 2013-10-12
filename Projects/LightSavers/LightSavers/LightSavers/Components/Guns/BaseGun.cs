@@ -17,6 +17,10 @@ namespace LightSavers.Components.Guns
         public Vector3 emmitterPosition;
         public Vector3 emmitterVector;
 
+        public DateTime lastShot;
+        public TimeSpan coolDown;
+        public TimeSpan animationCoolDown;
+
         public BaseGun()
         {
             mesh = null;
@@ -24,6 +28,9 @@ namespace LightSavers.Components.Guns
             holdTransform = Matrix.Identity;
             emmitterVector = Vector3.Zero;
             emmitterPosition = Vector3.Zero;
+            lastShot = DateTime.Now;
+            coolDown = TimeSpan.Zero;
+            animationCoolDown = TimeSpan.Zero;
         }
 
         public void SetModel(Model m)
@@ -48,6 +55,25 @@ namespace LightSavers.Components.Guns
             holdTransform = t;
         }
 
+        public bool CanFire()
+        {
+            return (DateTime.Now-lastShot) > coolDown;
+        }
+
+        public virtual void Fire(float rotation)
+        {
+            PostFire();
+        }
+
+        public void PostFire()
+        {
+            lastShot = DateTime.Now;
+        }
+
+        public bool AnimationComplete()
+        {
+            return (DateTime.Now - lastShot) > animationCoolDown;
+        }
 
     }
 }

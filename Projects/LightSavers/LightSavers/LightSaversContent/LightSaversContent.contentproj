@@ -250,8 +250,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="projectiles\StandardBullet.xml">
-      <Name>StandardBullet</Name>
+    <Compile Include="projectiles\PistolBullet.xml">
+      <Name>PistolBullet</Name>
       <Importer>XmlImporter</Importer>
       <Processor>ProjectileModelProcessor</Processor>
     </Compile>
@@ -587,6 +587,108 @@
       <Name>sword_green</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    <Compile Include="soundz\menu\menu_music.mp3">
+      <Name>menu_music</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+    <Compile Include="soundz\menu\menu_select.wav">
+      <Name>menu_select</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="soundz\game\ambience\eeri2.mp3">
+      <Name>eeri2</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="soundz\game\creatures\attack.mp3">
+      <Name>attack</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="soundz\game\creatures\noise.mp3">
+      <Name>noise</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="projectiles\orange.png">
+      <Name>orange</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="projectiles\ShotgunBullet.xml">
+      <Name>ShotgunBullet</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>ProjectileModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="soundz\game\ambience\eeri1.mp3">
+      <Name>eeri1</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="soundz\game\ambience\eeri3.mp3">
+      <Name>eeri3</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="soundz\game\ambience\eeri4.mp3">
+      <Name>eeri4</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="soundz\game\characters\death.mp3">
+      <Name>death</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="soundz\game\characters\hit.mp3">
+      <Name>hit</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="soundz\game\creatures\range_attack.mp3">
+      <Name>range_attack</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="soundz\game\weapons\pistol.mp3">
+      <Name>pistol</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="soundz\game\weapons\shottie.mp3">
+      <Name>shottie</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="soundz\game\weapons\sniper.mp3">
+      <Name>sniper</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="soundz\game\weapons\sword.mp3">
+      <Name>sword</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
