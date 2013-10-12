@@ -14,9 +14,6 @@ namespace LightSavers.Components.GameObjects.Aliens
 {
     public class AlienOne : BaseAlien
     {
-        private enum AlienState { ALIVE, DEAD, DYING };
-
-        private AlienState _state;
 
         public AlienOne() { }
 
