@@ -67,6 +67,9 @@ namespace LightSavers
         public static Model mdl_dropfragment;
 
         public static SoundEffect snd_pistol;
+        public static SoundEffect snd_shottie;
+        public static SoundEffect snd_sniper;
+        public static SoundEffect snd_sword;
 
         public static Texture2D title2;
         public static Texture2D tex_black;
@@ -199,7 +202,14 @@ namespace LightSavers
             Globals.audioManager.LoadMenuSound("soundz/menu/menu_select", "menu_select");
 
             snd_pistol = Globals.content.Load<SoundEffect>("soundz/game/weapons/pistol");
-            Globals.audioManager.LoadEffect(snd_pistol, "pistol", 10);
+            snd_shottie = Globals.content.Load<SoundEffect>("soundz/game/weapons/shottie");
+            snd_sniper = Globals.content.Load<SoundEffect>("soundz/game/weapons/sniper");
+            snd_sword = Globals.content.Load<SoundEffect>("soundz/game/weapons/sword");
+
+            Globals.audioManager.LoadEffect(snd_pistol, "pistol", 5);
+            Globals.audioManager.LoadEffect(snd_shottie, "shottie", 3);
+            Globals.audioManager.LoadEffect(snd_sniper, "sniper", 3);
+            Globals.audioManager.LoadEffect(snd_sword, "sword", 3);
 
             //Load Character and animations
             mdl_character = loadModel("animatedmodels/player/spacemanAnimated");

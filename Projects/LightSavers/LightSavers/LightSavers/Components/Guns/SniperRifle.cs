@@ -22,6 +22,8 @@ namespace LightSavers.Components.Guns
 
         public override void Fire(float rotation)
         {
+            Globals.audioManager.PlayInstaceOf("sniper", 0.3f);
+
             SniperBullet b = Globals.gameInstance.projectileManager.sniperBulletPool.Provide();
             b.Construct(emmitterPosition, rotation);
 

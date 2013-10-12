@@ -21,9 +21,9 @@ namespace LightSavers.Components.Guns
 
         public override void Fire(float rotation)
         {
-            PistolBullet b = Globals.gameInstance.projectileManager.pistolBulletPool.Provide();
-            b.Construct(emmitterPosition, rotation);
             Globals.audioManager.PlayInstaceOf("pistol", 0.3f);
+            PistolBullet b = Globals.gameInstance.projectileManager.pistolBulletPool.Provide();
+            b.Construct(emmitterPosition, rotation);           
             base.Fire(rotation);
         }
     }
