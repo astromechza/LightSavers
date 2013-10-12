@@ -158,16 +158,46 @@ namespace LightSavers.ScreenManagement.Layers
 
         private void CheckControls()
         {
+            //back button
             if (Globals.inputController.isButtonReleased(Buttons.B, null))
             {
                 this.StartTransitionOff();
             }
+            
+            //select (enter)
             else if (Globals.inputController.isButtonReleased(Buttons.A, null))
             {
                 //Globals.audioManager.PlayMenuSound("menu_select");
                 Globals.audioManager.StopMusic();
                 this.fadeOutCompleteCallback = StartGame;
                 this.StartTransitionOff();
+            }
+
+            else if (Globals.inputController.isButtonReleased(Buttons.DPadUp, null) || Globals.inputController.isButtonReleased(Buttons.LeftThumbstickUp, null))
+            {
+                int selectedIndex = submenus[currentSubMenuIndex].selected;
+                int size = submenus[currentSubMenuIndex].items.Count();
+                int newIndex = selectedIndex-1;
+
+                if (newIndex < 0)
+                {
+                    newIndex = size-1;
+                }
+
+                submenus[currentSubMenuIndex].selected = newIndex;
+            }
+            else if (Globals.inputController.isButtonReleased(Buttons.DPadDown, null) || Globals.inputController.isButtonReleased(Buttons.LeftThumbstickDown, null))
+            {
+                int selectedIndex = submenus[currentSubMenuIndex].selected;
+                int size = submenus[currentSubMenuIndex].items.Count();
+                int newIndex = ++selectedIndex;
+
+                if (newIndex == size)
+                {
+                    newIndex = 0;
+                }
+
+                submenus[currentSubMenuIndex].selected = newIndex;
             }
         }
         #endregion

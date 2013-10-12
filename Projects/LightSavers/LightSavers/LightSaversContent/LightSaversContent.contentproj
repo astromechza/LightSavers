@@ -376,6 +376,11 @@
       <Importer>FbxImporter</Importer>
       <Processor>LightPrePassProcessor</Processor>
     </Compile>
+    <Compile Include="fonts\HealthFont.spritefont">
+      <Name>HealthFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="animatedmodels\alien03\Alien03 Animations.txt">

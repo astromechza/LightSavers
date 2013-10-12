@@ -73,6 +73,8 @@ namespace LightSavers
         public static Texture2D tex_white;
         public static SpriteFont fnt_assetloadscreen;
 
+        public static SpriteFont fnt_healthgamescreen;
+
         //HUDS
         public static Texture2D ammo;
         public static Texture2D pistol_blue;
@@ -116,6 +118,7 @@ namespace LightSavers
 
             // Assets required to view the loading screen
             fnt_assetloadscreen = Globals.content.Load<SpriteFont>("fonts/LoadingFont");
+            fnt_healthgamescreen = Globals.content.Load<SpriteFont>("fonts/HealthFont");
             tex_black = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
             tex_black.SetData(new Color[] { Color.Black });
             tex_white = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);

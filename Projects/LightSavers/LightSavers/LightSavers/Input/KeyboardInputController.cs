@@ -132,49 +132,71 @@ namespace LightSavers.Components
             switch (b)
             {
                 case Buttons.A:
-                    return Keys.D1;
+                    return Keys.Enter;
+
                 case Buttons.B:
-                    return Keys.D2;
+                    return Keys.Back;
+
                 case Buttons.Back:
                     return Keys.Escape;
+
                 case Buttons.DPadDown:
                     return Keys.S;
+
                 case Buttons.DPadLeft:
                     return Keys.A;
+
                 case Buttons.DPadRight:
                     return Keys.D;
+
                 case Buttons.DPadUp:
                     return Keys.W;
+
                 case Buttons.LeftShoulder:
                     return Keys.Q;
+
                 case Buttons.RightShoulder:
                     return Keys.E;
+
                 case Buttons.X:
                     return Keys.D3;
+
                 case Buttons.Y:
                     return Keys.D4;
+
                 case Buttons.Start:
                     return Keys.Enter;
+
                 case Buttons.LeftThumbstickLeft:
-                    return Keys.F;
+                    return Keys.D;
+
                 case Buttons.LeftThumbstickRight:
-                    return Keys.H;
+                    return Keys.A;
+
                 case Buttons.LeftThumbstickDown:
-                    return Keys.G;
+                    return Keys.S;
+
                 case Buttons.LeftThumbstickUp:
-                    return Keys.T;
+                    return Keys.W;
+
                 case Buttons.RightThumbstickLeft:
                     return Keys.J;
+
                 case Buttons.RightThumbstickRight:
                     return Keys.L;
+
                 case Buttons.RightThumbstickDown:
                     return Keys.K;
+
                 case Buttons.RightThumbstickUp:
                     return Keys.I;
+
                 case Buttons.LeftTrigger:
                     return Keys.LeftShift;
+
                 case Buttons.RightTrigger:
                     return Keys.Space;
+
                 default:
                     return Keys.F1;
             }
