@@ -22,6 +22,7 @@ namespace LightSavers.Components.GameObjects
 
         // Light stuff
         const float TORCH_HEIGHT = 2.5f;
+        const float TORCH_ANGLE = 30.0f;
         const float HALO_HEIGHT = 6.0f;
 
         Matrix mPlayerScale = Matrix.CreateScale(PLAYER_SCALE);
@@ -323,7 +324,7 @@ namespace LightSavers.Components.GameObjects
             torchlight.LightType = Light.Type.Spot;
             torchlight.ShadowDepthBias = 0.002f;
             torchlight.Radius = 15;
-            torchlight.SpotAngle = 25;
+            torchlight.SpotAngle = TORCH_ANGLE;
             torchlight.Intensity = 1.0f;
             torchlight.SpotExponent = 6;
             torchlight.Color = color*1.1f;
