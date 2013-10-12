@@ -175,8 +175,7 @@ namespace LightSavers.ScreenManagement.Layers
             else if (Globals.inputController.isButtonReleased(Buttons.A, null))
             {
                 //Globals.audioManager.PlayMenuSound("menu_select");
-                /*Globals.audioManager.StopMusic();
-                Globals.audioManager.PlayMusic("music");
+                /*
                 this.fadeOutCompleteCallback = StartGame;
                 this.StartTransitionOff();*/
                 if (submenus[currentSubMenuIndex].items[submenus[currentSubMenuIndex].selected] is TransitionItem)
