@@ -131,11 +131,14 @@
     <Compile Include="Components\MenuObjects\Submenu.cs" />
     <Compile Include="Components\MenuObjects\ToggleItem.cs" />
     <Compile Include="Components\MenuObjects\TransitionItem.cs" />
+    <Compile Include="Components\Projectiles\AssaultBullet.cs" />
+    <Compile Include="Components\Projectiles\BaseBullet.cs" />
     <Compile Include="Components\Projectiles\ShotgunBullet.cs" />
     <Compile Include="Components\Projectiles\PistolBullet.cs" />
     <Compile Include="Components\MenuObjects\MenuBackground.cs" />
     <Compile Include="Components\Projectiles\ProjectileManager.cs" />
     <Compile Include="Components\Projectiles\IProjectile.cs" />
+    <Compile Include="Components\Projectiles\SniperBullet.cs" />
     <Compile Include="Components\RealGame.cs" />
     <Compile Include="Components\GameObjects\GameObject.cs" />
     <Compile Include="Components\GameObjects\PlayerObject.cs" />

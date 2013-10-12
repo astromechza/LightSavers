@@ -685,6 +685,20 @@
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="projectiles\AssaultBullet.xml">
+      <Name>AssaultBullet</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>ProjectileModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="projectiles\SniperBullet.xml">
+      <Name>SniperBullet</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>ProjectileModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

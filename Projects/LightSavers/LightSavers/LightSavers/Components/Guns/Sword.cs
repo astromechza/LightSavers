@@ -12,6 +12,8 @@ namespace LightSavers.Components.Guns
         {
             SetModel(AssetLoader.mdl_sword);
             SetHoldTransform(Matrix.Identity);
+            this.coolDown = new TimeSpan(0, 0, 0, 0, 1000);
+            this.animationCoolDown = new TimeSpan(0, 0, 0, 0, 1000);
         }
     }
 }
