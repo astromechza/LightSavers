@@ -25,7 +25,7 @@ namespace LightSavers.Components.MenuObjects
             {
                 canvas.Draw(AssetLoader.diamond, new Rectangle(x - 50, y + 6, 40, 15), Color.White);
             }
-            canvas.DrawString(AssetLoader.fnt_assetloadscreen, label, new Vector2(x, y), (selected) ? Color.White : Color.Gray);
+            canvas.DrawString(AssetLoader.fnt_assetloadscreen, label, new Vector2(x, y), (selected) ? Color.LightBlue : Color.CornflowerBlue);
         }
     }
 }

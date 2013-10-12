@@ -85,10 +85,10 @@ namespace LightSavers.ScreenManagement.Layers
             submenus.Add(s0);
 
             Submenu s1 = new Submenu();
+            s1.AddItem(new DelegateItem("Start Game", StartGame));
             s1.AddItem(new ToggleItem("Players", new String[] { "1", "2" }));
             s1.AddItem(new ToggleItem("Level Length", new String[] { "Short", "Medium", "Tiring" }));
             s1.AddItem(new ToggleItem("Difficulty", new String[] { "Easy", "Medium", "Hard" }));
-            s1.AddItem(new TransitionItem("Continue", 100));
 
             submenus.Add(s1);
 
@@ -166,13 +166,13 @@ namespace LightSavers.ScreenManagement.Layers
         private void CheckControls()
         {
             //back button
-            if (Globals.inputController.isButtonReleased(Buttons.B, null))
+            if (Globals.inputController.isButtonPressed(Buttons.B, null))
             {
                 this.StartTransitionOff();
             }
             
             //select (enter)
-            else if (Globals.inputController.isButtonReleased(Buttons.A, null))
+            else if (Globals.inputController.isButtonPressed(Buttons.A, null))
             {
                 //Globals.audioManager.PlayMenuSound("menu_select");
                 /*
@@ -185,20 +185,21 @@ namespace LightSavers.ScreenManagement.Layers
                     {
                         this.StartTransitionOff();
                     }
-                    else if (destination == 100)
-                    {
-                        this.fadeOutCompleteCallback = StartGame;
-                        this.StartTransitionOff();
-                    }
+                        
                     else
                     {
                         currentSubMenuIndex = destination;
                     }
                 }
+                else if(submenus[currentSubMenuIndex].items[submenus[currentSubMenuIndex].selected] is DelegateItem)
+                {
+                    this.fadeOutCompleteCallback = StartGame;
+                    this.StartTransitionOff();
+                }
             }
 
             //GOING UP IN MENUS
-            else if (Globals.inputController.isButtonReleased(Buttons.DPadUp, null) || Globals.inputController.isButtonReleased(Buttons.LeftThumbstickUp, null))
+            else if (Globals.inputController.isButtonPressed(Buttons.DPadUp, null) || Globals.inputController.isButtonPressed(Buttons.LeftThumbstickUp, null))
             {
                 int selectedIndex = submenus[currentSubMenuIndex].selected;
                 int size = submenus[currentSubMenuIndex].items.Count();
@@ -213,7 +214,7 @@ namespace LightSavers.ScreenManagement.Layers
             }
             
             //GOING DOWN IN MENUS
-            else if (Globals.inputController.isButtonReleased(Buttons.DPadDown, null) || Globals.inputController.isButtonReleased(Buttons.LeftThumbstickDown, null))
+            else if (Globals.inputController.isButtonPressed(Buttons.DPadDown, null) || Globals.inputController.isButtonPressed(Buttons.LeftThumbstickDown, null))
             {
                 int selectedIndex = submenus[currentSubMenuIndex].selected;
                 int size = submenus[currentSubMenuIndex].items.Count();
@@ -228,7 +229,7 @@ namespace LightSavers.ScreenManagement.Layers
             }
             
             //GOING LEFT IN MENUS (TOGGLE)
-            else if (Globals.inputController.isButtonReleased(Buttons.DPadLeft, null) || Globals.inputController.isButtonReleased(Buttons.LeftThumbstickLeft, null))
+            else if (Globals.inputController.isButtonPressed(Buttons.DPadLeft, null) || Globals.inputController.isButtonPressed(Buttons.LeftThumbstickLeft, null))
             {
                 if (submenus[currentSubMenuIndex].items[submenus[currentSubMenuIndex].selected] is ToggleItem)
                 {
@@ -247,19 +248,22 @@ namespace LightSavers.ScreenManagement.Layers
             }
 
             //GOING RIGHT IN MENUS (TOGGLE)
-            else if (Globals.inputController.isButtonReleased(Buttons.DPadRight, null) || Globals.inputController.isButtonReleased(Buttons.LeftThumbstickRight, null))
+            else if (Globals.inputController.isButtonPressed(Buttons.DPadRight, null) || Globals.inputController.isButtonPressed(Buttons.LeftThumbstickRight, null))
             {
-                ToggleItem currentToggle = (ToggleItem)submenus[currentSubMenuIndex].items[submenus[currentSubMenuIndex].selected];
-
-                int selectedIndex = currentToggle.current;
-                int size = currentToggle.values.Count();
-                int newIndex = ++selectedIndex;
-
-                if (newIndex == size)
+                if (submenus[currentSubMenuIndex].items[submenus[currentSubMenuIndex].selected] is ToggleItem)
                 {
-                    newIndex = 0;
+                    ToggleItem currentToggle = (ToggleItem)submenus[currentSubMenuIndex].items[submenus[currentSubMenuIndex].selected];
+
+                    int selectedIndex = currentToggle.current;
+                    int size = currentToggle.values.Count();
+                    int newIndex = ++selectedIndex;
+
+                    if (newIndex == size)
+                    {
+                        newIndex = 0;
+                    }
+                    currentToggle.current = newIndex;
                 }
-                currentToggle.current = newIndex;
             }
         }
         #endregion

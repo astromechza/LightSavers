@@ -118,10 +118,10 @@ namespace LightSavers.Components
             else
             {
                 Vector2 v = Vector2.Zero;
-                if (CurrentKeyboardState.IsKeyDown(Keys.J)) v += new Vector2(-1.0f, 0.0f);
-                if (CurrentKeyboardState.IsKeyDown(Keys.L)) v += new Vector2(1.0f, 0.0f);
-                if (CurrentKeyboardState.IsKeyDown(Keys.K)) v += new Vector2(0.0f, -1.0f);
-                if (CurrentKeyboardState.IsKeyDown(Keys.I)) v += new Vector2(0.0f, 1.0f);
+                if (CurrentKeyboardState.IsKeyDown(Keys.Left)) v += new Vector2(-1.0f, 0.0f);
+                if (CurrentKeyboardState.IsKeyDown(Keys.Right)) v += new Vector2(1.0f, 0.0f);
+                if (CurrentKeyboardState.IsKeyDown(Keys.Down)) v += new Vector2(0.0f, -1.0f);
+                if (CurrentKeyboardState.IsKeyDown(Keys.Up)) v += new Vector2(0.0f, 1.0f);
 
                 return v;
             }
@@ -162,7 +162,7 @@ namespace LightSavers.Components
                     return Keys.D3;
 
                 case Buttons.Y:
-                    return Keys.D4;
+                    return Keys.RightShift;
 
                 case Buttons.Start:
                     return Keys.Enter;
@@ -180,16 +180,16 @@ namespace LightSavers.Components
                     return Keys.W;
 
                 case Buttons.RightThumbstickLeft:
-                    return Keys.J;
+                    return Keys.Left;
 
                 case Buttons.RightThumbstickRight:
-                    return Keys.L;
+                    return Keys.Right;
 
                 case Buttons.RightThumbstickDown:
-                    return Keys.K;
+                    return Keys.Down;
 
                 case Buttons.RightThumbstickUp:
-                    return Keys.I;
+                    return Keys.Up;
 
                 case Buttons.LeftTrigger:
                     return Keys.LeftShift;
