@@ -110,8 +110,9 @@
     <Compile Include="Collisions\CellCollider.cs" />
     <Compile Include="Components\AudioManager.cs" />
     <Compile Include="Components\CampainManager\CampaignManager.cs" />
+    <Compile Include="Components\CampainManager\CampaignSection.cs" />
     <Compile Include="Components\GameObjects\Aliens\AlienOne.cs" />
-    <Compile Include="Components\GameObjects\Aliens\AlienSpawner.cs" />
+    <Compile Include="Components\GameObjects\Aliens\AlienSpawner2.cs" />
     <Compile Include="Components\GameObjects\Aliens\BaseAlien.cs" />
     <Compile Include="Components\GameObjects\Aliens\BaseSpawner.cs" />
     <Compile Include="Components\GameObjects\Animation States.cs" />

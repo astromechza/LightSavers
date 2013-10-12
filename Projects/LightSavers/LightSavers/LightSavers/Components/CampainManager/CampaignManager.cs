@@ -13,39 +13,66 @@ namespace LightSavers.Components.CampainManager
     {
         private int numberOfSections;
 
-        // list of doors
-        private List<Door> doors;
-
-        // list of creep spawners
-        private AlienSpawner<AlienOne> alienOneSpawner;
-
         // link to parent game
         public RealGame game;
+
+        public List<CampaignSection> sections;
+        private int currentSection;
+        private int lastSection;
+
+        #region
+        public int CurrentSection { get { return currentSection; } }
+        #endregion
 
         public CampaignManager(int numberOfSections)
         {
             this.numberOfSections = numberOfSections;
-            this.doors = new List<Door>(numberOfSections);
-            this.alienOneSpawner = new AlienSpawner<AlienOne>(10, 15, 2000, 1000);
-        }
-
-        public void InitialSpawn()
-        {
-            this.alienOneSpawner.InitialSpawn();
-        }
-
-        public void AddDoor(Door d)
-        {
-            this.doors.Add(d);
+            this.sections = new List<CampaignSection>(numberOfSections);
+            this.currentSection = 0;
+            this.lastSection = -1;
         }
 
         public void Update(float ms)
         {
-            RectangleF territory = Globals.gameInstance.GetPlayerTerritory();
+            UpdateAliens(ms);
 
-            for (int i = 0; i < this.doors.Count; i++) this.doors[i].Update(ms);
+            if (sections[currentSection].GetAlienCount() == 0)
+            {
+                sections[currentSection].Open();
+                currentSection += 1;
+                sections[currentSection].FillWithAliens();
+            }
 
-            alienOneSpawner.Update(ms);
+            UpdateDoors(ms);
+
+        }
+
+        // Update all the aliens
+        public void UpdateAliens(float ms)
+        {
+            for (int i = 0; i < sections.Count; i++)
+            {
+                sections[i].UpdateAliens(ms);
+            }
+        }
+
+        // Update all the doors
+        public void UpdateDoors(float ms)
+        {
+            for (int i = 0; i < sections.Count; i++)
+            {
+                if (sections[i].HasDoor()) sections[i].UpdateDoor(ms);
+            }
+        }
+
+        public void AddSection(CampaignSection csection)
+        {
+            sections.Add(csection);
+        }
+
+        public void SpawnAliensInSection(int index)
+        {
+            sections[index].FillWithAliens();
         }
     }
 }
