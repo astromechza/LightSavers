@@ -33,6 +33,16 @@ namespace LightSavers.Components
 
         public CampaignManager campaignManager;
 
+        Color[] playerColours = new Color[] {
+                new Color(0.5f, 1.0f, 0.5f),
+                new Color(0.5f, 0.6f, 1.0f)
+        };
+
+        Vector3[] spawns = new Vector3[] {
+                new Vector3(4, 0, 4),
+                new Vector3(4, 0, 10)
+        };
+
         public RealGame(int numberOfSections, int numPlayers, BlockBasedSceneGraph sg)
         {
             Globals.gameInstance = this;
@@ -51,15 +61,6 @@ namespace LightSavers.Components
 
             players = new PlayerObject[numPlayers];
 
-            Color[] playerColours = new Color[] {
-                new Color(0.5f, 1.0f, 0.5f),
-                new Color(0.5f, 0.6f, 1.0f)
-            };
-
-            Vector3[] spawns = new Vector3[] {
-                new Vector3(4, 0, 4),
-                new Vector3(4, 0, 10)
-            };
 
             for (int i = 0; i < numPlayers; i++)
             {
