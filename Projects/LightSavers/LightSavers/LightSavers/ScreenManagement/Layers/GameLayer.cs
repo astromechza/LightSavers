@@ -58,7 +58,8 @@ namespace LightSavers.ScreenManagement.Layers
             sceneGraph.SetLightDelegate(delegate(Light l) { });
 
             // Load the Game
-            Globals.gameInstance = new RealGame(10, 1, sceneGraph);
+            //second number is number of players
+            Globals.gameInstance = new RealGame(10, 2, sceneGraph);
 
             cameraController = new CameraController(viewport, Matrix.Identity);
             cameraController.Fit(Globals.gameInstance.GetCriticalPoints());
@@ -69,7 +70,6 @@ namespace LightSavers.ScreenManagement.Layers
         private RenderTarget2D temp;
         public override void Draw()
         {
-            
             // reset these because spritebatch can do nasty stuff
             Globals.graphics.GraphicsDevice.BlendState = BlendState.Opaque;
             Globals.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
@@ -86,10 +86,10 @@ namespace LightSavers.ScreenManagement.Layers
 
             // draw the 3d scene
             canvas.Draw(temp, viewport.Bounds, Color.White);
-            //canvas.Draw(AssetLoader.shot_blue, new Rectangle(0, viewport.Bounds.Height - (467 / 4), 981 / 4, 467 / 4), Color.White);
-            //canvas.Draw(AssetLoader.pistol_green, new Rectangle(viewport.Bounds.Width - (981 / 4), viewport.Bounds.Height - (467 / 4), 981 / 4, 467 / 4), Color.White);
-            int blueWeapon = Globals.gameInstance.players[0].currentWeapon;
 
+            //SETTING UP HUDS
+            int blueWeapon = Globals.gameInstance.players[0].currentWeapon;
+            
             Texture2D BlueTex = AssetLoader.pistol_blue;
 
             //finding blue hud
@@ -109,9 +109,14 @@ namespace LightSavers.ScreenManagement.Layers
             {
                 BlueTex = AssetLoader.sword_blue;
             }
+            String health = "" + Globals.gameInstance.players[0].health;
 
-            canvas.Draw(AssetLoader.ammo, new Rectangle(10, viewport.Bounds.Height - (140) - 60/2, 40/2, 80/2), Color.White);
-            canvas.Draw(BlueTex, new Rectangle(0, viewport.Bounds.Height - (140), 249, 140), Color.White);
+            Vector2 w = AssetLoader.fnt_assetloadscreen.MeasureString(health);
+
+            canvas.Draw(BlueTex, new Rectangle(0, viewport.Bounds.Height - (104), 197, 104), Color.White);
+            canvas.DrawString(AssetLoader.fnt_assetloadscreen, health, new Vector2((160 - w.X / 2), viewport.Bounds.Height - (82)), Color.White);
+
+            
 
             if (Globals.gameInstance.players.Length == 2)
             {
@@ -135,10 +140,16 @@ namespace LightSavers.ScreenManagement.Layers
                 {
                     GreenTex = AssetLoader.sword_green;
                 }
+                Globals.gameInstance.players[1].health = 120;
+                health = "" + Globals.gameInstance.players[1].health;
 
-                canvas.Draw(AssetLoader.ammo, new Rectangle(viewport.Bounds.Width - 249, viewport.Bounds.Height - (140) - 60/2, 40/2, 80/2), Color.White);
-                canvas.Draw(GreenTex, new Rectangle(viewport.Bounds.Width - 249, viewport.Bounds.Height - (140), 249, 140), Color.White);
+                w = AssetLoader.fnt_assetloadscreen.MeasureString(health);
+
+                canvas.Draw(GreenTex, new Rectangle(viewport.Bounds.Width - 197, viewport.Bounds.Height - (104), 197, 104), Color.White);
+                canvas.DrawString(AssetLoader.fnt_assetloadscreen, health, new Vector2(viewport.Bounds.Width - 197 + (37 - w.X / 2), viewport.Bounds.Height - (82)), Color.White);
+                
             }
+            //FINISHED HUDS
 
             canvas.End();
             
