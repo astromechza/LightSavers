@@ -67,6 +67,24 @@ namespace LightSavers
         public static Texture2D tex_white;
         public static SpriteFont fnt_assetloadscreen;
 
+        //HUDS
+        public static Texture2D ammo;
+        public static Texture2D pistol_blue;
+        public static Texture2D pistol_green;
+
+        public static Texture2D rifle_green;
+        public static Texture2D rifle_blue;
+
+        public static Texture2D sniper_green;
+        public static Texture2D sniper_blue;
+
+        public static Texture2D shot_green;
+        public static Texture2D shot_blue;
+
+        public static Texture2D sword_green;
+        public static Texture2D sword_blue;
+
+
         public static Texture2D diamond;
 
         // -- Sections
@@ -100,6 +118,20 @@ namespace LightSavers
 
             title2 = Globals.content.Load<Texture2D>("textures/title2");
             diamond = Globals.content.Load<Texture2D>("textures/diamond");
+
+            //HUDs
+            ammo = Globals.content.Load<Texture2D>("textures/HUDs/ammo");
+            pistol_blue = Globals.content.Load<Texture2D>("textures/HUDs/pistol_blue");
+            pistol_green = Globals.content.Load<Texture2D>("textures/HUDs/pistol_green");
+            shot_blue = Globals.content.Load<Texture2D>("textures/HUDs/shot_blue");
+            shot_green = Globals.content.Load<Texture2D>("textures/HUDs/shot_green");
+            rifle_blue = Globals.content.Load<Texture2D>("textures/HUDs/rifle_blue");
+            rifle_green = Globals.content.Load<Texture2D>("textures/HUDs/rifle_green");
+            sniper_blue = Globals.content.Load<Texture2D>("textures/HUDs/sniper_blue");
+            sniper_green = Globals.content.Load<Texture2D>("textures/HUDs/sniper_green");
+            sword_blue = Globals.content.Load<Texture2D>("textures/HUDs/sword_blue");
+            sword_green = Globals.content.Load<Texture2D>("textures/HUDs/sword_green");
+
 
             // Fade times
             transitionOnTime = TimeSpan.FromSeconds(0.6);

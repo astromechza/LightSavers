@@ -533,6 +533,61 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="textures\HUDs\ammo.png">
+      <Name>ammo</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\HUDs\pistol_blue.png">
+      <Name>pistol_blue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\HUDs\pistol_green.png">
+      <Name>pistol_green</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\HUDs\rifle_blue.png">
+      <Name>rifle_blue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\HUDs\rifle_green.png">
+      <Name>rifle_green</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\HUDs\shot_blue.png">
+      <Name>shot_blue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\HUDs\shot_green.png">
+      <Name>shot_green</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\HUDs\sniper_blue.png">
+      <Name>sniper_blue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\HUDs\sniper_green.png">
+      <Name>sniper_green</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\HUDs\sword_blue.png">
+      <Name>sword_blue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\HUDs\sword_green.png">
+      <Name>sword_green</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="soundz\menu\menu_music.mp3">
       <Name>menu_music</Name>
       <Importer>Mp3Importer</Importer>

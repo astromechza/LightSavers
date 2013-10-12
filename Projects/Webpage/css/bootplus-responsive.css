@@ -135,7 +135,7 @@
   .navbar-static-top .container,
   .navbar-fixed-top .container,
   .navbar-fixed-bottom .container {
-    width: 80%;
+    width: 1170px;
   }
   .span12 {
     width: 1170px;
@@ -162,7 +162,8 @@
     width: 470px;
   }
   .span4 {
-    width: 332px;
+  /*changed from 370*/
+    width: 363px;
   }
   .span3 {
     width: 270px;

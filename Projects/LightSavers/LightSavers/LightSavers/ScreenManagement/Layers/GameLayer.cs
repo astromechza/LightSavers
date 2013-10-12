@@ -86,7 +86,53 @@ namespace LightSavers.ScreenManagement.Layers
 
             // draw the 3d scene
             canvas.Draw(temp, viewport.Bounds, Color.White);
+            //canvas.Draw(AssetLoader.shot_blue, new Rectangle(0, viewport.Bounds.Height - (467 / 4), 981 / 4, 467 / 4), Color.White);
+            //canvas.Draw(AssetLoader.pistol_green, new Rectangle(viewport.Bounds.Width - (981 / 4), viewport.Bounds.Height - (467 / 4), 981 / 4, 467 / 4), Color.White);
+            int blueWeapon = 0;
+            int greenWeapon = 0;
 
+            Texture2D BlueTex = AssetLoader.pistol_blue;
+            Texture2D GreenTex = AssetLoader.pistol_green;
+
+            //finding blue hud
+            if (blueWeapon == 1)
+            {
+                BlueTex = AssetLoader.shot_blue;
+            }
+            else if (blueWeapon == 2)
+            {
+                BlueTex = AssetLoader.rifle_blue;
+            }
+            else if (blueWeapon == 3)
+            {
+                BlueTex = AssetLoader.sniper_blue;
+            }
+            else if (blueWeapon == 4)
+            {
+                BlueTex = AssetLoader.sword_blue;
+            }
+
+            //finding green hud
+            if (greenWeapon == 1)
+            {
+                GreenTex = AssetLoader.shot_green;
+            }
+            else if (greenWeapon == 2)
+            {
+                GreenTex = AssetLoader.rifle_green;
+            }
+            else if (greenWeapon == 3)
+            {
+                GreenTex = AssetLoader.sniper_green;
+            }
+            else if (greenWeapon == 4)
+            {
+                GreenTex = AssetLoader.sword_green;
+            }
+
+            canvas.Draw(AssetLoader.ammo, new Rectangle(10, viewport.Bounds.Height - (140) - 60, 40, 80), Color.White);
+            canvas.Draw(BlueTex, new Rectangle(0, viewport.Bounds.Height - (140), 249, 140), Color.White);
+            canvas.Draw(GreenTex, new Rectangle(viewport.Bounds.Width - 249, viewport.Bounds.Height - (140), 249, 140), Color.White);
             canvas.End();
             
         }
