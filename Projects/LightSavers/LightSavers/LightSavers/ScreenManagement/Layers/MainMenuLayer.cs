@@ -88,7 +88,7 @@ namespace LightSavers.ScreenManagement.Layers
             s1.AddItem(new ToggleItem("Players", new String[] { "1", "2" }));
             s1.AddItem(new ToggleItem("Level Length", new String[] { "Short", "Medium", "Tiring" }));
             s1.AddItem(new ToggleItem("Difficulty", new String[] { "Easy", "Medium", "Hard" }));
-            s1.AddItem(new TransitionItem("Continue", 0));
+            s1.AddItem(new TransitionItem("Continue", 100));
 
             submenus.Add(s1);
 
@@ -176,14 +176,18 @@ namespace LightSavers.ScreenManagement.Layers
             {
                 //Globals.audioManager.PlayMenuSound("menu_select");
                 /*
-                this.fadeOutCompleteCallback = StartGame;
-                this.StartTransitionOff();*/
+                */
                 if (submenus[currentSubMenuIndex].items[submenus[currentSubMenuIndex].selected] is TransitionItem)
                 {
                     TransitionItem current = (TransitionItem)submenus[currentSubMenuIndex].items[submenus[currentSubMenuIndex].selected];
                     int destination = current.destination;
                     if (destination == -1)
                     {
+                        this.StartTransitionOff();
+                    }
+                    else if (destination == 100)
+                    {
+                        this.fadeOutCompleteCallback = StartGame;
                         this.StartTransitionOff();
                     }
                     else

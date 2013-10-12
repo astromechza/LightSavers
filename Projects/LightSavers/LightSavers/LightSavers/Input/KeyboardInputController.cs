@@ -108,10 +108,10 @@ namespace LightSavers.Components
             {
                 Vector2 v = Vector2.Zero;
 
-                if (CurrentKeyboardState.IsKeyDown(Keys.F)) v += new Vector2(-1.0f, 0.0f);
-                if (CurrentKeyboardState.IsKeyDown(Keys.H)) v += new Vector2(1.0f, 0.0f);
-                if (CurrentKeyboardState.IsKeyDown(Keys.G)) v += new Vector2(0.0f, -1.0f);
-                if (CurrentKeyboardState.IsKeyDown(Keys.T)) v += new Vector2(0.0f, 1.0f);
+                if (CurrentKeyboardState.IsKeyDown(Keys.A)) v += new Vector2(-1.0f, 0.0f);
+                if (CurrentKeyboardState.IsKeyDown(Keys.D)) v += new Vector2(1.0f, 0.0f);
+                if (CurrentKeyboardState.IsKeyDown(Keys.S)) v += new Vector2(0.0f, -1.0f);
+                if (CurrentKeyboardState.IsKeyDown(Keys.W)) v += new Vector2(0.0f, 1.0f);
 
                 return v;
             }
