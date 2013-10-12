@@ -32,6 +32,12 @@ namespace LightSavers.Components
 
         Dictionary<string,SoundEffectInstance> menuSoundBank;
         Song menuMusic;
+        float volume = 1.0f;
+
+        public float Volume
+        {
+            get { return volume; }
+        }
         
         #endregion
 
@@ -122,9 +128,17 @@ namespace LightSavers.Components
         /// <summary>
         /// Loads and organizes the sounds used by the game.
         /// </summary>
-
-
         #endregion
+
+        ///Change the volume setting 0 - low, 1 mediam, 2 high
+        ///Plan of action - when resuming: 
+        ///Modify menu volume directly
+        ///Change volume before playing
+        ///change the volume before resuming. 
+        public void setVolume(int setting)
+        {
+
+        }
 
         #region Sound Methods
         /// <summary>

@@ -13,6 +13,11 @@ namespace LightSavers.Components.MenuObjects
         public String[] values;
         public int current;
 
+        public string Label
+        { 
+            get{return label;}
+        }
+
         public ToggleItem(String label, String[] values)
         {
             this.label = label;

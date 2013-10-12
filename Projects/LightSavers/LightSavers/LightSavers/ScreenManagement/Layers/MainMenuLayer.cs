@@ -244,6 +244,10 @@ namespace LightSavers.ScreenManagement.Layers
                         newIndex = size - 1;
                     }
                     currentToggle.current = newIndex;
+                    //if (currentToggle.Label == "volume")
+                    //{
+                       
+                    //}                   
                 }                
             }
 
