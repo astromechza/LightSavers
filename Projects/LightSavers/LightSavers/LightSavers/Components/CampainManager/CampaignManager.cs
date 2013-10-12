@@ -18,7 +18,6 @@ namespace LightSavers.Components.CampainManager
 
         public List<CampaignSection> sections;
         private int currentSection;
-        private int lastSection;
 
         #region
         public int CurrentSection { get { return currentSection; } }
@@ -29,7 +28,6 @@ namespace LightSavers.Components.CampainManager
             this.numberOfSections = numberOfSections;
             this.sections = new List<CampaignSection>(numberOfSections);
             this.currentSection = 0;
-            this.lastSection = -1;
         }
 
         public void Update(float ms)
@@ -73,6 +71,14 @@ namespace LightSavers.Components.CampainManager
         public void SpawnAliensInSection(int index)
         {
             sections[index].FillWithAliens();
+        }
+
+        public bool ProjectileCollidesDoor(Projectiles.BaseBullet b)
+        {
+
+            // top door
+            if (b.position.X > currentSection * 32 + 31f) return true;
+            return false;
         }
     }
 }

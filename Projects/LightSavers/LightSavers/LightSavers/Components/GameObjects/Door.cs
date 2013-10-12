@@ -31,6 +31,7 @@ namespace LightSavers.Components.GameObjects
         private Light lightRight;
 
         private Vector3 position;
+        public Vector3 Position { get { return position; } }
 
         private DoorState state;
         private float openPercent;

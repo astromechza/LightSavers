@@ -76,7 +76,7 @@ namespace LightPrePassRenderer.partitioning
             for (int index = 0; index < lights.Count; index++)
             {
                 Light l = lights[index];
-                if (frustum.Intersects(l.BoundingSphere))
+                if (l.Enabled && frustum.Intersects(l.BoundingSphere))
                 {
                     visibleLights.Add(l);
                 }
