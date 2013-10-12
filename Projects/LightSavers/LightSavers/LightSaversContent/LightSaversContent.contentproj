@@ -545,13 +545,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="soundz\game\ambience\eeri2.mp3">
-      <Name>eeri2</Name>
-      <Importer>Mp3Importer</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="soundz\game\creatures\attack.mp3">
       <Name>attack</Name>
       <Importer>Mp3Importer</Importer>
