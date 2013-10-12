@@ -587,6 +587,7 @@
       <Name>sword_green</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="soundz\menu\menu_music.mp3">
       <Name>menu_music</Name>
       <Importer>Mp3Importer</Importer>

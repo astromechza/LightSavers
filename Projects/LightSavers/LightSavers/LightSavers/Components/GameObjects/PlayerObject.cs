@@ -54,7 +54,7 @@ namespace LightSavers.Components.GameObjects
         private LightSceneGraphReceipt light3receipt;
 
         private BaseGun[] weapons;
-        private int currentWeapon;
+        public int currentWeapon;
         private int currentAnimation;
         private int currentFiringAnimation;
         int moving=0, weapon=Animation_States.pistol, shooting=0;
