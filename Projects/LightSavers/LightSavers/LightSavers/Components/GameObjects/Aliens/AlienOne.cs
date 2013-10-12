@@ -137,7 +137,7 @@ namespace LightSavers.Components.GameObjects.Aliens
 
         public void AssignRandomTarget()
         {
-            _targetPosition.X = this._position.X + (float)Globals.random.NextDouble() * 10 - 5;
+            _targetPosition.X = MathHelper.Clamp(this._position.X + (float)Globals.random.NextDouble() * 10 - 5, this._section.Index*32, this._section.Index*32 +32);
             _targetPosition.Z = this._position.Z + (float)Globals.random.NextDouble() * 10 - 5;
             _positionDelta = _targetPosition - _position;
             _positionDelta.Normalize();
