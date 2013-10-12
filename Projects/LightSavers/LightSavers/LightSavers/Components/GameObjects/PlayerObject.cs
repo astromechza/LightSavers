@@ -194,8 +194,22 @@ namespace LightSavers.Components.GameObjects
 
             if (Globals.inputController.isTriggerDown(Triggers.Right, playerIndex))
             {
+                
                 if (currentWeapon > -1 && weapons[currentWeapon].CanFire())
                 {
+                    Globals.audioManager.PlaySound("shoot_pistol_p1", false, 0.1f);
+                    
+
+                    //if (currentWeapon == 0)
+                    //    Globals.audioManager.PlaySound("shoot_pistol", false, 0.1f);
+                    //    weapon = Animation_States.snipshot;
+                    //else if (currentWeapon == 0)
+                    //    weapon = Animation_States.pistol;
+                    //else if (currentWeapon == 2)
+                    //    weapon = Animation_States.assault;
+                    //else if (currentWeapon == 4)
+                    //    weapon = Animation_States.sword;
+
                     weapons[currentWeapon].Fire(rotation + MathHelper.PiOver2);
                     shooting = Animation_States.shoot;
                 }

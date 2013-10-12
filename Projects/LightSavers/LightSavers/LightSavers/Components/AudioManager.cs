@@ -24,6 +24,8 @@ namespace LightSavers.Components
     {
         #region Fields
 
+        Dictionary<string, SEffectInstanceManager> soundFx;
+
         // Audio Data        
         Dictionary<string, SoundEffectInstance> soundBank;
         Dictionary<string, Song> musicBank;
@@ -40,8 +42,23 @@ namespace LightSavers.Components
             soundBank = new Dictionary<string, SoundEffectInstance>();
             musicBank = new Dictionary<string, Song>();
             menuSoundBank = new Dictionary<string, SoundEffectInstance>();
-
+            soundFx = new Dictionary<string, SEffectInstanceManager>();
             game.Components.Add(this);
+        }
+
+        /// <summary>
+        /// Play a new instance of a sound effect
+        /// </summary>
+        /// <param name="effectName eg. pistol"></param>
+        /// <param name="volume"></param>
+        public void PlayInstaceOf(string effectName, float volume)
+        {
+            soundFx[effectName].playSound(volume);
+        }
+
+        public void LoadEffect(SoundEffect SEffect, string effectName, int instances)
+        {
+            soundFx.Add(effectName, new SEffectInstanceManager(SEffect, instances));
         }
 
         #endregion
@@ -64,10 +81,6 @@ namespace LightSavers.Components
             Song song = Game.Content.Load<Song>(path);
 
             menuMusic = song;
-            //if (!musicBank.ContainsKey(alias))
-            //{
-            //    musicBank.Add(alias, song);
-            //}
         }
 
 
@@ -114,8 +127,6 @@ namespace LightSavers.Components
         #endregion
 
         #region Sound Methods
-
-
         /// <summary>
         /// Indexer. Return a sound instance by name.
         /// </summary>
@@ -150,7 +161,12 @@ namespace LightSavers.Components
             // If the sound exists, start it
             if (soundBank.ContainsKey(soundName))
             {
-                soundBank[soundName].Play();
+                if (soundBank[soundName].State == SoundState.Playing)
+                {
+
+                }
+                else
+                    soundBank[soundName].Play();
             }
         }
 

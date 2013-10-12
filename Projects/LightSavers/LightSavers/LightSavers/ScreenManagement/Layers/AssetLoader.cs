@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using LightSavers.ScreenManagement.Layers;
 using LightSavers.Utils;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using LightPrePassRenderer;
 using LightSavers.Components.GameObjects;
 using SkinnedModel;
@@ -62,6 +64,8 @@ namespace LightSavers
         public static Model mdl_sword;
         public static Model mdl_dropfragment;
 
+        public static SoundEffect snd_pistol;
+
         public static Texture2D title2;
         public static Texture2D tex_black;
         public static Texture2D tex_white;
@@ -83,7 +87,6 @@ namespace LightSavers
 
         public static Texture2D sword_green;
         public static Texture2D sword_blue;
-
 
         public static Texture2D diamond;
 
@@ -201,6 +204,9 @@ namespace LightSavers
             Globals.audioManager.PlayMenuMusic();
 
             Globals.audioManager.LoadMenuSound("soundz/menu/menu_select", "menu_select");
+
+            snd_pistol = Globals.content.Load<SoundEffect>("soundz/game/weapons/pistol");
+            Globals.audioManager.LoadEffect(snd_pistol, "pistol", 10);
 
             //Load Character and animations
             mdl_character = loadModel("animatedmodels/player/spacemanAnimated");
