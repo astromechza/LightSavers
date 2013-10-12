@@ -59,6 +59,9 @@ namespace LightSavers.Components.GameObjects
         private int currentFiringAnimation;
         int moving=0, weapon=Animation_States.pistol, shooting=0;
 
+        //basic default health is always 100
+        public int health = 100;
+
         public PlayerObject(PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
             this.playerIndex = playerIndex;
