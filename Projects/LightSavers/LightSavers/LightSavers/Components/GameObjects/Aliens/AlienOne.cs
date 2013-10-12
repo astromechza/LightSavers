@@ -14,6 +14,7 @@ namespace LightSavers.Components.GameObjects.Aliens
 {
     public class AlienOne : BaseAlien
     {
+
         public AlienOne() { }
 
         public AlienOne(Vector3 spawnPosition, BaseSpawner spawner)
@@ -23,8 +24,9 @@ namespace LightSavers.Components.GameObjects.Aliens
 
         public override void Construct(Vector3 spawnPosition, float rotation, BaseSpawner spawner)
         {
-            base.Construct(spawnPosition, rotation, spawner);            
+            base.Construct(spawnPosition, rotation, spawner);
 
+            this._state = AlienState.ALIVE;
             this._health = 90;
 
             this._mesh = new SkinnedMesh();
@@ -33,7 +35,7 @@ namespace LightSavers.Components.GameObjects.Aliens
             this._aplayer = new DurationBasedAnimator(_mesh.SkinningData, _mesh.SkinningData.AnimationClips["Take 001"], null);
 
             this._aplayer.AddAnimationPackage = AssetLoader.ani_alien1;
-            this._aplayer.StartClip(2);
+            this._aplayer.StartClip(Animation_States.moving);
 
             this.VerticalOffset = new Vector3(0, 0.8f, 0);
             this.ScaleMatrix = Matrix.CreateScale(0.6f);
@@ -53,62 +55,75 @@ namespace LightSavers.Components.GameObjects.Aliens
 
         public override void Update(float ms)
         {
-            #region TURN towards rotation target
-            float deltarotation = _targetRotation - _rotation;
-
-            // sanitise
-            if (deltarotation > Math.PI) deltarotation -= MathHelper.TwoPi;
-            if (deltarotation < -Math.PI) deltarotation += MathHelper.TwoPi;
-
-            // add difference
-            _rotation += (ms / 300) * deltarotation;
-            #endregion
-
-            #region CHECK distance to target, choose another if close
-            float distance = (_targetPosition - _position).LengthSquared();
-            if (distance < 0.4f)
+            if (_state == AlienState.ALIVE)
             {
-                AssignRandomTarget();
-            }
-            #endregion
+                #region TURN towards rotation target
+                float deltarotation = _targetRotation - _rotation;
 
-            // If target is in front, then it can move
-            if (deltarotation < 0.15f)
-            {
-                // calculate new position based on delta
-                Vector3 newpos = _position + _positionDelta * (ms / 200);
-                RebuildCollisionRectangle(newpos);
+                // sanitise
+                if (deltarotation > Math.PI) deltarotation -= MathHelper.TwoPi;
+                if (deltarotation < -Math.PI) deltarotation += MathHelper.TwoPi;
 
-                //TODO: collision check here
-                if (!Globals.gameInstance.cellCollider.RectangleCollides(_collisionRectangle))
+                // add difference
+                _rotation += (ms / 300) * deltarotation;
+                #endregion
+
+                #region CHECK distance to target, choose another if close
+                float distance = (_targetPosition - _position).LengthSquared();
+                if (distance < 0.4f)
                 {
-                    _position = newpos;
-                }
-                else
-                {
-                    // pick another target
                     AssignRandomTarget();
                 }
-            }
+                #endregion
 
-            UpdateAnimations(ms * 1.5f); // animations are accelerated a bit
-            UpdateMajorTransform();
-            _modelReceipt.graph.Renew(_modelReceipt);
-
-            // check for collision with bullet
-            IProjectile p = Globals.gameInstance.projectileManager.CheckHit(this);
-            if (p != null)
-            {
-                p.PreDestroy();
-                p.Destroy();
-                this._health -= p.GetDamage();
-                if (this._health <= 0)
+                // If target is in front, then it can move
+                if (deltarotation < 0.15f)
                 {
+                    // calculate new position based on delta
+                    Vector3 newpos = _position + _positionDelta * (ms / 200);
+                    RebuildCollisionRectangle(newpos);
+
+                    //TODO: collision check here
+                    if (!Globals.gameInstance.cellCollider.RectangleCollides(_collisionRectangle))
+                    {
+                        _position = newpos;
+                    }
+                    else
+                    {
+                        // pick another target
+                        AssignRandomTarget();
+                    }
+                }
+
+                UpdateAnimations(ms * 1.5f); // animations are accelerated a bit
+                UpdateMajorTransform();
+                _modelReceipt.graph.Renew(_modelReceipt);
+
+                // check for collision with bullet
+                IProjectile p = Globals.gameInstance.projectileManager.CheckHit(this);
+                if (p != null)
+                {
+                    p.PreDestroy();
+                    p.Destroy();
+                    this._health -= p.GetDamage();
+                    if (this._health <= 0)
+                    {
+                        this._state = AlienState.DYING;
+                        this._aplayer.StartClip(Animation_States.death);
+                    }
+                }
+            }
+            else
+            {
+                UpdateAnimations(ms * 1.5f); // animations are accelerated a bit
+
+                if (this._aplayer.GetLoopCount() > 0)
+                {
+                    this._state = AlienState.DEAD;
                     this._mustBeDeleted = true;
                     this.DestroyReceipt();
                 }
             }
-
         }
 
 

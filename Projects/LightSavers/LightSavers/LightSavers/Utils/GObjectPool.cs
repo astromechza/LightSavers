@@ -104,7 +104,7 @@ namespace ObjectPool
             previouses = new int[size];
             nexts = new int[size];
 
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < prebuild; i++)
             {
                 pool[i] = new T();
                 pool[i].PoolIndex = i;

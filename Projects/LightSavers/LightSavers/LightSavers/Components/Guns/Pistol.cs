@@ -23,7 +23,7 @@ namespace LightSavers.Components.Guns
         {
             PistolBullet b = Globals.gameInstance.projectileManager.pistolBulletPool.Provide();
             b.Construct(emmitterPosition, rotation);
-
+            Globals.audioManager.PlayInstaceOf("pistol", 0.3f);
             base.Fire(rotation);
         }
     }

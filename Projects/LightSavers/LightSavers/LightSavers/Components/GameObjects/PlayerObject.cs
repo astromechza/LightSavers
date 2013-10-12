@@ -22,11 +22,13 @@ namespace LightSavers.Components.GameObjects
 
         // Light stuff
         const float TORCH_HEIGHT = 2.5f;
+        const float TORCH_ANGLE = 30.0f;
         const float HALO_HEIGHT = 6.0f;
 
         Matrix mPlayerScale = Matrix.CreateScale(PLAYER_SCALE);
         Matrix mHaloPitch = Matrix.CreateRotationX(-90);
         Matrix mTorchPitch = Matrix.CreateRotationX(-0.4f);
+        const float boundingBoxSize = 0.45f;
         #endregion
 
         private PlayerIndex playerIndex;
@@ -99,10 +101,10 @@ namespace LightSavers.Components.GameObjects
             SwitchWeapon(0);
 
             collisionRectangle = new RectangleF(
-                _position.X - 0.49f,
-                _position.Y - 0.49f,
-                0.98f,
-                0.98f
+                _position.X - boundingBoxSize,
+                _position.Y - boundingBoxSize,
+                boundingBoxSize * 2,
+                boundingBoxSize * 2
             );
 
         }
@@ -197,8 +199,22 @@ namespace LightSavers.Components.GameObjects
 
             if (Globals.inputController.isTriggerDown(Triggers.Right, playerIndex))
             {
+                
                 if (currentWeapon > -1 && weapons[currentWeapon].CanFire())
                 {
+                    Globals.audioManager.PlaySound("shoot_pistol_p1", false, 0.1f);
+                    
+
+                    //if (currentWeapon == 0)
+                    //    Globals.audioManager.PlaySound("shoot_pistol", false, 0.1f);
+                    //    weapon = Animation_States.snipshot;
+                    //else if (currentWeapon == 0)
+                    //    weapon = Animation_States.pistol;
+                    //else if (currentWeapon == 2)
+                    //    weapon = Animation_States.assault;
+                    //else if (currentWeapon == 4)
+                    //    weapon = Animation_States.sword;
+
                     weapons[currentWeapon].Fire(rotation + MathHelper.PiOver2);
                     shooting = Animation_States.shoot;
                 }
@@ -227,8 +243,8 @@ namespace LightSavers.Components.GameObjects
             if (_position != newposition)
             {
                 // First test X collision
-                collisionRectangle.Left = newposition.X - 0.49f;
-                collisionRectangle.Top  = _position.Z - 0.49f;
+                collisionRectangle.Left = newposition.X - boundingBoxSize;
+                collisionRectangle.Top = _position.Z - boundingBoxSize;
                 if (Globals.gameInstance.cellCollider.RectangleCollides(collisionRectangle))
                 {
                     // if it does collide, pull it back
@@ -236,8 +252,8 @@ namespace LightSavers.Components.GameObjects
                 }
 
                 // Then test Z collision
-                collisionRectangle.Left = _position.X - 0.49f;
-                collisionRectangle.Top  = newposition.Z - 0.49f;
+                collisionRectangle.Left = _position.X - boundingBoxSize;
+                collisionRectangle.Top = newposition.Z - boundingBoxSize;
                 if (Globals.gameInstance.cellCollider.RectangleCollides(collisionRectangle))
                 {
                     // if it does collide, pull it back
@@ -325,7 +341,7 @@ namespace LightSavers.Components.GameObjects
             torchlight.LightType = Light.Type.Spot;
             torchlight.ShadowDepthBias = 0.002f;
             torchlight.Radius = 15;
-            torchlight.SpotAngle = 25;
+            torchlight.SpotAngle = TORCH_ANGLE;
             torchlight.Intensity = 1.0f;
             torchlight.SpotExponent = 6;
             torchlight.Color = color*1.1f;
@@ -367,7 +383,7 @@ namespace LightSavers.Components.GameObjects
         {
             outputPoints.Add(new Vector2(_position.X, _position.Z));
 
-            Vector3 v = new Vector3(0, 0, -7);
+            Vector3 v = new Vector3(0, 0, -6);
             Matrix m = Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(_position);
             Vector3 t = Vector3.Transform(v, m);
             outputPoints.Add(new Vector2(t.X,t.Z));

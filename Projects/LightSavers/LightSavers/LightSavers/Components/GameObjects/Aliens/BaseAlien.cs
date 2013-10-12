@@ -12,6 +12,9 @@ namespace LightSavers.Components.GameObjects.Aliens
 {
     public class BaseAlien : GameObject
     {
+        // state machine
+        public enum AlienState { ALIVE, DEAD, DYING };
+        public AlienState _state;
 
         // mesh
         public SkinnedMesh _mesh;
