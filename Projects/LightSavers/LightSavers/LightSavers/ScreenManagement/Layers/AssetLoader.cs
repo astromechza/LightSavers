@@ -119,20 +119,6 @@ namespace LightSavers
             tex_white.SetData(new Color[] { Color.White });
 
             title2 = Globals.content.Load<Texture2D>("textures/title2");
-            diamond = Globals.content.Load<Texture2D>("textures/diamond");
-
-            //HUDs
-            ammo = Globals.content.Load<Texture2D>("textures/HUDs/ammo");
-            pistol_blue = Globals.content.Load<Texture2D>("textures/HUDs/pistol_blue");
-            pistol_green = Globals.content.Load<Texture2D>("textures/HUDs/pistol_green");
-            shot_blue = Globals.content.Load<Texture2D>("textures/HUDs/shot_blue");
-            shot_green = Globals.content.Load<Texture2D>("textures/HUDs/shot_green");
-            rifle_blue = Globals.content.Load<Texture2D>("textures/HUDs/rifle_blue");
-            rifle_green = Globals.content.Load<Texture2D>("textures/HUDs/rifle_green");
-            sniper_blue = Globals.content.Load<Texture2D>("textures/HUDs/sniper_blue");
-            sniper_green = Globals.content.Load<Texture2D>("textures/HUDs/sniper_green");
-            sword_blue = Globals.content.Load<Texture2D>("textures/HUDs/sword_blue");
-            sword_green = Globals.content.Load<Texture2D>("textures/HUDs/sword_green");
 
 
             // Fade times
@@ -147,6 +133,11 @@ namespace LightSavers
 
             int tx = (viewport.Width - 800) / 2;
             titleRect = new Rectangle(tx, 100, 800, 230);
+
+            //Load Music and sounds
+            Globals.audioManager.LoadMenuSong("soundz/menu/menu_music", "menu");
+            Globals.audioManager.PlayMenuMusic();
+            Globals.audioManager.LoadMenuSound("soundz/menu/menu_select", "menu_select");
         }
         
         public bool Start()
@@ -192,17 +183,11 @@ namespace LightSavers
         private void LoadAssets()
         {
             // number of assets to be loaded. (used to compute progress bar size)
-            num_assets = 25;
+            num_assets = 37;
             num_assets += CountSections();
             LoadSections();
             // assets
             mdl_menuscene = loadModel("models/menuscene/MenuScene");
-
-            //Load Music and sounds
-            Globals.audioManager.LoadMenuSong("soundz/menu/menu_music", "menu");
-            Globals.audioManager.PlayMenuMusic();
-
-            Globals.audioManager.LoadMenuSound("soundz/menu/menu_select", "menu_select");
 
             //Load Character and animations
             mdl_character = loadModel("animatedmodels/player/spacemanAnimated");
@@ -234,7 +219,6 @@ namespace LightSavers
             {
                 Animation_States.lowerCharacterBonesandRoot.Add(i, 1);
             }
-            
 
             mdl_sphere = loadModel("models/sphere");
             mdl_ceilinglight = loadModel("models/ceilinglight/ceilinglight_model");
@@ -261,6 +245,21 @@ namespace LightSavers
             mdl_pistol = loadModel("models/weapons/pistol/Pistol");
             mdl_shotgun = loadModel("models/weapons/shotgun/Shottie");
             mdl_sword = loadModel("models/weapons/sword/Sword");
+
+            diamond = loadTexture("textures/diamond");
+
+            //HUDs
+            ammo = loadTexture("textures/HUDs/ammo");
+            pistol_blue = loadTexture("textures/HUDs/pistol_blue");
+            pistol_green = loadTexture("textures/HUDs/pistol_green");
+            shot_blue = loadTexture("textures/HUDs/shot_blue");
+            shot_green = loadTexture("textures/HUDs/shot_green");
+            rifle_blue = loadTexture("textures/HUDs/rifle_blue");
+            rifle_green = loadTexture("textures/HUDs/rifle_green");
+            sniper_blue = loadTexture("textures/HUDs/sniper_blue");
+            sniper_green = loadTexture("textures/HUDs/sniper_green");
+            sword_blue = loadTexture("textures/HUDs/sword_blue");
+            sword_green = loadTexture("textures/HUDs/sword_green");
 
             // once its loaded, fade out
             StartTransitionOff();
