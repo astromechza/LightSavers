@@ -115,6 +115,7 @@
     <Compile Include="Components\GameObjects\Aliens\AlienSpawner2.cs" />
     <Compile Include="Components\GameObjects\Aliens\BaseAlien.cs" />
     <Compile Include="Components\GameObjects\Aliens\BaseSpawner.cs" />
+    <Compile Include="Components\GameObjects\Aliens\AlienTwo.cs" />
     <Compile Include="Components\GameObjects\Animation States.cs" />
     <Compile Include="Components\GameObjects\Door.cs" />
     <Compile Include="Components\Guns\AssaultRifle.cs" />

@@ -13,12 +13,12 @@ using System.Text;
 
 namespace LightSavers.Components.GameObjects.Aliens
 {
-    public class AlienOne : BaseAlien
+    public class AlienTwo : BaseAlien
     {
 
-        public AlienOne() { }
+        public AlienTwo() { }
 
-        public AlienOne(Vector3 spawnPosition, CampaignSection section)
+        public AlienTwo(Vector3 spawnPosition, CampaignSection section)
         {
             Construct(spawnPosition, (float)Globals.random.NextDouble() * MathHelper.TwoPi, section);
         }
@@ -28,18 +28,18 @@ namespace LightSavers.Components.GameObjects.Aliens
             base.Construct(spawnPosition, rotation, section);
 
             this._state = AlienState.ALIVE;
-            this._health = 90;
+            this._health = 150;
 
             this._mesh = new SkinnedMesh();
-            this._mesh.Model = AssetLoader.mdl_alien1;
+            this._mesh.Model = AssetLoader.mdl_alien2;
 
             this._aplayer = new DurationBasedAnimator(_mesh.SkinningData, _mesh.SkinningData.AnimationClips["Take 001"], null);
 
-            this._aplayer.AddAnimationPackage = AssetLoader.ani_alien1;
+            this._aplayer.AddAnimationPackage = AssetLoader.ani_alien2;
             this._aplayer.StartClip(Animation_States.moving);
 
-            this.VerticalOffset = new Vector3(0, 0.8f, 0);
-            this.ScaleMatrix = Matrix.CreateScale(0.6f);
+            this.VerticalOffset = new Vector3(0, 1f, 0);
+            this.ScaleMatrix = Matrix.CreateScale(0.8f);
 
             UpdateAnimations(0);
             UpdateMajorTransform();
@@ -81,7 +81,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                 if (Math.Abs(deltarotation) < 0.15f)
                 {
                     // calculate new position based on delta
-                    Vector3 newpos = _position + _positionDelta * (ms / 200);
+                    Vector3 newpos = _position + _positionDelta * (ms / 600);
                     RebuildCollisionRectangle(newpos);
 
                     //TODO: collision check here
@@ -96,7 +96,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                     }
                 }
 
-                UpdateAnimations(ms * 1.5f); // animations are accelerated a bit
+                UpdateAnimations(ms); // animations are accelerated a bit
                 UpdateMajorTransform();
                 _modelReceipt.graph.Renew(_modelReceipt);
 

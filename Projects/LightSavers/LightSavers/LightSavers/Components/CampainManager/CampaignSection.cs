@@ -57,6 +57,7 @@ namespace LightSavers.Components.CampainManager
             _population.Clear();
 
             AlienSpawner2<AlienOne>.Spawn(7, this);
+            AlienSpawner2<AlienTwo>.Spawn(4, this);
         }
 
         public void AddAlienToPopulation(BaseAlien ba)
