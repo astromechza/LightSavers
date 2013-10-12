@@ -77,8 +77,8 @@ namespace LightSavers.Components.GameObjects
             610, 637,       //walk_sword
             638, 658,       //run_sword
             659, 686,       //walk_sword_shoot
-            689, 707,       //run_sword_shoot
-            708, 748,       //idle_sword_shoot
+            689, 714,       //run_sword_shoot
+            718, 748,       //idle_sword_shoot
             749, 769        //death
         };
 

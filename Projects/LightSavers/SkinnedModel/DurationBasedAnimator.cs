@@ -22,6 +22,7 @@ namespace SkinnedModel
 
         DurationClip currentDurationClip;
         int currentKeyFrame;
+        int currentLoopCount;
         TimeSpan startTimeValue, endTimeValue, currentTimeValue;
 
         /// <summary>
@@ -54,6 +55,7 @@ namespace SkinnedModel
             currentTimeValue = currentDurationClip.start;
             currentKeyFrame = currentDurationClip.startFrame;
             currentDurationClip.startPose.CopyTo(boneTransforms, 0);
+            currentLoopCount = 0;
         }
 
         /// <summary>
@@ -78,7 +80,11 @@ namespace SkinnedModel
                 time += currentTimeValue;
 
                 // If we reached the end, loop back to the start.
-                while (time >= currentDurationClip.end) time -= currentDurationClip.duration;
+                while (time >= currentDurationClip.end)
+                {
+                    time -= currentDurationClip.duration;
+                    currentLoopCount++;
+                } 
             }
 
             // If the position moved backwards, reset the keyframe index.
@@ -181,6 +187,11 @@ namespace SkinnedModel
         public Matrix[] GetSkinTransforms()
         {
             return skinTransforms;
+        }
+
+        public int GetLoopCount()
+        {
+            return currentLoopCount;
         }
 
         public AnimationPackage AddAnimationPackage
