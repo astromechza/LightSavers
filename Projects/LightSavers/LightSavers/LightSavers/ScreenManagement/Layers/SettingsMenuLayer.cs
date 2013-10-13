@@ -77,8 +77,8 @@ namespace LightSavers.ScreenManagement.Layers
 
             Submenu s2 = new Submenu();
             s2.AddItem(new ToggleItem("Music", new String[] { "On", "Off" }));
-            s2.AddItem(new ToggleItem("Volue", new String[] { "Low", "Medium", "High" }));
-            s2.AddItem(new TransitionItem("Back", 0));
+            s2.AddItem(new ToggleItem("Volume", new String[] { "Low", "Medium", "High" }));
+            s2.AddItem(new DelegateItem("Back", backToMain, Color.White, Color.Gray));
 
             submenus.Add(s2);  
 
@@ -237,11 +237,11 @@ namespace LightSavers.ScreenManagement.Layers
 
                     if(currentToggle.label.Equals("Music"))
                     {
-                        //Globals.audioManager.Music = currentToggle.current;
+                        Globals.audioManager.Music = currentToggle.current;
                     }
                     else if (currentToggle.label.Equals("Volume"))
                     {
-                        //Globals.audioManager.Volume = currentToggle.current;
+                        Globals.audioManager.Volume = currentToggle.current;
                     }
                 }                
             }
@@ -262,6 +262,15 @@ namespace LightSavers.ScreenManagement.Layers
                         newIndex = 0;
                     }
                     currentToggle.current = newIndex;
+
+                    if (currentToggle.label.Equals("Music"))
+                    {
+                        Globals.audioManager.Music = currentToggle.current;
+                    }
+                    else if (currentToggle.label.Equals("Volume"))
+                    {
+                        Globals.audioManager.Volume = currentToggle.current;
+                    }
                 }
             }
         }
