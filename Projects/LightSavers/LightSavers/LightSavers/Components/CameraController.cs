@@ -12,16 +12,21 @@ namespace LightSavers.Components
 {
     public class CameraController
     {
+        public const float MAX_DISTANCE_BETWEEN_PLAYERS = 40f;
+        public const float FOV_OVER_TWO = 22.5f;
+        public float SIN_FOV_OVER_TWO = (float)Math.Sin(MathHelper.ToRadians(FOV_OVER_TWO));
+        public float MAX_HEIGHT = ((MAX_DISTANCE_BETWEEN_PLAYERS * 0.7f) / 2) / (float)Math.Tan(MathHelper.ToRadians(FOV_OVER_TWO));
+
+        private Matrix CAMERA_PITCH = Matrix.CreateRotationX(MathHelper.ToRadians(15));
+        private Matrix CAMERA_DOWN = Matrix.CreateRotationX(MathHelper.ToRadians(-90));
+
         private Camera camera;
         public Camera Camera { get { return camera; } }
 
         private Vector3 lastXYZ;
         private Vector3 targetXYZ;
 
-        private Matrix CAMERA_PITCH = Matrix.CreateRotationX(MathHelper.ToRadians(15));
-        private Matrix CAMERA_DOWN = Matrix.CreateRotationX(MathHelper.ToRadians(-90));
 
-        private float sinFOVOverTwo = (float)Math.Sin(22.5f);
 
         // == Constructors ===
         public CameraController(Viewport v)
@@ -83,9 +88,11 @@ namespace LightSavers.Components
 
             float r = Math.Max(dx, dz) + 1.5f;
 
-            float Y = Math.Abs(r / sinFOVOverTwo);
+            float Y = Math.Abs(r / SIN_FOV_OVER_TWO) + 2;
 
-            targetXYZ = new Vector3(X, Y + 3, Z);
+            if (Y > MAX_HEIGHT) Y = MAX_HEIGHT;
+
+            targetXYZ = new Vector3(X, Y, Z);
 
         }
 

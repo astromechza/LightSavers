@@ -267,6 +267,16 @@ namespace LightSavers.Components.GameObjects
                     newposition.Z = _position.Z;
                 }
 
+                //lastly check the distance between players
+                if (Globals.gameInstance.players.Length > 1)
+                {
+                    int otherPlayer = Math.Abs((int)playerIndex - 1);
+                    if (Math.Abs(Globals.gameInstance.players[otherPlayer]._position.X - newposition.X) > CameraController.MAX_DISTANCE_BETWEEN_PLAYERS)
+                    {
+                        newposition.X = _position.X;
+                    }
+                }
+
                 // if there is still a new position
                 if (_position != newposition)
                 {
