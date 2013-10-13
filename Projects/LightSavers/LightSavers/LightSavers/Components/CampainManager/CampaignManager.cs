@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace LightSavers.Components.CampainManager
 {
@@ -71,7 +72,8 @@ namespace LightSavers.Components.CampainManager
 
         public void SpawnAliensInSection(int index)
         {
-            sections[index].FillWithAliens();
+            Thread t = new Thread(new ThreadStart(sections[index].FillWithAliens));
+            t.Start();
         }
 
         public bool ProjectileCollidesDoor(Projectiles.BaseBullet b)
