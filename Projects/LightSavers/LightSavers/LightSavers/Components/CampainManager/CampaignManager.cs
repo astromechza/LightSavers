@@ -2,6 +2,7 @@
 using LightSavers.Components.GameObjects.Aliens;
 using LightSavers.Utils;
 using LightSavers.Utils.Geometry;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,6 +80,19 @@ namespace LightSavers.Components.CampainManager
             // top door
             if (b.position.X > currentSection * 32 + 31f) return true;
             return false;
+        }
+
+        // when checking whether a rectangle collides with a door
+        // there are only 2 doors at most: the currently opening one, 
+        // and the closed one at the end of the next section
+        public bool RectangleCollidesDoor(RectangleF collisionRectangle)
+        {
+            int ni = (int)(collisionRectangle.Right + collisionRectangle.Left)/2;
+
+            int nearestIndex = (ni - 16) / 32;
+            nearestIndex = (int)MathHelper.Clamp(nearestIndex, 0, sections.Count - 1);
+            return sections[nearestIndex].RectangleCollidesDoor(collisionRectangle);
+
         }
     }
 }

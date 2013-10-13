@@ -243,12 +243,19 @@ namespace LightSavers.Components.GameObjects
             if (_position != newposition)
             {
                 // First test X collision
+                // Xmovement can collide with walls or doors
+                // first check the doors, this is fast
                 collisionRectangle.Left = newposition.X - boundingBoxSize;
                 collisionRectangle.Top = _position.Z - boundingBoxSize;
                 if (Globals.gameInstance.cellCollider.RectangleCollides(collisionRectangle))
                 {
                     // if it does collide, pull it back
-                    newposition.X = _position.X;                    
+                    newposition.X = _position.X;
+                }
+                
+                if(Globals.gameInstance.campaignManager.RectangleCollidesDoor(collisionRectangle))
+                {
+                    newposition.X = _position.X;
                 }
 
                 // Then test Z collision
