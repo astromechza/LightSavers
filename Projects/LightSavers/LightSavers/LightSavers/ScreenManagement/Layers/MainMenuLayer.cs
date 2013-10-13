@@ -296,10 +296,14 @@ namespace LightSavers.ScreenManagement.Layers
             //sets player choices for xbox
             //windows will always defalut to 1
             ToggleItem playerToggle = (ToggleItem)submenus[1].items[1];
+            ToggleItem LengthToggle = (ToggleItem)submenus[1].items[2];
+            ToggleItem DiffToggle = (ToggleItem)submenus[1].items[3];
 
-            Globals.screenManager.Push(new GameLayer(playerToggle.current + 1));
+            Globals.screenManager.Push(new GameLayer(playerToggle.current + 1, LengthToggle.current + 1, DiffToggle.current + 1));
 
-            //Console.WriteLine(currentToggle.current +1);
+            Console.WriteLine("Players: " + (playerToggle.current + 1));
+            Console.WriteLine("Length: " + (LengthToggle.current + 1));
+            Console.WriteLine("Difficulty: " + (DiffToggle.current + 1));
                               
             return true;
         }
