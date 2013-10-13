@@ -28,6 +28,7 @@ namespace LightSavers.Components
 
         //Play the sound associated with the manager
         //Insure all playing instances are accounted for so that they can be paused
+        //only creates instances that are needed, and reuses them if possible
         public void playSound()
         {
             int newInstance;
@@ -39,18 +40,26 @@ namespace LightSavers.Components
                     return;
                 newInstance = possibleNext;
             }
-            else
+            else if (instances[currentInstance] == null)
+            {
                 newInstance = currentInstance;
-            instances[newInstance] = sound.CreateInstance();
-            instances[newInstance].Volume = (isMusic) ? volume * Globals.audioManager.masterVolume : volume * Globals.audioManager.masterVolume * Globals.audioManager.musicVolume;
-            instances[newInstance].Play();
+                instances[newInstance] = sound.CreateInstance();
+                instances[newInstance].Volume = (!isMusic) ? volume * Globals.audioManager.masterVolume : volume * Globals.audioManager.masterVolume * Globals.audioManager.musicVolume;
+                instances[newInstance].Play();
+            }
+            else
+            {
+                newInstance = currentInstance;
+                instances[newInstance].Volume = (!isMusic) ? volume * Globals.audioManager.masterVolume : volume * Globals.audioManager.masterVolume * Globals.audioManager.musicVolume;
+                instances[newInstance].Play();
+            }
             currentInstance = newInstance;
         }
 
         public void PlayLoopSingle()
         {
             instances[0] = sound.CreateInstance();
-            instances[0].Volume = (isMusic) ? volume * Globals.audioManager.masterVolume : volume * Globals.audioManager.masterVolume * Globals.audioManager.musicVolume;
+            instances[0].Volume = (!isMusic) ? volume * Globals.audioManager.masterVolume : volume * Globals.audioManager.masterVolume * Globals.audioManager.musicVolume;
             instances[0].IsLooped = true;
             instances[0].Play();
         }
@@ -64,7 +73,7 @@ namespace LightSavers.Components
                 if (instances[i]!=null)
                 {
                     instances[i].Pause();
-                    instances[i].Volume = (isMusic) ? volume * Globals.audioManager.masterVolume : volume * Globals.audioManager.masterVolume*Globals.audioManager.musicVolume;
+                    instances[i].Volume = (!isMusic) ? volume * Globals.audioManager.masterVolume : volume * Globals.audioManager.masterVolume*Globals.audioManager.musicVolume;
                 }
         }
 
@@ -76,7 +85,7 @@ namespace LightSavers.Components
             for (int i = 0; i < numInstances; ++i)
                 if (instances[i] != null)
                 {
-                    instances[i].Volume = (isMusic) ? volume * Globals.audioManager.masterVolume : volume * Globals.audioManager.masterVolume * Globals.audioManager.musicVolume;
+                    instances[i].Volume = (!isMusic) ? volume * Globals.audioManager.masterVolume : volume * Globals.audioManager.masterVolume * Globals.audioManager.musicVolume;
                     instances[i].Resume();              
                 }
         }

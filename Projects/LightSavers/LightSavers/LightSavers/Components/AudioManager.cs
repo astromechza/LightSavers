@@ -22,8 +22,6 @@ namespace LightSavers.Components
     /// </summary>
     public class AudioManager : GameComponent
     {
-      
-
         #region Volume settings
         public float
             masterVolume = 1.0f,

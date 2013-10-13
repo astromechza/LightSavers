@@ -4,6 +4,7 @@ using LightSavers.Components.GameObjects.Aliens;
 using LightSavers.Utils.Geometry;
 using Microsoft.Xna.Framework;
 using System;
+using LightSavers.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -86,6 +87,8 @@ namespace LightSavers.Components.CampainManager
 
         public void Open()
         {
+            Globals.audioManager.PlayGameSound("start_game");
+
             if (_door != null) _door.Open();
             for (int i = 0; i < _overheadLights.Count; i++) _overheadLights[i].Enabled = true;
         }

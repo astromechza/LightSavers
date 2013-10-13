@@ -68,6 +68,7 @@ namespace LightSavers.Components
             }
 
             Globals.audioManager.SwitchToGame();
+            //Globals.audioManager.PlayGameSound("start_game");
             Globals.audioManager.PlayGameSound("music");
 
         }
