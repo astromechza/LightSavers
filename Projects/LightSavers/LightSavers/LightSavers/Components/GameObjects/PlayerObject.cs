@@ -33,6 +33,7 @@ namespace LightSavers.Components.GameObjects
 
         private PlayerIndex playerIndex;
         private Color color;
+        public Color PlayerColour { get { return color; } }
 
         private SkinnedMesh mesh;
 

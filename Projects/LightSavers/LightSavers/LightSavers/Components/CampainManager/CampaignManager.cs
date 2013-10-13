@@ -15,9 +15,6 @@ namespace LightSavers.Components.CampainManager
     {
         private int numberOfSections;
 
-        // link to parent game
-        public RealGame game;
-
         public List<CampaignSection> sections;
         private int currentSection;
 
@@ -114,7 +111,7 @@ namespace LightSavers.Components.CampainManager
 
         public float GetCurrentProgress()
         {
-            return (float)currentSection / sections.Count;
+            return (float)(currentSection-1) / sections.Count;
         }
     }
 }
