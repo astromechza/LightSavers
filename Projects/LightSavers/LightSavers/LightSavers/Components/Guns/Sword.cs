@@ -20,7 +20,7 @@ namespace LightSavers.Components.Guns
 
         public override void Fire(float rotation)
         {
-            Globals.audioManager.PlayInstaceOf("sword", 0.3f);
+            Globals.audioManager.PlayGameSound("sword");
             base.Fire(rotation);
         }
     }

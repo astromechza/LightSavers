@@ -22,23 +22,32 @@ namespace LightSavers.Components
     /// </summary>
     public class AudioManager : GameComponent
     {
+
+        #region Volume settings
+        public float
+            masterVolume = 1.0f,
+
+            //Weapons volumes
+            pistol = 0.1f,
+            sniper = 0.5f,
+            shottie = 0.6f,
+            assault = 0.3f,
+            sword = 0.3f,
+
+            //entity volumes
+            alienDeath1 = 0.8f;
+        #endregion
+
         #region Fields
 
-        Dictionary<string, SEffectInstanceManager> soundFx;
+        Dictionary<string, SEffectInstanceManager> gameSounds;
 
         // Audio Data        
         Dictionary<string, SoundEffectInstance> soundBank;
         Dictionary<string, Song> musicBank;
 
         Dictionary<string,SoundEffectInstance> menuSoundBank;
-        Song menuMusic;
-        float volume = 1.0f;
-
-        public float Volume
-        {
-            get { return volume; }
-        }
-        
+        Song menuMusic;        
         #endregion
 
         #region Initialization
@@ -48,7 +57,7 @@ namespace LightSavers.Components
             soundBank = new Dictionary<string, SoundEffectInstance>();
             musicBank = new Dictionary<string, Song>();
             menuSoundBank = new Dictionary<string, SoundEffectInstance>();
-            soundFx = new Dictionary<string, SEffectInstanceManager>();
+            gameSounds = new Dictionary<string, SEffectInstanceManager>();
             game.Components.Add(this);
         }
 
@@ -57,14 +66,14 @@ namespace LightSavers.Components
         /// </summary>
         /// <param name="effectName eg. pistol"></param>
         /// <param name="volume"></param>
-        public void PlayInstaceOf(string effectName, float volume)
+        public void PlayGameSound(string effectName)
         {
-            soundFx[effectName].playSound(volume);
+            gameSounds[effectName].playSound();
         }
 
-        public void LoadEffect(SoundEffect SEffect, string effectName, int instances)
+        public void LoadGameSound(SoundEffect SEffect, string effectName, int instances, float volume)
         {
-            soundFx.Add(effectName, new SEffectInstanceManager(SEffect, instances));
+            gameSounds.Add(effectName, new SEffectInstanceManager(SEffect, instances, volume));
         }
 
         #endregion
