@@ -76,10 +76,13 @@ namespace LightSavers.Components
         public int Music
         {
             set
-            {                
-                    musicVolume = (float) value;
-                    menuMusic.resetVolume();
-                
+            {
+                if (value == 0)
+                    musicVolume = 1.0f;
+                else
+                    musicVolume = 0.0f;
+
+                menuMusic.resetVolume();                
             }
         }
 
