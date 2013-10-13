@@ -106,5 +106,15 @@ namespace LightSavers.Components.CampainManager
         {
             return sections[currentSection].CollideAliens(playerObject);
         }
+
+        public string GetCurrentTitle()
+        {
+            return sections[currentSection].GetCurrentTitle();
+        }
+
+        public float GetCurrentProgress()
+        {
+            return (float)currentSection / sections.Count;
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace LightSavers.Components.CampainManager
         private Door _door;
         private List<Light> _overheadLights;
         private List<BaseAlien> _population;
+        private string _currentTitle;
 
         #region
 
@@ -32,6 +33,7 @@ namespace LightSavers.Components.CampainManager
             _door = null;
             _overheadLights = new List<Light>();
             _population = new List<BaseAlien>();
+            _currentTitle = "";
         }
 
         public bool HasDoor()
@@ -65,6 +67,7 @@ namespace LightSavers.Components.CampainManager
         public void AddAlienToPopulation(BaseAlien ba)
         {
             _population.Add(ba);
+            _currentTitle = "Aliens Left: " + _population.Count;
         }
 
         public void UpdateAliens(float ms)
@@ -75,6 +78,7 @@ namespace LightSavers.Components.CampainManager
                 if (_population[p]._mustBeDeleted)
                 {
                     _population.RemoveAt(p);
+                    _currentTitle = "Aliens Left: " + _population.Count;
                     p--;
                 }
             }
@@ -87,6 +91,7 @@ namespace LightSavers.Components.CampainManager
 
         public void Open()
         {
+            _currentTitle = "Section Complete!";
             Globals.audioManager.PlayGameSound("start_game");
 
             if (_door != null) _door.Open();
@@ -128,6 +133,11 @@ namespace LightSavers.Components.CampainManager
                 }
             }
             return false;
+        }
+
+        public string GetCurrentTitle()
+        {
+            return _currentTitle;
         }
     }
 }

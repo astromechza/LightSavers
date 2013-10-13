@@ -128,8 +128,6 @@ namespace LightSavers.ScreenManagement.Layers
             canvas.Draw(BlueTex, new Rectangle(0, viewport.Bounds.Height - (104), 197, 104), Color.White);
             canvas.DrawString(AssetLoader.fnt_healthgamescreen, health, new Vector2((160 - w.X / 2), viewport.Bounds.Height - (78)), Color.White);
 
-            
-
             if (Globals.gameInstance.players.Length == 2)
             {
                 int greenWeapon = Globals.gameInstance.players[1].currentWeapon;
@@ -162,6 +160,12 @@ namespace LightSavers.ScreenManagement.Layers
                 
             }
             //FINISHED HUDS
+
+            canvas.Draw(AssetLoader.tex_white, new Rectangle(400, 20, 1280 - 800, 1), Color.White);
+            float progress = Globals.gameInstance.campaignManager.GetCurrentProgress();
+            canvas.Draw(AssetLoader.tex_white, new Rectangle(400 + (int)(progress * 480), 15, 2, 10), Color.White);
+            String s = Globals.gameInstance.campaignManager.GetCurrentTitle();
+            canvas.DrawString(AssetLoader.fnt_healthgamescreen, s, new Vector2(640 - (AssetLoader.fnt_healthgamescreen.MeasureString(s).X/2), 30), Color.White);
 
             canvas.End();
             
