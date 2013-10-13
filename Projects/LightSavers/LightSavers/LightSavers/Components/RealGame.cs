@@ -43,6 +43,8 @@ namespace LightSavers.Components
                 new Vector3(22, 0, 20)
         };
 
+        private float MaxProgess = 0;
+
         private List<Vector2> criticalPoints = new List<Vector2>(8);
 
         public RealGame(int numberOfSections, int numPlayers, BlockBasedSceneGraph sceneGraph)
@@ -86,7 +88,11 @@ namespace LightSavers.Components
         public List<Vector2> GetCriticalPoints()
         {
             criticalPoints.Clear();
-            for (int i = 0; i < players.Length; i++) players[i].AddCriticalPoints(criticalPoints);
+            for (int i = 0; i < players.Length; i++)
+            {
+                players[i].AddCriticalPoints(criticalPoints);
+                MaxProgess = Math.Max(MaxProgess, players[i].Position.X);
+            }
             return criticalPoints;
         }
 
@@ -128,6 +134,11 @@ namespace LightSavers.Components
             }
 
             return false;
+        }
+
+        public float GetMaxProgess()
+        {
+            throw new NotImplementedException();
         }
     }
 }
