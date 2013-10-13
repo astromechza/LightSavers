@@ -118,5 +118,15 @@ namespace LightSavers.Components
 
             return new RectangleF(left, right, right - left, bottom - left);
         }
+
+        public bool CollidesPlayers(AlienOne alienOne)
+        {
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (Collider.Collide(alienOne._collisionRectangle, players[i].collisionRectangle)) return true;
+            }
+
+            return false;
+        }
     }
 }

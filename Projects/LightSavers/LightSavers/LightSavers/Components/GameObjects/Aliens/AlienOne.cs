@@ -16,6 +16,10 @@ namespace LightSavers.Components.GameObjects.Aliens
     public class AlienOne : BaseAlien
     {
 
+        Vector3 _roamingTarget = new Vector3();
+        PlayerObject _targetPlayer = null;
+        LiveState _livestate;
+
         public AlienOne() { }
 
         public AlienOne(Vector3 spawnPosition, CampaignSection section)
@@ -28,6 +32,7 @@ namespace LightSavers.Components.GameObjects.Aliens
             base.Construct(spawnPosition, rotation, section);
 
             this._state = AlienState.ALIVE;
+            this._livestate = LiveState.ROAMING;
             this._health = 90;
 
             this._mesh = new SkinnedMesh();
@@ -47,59 +52,15 @@ namespace LightSavers.Components.GameObjects.Aliens
             Globals.gameInstance.sceneGraph.Setup(_mesh);
             this._modelReceipt = Globals.gameInstance.sceneGraph.Add(_mesh);
 
-            this._targetPosition = new Vector3();
-            AssignRandomTarget();
-
-            this._collisionRectangle = new RectangleF(0, 0, 1.0f, 1.0f);
-            RebuildCollisionRectangle(_position);
+            _collisionRectangle = new RectangleF(0,0,1.0f,1.0f);
         }
 
         public override void Update(float ms)
         {
+
             if (_state == AlienState.ALIVE)
             {
-                #region TURN towards rotation target
-                float deltarotation = _targetRotation - _rotation;
-
-                // sanitise
-                if (deltarotation > Math.PI) deltarotation -= MathHelper.TwoPi;
-                if (deltarotation < -Math.PI) deltarotation += MathHelper.TwoPi;
-
-                // add difference
-                _rotation += (ms / 300) * deltarotation;
-                #endregion
-
-                #region CHECK distance to target, choose another if close
-                float distance = (_targetPosition - _position).LengthSquared();
-                if (distance < 0.4f)
-                {
-                    AssignRandomTarget();
-                }
-                #endregion
-
-                // If target is in front, then it can move
-                if (Math.Abs(deltarotation) < 0.15f)
-                {
-                    // calculate new position based on delta
-                    Vector3 newpos = _position + _positionDelta * (ms / 200);
-                    RebuildCollisionRectangle(newpos);
-
-                    //TODO: collision check here
-                    if (!Globals.gameInstance.cellCollider.RectangleCollides(_collisionRectangle))
-                    {
-                        _position = newpos;
-                    }
-                    else
-                    {
-                        // pick another target
-                        AssignRandomTarget();
-                    }
-                }
-
-                UpdateAnimations(ms * 1.5f); // animations are accelerated a bit
-                UpdateMajorTransform();
-                _modelReceipt.graph.Renew(_modelReceipt);
-
+                // check bullet collision
                 // check for collision with bullet
                 IProjectile p = Globals.gameInstance.projectileManager.CheckHit(this);
                 if (p != null)
@@ -114,6 +75,102 @@ namespace LightSavers.Components.GameObjects.Aliens
                         Globals.audioManager.PlayGameSound("aliendeath1");
                     }
                 }
+
+                if (_livestate == LiveState.ROAMING)
+                {
+                    // check distance to target
+                    if (Vector3.DistanceSquared(_targetPosition, _position) < 0.3f)
+                    {
+                        // new target
+                        _targetPosition = new Vector3(
+                            MathHelper.Clamp(
+                                _position.X + (float)Globals.random.NextDouble() * 10 - 5, 
+                                _section.Index * 32, 
+                                _section.Index * 32 + 32
+                            ),
+                            _position.Y,
+                            _position.Z + (float)Globals.random.NextDouble() * 10 - 5                            
+                        );
+                    }
+
+                    // check player LOS
+                    PlayerObject closestPlayer = Globals.gameInstance.GetClosestPlayer(_position);
+                    if (Vector3.DistanceSquared(closestPlayer.Position, _position) <= 6*6)
+                    {
+                        //check LOS
+                        _livestate = LiveState.CHASING;
+                        _targetPlayer = closestPlayer;
+                    }
+                }
+
+                if (_livestate == LiveState.CHASING)
+                {
+                    _targetPosition = _targetPlayer.Position;
+                    float d = Vector3.DistanceSquared(_targetPosition, _position);
+                    if (d > 6 * 6)
+                    {
+                        _livestate = LiveState.ROAMING;
+                        _targetPosition = _position;
+                    }
+                    else 
+                    {
+                        //check LOS
+                        bool LOS = true;
+                        if (LOS)
+                        {
+                            if (d < 1.0f)
+                            {
+                                _livestate = LiveState.ATTACKING;
+                                _aplayer.StartClip(Animation_States.attacking);
+                            }
+                        }
+                        else
+                        {
+                            _livestate = LiveState.ROAMING;
+                            _targetPosition = _position;
+                        }
+                    }               
+                }
+                if (_livestate == LiveState.ATTACKING)
+                {
+                    _targetPosition = _position;
+                    RotateToFacePosition(_targetPlayer.Position);
+                    if (_aplayer.GetLoopCount() > 0)
+                    {
+                        _livestate = LiveState.CHASING;
+                        _aplayer.StartClip(Animation_States.moving);
+                    }
+                }
+                
+                if (_targetPosition != _position)
+                {
+                    _velocity = _targetPosition - _position;
+                    _velocity.Normalize();
+                    RotateToFacePosition(_velocity);
+                    Vector3 newpos = _position + _velocity * (ms / 200);
+
+                    RebuildCollisionRectangle(newpos);
+                    if (Globals.gameInstance.cellCollider.RectangleCollides(_collisionRectangle))
+                    {
+                        _targetPosition = _position;
+                    }
+                    else if (Globals.gameInstance.campaignManager.CollideCurrentEntities(this))
+                    {
+                        _targetPosition = _position;
+                    }
+                    else if (Globals.gameInstance.CollidesPlayers(this))
+                    {
+                        _targetPosition = _position;
+                    }
+                    else
+                    {
+                        _position = newpos;
+                    }
+
+                }
+                UpdateAnimations(ms * 1.5f);
+                UpdateMajorTransform();
+                _modelReceipt.graph.Renew(_modelReceipt);
             }
             else
             {
@@ -128,6 +185,8 @@ namespace LightSavers.Components.GameObjects.Aliens
             }
         }
 
+       
+
 
         private void RebuildCollisionRectangle(Vector3 o)
         {
@@ -135,13 +194,12 @@ namespace LightSavers.Components.GameObjects.Aliens
             _collisionRectangle.Top = o.Z - 0.5f;
         }
 
-        public void AssignRandomTarget()
+        private void RotateToFacePosition(Vector3 o)
         {
-            _targetPosition.X = MathHelper.Clamp(this._position.X + (float)Globals.random.NextDouble() * 10 - 5, this._section.Index*32, this._section.Index*32 +32);
-            _targetPosition.Z = this._position.Z + (float)Globals.random.NextDouble() * 10 - 5;
-            _positionDelta = _targetPosition - _position;
-            _positionDelta.Normalize();
-            _targetRotation = (float)Math.Atan2(-_positionDelta.Z, _positionDelta.X) + MathHelper.PiOver2;
+            Vector3 t = _targetPosition - _position;
+            t.Normalize();
+            if (t.LengthSquared() > 0.01f) _rotation = (float)Math.Atan2(-t.Z, t.X) + MathHelper.PiOver2;
+
         }
 
         

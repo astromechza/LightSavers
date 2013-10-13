@@ -81,7 +81,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                 if (Math.Abs(deltarotation) < 0.15f)
                 {
                     // calculate new position based on delta
-                    Vector3 newpos = _position + _positionDelta * (ms / 600);
+                    Vector3 newpos = _position + _velocity * (ms / 600);
                     RebuildCollisionRectangle(newpos);
 
                     //TODO: collision check here
@@ -139,9 +139,9 @@ namespace LightSavers.Components.GameObjects.Aliens
         {
             _targetPosition.X = MathHelper.Clamp(this._position.X + (float)Globals.random.NextDouble() * 10 - 5, this._section.Index*32, this._section.Index*32 +32);
             _targetPosition.Z = this._position.Z + (float)Globals.random.NextDouble() * 10 - 5;
-            _positionDelta = _targetPosition - _position;
-            _positionDelta.Normalize();
-            _targetRotation = (float)Math.Atan2(-_positionDelta.Z, _positionDelta.X) + MathHelper.PiOver2;
+            _velocity = _targetPosition - _position;
+            _velocity.Normalize();
+            _targetRotation = (float)Math.Atan2(-_velocity.Z, _velocity.X) + MathHelper.PiOver2;
         }
 
         
