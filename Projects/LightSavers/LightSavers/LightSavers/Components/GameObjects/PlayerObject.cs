@@ -36,7 +36,7 @@ namespace LightSavers.Components.GameObjects
 
         private SkinnedMesh mesh;
 
-        private RectangleF collisionRectangle;
+        public RectangleF collisionRectangle;
 
         private float rotation;
 
@@ -251,6 +251,13 @@ namespace LightSavers.Components.GameObjects
                 {
                     // if it does collide, pull it back
                     newposition.Z = _position.Z;
+                }
+
+                collisionRectangle.Left = newposition.X - boundingBoxSize;
+                collisionRectangle.Top = newposition.Z - boundingBoxSize;
+                if (Globals.gameInstance.campaignManager.CollideCurrentEntities(this))
+                {
+                    newposition = _position;
                 }
 
                 //lastly check the distance between players

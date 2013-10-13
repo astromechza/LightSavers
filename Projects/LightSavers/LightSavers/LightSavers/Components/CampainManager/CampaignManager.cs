@@ -96,5 +96,15 @@ namespace LightSavers.Components.CampainManager
             return sections[nearestIndex].RectangleCollidesDoor(collisionRectangle);
 
         }
+
+        public bool CollideCurrentEntities(AlienOne alienOne)
+        {
+            return sections[currentSection].CollideAliens(alienOne);
+        }
+
+        public bool CollideCurrentEntities(PlayerObject playerObject)
+        {
+            return sections[currentSection].CollideAliens(playerObject);
+        }
     }
 }

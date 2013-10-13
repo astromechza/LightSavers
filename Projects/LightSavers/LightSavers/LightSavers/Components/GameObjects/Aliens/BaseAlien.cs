@@ -14,7 +14,18 @@ namespace LightSavers.Components.GameObjects.Aliens
     public class BaseAlien : GameObject
     {
         // state machine
-        public enum AlienState { ALIVE, DEAD, DYING };
+        public enum AlienState { 
+            // major
+            ALIVE,
+            DYING,
+            DEAD
+        };
+        public enum LiveState {
+            // minor
+            ROAMING,
+            CHASING,
+            ATTACKING
+        };
         public AlienState _state;
 
         // mesh
@@ -28,7 +39,7 @@ namespace LightSavers.Components.GameObjects.Aliens
         public float _rotation;
         public float _targetRotation;
         public Vector3 _targetPosition;
-        public Vector3 _positionDelta;
+        public Vector3 _velocity;
         public RectangleF _collisionRectangle;
 
         // transform vars
