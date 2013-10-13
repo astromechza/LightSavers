@@ -79,7 +79,7 @@ namespace LightSavers.ScreenManagement.Layers
             canvas.Begin();
 
             // Draw the 3d background
-            //canvas.Draw(menu3dscene, viewport.Bounds, Color.White);
+            canvas.Draw(menu3dscene, viewport.Bounds, Color.White);
 
             Color talpha = new Color(1.0f, 1.0f, 1.0f, 0.5f);
 
@@ -101,7 +101,7 @@ namespace LightSavers.ScreenManagement.Layers
         private void Draw2DLayers()
         {
 
-            //menuBackground.Draw(canvas);
+            menuBackground.Draw(canvas);
 
             canvas.Draw(AssetLoader.controls, titleRect, Color.White);
 

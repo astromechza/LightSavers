@@ -45,7 +45,7 @@ namespace LightSavers.ScreenManagement.Layers
 
         private void SetLayerAttributes()
         {
-            isTransparent = false;
+            isTransparent = true;
             transitionOnTime = TimeSpan.FromSeconds(0.6);
             transitionOffTime = TimeSpan.FromSeconds(0.5);
         }
@@ -98,7 +98,7 @@ namespace LightSavers.ScreenManagement.Layers
             // Draw the 3d background
           //  canvas.Draw(menu3dscene, viewport.Bounds, Color.White);
 
-            Color talpha = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+            Color talpha = new Color(1.0f, 1.0f, 1.0f, 0.7f);
 
             canvas.Draw(AssetLoader.tex_black, viewport.Bounds, talpha);
 
