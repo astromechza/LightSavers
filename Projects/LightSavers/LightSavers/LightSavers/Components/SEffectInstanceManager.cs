@@ -46,6 +46,13 @@ namespace LightSavers.Components
             currentInstance = newInstance;
         }
 
+        public void PlayLoopSingle()
+        {
+            instances[0] = sound.CreateInstance();
+            instances[0].IsLooped = true;
+            instances[0].Play();
+        }
+
         /// <summary>
         /// Pause all of the instances - may ignore this
         /// </summary>
@@ -59,6 +66,24 @@ namespace LightSavers.Components
                     instances[i].Pause();
             }
             paused = (paused) ? false : true;
+        }
+
+        /// <summary>
+        /// Pause
+        /// </summary>
+        public void Pause()
+        {
+            for (int i = 0; i < numInstances; ++i)
+                instances[i].Pause();
+        }
+
+        /// <summary>
+        /// Resume
+        /// </summary>
+        public void Resume()
+        {
+            for (int i = 0; i < numInstances; ++i)
+                instances[i].Resume();
         }
     }
 }

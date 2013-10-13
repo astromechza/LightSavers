@@ -46,8 +46,8 @@ namespace LightSavers.Components
         Dictionary<string, SoundEffectInstance> soundBank;
         Dictionary<string, Song> musicBank;
 
-        Dictionary<string,SoundEffectInstance> menuSoundBank;
-        Song menuMusic;        
+        Dictionary<string,SoundEffectInstance> menuSoundS;
+        SEffectInstanceManager menuMusic;        
         #endregion
 
         #region Initialization
@@ -56,8 +56,10 @@ namespace LightSavers.Components
         {
             soundBank = new Dictionary<string, SoundEffectInstance>();
             musicBank = new Dictionary<string, Song>();
-            menuSoundBank = new Dictionary<string, SoundEffectInstance>();
+
+            menuSoundS = new Dictionary<string, SoundEffectInstance>();
             gameSounds = new Dictionary<string, SEffectInstanceManager>();
+
             game.Components.Add(this);
         }
 
@@ -85,20 +87,18 @@ namespace LightSavers.Components
             SoundEffect soundEffect = Game.Content.Load<SoundEffect>(path);
             SoundEffectInstance soundEffectInstance = soundEffect.CreateInstance();
 
-            if (!menuSoundBank.ContainsKey(alias))
+            if (!menuSoundS.ContainsKey(alias))
             {
-                menuSoundBank.Add(alias, soundEffectInstance);
+                menuSoundS.Add(alias, soundEffectInstance);
             }
         }
 
         public void LoadMenuSong(string path, string alias)
-        {
-            Song song = Game.Content.Load<Song>(path);
-
-            menuMusic = song;
+        {           
+        
+            SoundEffect music =  Game.Content.Load<SoundEffect>(path);
+            menuMusic = new SEffectInstanceManager(music,1,1.0f);
         }
-
-
         /// <summary>
         /// Loads a single sound into the sound manager, giving it a specified alias.
         /// </summary>
@@ -139,16 +139,6 @@ namespace LightSavers.Components
         /// </summary>
         #endregion
 
-        ///Change the volume setting 0 - low, 1 mediam, 2 high
-        ///Plan of action - when resuming: 
-        ///Modify menu volume directly
-        ///Change volume before playing
-        ///change the volume before resuming. 
-        public void setVolume(int setting)
-        {
-
-        }
-
         #region Sound Methods
         /// <summary>
         /// Indexer. Return a sound instance by name.
@@ -171,30 +161,9 @@ namespace LightSavers.Components
 
         public void PlayMenuSound(string sound)
         {
-            // If the sound exists, start it
-            menuSoundBank[sound].Play();
+            if (menuSoundS.ContainsKey(sound))
+                menuSoundS[sound].Play();
         }
-
-        /// <summary>
-        /// Plays a sound by name.
-        /// </summary>
-        /// <param name="soundName">The name of the sound to play.</param>
-        public void PlaySound(string soundName)
-        {
-            // If the sound exists, start it
-            if (soundBank.ContainsKey(soundName))
-            {
-                if (soundBank[soundName].State == SoundState.Playing)
-                {
-
-                }
-                else
-                    soundBank[soundName].Play();
-            }
-        }
-
-
-
 
         /// <summary>
         /// Plays a sound by name.
@@ -252,20 +221,6 @@ namespace LightSavers.Components
         }
 
         /// <summary>
-        /// Stops all currently playing sounds.
-        /// </summary>
-        public void StopSounds()
-        {
-            foreach (SoundEffectInstance sound in soundBank.Values)
-            {
-                if (sound.State != SoundState.Stopped)
-                {
-                    sound.Stop();
-                }
-            }
-        }
-
-        /// <summary>
         /// Pause or resume all sounds.
         /// </summary>
         /// <param name="resumeSounds">True to resume all paused sounds or false
@@ -308,6 +263,8 @@ namespace LightSavers.Components
                 MediaPlayer.IsRepeating = true;
 
                 MediaPlayer.Play(musicBank[musicSoundName]);
+
+                
             }
         }
 
@@ -315,15 +272,17 @@ namespace LightSavers.Components
         {
             // If the music sound exists
             
-                // Stop the old music sound
-                if (MediaPlayer.State != MediaState.Stopped)
-                {
-                    MediaPlayer.Stop();
-                }
+                //// Stop the old music sound
+                //if (MediaPlayer.State != MediaState.Stopped)
+                //{
+                //    MediaPlayer.Stop();
+                //}
 
-                MediaPlayer.IsRepeating = true;
+                //MediaPlayer.IsRepeating = true;
 
-                MediaPlayer.Play(menuMusic);
+                //MediaPlayer.Play(menuMusic);
+            menuMusic.playSound();
+
             
         }
 
@@ -332,10 +291,7 @@ namespace LightSavers.Components
         /// </summary>
         public void StopMusic()
         {
-            if (MediaPlayer.State != MediaState.Stopped)
-            {
-                MediaPlayer.Stop();
-            }
+            menuMusic.Pause();
         }
 
 
