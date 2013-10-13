@@ -165,7 +165,7 @@ namespace LightSavers.Components
                     return Keys.F;
 
                 case Buttons.Start:
-                    return Keys.Enter;
+                    return Keys.Escape;
 
                 case Buttons.LeftThumbstickLeft:
                     return Keys.A;

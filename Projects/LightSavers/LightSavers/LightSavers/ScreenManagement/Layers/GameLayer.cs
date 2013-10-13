@@ -8,6 +8,7 @@ using LightPrePassRenderer;
 using LightSavers.Components;
 using LightPrePassRenderer.partitioning;
 using LightSavers.Utils;
+using Microsoft.Xna.Framework.Input;
 
 namespace LightSavers.ScreenManagement.Layers
 {
@@ -166,6 +167,11 @@ namespace LightSavers.ScreenManagement.Layers
 
             if (Globals.inputController.isButtonReleased(Microsoft.Xna.Framework.Input.Buttons.Back, null))
             {
+                //this.StartTransitionOff();
+            }
+            else if (Globals.inputController.isButtonPressed(Buttons.Start, null))
+            {
+                this.fadeOutCompleteCallback = OpenPause;
                 this.StartTransitionOff();
             }
 
@@ -177,8 +183,8 @@ namespace LightSavers.ScreenManagement.Layers
 
         public bool OpenPause()
         {
-            Globals.screenManager.Pop();
-            Globals.screenManager.Push(new AboutScreenLayer());
+            //Globals.screenManager.Pop();
+            Globals.screenManager.Push(new PauseMenuLayer());
             return true;
         }
 

@@ -7,10 +7,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using LightSavers.Utils;
 using LightSavers.Components.MenuObjects;
+using LightSavers.Utils.Geometry;
 
 namespace LightSavers.ScreenManagement.Layers
 {
-    public class MainMenuLayer : ScreenLayer
+    class SettingsMenuLayer: ScreenLayer
     {
         private Viewport viewport;
         private RenderTarget2D menu3dscene;
@@ -30,7 +31,7 @@ namespace LightSavers.ScreenManagement.Layers
         /// <summary>
         /// The constructor for the Main Menu.
         /// </summary>
-        public MainMenuLayer(bool gameRunning) : base()
+        public SettingsMenuLayer() : base()
         {
             SetLayerAttributes();
 
@@ -38,7 +39,7 @@ namespace LightSavers.ScreenManagement.Layers
 
             ConstructDrawingObjects();
 
-            ConstructSubMenus(gameRunning);
+            ConstructSubMenus();
         }
 
         #region == constructor submethods ==
@@ -70,38 +71,16 @@ namespace LightSavers.ScreenManagement.Layers
 
         }
 
-        private void ConstructSubMenus(bool gameRunning)
+        private void ConstructSubMenus()
         {
             submenus = new List<Submenu>();
 
-            Submenu s0 = new Submenu();
-            //s0.items.ElementAt(0)
+            Submenu s2 = new Submenu();
+            s2.AddItem(new ToggleItem("Music", new String[] { "On", "Off" }));
+            s2.AddItem(new ToggleItem("Volue", new String[] { "Low", "Medium", "High" }));
+            s2.AddItem(new TransitionItem("Back", 0));
 
-            if (gameRunning == true)
-            {
-                s0.AddItem(new DelegateItem("Resume Game", goBack, Color.White, Color.Gray));
-                s0.AddItem(new DelegateItem("New Game", restartEverything, Color.White, Color.Gray));
-            }
-            else
-            {
-                s0.AddItem(new TransitionItem("New Game", 1));
-            }
-
-            
-            s0.AddItem(new DelegateItem("Controls", OpenControl, Color.White, Color.Gray));
-            s0.AddItem(new DelegateItem("Settings", OpenSettings, Color.White, Color.Gray));
-            s0.AddItem(new DelegateItem("About", OpenAbout, Color.White, Color.Gray));
-            s0.AddItem(new DelegateItem("Exit", endGame, Color.White, Color.Gray));
-
-            submenus.Add(s0);
-
-            Submenu s1 = new Submenu();
-            s1.AddItem(new DelegateItem("Start Game", StartGame, Color.LightBlue, Color.CornflowerBlue));
-            s1.AddItem(new ToggleItem("Players", new String[] { "1", "2" }));
-            s1.AddItem(new ToggleItem("Level Length", new String[] { "Short", "Medium", "Tiring" }));
-            s1.AddItem(new ToggleItem("Difficulty", new String[] { "Easy", "Medium", "Hard" }));
-
-            submenus.Add(s1);
+            submenus.Add(s2);  
 
             currentSubMenuIndex = 0;
 
@@ -120,6 +99,10 @@ namespace LightSavers.ScreenManagement.Layers
 
             // Draw the 3d background
             canvas.Draw(menu3dscene, viewport.Bounds, Color.White);
+            
+            Color talpha = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+
+            canvas.Draw(AssetLoader.tex_black, viewport.Bounds, talpha);
 
             Draw2DLayers();
 
@@ -137,7 +120,7 @@ namespace LightSavers.ScreenManagement.Layers
             
             menuBackground.Draw(canvas);
 
-            canvas.Draw(AssetLoader.title2, titleRect, Color.White);
+            canvas.Draw(AssetLoader.settings, titleRect, Color.White);
 
             submenus[currentSubMenuIndex].Draw(canvas, 60, 400);
             
@@ -169,24 +152,11 @@ namespace LightSavers.ScreenManagement.Layers
 
         private void CheckControls()
         {
-            //back button is pressed
+            //back button
             if (Globals.inputController.isButtonPressed(Buttons.B, null))
             {
-                if (currentSubMenuIndex == 0 && Globals.screenManager.layers.Count == 1)
-                {
-                    endGame();
-                }
-                else if (Globals.screenManager.layers.Count > 1)
-                {
-
-                    this.fadeOutCompleteCallback = goBack;
-                    this.StartTransitionOff();
-                }
-                else
-                {
-                    currentSubMenuIndex = 0;
-                }
-                
+                this.fadeOutCompleteCallback = backToMain;
+                this.StartTransitionOff();
             }
             
             //select (enter)
@@ -291,58 +261,9 @@ namespace LightSavers.ScreenManagement.Layers
             }
         }
         #endregion
-        public bool StartGame()
-        {
-            //Globals.screenManager.Pop();
-            Globals.screenManager.Push(new GameLayer());
-            return true;
-        }
-
-        public bool OpenControl()
-        {
-            //Globals.screenManager.Pop();
-            Globals.screenManager.Push(new ControlScreenLayer());
-            return true;
-        }
-
-        public bool OpenAbout()
-        {
-           // Globals.screenManager.Pop();
-            Globals.screenManager.Push(new AboutScreenLayer());
-            return true;
-        }
-
-        public bool endGame()
-        {
-            // Globals.screenManager.Pop();
-            while (Globals.screenManager.layers.Count > 0)
-            {
-                Globals.screenManager.Pop();
-            }
-            return true;
-        }
-
-        public bool restartEverything()
-        {
-            while (Globals.screenManager.layers.Count > 0)
-            {
-                Globals.screenManager.Pop();
-            } 
-            Globals.screenManager.Push(new GameLayer());
-
-            return true;
-        }
-
-        public bool goBack()
+        public bool backToMain()
         {
             Globals.screenManager.Pop();
-            return true;
-        }
-
-        public bool OpenSettings()
-        {
-            // Globals.screenManager.Pop();
-            Globals.screenManager.Push(new SettingsMenuLayer());
             return true;
         }
     }

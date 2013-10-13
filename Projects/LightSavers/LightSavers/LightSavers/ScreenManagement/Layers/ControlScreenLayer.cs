@@ -65,7 +65,7 @@ namespace LightSavers.ScreenManagement.Layers
 
 
             int tx = (viewport.Width - 800) / 2;
-            titleRect = new Rectangle(tx, 100, 800, 230);
+            titleRect = new Rectangle(tx, 60, 800, 209);
         }
 
         #endregion
@@ -79,21 +79,20 @@ namespace LightSavers.ScreenManagement.Layers
             canvas.Begin();
 
             // Draw the 3d background
-            canvas.Draw(menu3dscene, viewport.Bounds, Color.White);
-
-            Draw2DLayers();
+            //canvas.Draw(menu3dscene, viewport.Bounds, Color.White);
 
             Color talpha = new Color(1.0f, 1.0f, 1.0f, 0.5f);
 
-           canvas.Draw(AssetLoader.tex_black, viewport.Bounds, talpha);
+            canvas.Draw(AssetLoader.tex_black, viewport.Bounds, talpha);
 
-            canvas.Draw(AssetLoader.controls, new Rectangle(viewport.Bounds.Width / 2 - AssetLoader.controls.Width / 2, 100, AssetLoader.controls.Width, AssetLoader.controls.Height), Color.White);
+            Draw2DLayers();
+
             canvas.Draw(AssetLoader.controller, new Rectangle(10, 300, AssetLoader.controller.Width, AssetLoader.controller.Height), Color.White);
             canvas.Draw(AssetLoader.keyboard, new Rectangle(viewport.Bounds.Width - 10 - AssetLoader.keyboard.Width, 300, AssetLoader.keyboard.Width, AssetLoader.keyboard.Height), Color.White);
 
             //drawing prompt to go back
             canvas.Draw(AssetLoader.diamond, new Rectangle(10, viewport.Bounds.Height -100 + 6, 40, 15), Color.White);
-            canvas.DrawString(AssetLoader.fnt_assetloadscreen, "Back", new Vector2(50, viewport.Bounds.Height - 100), Color.White);
+            canvas.DrawString(AssetLoader.fnt_assetloadscreen, "Back", new Vector2(60, viewport.Bounds.Height - 100), Color.White);
 
             // finish drawing
             canvas.End();
@@ -102,7 +101,9 @@ namespace LightSavers.ScreenManagement.Layers
         private void Draw2DLayers()
         {
 
-            menuBackground.Draw(canvas);           
+            //menuBackground.Draw(canvas);
+
+            canvas.Draw(AssetLoader.controls, titleRect, Color.White);
 
             if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)
             {

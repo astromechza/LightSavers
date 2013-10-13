@@ -158,7 +158,7 @@ namespace LightSavers
             fadeOutCompleteCallback = DisplayMainMenu;
 
             int tx = (viewport.Width - 800) / 2;
-            titleRect = new Rectangle(tx, 100, 800, 230);
+            titleRect = new Rectangle(tx, 60, 800, 209);
 
             //Load Music and sounds
             Globals.audioManager.LoadMenuSong("soundz/menu/menu_music", "menu");
@@ -200,7 +200,7 @@ namespace LightSavers
             // remove the loading layer since its not needed
             Globals.screenManager.Pop();
             // add main menu screen
-            Globals.screenManager.Push(new MainMenuLayer());
+            Globals.screenManager.Push(new MainMenuLayer(false));
             return true;
         }
 

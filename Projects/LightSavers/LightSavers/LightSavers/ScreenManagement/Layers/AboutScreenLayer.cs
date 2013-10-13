@@ -66,7 +66,7 @@ namespace LightSavers.ScreenManagement.Layers
 
 
             int tx = (viewport.Width - 800) / 2;
-            titleRect = new Rectangle(tx, 100, 800, 230);
+            titleRect = new Rectangle(tx, 60, 800, 230);
         }
 
         #endregion
@@ -82,19 +82,19 @@ namespace LightSavers.ScreenManagement.Layers
             // Draw the 3d background
             canvas.Draw(menu3dscene, viewport.Bounds, Color.White);
 
-            Draw2DLayers();
-
             Color talpha = new Color(1.0f, 1.0f, 1.0f, 0.5f);
 
             canvas.Draw(AssetLoader.tex_black, viewport.Bounds, talpha);
 
-            canvas.Draw(AssetLoader.about, new Rectangle(viewport.Bounds.Width / 2 - AssetLoader.about.Width / 2, 50, AssetLoader.about.Width, AssetLoader.about.Height), Color.White);
-            canvas.DrawString(AssetLoader.fnt_paragraph, "Light Savers was developed by Daniel Burnham-King,\nBenjamin Meier and Siobhan O'Donovan for their final\n3D Distributed Games Development project. The models\nand animations were supplied by City Varsity\nanimators, Altus Barry and Jason Burrows\n", new Vector2(50, 150), Color.White);
-            canvas.Draw(AssetLoader.group, new Rectangle(viewport.Bounds.Width - AssetLoader.group.Width - 50, 150, AssetLoader.group.Width, AssetLoader.group.Height), Color.White);
+            Draw2DLayers();
+
+            canvas.Draw(AssetLoader.about, new Rectangle(viewport.Bounds.Width / 2 - AssetLoader.about.Width / 2, 60, AssetLoader.about.Width, AssetLoader.about.Height), Color.White);
+            canvas.DrawString(AssetLoader.fnt_paragraph, "Light Savers was developed by Daniel Burnham-King,\nBenjamin Meier and Siobhan O'Donovan for their final\n3D Distributed Games Development project. The models\nand animations were supplied by City Varsity\nanimators, Altus Barry and Jason Burrows\n", new Vector2(50, 350), Color.White);
+            canvas.Draw(AssetLoader.group, new Rectangle(viewport.Bounds.Width - AssetLoader.group.Width - 50, 350, AssetLoader.group.Width, AssetLoader.group.Height), Color.White);
             
             //drawing prompt to go back
-            canvas.Draw(AssetLoader.diamond, new Rectangle(50, viewport.Bounds.Height -100 + 6, 40, 15), Color.White);
-            canvas.DrawString(AssetLoader.fnt_assetloadscreen, "Back", new Vector2(110, viewport.Bounds.Height - 100), Color.White);
+            canvas.Draw(AssetLoader.diamond, new Rectangle(10, viewport.Bounds.Height -100 + 6, 40, 15), Color.White);
+            canvas.DrawString(AssetLoader.fnt_assetloadscreen, "Back", new Vector2(60, viewport.Bounds.Height - 100), Color.White);
             canvas.End();
         }
 
