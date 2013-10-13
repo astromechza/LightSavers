@@ -31,7 +31,7 @@ namespace LightSavers.Components.Guns
 
         public override void Fire(float rotation)
         {
-            Globals.audioManager.PlayInstaceOf("assault",0.3f);
+            Globals.audioManager.PlayGameSound("assault");
 
             float r = (float)Globals.random.NextDouble() * accuracy;
 

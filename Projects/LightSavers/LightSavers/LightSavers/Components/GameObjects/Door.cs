@@ -1,5 +1,6 @@
 ﻿using LightPrePassRenderer;
 using LightSavers.Utils;
+using LightSavers.Utils.Geometry;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,9 @@ namespace LightSavers.Components.GameObjects
 
         private DoorState state;
         private float openPercent;
-        
+
+        private RectangleF doorLeftBB;
+        private RectangleF doorRightBB;
 
         public Door(Vector3 position)
         {
@@ -101,7 +104,9 @@ namespace LightSavers.Components.GameObjects
         {
             doorLeftMesh.Transform = FLIP90Y * Matrix.CreateTranslation(position + new Vector3(0, 0, openPercent));
             doorRightMesh.Transform = FLIP90Y * FLIP180X * Matrix.CreateTranslation(position + new Vector3(0, 2.5f, -openPercent));
-
+            
+            doorLeftBB = new RectangleF(position.X-0.25f, position.Z+openPercent, 0.5f, 2f);
+            doorRightBB = new RectangleF(position.X - 0.25f, position.Z - 2f - openPercent, 0.5f, 2f);
         }
 
         public void Open()
@@ -124,5 +129,15 @@ namespace LightSavers.Components.GameObjects
             }
         }
 
+
+        public RectangleF GetDoorLBB()
+        {
+            return doorLeftBB;
+        }
+
+        public RectangleF GetDoorRBB()
+        {
+            return doorRightBB;
+        }
     }
 }

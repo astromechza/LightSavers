@@ -498,7 +498,7 @@
     <Compile Include="soundz\menu\menu_music.mp3">
       <Name>menu_music</Name>
       <Importer>Mp3Importer</Importer>
-      <Processor>SongProcessor</Processor>
+      <Processor>SoundEffectProcessor</Processor>
     </Compile>
     <Compile Include="soundz\menu\menu_select.wav">
       <Name>menu_select</Name>

@@ -111,7 +111,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                     {
                         this._state = AlienState.DYING;
                         this._aplayer.StartClip(Animation_States.death);
-                        Globals.audioManager.PlayInstaceOf("aliendeath1", 0.8f);
+                        Globals.audioManager.PlayGameSound("aliendeath1");
                     }
                 }
             }

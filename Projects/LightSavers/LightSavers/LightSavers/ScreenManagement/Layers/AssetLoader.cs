@@ -218,12 +218,12 @@ namespace LightSavers
             snd_alien_death1 = Globals.content.Load<SoundEffect>("soundz/game/creatures/deathalien1");
 
             Globals.audioManager.LoadSong("soundz/game/music/desolate", "music");
-            Globals.audioManager.LoadEffect(snd_alien_death1, "aliendeath1",3);
-            Globals.audioManager.LoadEffect(snd_pistol, "pistol", 5);
-            Globals.audioManager.LoadEffect(snd_shottie, "shottie", 3);
-            Globals.audioManager.LoadEffect(snd_sniper, "sniper", 3);
-            Globals.audioManager.LoadEffect(snd_sword, "sword", 3);
-            Globals.audioManager.LoadEffect(snd_assault, "assault", 10);
+            Globals.audioManager.LoadGameSound(snd_alien_death1, "aliendeath1",6,Globals.audioManager.alienDeath1);
+            Globals.audioManager.LoadGameSound(snd_pistol, "pistol", 10, Globals.audioManager.pistol);
+            Globals.audioManager.LoadGameSound(snd_shottie, "shottie", 5, Globals.audioManager.shottie);
+            Globals.audioManager.LoadGameSound(snd_sniper, "sniper", 5, Globals.audioManager.sniper);
+            Globals.audioManager.LoadGameSound(snd_sword, "sword", 5, Globals.audioManager.sword);
+            Globals.audioManager.LoadGameSound(snd_assault, "assault", 15, Globals.audioManager.assault);
 
             //Load Character and animations
             mdl_character = loadModel("animatedmodels/player/spacemanAnimated");

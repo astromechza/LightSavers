@@ -243,12 +243,19 @@ namespace LightSavers.Components.GameObjects
             if (_position != newposition)
             {
                 // First test X collision
+                // Xmovement can collide with walls or doors
+                // first check the doors, this is fast
                 collisionRectangle.Left = newposition.X - boundingBoxSize;
                 collisionRectangle.Top = _position.Z - boundingBoxSize;
                 if (Globals.gameInstance.cellCollider.RectangleCollides(collisionRectangle))
                 {
                     // if it does collide, pull it back
-                    newposition.X = _position.X;                    
+                    newposition.X = _position.X;
+                }
+                
+                if(Globals.gameInstance.campaignManager.RectangleCollidesDoor(collisionRectangle))
+                {
+                    newposition.X = _position.X;
                 }
 
                 // Then test Z collision
@@ -258,6 +265,16 @@ namespace LightSavers.Components.GameObjects
                 {
                     // if it does collide, pull it back
                     newposition.Z = _position.Z;
+                }
+
+                //lastly check the distance between players
+                if (Globals.gameInstance.players.Length > 1)
+                {
+                    int otherPlayer = Math.Abs((int)playerIndex - 1);
+                    if (Math.Abs(Globals.gameInstance.players[otherPlayer]._position.X - newposition.X) > CameraController.MAX_DISTANCE_BETWEEN_PLAYERS)
+                    {
+                        newposition.X = _position.X;
+                    }
                 }
 
                 // if there is still a new position

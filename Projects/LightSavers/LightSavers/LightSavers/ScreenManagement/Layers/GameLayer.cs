@@ -67,6 +67,7 @@ namespace LightSavers.ScreenManagement.Layers
 
             //Begin playing music.
             Globals.audioManager.StopMusic();
+            
             Globals.audioManager.PlayMusic("music");
         }
 
