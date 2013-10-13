@@ -11,7 +11,7 @@ namespace LightSavers
 {
     public class ScreenManager
     {
-        private List<ScreenLayer> layers;
+        public List<ScreenLayer> layers;
         private int lowestVisibleLayer = -1;
         private Boolean gameHasStarted = false;
 
@@ -25,10 +25,10 @@ namespace LightSavers
             if (layers.Count > 0)
             {
                 layers[layers.Count - 1].Update(ms);
-                if (layers[layers.Count - 1].mustExit)
+                /*if (layers[layers.Count - 1].mustExit)
                 {
-                    Pop();
-                }
+                    //Pop();
+                }*/
             }
             else if (gameHasStarted)
             {
@@ -78,6 +78,10 @@ namespace LightSavers
                     lowestVisibleLayer = i;
                     break;
                 }
+            }
+            if (layers.Count > 0)
+            {
+                layers[layers.Count - 1].state = ScreenState.Active;
             }
 
             return sl;

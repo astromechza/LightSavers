@@ -45,8 +45,8 @@ namespace LightSavers.ScreenManagement.Layers
         private void SetLayerAttributes()
         {
             isTransparent = false;
-            transitionOnTime = TimeSpan.FromSeconds(0);
-            transitionOffTime = TimeSpan.FromSeconds(0);
+            transitionOnTime = TimeSpan.FromSeconds(0.6);
+            transitionOffTime = TimeSpan.FromSeconds(0.5);
         }
 
         private void ConstructDrawingObjects()
@@ -80,13 +80,16 @@ namespace LightSavers.ScreenManagement.Layers
 
             // Draw the 3d background
             canvas.Draw(menu3dscene, viewport.Bounds, Color.White);
-            Color talpha = new Color(1.0f, 1.0f, 1.0f, 0.0f);
 
-            canvas.Draw(AssetLoader.tex_black, viewport.Bounds, talpha);
+            Draw2DLayers();
 
-            canvas.Draw(AssetLoader.controls, new Rectangle(viewport.Bounds.Width / 2 - AssetLoader.controls.Width / 2, 50, AssetLoader.controls.Width, AssetLoader.controls.Height), Color.White);
-            canvas.Draw(AssetLoader.controller, new Rectangle(10, 200, AssetLoader.controller.Width, AssetLoader.controller.Height), Color.White);
-            canvas.Draw(AssetLoader.keyboard, new Rectangle(viewport.Bounds.Width - 10 - AssetLoader.keyboard.Width, 200, AssetLoader.keyboard.Width, AssetLoader.keyboard.Height), Color.White);
+            Color talpha = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+
+           canvas.Draw(AssetLoader.tex_black, viewport.Bounds, talpha);
+
+            canvas.Draw(AssetLoader.controls, new Rectangle(viewport.Bounds.Width / 2 - AssetLoader.controls.Width / 2, 100, AssetLoader.controls.Width, AssetLoader.controls.Height), Color.White);
+            canvas.Draw(AssetLoader.controller, new Rectangle(10, 300, AssetLoader.controller.Width, AssetLoader.controller.Height), Color.White);
+            canvas.Draw(AssetLoader.keyboard, new Rectangle(viewport.Bounds.Width - 10 - AssetLoader.keyboard.Width, 300, AssetLoader.keyboard.Width, AssetLoader.keyboard.Height), Color.White);
 
             //drawing prompt to go back
             canvas.Draw(AssetLoader.diamond, new Rectangle(10, viewport.Bounds.Height -100 + 6, 40, 15), Color.White);
@@ -94,6 +97,19 @@ namespace LightSavers.ScreenManagement.Layers
 
             // finish drawing
             canvas.End();
+        }
+
+        private void Draw2DLayers()
+        {
+
+            menuBackground.Draw(canvas);           
+
+            if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)
+            {
+                int trans = (int)((1 - transitionPercent) * 255.0f);
+                transitionColour = new Color(trans, trans, trans, trans);
+                canvas.Draw(AssetLoader.tex_black, viewport.Bounds, transitionColour);
+            }
         }
 
 
@@ -125,7 +141,6 @@ namespace LightSavers.ScreenManagement.Layers
         public bool backToMain()
         {
             Globals.screenManager.Pop();
-            Globals.screenManager.Push(new MainMenuLayer());
             return true;
         }
         #endregion

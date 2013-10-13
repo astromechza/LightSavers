@@ -158,7 +158,7 @@ namespace LightSavers.ScreenManagement.Layers
             canvas.End();
             
         }
-
+        
         public override void Update(float ms)
         {
 
@@ -173,6 +173,13 @@ namespace LightSavers.ScreenManagement.Layers
             cameraController.Update(ms);
             
             base.Update(ms);
+        }
+
+        public bool OpenPause()
+        {
+            Globals.screenManager.Pop();
+            Globals.screenManager.Push(new AboutScreenLayer());
+            return true;
         }
 
 

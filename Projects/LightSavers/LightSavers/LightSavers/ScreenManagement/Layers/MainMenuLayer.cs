@@ -80,7 +80,7 @@ namespace LightSavers.ScreenManagement.Layers
             s0.AddItem(new DelegateItem("Controls", OpenControl, Color.White, Color.Gray));
             s0.AddItem(new TransitionItem("Settings", 2));
             s0.AddItem(new DelegateItem("About", OpenAbout, Color.White, Color.Gray));
-            s0.AddItem(new TransitionItem("Exit", -1));
+            s0.AddItem(new DelegateItem("Exit", endGame, Color.White, Color.Gray));
 
             submenus.Add(s0);
 
@@ -170,7 +170,7 @@ namespace LightSavers.ScreenManagement.Layers
             {
                 if (currentSubMenuIndex == 0)
                 {
-                    this.StartTransitionOff();
+                    endGame();
                 }
                 else
                 {
@@ -283,24 +283,36 @@ namespace LightSavers.ScreenManagement.Layers
         #endregion
         public bool StartGame()
         {
-            Globals.screenManager.Pop();
+            //Globals.screenManager.Pop();
             Globals.screenManager.Push(new GameLayer());
             return true;
         }
 
         public bool OpenControl()
         {
-            Globals.screenManager.Pop();
+            //Globals.screenManager.Pop();
             Globals.screenManager.Push(new ControlScreenLayer());
             return true;
         }
 
         public bool OpenAbout()
         {
-            Globals.screenManager.Pop();
+           // Globals.screenManager.Pop();
             Globals.screenManager.Push(new AboutScreenLayer());
             return true;
         }
+
+        public bool endGame()
+        {
+            // Globals.screenManager.Pop();
+            while (Globals.screenManager.layers.Count > 0)
+            {
+                Globals.screenManager.Pop();
+            }
+            return true;
+        }
+
+        
 
                   
 

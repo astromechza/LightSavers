@@ -137,6 +137,7 @@ namespace LightSavers
             fnt_assetloadscreen = Globals.content.Load<SpriteFont>("fonts/LoadingFont");
             fnt_healthgamescreen = Globals.content.Load<SpriteFont>("fonts/HealthFont");
             fnt_paragraph = Globals.content.Load<SpriteFont>("fonts/ParagraphFont");
+            fnt_paragraph.LineSpacing = 30;
 
             tex_black = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
             tex_black.SetData(new Color[] { Color.Black });

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using LightSavers.Utils;
 using Microsoft.Xna.Framework;
 
 namespace LightSavers.ScreenManagement
@@ -82,8 +83,10 @@ namespace LightSavers.ScreenManagement
                         if (fadeInCompleteCallback != null) fadeInCompleteCallback();
                     }
                     break;
+
                 case ScreenState.Active:
                     break;
+
                 case ScreenState.TransitioningOff:
                     if (UpdateTransition(ms, transitionOffTime, -1))
                     {
@@ -93,7 +96,8 @@ namespace LightSavers.ScreenManagement
                     {
                         state = ScreenState.Hidden;
                         if (fadeOutCompleteCallback != null) fadeOutCompleteCallback();
-                        mustExit = true;
+                        //mustExit = true;
+                        //Globals.screenManager.Pop();
                     }
                     break;
             }

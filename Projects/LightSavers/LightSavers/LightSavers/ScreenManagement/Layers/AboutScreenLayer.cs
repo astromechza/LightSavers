@@ -46,8 +46,8 @@ namespace LightSavers.ScreenManagement.Layers
         private void SetLayerAttributes()
         {
             isTransparent = false;
-            transitionOnTime = TimeSpan.FromSeconds(0);
-            transitionOffTime = TimeSpan.FromSeconds(0);
+            transitionOnTime = TimeSpan.FromSeconds(0.6);
+            transitionOffTime = TimeSpan.FromSeconds(0.5);
         }
 
         private void ConstructDrawingObjects()
@@ -81,7 +81,10 @@ namespace LightSavers.ScreenManagement.Layers
 
             // Draw the 3d background
             canvas.Draw(menu3dscene, viewport.Bounds, Color.White);
-            Color talpha = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+
+            Draw2DLayers();
+
+            Color talpha = new Color(1.0f, 1.0f, 1.0f, 0.5f);
 
             canvas.Draw(AssetLoader.tex_black, viewport.Bounds, talpha);
 
@@ -90,12 +93,22 @@ namespace LightSavers.ScreenManagement.Layers
             canvas.Draw(AssetLoader.group, new Rectangle(viewport.Bounds.Width - AssetLoader.group.Width - 50, 150, AssetLoader.group.Width, AssetLoader.group.Height), Color.White);
             
             //drawing prompt to go back
-            canvas.Draw(AssetLoader.diamond, new Rectangle(10, viewport.Bounds.Height -100 + 6, 40, 15), Color.White);
-            canvas.DrawString(AssetLoader.fnt_assetloadscreen, "Back", new Vector2(50, viewport.Bounds.Height - 100), Color.White);
-           // canvas.DrawString(drawString, drawFont, drawBrush, drawRect);
-            //canvas.DrawString("hello", AssetLoader.fnt_healthgamescreen, Color.White, new RectangleF(0.0f, 9.0f, 1.0f, 1.0f)); 
-            // finish drawing
+            canvas.Draw(AssetLoader.diamond, new Rectangle(50, viewport.Bounds.Height -100 + 6, 40, 15), Color.White);
+            canvas.DrawString(AssetLoader.fnt_assetloadscreen, "Back", new Vector2(110, viewport.Bounds.Height - 100), Color.White);
             canvas.End();
+        }
+
+        private void Draw2DLayers()
+        {
+
+            menuBackground.Draw(canvas);
+
+            if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)
+            {
+                int trans = (int)((1 - transitionPercent) * 255.0f);
+                transitionColour = new Color(trans, trans, trans, trans);
+                canvas.Draw(AssetLoader.tex_black, viewport.Bounds, transitionColour);
+            }
         }
 
 
@@ -127,7 +140,6 @@ namespace LightSavers.ScreenManagement.Layers
         public bool backToMain()
         {
             Globals.screenManager.Pop();
-            Globals.screenManager.Push(new MainMenuLayer());
             return true;
         }
         #endregion
