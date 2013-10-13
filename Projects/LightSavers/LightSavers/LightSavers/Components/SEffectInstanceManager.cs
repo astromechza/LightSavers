@@ -26,12 +26,24 @@ namespace LightSavers.Components
         }
 
         //Play the sound associated with the manager
+        //Insure all playing instances are accounted for so that they can be paused
         public void playSound()
         {
-            int newInstance = currentInstance % numInstances;
+            int newInstance;
+            if (instances[currentInstance] != null && instances[currentInstance].State == SoundState.Playing)
+            {
+                int possibleNext = (currentInstance+1) % numInstances;
+
+                if (instances[possibleNext] != null && instances[possibleNext].State == SoundState.Playing)
+                    return;
+                newInstance = possibleNext;
+            }
+            else
+                newInstance = currentInstance;
             instances[newInstance] = sound.CreateInstance();
             instances[newInstance].Volume = volume * Globals.audioManager.masterVolume;
             instances[newInstance].Play();
+            currentInstance = newInstance;
         }
 
         /// <summary>
