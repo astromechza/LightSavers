@@ -73,6 +73,30 @@ namespace LightSavers.Components
             gameSounds[effectName].playSound();
         }
 
+        public int Music
+        {
+            set
+            {                
+                    musicVolume = (float) value;
+                    menuMusic.resetVolume();
+                
+            }
+        }
+
+        public int Volume
+        {
+            set {
+                if (value == 0)
+                    masterVolume = 0.1f;
+                else if (value == 1)
+                    masterVolume = 0.5f;
+                else
+                    masterVolume = 1.0f;
+
+                menuMusic.resetVolume();
+                }
+        }
+
         /// <summary>
         /// Load the Game sounds effects and music (Excludes menu stuff)
         /// </summary>
