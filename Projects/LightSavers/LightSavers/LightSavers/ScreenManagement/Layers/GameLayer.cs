@@ -59,7 +59,9 @@ namespace LightSavers.ScreenManagement.Layers
 
             // Load the Game
             //second number is number of players
-            Globals.gameInstance = new RealGame(10, 2, sceneGraph);
+            int numPlayers = 2;
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT) numPlayers = 1;
+                Globals.gameInstance = new RealGame(10, numPlayers, sceneGraph);
 
             cameraController = new CameraController(viewport, Matrix.Identity);
             cameraController.Fit(Globals.gameInstance.GetCriticalPoints());
