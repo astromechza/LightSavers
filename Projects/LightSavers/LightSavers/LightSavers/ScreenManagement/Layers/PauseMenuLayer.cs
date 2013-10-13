@@ -263,6 +263,7 @@ namespace LightSavers.ScreenManagement.Layers
         public bool backToGame()
         {
             Globals.screenManager.Pop();
+            Globals.audioManager.SwitchToGame();
             return true;
         }
 

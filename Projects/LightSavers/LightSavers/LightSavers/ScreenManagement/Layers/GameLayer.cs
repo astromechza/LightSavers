@@ -22,7 +22,9 @@ namespace LightSavers.ScreenManagement.Layers
         private CameraController cameraController;
         private BlockBasedSceneGraph sceneGraph;
 
-        public GameLayer() : base()
+        public int numPlayers;
+
+        public GameLayer(int players) : base()
         {
            
             // Screen layer attributes
@@ -60,7 +62,7 @@ namespace LightSavers.ScreenManagement.Layers
 
             // Load the Game
             //second number is number of players
-            int numPlayers = 2;
+            numPlayers = players;
             if (Environment.OSVersion.Platform == PlatformID.Win32NT) numPlayers = 1;
                 Globals.gameInstance = new RealGame(10, numPlayers, sceneGraph);
 
@@ -185,6 +187,7 @@ namespace LightSavers.ScreenManagement.Layers
         {
             //Globals.screenManager.Pop();
             Globals.screenManager.Push(new PauseMenuLayer());
+            Globals.audioManager.SwitchToMenu();
             return true;
         }
 

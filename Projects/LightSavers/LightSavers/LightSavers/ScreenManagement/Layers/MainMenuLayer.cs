@@ -19,9 +19,9 @@ namespace LightSavers.ScreenManagement.Layers
         private MenuBackground menuBackground;
 
         // list of submenues
-        private List<Submenu> submenus;
+        public List<Submenu> submenus;
         // current index
-        private int currentSubMenuIndex;
+        public int currentSubMenuIndex;
 
         private Color transitionColour;
 
@@ -293,8 +293,14 @@ namespace LightSavers.ScreenManagement.Layers
         #endregion
         public bool StartGame()
         {
-            //Globals.screenManager.Pop();
-            Globals.screenManager.Push(new GameLayer());
+            //sets player choices for xbox
+            //windows will always defalut to 1
+            ToggleItem playerToggle = (ToggleItem)submenus[1].items[1];
+
+            Globals.screenManager.Push(new GameLayer(playerToggle.current + 1));
+
+            //Console.WriteLine(currentToggle.current +1);
+                              
             return true;
         }
 
@@ -328,7 +334,9 @@ namespace LightSavers.ScreenManagement.Layers
             {
                 Globals.screenManager.Pop();
             } 
-            Globals.screenManager.Push(new GameLayer());
+            Globals.screenManager.Push(new MainMenuLayer(false));
+            MainMenuLayer current = (MainMenuLayer)Globals.screenManager.layers[0];
+            current.currentSubMenuIndex = 1;
 
             return true;
         }
