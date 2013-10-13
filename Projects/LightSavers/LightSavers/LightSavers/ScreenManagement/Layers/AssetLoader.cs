@@ -80,6 +80,7 @@ namespace LightSavers
         public static SpriteFont fnt_assetloadscreen;
 
         public static SpriteFont fnt_healthgamescreen;
+        public static SpriteFont fnt_paragraph;
 
         //HUDS
         public static Texture2D ammo;
@@ -102,6 +103,7 @@ namespace LightSavers
 
         public static Texture2D keyboard;
         public static Texture2D controller;
+        public static Texture2D group;
 
         //subheadings
         public static Texture2D controls;
@@ -134,6 +136,8 @@ namespace LightSavers
             // Assets required to view the loading screen
             fnt_assetloadscreen = Globals.content.Load<SpriteFont>("fonts/LoadingFont");
             fnt_healthgamescreen = Globals.content.Load<SpriteFont>("fonts/HealthFont");
+            fnt_paragraph = Globals.content.Load<SpriteFont>("fonts/ParagraphFont");
+
             tex_black = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
             tex_black.SetData(new Color[] { Color.Black });
             tex_white = new Texture2D(Globals.graphics.GraphicsDevice, 1, 1);
@@ -301,6 +305,7 @@ namespace LightSavers
             //adding diagrams
             controller = Globals.content.Load<Texture2D>("textures/xbox_controller_diagram");
             keyboard  = Globals.content.Load<Texture2D>("textures/keyboard_controller_diagram");
+            group = Globals.content.Load<Texture2D>("textures/group_small");
             
             //subheadings
             controls = Globals.content.Load<Texture2D>("textures/Headings/controls");

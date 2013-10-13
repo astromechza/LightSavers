@@ -79,7 +79,7 @@ namespace LightSavers.ScreenManagement.Layers
             s0.AddItem(new TransitionItem("New Game", 1));
             s0.AddItem(new DelegateItem("Controls", OpenControl, Color.White, Color.Gray));
             s0.AddItem(new TransitionItem("Settings", 2));
-            s0.AddItem(new DummyItem("About"));
+            s0.AddItem(new DelegateItem("About", OpenAbout, Color.White, Color.Gray));
             s0.AddItem(new TransitionItem("Exit", -1));
 
             submenus.Add(s0);
@@ -174,7 +174,7 @@ namespace LightSavers.ScreenManagement.Layers
                 }
                 else
                 {
-                    currentSubMenuIndex = currentSubMenuIndex - 1;
+                    currentSubMenuIndex = 0;
                 }
                 
             }
@@ -292,6 +292,13 @@ namespace LightSavers.ScreenManagement.Layers
         {
             Globals.screenManager.Pop();
             Globals.screenManager.Push(new ControlScreenLayer());
+            return true;
+        }
+
+        public bool OpenAbout()
+        {
+            Globals.screenManager.Pop();
+            Globals.screenManager.Push(new AboutScreenLayer());
             return true;
         }
 
