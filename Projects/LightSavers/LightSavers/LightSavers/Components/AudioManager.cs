@@ -47,7 +47,7 @@ namespace LightSavers.Components
         Dictionary<string, SEffectInstanceManager> gameSounds;
 
         //Menu Sounds
-        Dictionary<string, SoundEffectInstance> menuSoundS;
+        Dictionary<string, SEffectInstanceManager> menuSoundS;
         SEffectInstanceManager menuMusic;        
         #endregion
 
@@ -56,7 +56,7 @@ namespace LightSavers.Components
             : base(game)
         {
 
-            menuSoundS = new Dictionary<string, SoundEffectInstance>();
+            menuSoundS = new Dictionary<string, SEffectInstanceManager>();
             gameSounds = new Dictionary<string, SEffectInstanceManager>();
 
             game.Components.Add(this);
@@ -105,15 +105,9 @@ namespace LightSavers.Components
 
         #region Loading Methodes
 
-        public void LoadMenuSound(string path, string alias)
+        public void LoadMenuSound(SoundEffect SEffect, string effectName, int instances, float volume)
         {
-            SoundEffect soundEffect = Game.Content.Load<SoundEffect>(path);
-            SoundEffectInstance soundEffectInstance = soundEffect.CreateInstance();
-
-            if (!menuSoundS.ContainsKey(alias))
-            {
-                menuSoundS.Add(alias, soundEffectInstance);
-            }
+            menuSoundS.Add(effectName, new SEffectInstanceManager(SEffect, instances, volume, false));
         }
 
         public void LoadMenuMusic(string path)
