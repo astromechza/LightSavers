@@ -164,12 +164,12 @@ namespace LightSavers.ScreenManagement.Layers
             canvas.Draw(AssetLoader.tex_white, new Rectangle(400, 20, 1280 - 800, 1), Color.White);
 
             // 3 lines involved
-            float progress = Globals.gameInstance.GetMaxProgess();
+            float progress = Globals.gameInstance.GetMaxProgess() / (Globals.gameInstance.campaignManager.sections.Count * 32);
             canvas.Draw(AssetLoader.tex_white, new Rectangle(400 + (int)(progress * 480), 15, 1, 10), Color.White);
 
             for (int i = 0; i < Globals.gameInstance.players.Length; i++)
             {
-                progress = Globals.gameInstance.players[i].Position.X / numSections * 32;
+                progress = Globals.gameInstance.players[i].Position.X / (Globals.gameInstance.campaignManager.sections.Count * 32);
                 canvas.Draw(AssetLoader.tex_white, new Rectangle(400 + (int)(progress * 480), 15 + i * 5, 1, 5), Globals.gameInstance.players[i].PlayerColour);
 
             }

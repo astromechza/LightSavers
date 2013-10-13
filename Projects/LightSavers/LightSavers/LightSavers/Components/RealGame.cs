@@ -138,7 +138,7 @@ namespace LightSavers.Components
 
         public float GetMaxProgess()
         {
-            throw new NotImplementedException();
+            return MaxProgess;
         }
     }
 }
