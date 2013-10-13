@@ -97,5 +97,14 @@ namespace LightSavers.Components
                     }
                 }
         }
+
+        public void resetVolume()
+        {
+            foreach(SoundEffectInstance sEffect in instances)
+            {
+                if(sEffect!=null)
+                    sEffect.Volume = (!isMusic) ? volume * Globals.audioManager.masterVolume : volume * Globals.audioManager.masterVolume * Globals.audioManager.musicVolume;
+            }
+        }
     }
 }

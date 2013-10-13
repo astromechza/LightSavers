@@ -168,12 +168,14 @@
     <Compile Include="ScreenManagement\ScreenLayer.cs" />
     <Compile Include="ScreenManagement\ScreenManager.cs" />
     <Compile Include="Utils\FPScounter.cs" />
+    <Compile Include="Utils\ParseXML.cs" />
     <Compile Include="Utils\Tuple.cs" />
     <Compile Include="WorldBuilding\WorldBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
+    <Content Include="Utils\XMLFile1.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\LightPrePassRenderer\LightPrePassRenderer.csproj">

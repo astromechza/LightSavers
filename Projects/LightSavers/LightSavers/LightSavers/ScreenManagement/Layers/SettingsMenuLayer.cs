@@ -234,10 +234,15 @@ namespace LightSavers.ScreenManagement.Layers
                         newIndex = size - 1;
                     }
                     currentToggle.current = newIndex;
-                    //if (currentToggle.Label == "volume")
-                    //{
-                       
-                    //}                   
+
+                    if(currentToggle.label.Equals("Music"))
+                    {
+                        //Globals.audioManager.Music = currentToggle.current;
+                    }
+                    else if (currentToggle.label.Equals("Volume"))
+                    {
+                        //Globals.audioManager.Volume = currentToggle.current;
+                    }
                 }                
             }
 

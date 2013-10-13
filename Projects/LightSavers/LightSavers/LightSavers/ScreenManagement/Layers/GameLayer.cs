@@ -23,11 +23,19 @@ namespace LightSavers.ScreenManagement.Layers
         private BlockBasedSceneGraph sceneGraph;
 
         public int numPlayers;
+        public int numSections; 
+        public int difficulty;
+        public int numSectionScalingFactor;
 
-        public GameLayer(int players) : base()
+        //players = 1 or 2
+        //sections = 1,2 or 3 (small, medium, long) ---> has scaling factor. default set to 6
+        //difficulty = 1, 2, or 3 (easy, medium, hard)
+        public GameLayer(int players, int numSections, int difficulty) : base()
         {
            
             // Screen layer attributes
+            numPlayers = players;
+            numSectionScalingFactor = 6;
             isTransparent = false;
             transitionOnTime = TimeSpan.FromSeconds(0.6);
             transitionOffTime = TimeSpan.FromSeconds(0.5);
@@ -52,7 +60,7 @@ namespace LightSavers.ScreenManagement.Layers
             renderer = new Renderer(Globals.graphics.GraphicsDevice, Globals.content, viewport.Width, viewport.Height);
 
             // The light and mesh container is used to store mesh and light obejcts. This is just for RENDERING. Not for DRAWING
-            sceneGraph = new BlockBasedSceneGraph(10);
+            sceneGraph = new BlockBasedSceneGraph(numSections * numSectionScalingFactor);
             sceneGraph.SetSubMeshDelegate(delegate(Mesh.SubMesh subMesh) 
             {                
                 renderer.SetupSubMesh(subMesh);
@@ -62,16 +70,13 @@ namespace LightSavers.ScreenManagement.Layers
 
             // Load the Game
             //second number is number of players
-            numPlayers = players;
+            
             if (Environment.OSVersion.Platform == PlatformID.Win32NT) numPlayers = 1;
-                Globals.gameInstance = new RealGame(10, numPlayers, sceneGraph);
+            Globals.gameInstance = new RealGame(numSections * numSectionScalingFactor, numPlayers, sceneGraph);
 
             cameraController = new CameraController(viewport, Matrix.Identity);
             cameraController.Fit(Globals.gameInstance.GetCriticalPoints());
-            cameraController.MoveToTarget();
-
-            
-            
+            cameraController.MoveToTarget();            
         }
 
         private RenderTarget2D temp;

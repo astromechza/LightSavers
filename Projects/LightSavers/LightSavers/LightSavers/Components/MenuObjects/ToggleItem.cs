@@ -9,7 +9,7 @@ namespace LightSavers.Components.MenuObjects
     public class ToggleItem : BaseMenuItem
     {
 
-        private String label;
+        public String label;
         public String[] values;
         public int current;
 
