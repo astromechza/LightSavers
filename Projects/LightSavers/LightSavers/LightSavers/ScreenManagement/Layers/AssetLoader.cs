@@ -243,7 +243,7 @@ namespace LightSavers
             Globals.audioManager.LoadGameSound(snd_game_start, "start_game", 1, 1.0f, false);
 
             snd_bullet_impact1 = Globals.content.Load<SoundEffect>("soundz/game/weapons/bulletimpact1");
-            Globals.audioManager.LoadGameSound(snd_bullet_impact1, "impact1", 3, 0.3f, false);           
+            Globals.audioManager.LoadGameSound(snd_bullet_impact1, "impact1", 4, 0.1f, false);           
 
             //Load Character and animations
             mdl_character = loadModel("animatedmodels/player/spacemanAnimated");
