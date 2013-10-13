@@ -162,7 +162,7 @@ namespace LightSavers.Components
                     return Keys.D3;
 
                 case Buttons.Y:
-                    return Keys.RightShift;
+                    return Keys.F;
 
                 case Buttons.Start:
                     return Keys.Enter;

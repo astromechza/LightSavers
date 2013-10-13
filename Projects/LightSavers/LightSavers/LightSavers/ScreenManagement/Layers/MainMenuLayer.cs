@@ -77,7 +77,7 @@ namespace LightSavers.ScreenManagement.Layers
             Submenu s0 = new Submenu();
 
             s0.AddItem(new TransitionItem("New Game", 1));
-            s0.AddItem(new DummyItem("Controls"));
+            s0.AddItem(new DelegateItem("Controls", OpenControl, Color.White, Color.Gray));
             s0.AddItem(new TransitionItem("Settings", 2));
             s0.AddItem(new DummyItem("About"));
             s0.AddItem(new TransitionItem("Exit", -1));
@@ -85,7 +85,7 @@ namespace LightSavers.ScreenManagement.Layers
             submenus.Add(s0);
 
             Submenu s1 = new Submenu();
-            s1.AddItem(new DelegateItem("Start Game", StartGame));
+            s1.AddItem(new DelegateItem("Start Game", StartGame, Color.LightBlue, Color.CornflowerBlue));
             s1.AddItem(new ToggleItem("Players", new String[] { "1", "2" }));
             s1.AddItem(new ToggleItem("Level Length", new String[] { "Short", "Medium", "Tiring" }));
             s1.AddItem(new ToggleItem("Difficulty", new String[] { "Easy", "Medium", "Hard" }));
@@ -168,7 +168,15 @@ namespace LightSavers.ScreenManagement.Layers
             //back button
             if (Globals.inputController.isButtonPressed(Buttons.B, null))
             {
-                this.StartTransitionOff();
+                if (currentSubMenuIndex == 0)
+                {
+                    this.StartTransitionOff();
+                }
+                else
+                {
+                    currentSubMenuIndex = currentSubMenuIndex - 1;
+                }
+                
             }
             
             //select (enter)
@@ -193,7 +201,9 @@ namespace LightSavers.ScreenManagement.Layers
                 }
                 else if(submenus[currentSubMenuIndex].items[submenus[currentSubMenuIndex].selected] is DelegateItem)
                 {
-                    this.fadeOutCompleteCallback = StartGame;
+                    DelegateItem current = (DelegateItem)submenus[currentSubMenuIndex].items[submenus[currentSubMenuIndex].selected];
+
+                    this.fadeOutCompleteCallback = current.function;
                     this.StartTransitionOff();
                 }
             }
@@ -273,13 +283,19 @@ namespace LightSavers.ScreenManagement.Layers
         #endregion
         public bool StartGame()
         {
-
             Globals.screenManager.Pop();
-
             Globals.screenManager.Push(new GameLayer());
-
             return true;
         }
+
+        public bool OpenControl()
+        {
+            Globals.screenManager.Pop();
+            Globals.screenManager.Push(new ControlScreenLayer());
+            return true;
+        }
+
+                  
 
 
     }

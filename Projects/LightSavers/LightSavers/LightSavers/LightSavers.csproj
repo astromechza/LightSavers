@@ -149,6 +149,7 @@
     <Compile Include="Input\KeyboardInputController.cs" />
     <Compile Include="Input\XBoxInputController.cs" />
     <Compile Include="Components\CameraController.cs" />
+    <Compile Include="ScreenManagement\Layers\ControlScreenLayer.cs" />
     <Compile Include="Utils\Geometry\CircleF.cs" />
     <Compile Include="Utils\Geometry\Collider.cs" />
     <Compile Include="Utils\GObjectPool.cs" />
