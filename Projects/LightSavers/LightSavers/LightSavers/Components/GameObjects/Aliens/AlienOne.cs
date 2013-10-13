@@ -20,6 +20,8 @@ namespace LightSavers.Components.GameObjects.Aliens
         PlayerObject _targetPlayer = null;
         LiveState _livestate;
 
+        const float bBWidth = 0.4f;
+
         public AlienOne() { }
 
         public AlienOne(Vector3 spawnPosition, CampaignSection section)
@@ -52,7 +54,9 @@ namespace LightSavers.Components.GameObjects.Aliens
             Globals.gameInstance.sceneGraph.Setup(_mesh);
             this._modelReceipt = Globals.gameInstance.sceneGraph.Add(_mesh);
 
-            _collisionRectangle = new RectangleF(0,0,1.0f,1.0f);
+            _collisionRectangle = new RectangleF(
+                _position.X - bBWidth,
+                _position.Z - bBWidth, bBWidth * 2, bBWidth * 2);
         }
 
         public override void Update(float ms)
@@ -190,8 +194,8 @@ namespace LightSavers.Components.GameObjects.Aliens
 
         private void RebuildCollisionRectangle(Vector3 o)
         {
-            _collisionRectangle.Left = o.X - 0.5f;
-            _collisionRectangle.Top = o.Z - 0.5f;
+            _collisionRectangle.Left = o.X - bBWidth;
+            _collisionRectangle.Top = o.Z - bBWidth;
         }
 
         private void RotateToFacePosition(Vector3 o)
