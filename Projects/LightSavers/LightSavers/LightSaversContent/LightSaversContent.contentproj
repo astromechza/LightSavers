@@ -668,7 +668,7 @@
       <Name>s4</Name>
       <Importer>TextureImporter</Importer>
       <Processor>WorldSectionProcessor</Processor>
-  </Compile>
+    </Compile>
     <Compile Include="soundz\game\music\desolate.mp3">
       <Name>desolate</Name>
       <Importer>Mp3Importer</Importer>
@@ -687,6 +687,41 @@
       <Name>deathalien1</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="textures\keyboard_controller_diagram.png">
+      <Name>keyboard_controller_diagram</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\xbox_controller_diagram.png">
+      <Name>xbox_controller_diagram</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="textures\Headings\about.png">
+      <Name>about</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\Headings\controls.png">
+      <Name>controls</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\Headings\gamepaused.png">
+      <Name>gamepaused</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\Headings\settings.png">
+      <Name>settings</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

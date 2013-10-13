@@ -100,6 +100,15 @@ namespace LightSavers
 
         public static Texture2D diamond;
 
+        public static Texture2D keyboard;
+        public static Texture2D controller;
+
+        //subheadings
+        public static Texture2D controls;
+        public static Texture2D about;
+        public static Texture2D settings;
+        public static Texture2D paused;
+
         // -- Sections
         public static Model[] mdl_section;
         public static Texture2D[] tex_section_ent;
@@ -287,6 +296,17 @@ namespace LightSavers
             sniper_green = loadTexture("textures/HUDs/sniper_green");
             sword_blue = loadTexture("textures/HUDs/sword_blue");
             sword_green = loadTexture("textures/HUDs/sword_green");
+
+
+            //adding diagrams
+            controller = Globals.content.Load<Texture2D>("textures/xbox_controller_diagram");
+            keyboard  = Globals.content.Load<Texture2D>("textures/keyboard_controller_diagram");
+            
+            //subheadings
+            controls = Globals.content.Load<Texture2D>("textures/Headings/controls");
+            about = Globals.content.Load<Texture2D>("textures/Headings/about");
+            paused = Globals.content.Load<Texture2D>("textures/Headings/gamepaused");
+            settings = Globals.content.Load<Texture2D>("textures/Headings/settings");
 
             // once its loaded, fade out
             StartTransitionOff();

@@ -84,9 +84,13 @@ namespace LightSavers.ScreenManagement.Layers
 
             canvas.Draw(AssetLoader.tex_black, viewport.Bounds, talpha);
 
+            canvas.Draw(AssetLoader.controls, new Rectangle(viewport.Bounds.Width / 2 - AssetLoader.controls.Width / 2, 50, AssetLoader.controls.Width, AssetLoader.controls.Height), Color.White);
+            canvas.Draw(AssetLoader.controller, new Rectangle(10, 200, AssetLoader.controller.Width, AssetLoader.controller.Height), Color.White);
+            canvas.Draw(AssetLoader.keyboard, new Rectangle(viewport.Bounds.Width - 10 - AssetLoader.keyboard.Width, 200, AssetLoader.keyboard.Width, AssetLoader.keyboard.Height), Color.White);
+
             //drawing prompt to go back
-            canvas.Draw(AssetLoader.diamond, new Rectangle(200 - 50, 200 + 6, 40, 15), Color.White);
-            canvas.DrawString(AssetLoader.fnt_assetloadscreen, "Back", new Vector2(200, 200), Color.White);
+            canvas.Draw(AssetLoader.diamond, new Rectangle(10, viewport.Bounds.Height -100 + 6, 40, 15), Color.White);
+            canvas.DrawString(AssetLoader.fnt_assetloadscreen, "Back", new Vector2(50, viewport.Bounds.Height - 100), Color.White);
 
             // finish drawing
             canvas.End();
