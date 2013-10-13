@@ -156,9 +156,9 @@ namespace LightSavers
             titleRect = new Rectangle(tx, 100, 800, 230);
 
             //Load Music and sounds
-            Globals.audioManager.LoadMenuSong("soundz/menu/menu_music", "menu");
+            Globals.audioManager.LoadMenuMusic("soundz/menu/menu_music");
             Globals.audioManager.PlayMenuMusic();
-            Globals.audioManager.LoadMenuSound("soundz/menu/menu_select", "menu_select");
+            //Globals.audioManager.LoadMenuSound("soundz/menu/menu_select", "menu_select");
         }
         
         public bool Start()
@@ -217,7 +217,7 @@ namespace LightSavers
             snd_assault = Globals.content.Load<SoundEffect>("soundz/game/weapons/assault");
             snd_alien_death1 = Globals.content.Load<SoundEffect>("soundz/game/creatures/deathalien1");
 
-            Globals.audioManager.LoadSong("soundz/game/music/desolate", "music");
+            //Globals.audioManager.LoadSong("soundz/game/music/desolate", "music");
             Globals.audioManager.LoadGameSound(snd_alien_death1, "aliendeath1",6,Globals.audioManager.alienDeath1);
             Globals.audioManager.LoadGameSound(snd_pistol, "pistol", 10, Globals.audioManager.pistol);
             Globals.audioManager.LoadGameSound(snd_shottie, "shottie", 5, Globals.audioManager.shottie);

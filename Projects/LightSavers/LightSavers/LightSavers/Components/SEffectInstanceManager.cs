@@ -54,27 +54,13 @@ namespace LightSavers.Components
         }
 
         /// <summary>
-        /// Pause all of the instances - may ignore this
-        /// </summary>
-        public void TogglePause()
-        {       
-            for (int i = 0; i < numInstances; ++i)
-            {
-                if (paused)
-                    instances[i].Resume();
-                else
-                    instances[i].Pause();
-            }
-            paused = (paused) ? false : true;
-        }
-
-        /// <summary>
         /// Pause
         /// </summary>
         public void Pause()
         {
             for (int i = 0; i < numInstances; ++i)
-                instances[i].Pause();
+                if (instances[i]!=null)
+                    instances[i].Pause();
         }
 
         /// <summary>
@@ -83,7 +69,8 @@ namespace LightSavers.Components
         public void Resume()
         {
             for (int i = 0; i < numInstances; ++i)
-                instances[i].Resume();
+                if (instances[i] != null)
+                    instances[i].Resume();
         }
     }
 }
