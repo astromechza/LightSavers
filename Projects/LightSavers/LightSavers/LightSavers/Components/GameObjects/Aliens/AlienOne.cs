@@ -137,8 +137,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                 }
                 if (_livestate == LiveState.ATTACKING)
                 {
-                    _targetPosition = _position;
-                    RotateToFacePosition(_targetPlayer.Position);
+                    _targetPosition = _targetPlayer.Position;
                     if (_aplayer.GetLoopCount() > 0)
                     {
                         _livestate = LiveState.CHASING;
@@ -150,27 +149,28 @@ namespace LightSavers.Components.GameObjects.Aliens
                 {
                     _velocity = _targetPosition - _position;
                     _velocity.Normalize();
-                    RotateToFacePosition(_velocity);
-                    Vector3 newpos = _position + _velocity * (ms / 200);
+                    if (RotateToFacePosition(_velocity, ms))
+                    {
+                        Vector3 newpos = _position + _velocity * (ms / 200);
 
-                    RebuildCollisionRectangle(newpos);
-                    if (Globals.gameInstance.cellCollider.RectangleCollides(_collisionRectangle))
-                    {
-                        _targetPosition = _position;
+                        RebuildCollisionRectangle(newpos);
+                        if (Globals.gameInstance.cellCollider.RectangleCollides(_collisionRectangle))
+                        {
+                            _targetPosition = _position;
+                        }
+                        else if (Globals.gameInstance.campaignManager.CollideCurrentEntities(this))
+                        {
+                            _targetPosition = _position;
+                        }
+                        else if (Globals.gameInstance.CollidesPlayers(this))
+                        {
+                            _targetPosition = _position;
+                        }
+                        else
+                        {
+                            _position = newpos;
+                        }
                     }
-                    else if (Globals.gameInstance.campaignManager.CollideCurrentEntities(this))
-                    {
-                        _targetPosition = _position;
-                    }
-                    else if (Globals.gameInstance.CollidesPlayers(this))
-                    {
-                        _targetPosition = _position;
-                    }
-                    else
-                    {
-                        _position = newpos;
-                    }
-
                 }
                 UpdateAnimations(ms * 1.5f);
                 UpdateMajorTransform();
@@ -198,12 +198,26 @@ namespace LightSavers.Components.GameObjects.Aliens
             _collisionRectangle.Top = o.Z - bBWidth;
         }
 
-        private void RotateToFacePosition(Vector3 o)
-        {
-            Vector3 t = _targetPosition - _position;
-            t.Normalize();
-            if (t.LengthSquared() > 0.01f) _rotation = (float)Math.Atan2(-t.Z, t.X) + MathHelper.PiOver2;
 
+        // Rotate towards vector o
+        private bool RotateToFacePosition(Vector3 o, float ms)
+        {
+            Vector3 t = o;
+            t.Normalize();
+
+            float targetRotation = (float)Math.Atan2(-t.Z, t.X) + MathHelper.PiOver2;
+
+            float deltarotation = targetRotation - _rotation;
+
+            // sanitise
+            if (deltarotation > Math.PI) deltarotation -= MathHelper.TwoPi;
+            if (deltarotation < -Math.PI) deltarotation += MathHelper.TwoPi;
+
+            // add difference
+            float amnt = (ms / 100) * deltarotation;
+            _rotation += amnt;
+
+            return (Math.Abs(amnt) < 0.1f);
         }
 
         
