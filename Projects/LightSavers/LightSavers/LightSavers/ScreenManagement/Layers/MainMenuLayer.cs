@@ -27,11 +27,14 @@ namespace LightSavers.ScreenManagement.Layers
 
         private Rectangle titleRect;
 
+        public bool gameRunning;
+
         /// <summary>
         /// The constructor for the Main Menu.
         /// </summary>
         public MainMenuLayer(bool gameRunning) : base()
         {
+            this.gameRunning = gameRunning;
             SetLayerAttributes();
 
             menuBackground = new MenuBackground();
@@ -45,7 +48,7 @@ namespace LightSavers.ScreenManagement.Layers
 
         private void SetLayerAttributes()
         {
-            isTransparent = false;
+            isTransparent = true;
             transitionOnTime = TimeSpan.FromSeconds(0.6);
             transitionOffTime = TimeSpan.FromSeconds(0.5);
         }
@@ -118,8 +121,21 @@ namespace LightSavers.ScreenManagement.Layers
             // Draw the layers
             canvas.Begin();
 
-            // Draw the 3d background
-            canvas.Draw(menu3dscene, viewport.Bounds, Color.White);
+            if (!gameRunning)
+            {
+                // Draw the 3d background
+                canvas.Draw(menu3dscene, viewport.Bounds, Color.White);
+                menuBackground.Draw(canvas);
+                canvas.Draw(AssetLoader.title2, titleRect, Color.White);
+            }
+            else
+            {
+                Color talpha = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+                canvas.Draw(AssetLoader.tex_black, viewport.Bounds, talpha);
+                canvas.Draw(AssetLoader.paused, titleRect, Color.White);
+            }
+
+            
 
             Draw2DLayers();
 
@@ -134,11 +150,6 @@ namespace LightSavers.ScreenManagement.Layers
 
         private void Draw2DLayers()
         {
-            
-            menuBackground.Draw(canvas);
-
-            canvas.Draw(AssetLoader.title2, titleRect, Color.White);
-
             submenus[currentSubMenuIndex].Draw(canvas, 60, 400);
             
             if (state == ScreenState.TransitioningOff || state == ScreenState.TransitioningOn)
