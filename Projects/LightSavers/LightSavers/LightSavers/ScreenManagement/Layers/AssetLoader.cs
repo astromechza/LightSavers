@@ -66,6 +66,8 @@ namespace LightSavers
         public static Model mdl_sword;
         public static Model mdl_dropfragment;
 
+        public static SoundEffect snd_game_music;
+
         public static SoundEffect snd_pistol;
         public static SoundEffect snd_shottie;
         public static SoundEffect snd_sniper;
@@ -214,6 +216,7 @@ namespace LightSavers
             // assets
             mdl_menuscene = loadModel("models/menuscene/MenuScene");
 
+            snd_game_music = Globals.content.Load<SoundEffect>("soundz/game/music/desolate");
             snd_pistol = Globals.content.Load<SoundEffect>("soundz/game/weapons/pistol");
             snd_shottie = Globals.content.Load<SoundEffect>("soundz/game/weapons/shottie");
             snd_sniper = Globals.content.Load<SoundEffect>("soundz/game/weapons/sniper");
@@ -221,13 +224,13 @@ namespace LightSavers
             snd_assault = Globals.content.Load<SoundEffect>("soundz/game/weapons/assault");
             snd_alien_death1 = Globals.content.Load<SoundEffect>("soundz/game/creatures/deathalien1");
 
-            //Globals.audioManager.LoadSong("soundz/game/music/desolate", "music");
-            Globals.audioManager.LoadGameSound(snd_alien_death1, "aliendeath1",6,Globals.audioManager.alienDeath1);
-            Globals.audioManager.LoadGameSound(snd_pistol, "pistol", 10, Globals.audioManager.pistol);
-            Globals.audioManager.LoadGameSound(snd_shottie, "shottie", 5, Globals.audioManager.shottie);
-            Globals.audioManager.LoadGameSound(snd_sniper, "sniper", 5, Globals.audioManager.sniper);
-            Globals.audioManager.LoadGameSound(snd_sword, "sword", 5, Globals.audioManager.sword);
-            Globals.audioManager.LoadGameSound(snd_assault, "assault", 15, Globals.audioManager.assault);
+            Globals.audioManager.LoadGameSound(snd_game_music, "music",1,1.0f,true);
+            Globals.audioManager.LoadGameSound(snd_alien_death1, "aliendeath1",6,Globals.audioManager.alienDeath1,false);
+            Globals.audioManager.LoadGameSound(snd_pistol, "pistol", 10, Globals.audioManager.pistol,false);
+            Globals.audioManager.LoadGameSound(snd_shottie, "shottie", 5, Globals.audioManager.shottie,false);
+            Globals.audioManager.LoadGameSound(snd_sniper, "sniper", 5, Globals.audioManager.sniper,false);
+            Globals.audioManager.LoadGameSound(snd_sword, "sword", 5, Globals.audioManager.sword,false);
+            Globals.audioManager.LoadGameSound(snd_assault, "assault", 15, Globals.audioManager.assault,false);
 
             //Load Character and animations
             mdl_character = loadModel("animatedmodels/player/spacemanAnimated");

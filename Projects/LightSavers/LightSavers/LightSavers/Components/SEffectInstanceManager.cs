@@ -14,14 +14,15 @@ namespace LightSavers.Components
         SoundEffect sound;
         SoundEffectInstance[] instances;
         float volume;
-        bool paused = false;
+        bool paused = false, isMusic;
         int numInstances, currentInstance=0;
 
-        public SEffectInstanceManager(SoundEffect sound, int instances, float volume)
+        public SEffectInstanceManager(SoundEffect sound, int instances, float volume, bool isMusic)
         {
             this.sound = sound;
             this.volume = volume;
             this.instances = new SoundEffectInstance[instances];
+            this.isMusic = isMusic;
             this.numInstances = instances;
         }
 
@@ -41,7 +42,7 @@ namespace LightSavers.Components
             else
                 newInstance = currentInstance;
             instances[newInstance] = sound.CreateInstance();
-            instances[newInstance].Volume = volume * Globals.audioManager.masterVolume;
+            instances[newInstance].Volume = (isMusic) ? volume * Globals.audioManager.masterVolume : volume * Globals.audioManager.masterVolume * Globals.audioManager.musicVolume;
             instances[newInstance].Play();
             currentInstance = newInstance;
         }
@@ -49,6 +50,7 @@ namespace LightSavers.Components
         public void PlayLoopSingle()
         {
             instances[0] = sound.CreateInstance();
+            instances[0].Volume = (isMusic) ? volume * Globals.audioManager.masterVolume : volume * Globals.audioManager.masterVolume * Globals.audioManager.musicVolume;
             instances[0].IsLooped = true;
             instances[0].Play();
         }
@@ -60,7 +62,10 @@ namespace LightSavers.Components
         {
             for (int i = 0; i < numInstances; ++i)
                 if (instances[i]!=null)
+                {
                     instances[i].Pause();
+                    instances[i].Volume = (isMusic) ? volume * Globals.audioManager.masterVolume : volume * Globals.audioManager.masterVolume*Globals.audioManager.musicVolume;
+                }
         }
 
         /// <summary>
@@ -70,7 +75,10 @@ namespace LightSavers.Components
         {
             for (int i = 0; i < numInstances; ++i)
                 if (instances[i] != null)
-                    instances[i].Resume();
+                {
+                    instances[i].Volume = (isMusic) ? volume * Globals.audioManager.masterVolume : volume * Globals.audioManager.masterVolume * Globals.audioManager.musicVolume;
+                    instances[i].Resume();              
+                }
         }
     }
 }

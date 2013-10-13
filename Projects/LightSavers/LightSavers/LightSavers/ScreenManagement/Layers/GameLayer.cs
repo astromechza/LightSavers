@@ -65,7 +65,8 @@ namespace LightSavers.ScreenManagement.Layers
             cameraController.Fit(Globals.gameInstance.GetCriticalPoints());
             cameraController.MoveToTarget();
 
-            Globals.audioManager.SwitchToGame();
+            
+            
         }
 
         private RenderTarget2D temp;

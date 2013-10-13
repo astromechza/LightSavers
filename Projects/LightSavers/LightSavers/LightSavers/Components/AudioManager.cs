@@ -75,9 +75,17 @@ namespace LightSavers.Components
             gameSounds[effectName].playSound();
         }
 
-        public void LoadGameSound(SoundEffect SEffect, string effectName, int instances, float volume)
+        /// <summary>
+        /// Load the Game sounds effects and music (Excludes menu stuff)
+        /// </summary>
+        /// <param name="SEffect">The Sound effect</param>
+        /// <param name="effectName">Name of the effect (so that it can be referenced/played later)</param>
+        /// <param name="instances"> How many instances do you want playing at a time</param>
+        /// <param name="volume"></param>
+        /// <param name="isMusic">Is this game sound, a music clip?</param>
+        public void LoadGameSound(SoundEffect SEffect, string effectName, int instances, float volume, bool isMusic)
         {
-            gameSounds.Add(effectName, new SEffectInstanceManager(SEffect, instances, volume));
+            gameSounds.Add(effectName, new SEffectInstanceManager(SEffect, instances, volume, isMusic));
         }
 
         public void SwitchToGame()
@@ -110,20 +118,12 @@ namespace LightSavers.Components
 
         public void LoadMenuMusic(string path)
         {
-            menuMusic = new SEffectInstanceManager(Game.Content.Load<SoundEffect>(path), 1, 1.0f);
+            menuMusic = new SEffectInstanceManager(Game.Content.Load<SoundEffect>(path), 1, 1.0f, true);
         }
 
         public void PlayMenuMusic()
         {
             menuMusic.playSound();
-        }
-
-        /// <summary>
-        /// Stops the currently playing music.
-        /// </summary>
-        public void StopMusic()
-        {
-            menuMusic.Pause();
         }
 
         #endregion

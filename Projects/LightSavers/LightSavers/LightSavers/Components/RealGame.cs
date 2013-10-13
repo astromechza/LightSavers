@@ -67,6 +67,9 @@ namespace LightSavers.Components
                 players[i] = new PlayerObject((i==0) ? PlayerIndex.One : PlayerIndex.Two, playerColours[i], spawns[i], MathHelper.ToRadians(-90));
             }
 
+            Globals.audioManager.SwitchToGame();
+            Globals.audioManager.PlayGameSound("music");
+
         }
 
         public void Update(float ms)
