@@ -1,6 +1,7 @@
 ﻿using LightPrePassRenderer;
 using LightSavers.Components.GameObjects;
 using LightSavers.Components.GameObjects.Aliens;
+using LightSavers.Utils.Geometry;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -87,6 +88,16 @@ namespace LightSavers.Components.CampainManager
         {
             if (_door != null) _door.Open();
             for (int i = 0; i < _overheadLights.Count; i++) _overheadLights[i].Enabled = true;
+        }
+
+        public bool RectangleCollidesDoor(Utils.Geometry.RectangleF collisionRectangle)
+        {
+            if (_door != null)
+            {
+                if (Collider.Collide(collisionRectangle, _door.GetDoorLBB())) return true;
+                if (Collider.Collide(collisionRectangle, _door.GetDoorRBB())) return true;
+            }
+            return false;
         }
     }
 }
