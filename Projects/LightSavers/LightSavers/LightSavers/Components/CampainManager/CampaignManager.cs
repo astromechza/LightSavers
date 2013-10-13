@@ -15,9 +15,6 @@ namespace LightSavers.Components.CampainManager
     {
         private int numberOfSections;
 
-        // link to parent game
-        public RealGame game;
-
         public List<CampaignSection> sections;
         private int currentSection;
 
