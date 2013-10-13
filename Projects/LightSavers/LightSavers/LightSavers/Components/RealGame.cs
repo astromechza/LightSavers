@@ -67,6 +67,10 @@ namespace LightSavers.Components
                 players[i] = new PlayerObject((i==0) ? PlayerIndex.One : PlayerIndex.Two, playerColours[i], spawns[i], MathHelper.ToRadians(-90));
             }
 
+            Globals.audioManager.SwitchToGame();
+            //Globals.audioManager.PlayGameSound("start_game");
+            Globals.audioManager.PlayGameSound("music");
+
         }
 
         public void Update(float ms)
@@ -114,6 +118,16 @@ namespace LightSavers.Components
             }
 
             return new RectangleF(left, right, right - left, bottom - left);
+        }
+
+        public bool CollidesPlayers(AlienOne alienOne)
+        {
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (Collider.Collide(alienOne._collisionRectangle, players[i].collisionRectangle)) return true;
+            }
+
+            return false;
         }
     }
 }

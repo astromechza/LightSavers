@@ -36,15 +36,14 @@ namespace LightSavers.Components.GameObjects
 
         private SkinnedMesh mesh;
 
-        private RectangleF collisionRectangle;
+        public RectangleF collisionRectangle;
 
         private float rotation;
 
         // Lighting variables
         private Light torchlight;
         private Light halolight;
-        private Light haloemitlight;
-        
+        private Light haloemitlight;       
 
         private DurationBasedAnimator upPlayer;
         private DurationBasedAnimator lowPlayer;
@@ -202,19 +201,6 @@ namespace LightSavers.Components.GameObjects
                 
                 if (currentWeapon > -1 && weapons[currentWeapon].CanFire())
                 {
-                    Globals.audioManager.PlaySound("shoot_pistol_p1", false, 0.1f);
-                    
-
-                    //if (currentWeapon == 0)
-                    //    Globals.audioManager.PlaySound("shoot_pistol", false, 0.1f);
-                    //    weapon = Animation_States.snipshot;
-                    //else if (currentWeapon == 0)
-                    //    weapon = Animation_States.pistol;
-                    //else if (currentWeapon == 2)
-                    //    weapon = Animation_States.assault;
-                    //else if (currentWeapon == 4)
-                    //    weapon = Animation_States.sword;
-
                     weapons[currentWeapon].Fire(rotation + MathHelper.PiOver2);
                     shooting = Animation_States.shoot;
                 }
@@ -224,8 +210,8 @@ namespace LightSavers.Components.GameObjects
             if(Globals.inputController.isButtonPressed(Microsoft.Xna.Framework.Input.Buttons.Y, playerIndex))
             {
                 int nw = (currentWeapon + 1) % 5;
-                //Switch weapon animations
 
+                //Switch weapon animations
                 if (nw == 1 || nw == 3)
                     weapon = Animation_States.snipshot;
                 else if (nw == 0)
@@ -265,6 +251,13 @@ namespace LightSavers.Components.GameObjects
                 {
                     // if it does collide, pull it back
                     newposition.Z = _position.Z;
+                }
+
+                collisionRectangle.Left = newposition.X - boundingBoxSize;
+                collisionRectangle.Top = newposition.Z - boundingBoxSize;
+                if (Globals.gameInstance.campaignManager.CollideCurrentEntities(this))
+                {
+                    newposition = _position;
                 }
 
                 //lastly check the distance between players

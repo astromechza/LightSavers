@@ -4,6 +4,7 @@ using LightSavers.Components.GameObjects.Aliens;
 using LightSavers.Utils.Geometry;
 using Microsoft.Xna.Framework;
 using System;
+using LightSavers.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -58,7 +59,7 @@ namespace LightSavers.Components.CampainManager
             _population.Clear();
 
             AlienSpawner2<AlienOne>.Spawn(7, this);
-            AlienSpawner2<AlienTwo>.Spawn(4, this);
+            //AlienSpawner2<AlienTwo>.Spawn(4, this);
         }
 
         public void AddAlienToPopulation(BaseAlien ba)
@@ -86,6 +87,8 @@ namespace LightSavers.Components.CampainManager
 
         public void Open()
         {
+            Globals.audioManager.PlayGameSound("start_game");
+
             if (_door != null) _door.Open();
             for (int i = 0; i < _overheadLights.Count; i++) _overheadLights[i].Enabled = true;
         }
@@ -96,6 +99,33 @@ namespace LightSavers.Components.CampainManager
             {
                 if (Collider.Collide(collisionRectangle, _door.GetDoorLBB())) return true;
                 if (Collider.Collide(collisionRectangle, _door.GetDoorRBB())) return true;
+            }
+            return false;
+        }
+
+        public bool CollideAliens(AlienOne alienOne)
+        {
+            for (int i = 0; i < _population.Count; i++)
+            {
+                BaseAlien ba = _population[i];
+                if (ba == alienOne) continue;
+                if (Collider.Collide(alienOne._collisionRectangle, ba._collisionRectangle))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool CollideAliens(PlayerObject playerObject)
+        {
+            for (int i = 0; i < _population.Count; i++)
+            {
+                BaseAlien ba = _population[i];
+                if (Collider.Collide(playerObject.collisionRectangle, ba._collisionRectangle))
+                {
+                    return true;
+                }
             }
             return false;
         }
