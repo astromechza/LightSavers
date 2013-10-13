@@ -70,6 +70,7 @@ namespace LightSavers.Components.Projectiles
                     Globals.gameInstance.campaignManager.ProjectileCollidesDoor(this)
                     )
                 {
+                    Globals.audioManager.PlayGameSound("impact1");
                     aging = true;
                     PreDestroy();
                 }
