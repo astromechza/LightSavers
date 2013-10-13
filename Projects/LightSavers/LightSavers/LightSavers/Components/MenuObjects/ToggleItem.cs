@@ -18,11 +18,11 @@ namespace LightSavers.Components.MenuObjects
             get{return label;}
         }
 
-        public ToggleItem(String label, String[] values)
+        public ToggleItem(String label, String[] values, int current)
         {
             this.label = label;
             this.values = values;
-            this.current = 0;
+            this.current = current;
         }
 
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch canvas, int x, int y, bool selected)

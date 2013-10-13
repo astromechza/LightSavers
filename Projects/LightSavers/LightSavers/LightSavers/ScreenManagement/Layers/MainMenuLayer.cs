@@ -97,9 +97,9 @@ namespace LightSavers.ScreenManagement.Layers
 
             Submenu s1 = new Submenu();
             s1.AddItem(new DelegateItem("Start Game", StartGame, Color.LightBlue, Color.CornflowerBlue));
-            s1.AddItem(new ToggleItem("Players", new String[] { "1", "2" }));
-            s1.AddItem(new ToggleItem("Level Length", new String[] { "Short", "Medium", "Tiring" }));
-            s1.AddItem(new ToggleItem("Difficulty", new String[] { "Easy", "Medium", "Hard" }));
+            s1.AddItem(new ToggleItem("Players", new String[] { "1", "2" }, 0));
+            s1.AddItem(new ToggleItem("Level Length", new String[] { "Short", "Medium", "Tiring" }, 0));
+            s1.AddItem(new ToggleItem("Difficulty", new String[] { "Easy", "Medium", "Hard" }, 0));
 
             submenus.Add(s1);
 
