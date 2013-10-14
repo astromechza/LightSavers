@@ -26,6 +26,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                 rr = new RectangleF(r.X - 0.5f, r.Z - 0.5f, 1.0f, 1.0f);
                 // check collision
                 if (Globals.gameInstance.cellCollider.RectangleCollides(rr)) continue;
+                if (s.CollideAliens(rr)) continue;
 
                 AlienType a = new AlienType();
                 a.Construct(r, (float)Globals.random.NextDouble() * MathHelper.TwoPi, s);
