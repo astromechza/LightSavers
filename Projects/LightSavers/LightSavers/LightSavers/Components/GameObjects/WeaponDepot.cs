@@ -28,6 +28,7 @@ namespace LightSavers.Components.GameObjects
                                              Matrix.CreateScale(0.4f)* Matrix.CreateRotationZ(0.5f),
                                              Matrix.CreateScale(0.8f) * Matrix.CreateTranslation(new Vector3(0.5f,0,0)),
                                              Matrix.CreateScale(0.7f) * Matrix.CreateTranslation(new Vector3(0.1f, 0, 0.1f)),
+                                             Matrix.CreateScale(0.5f) * Matrix.CreateTranslation(new Vector3(0.2f, 0, 0.1f)),
                                              Matrix.CreateScale(0.5f) * Matrix.CreateTranslation(new Vector3(0.2f, 0, 0.1f))
                                          };
 
