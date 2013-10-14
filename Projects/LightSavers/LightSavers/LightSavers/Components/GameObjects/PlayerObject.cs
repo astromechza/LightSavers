@@ -145,11 +145,10 @@ namespace LightSavers.Components.GameObjects
                     lowPlayer.StartClip(currentFiringAnimation);
                 }
 
-                if (upPlayer.GetLoopCount() < 0)
-                {
-                    UpdateAnimation(ms);
-                    UpdateMajorTransforms(ms);
-                }
+               
+                UpdateAnimation(ms);
+                UpdateMajorTransforms(ms);
+                
                 
             }
             else
@@ -157,7 +156,7 @@ namespace LightSavers.Components.GameObjects
                 double temp = this.oldHealth;
                 this.oldHealth = this.health;
 
-                if (temp == health && health > 0)
+                if (temp == health && health >= 0 && health <100)
                 {
                     this.health = this.health + ((ms / 1000) * 0.6);
                 }
@@ -239,21 +238,22 @@ namespace LightSavers.Components.GameObjects
 
                 }
 
-                if (Globals.inputController.isButtonPressed(Microsoft.Xna.Framework.Input.Buttons.Y, playerIndex))
+                if(Globals.inputController.isButtonPressed(Microsoft.Xna.Framework.Input.Buttons.Y, playerIndex))
                 {
                     int nw = (currentWeapon + 1) % 5;
-
-                    //Switch weapon animations
-                    if (nw == 1 || nw == 3)
-                        weapon = Animation_States.snipshot;
-                    else if (nw == 0)
-                        weapon = Animation_States.pistol;
-                    else if (nw == 2)
-                        weapon = Animation_States.assault;
-                    else if (nw == 4)
-                        weapon = Animation_States.sword;
-
+                
                     SwitchWeapon(nw);
+                }
+
+                if (Globals.inputController.isButtonPressed(Microsoft.Xna.Framework.Input.Buttons.X, playerIndex))
+                {
+                    // check game section
+                    WeaponDepot wd = Globals.gameInstance.campaignManager.GetNearestActiveDepot(_position);
+                    if (wd != null)
+                    {
+                        SwitchWeapon(wd.GetIndex());
+                        wd.Deactivate();
+                    }
                 }
 
 
@@ -362,6 +362,16 @@ namespace LightSavers.Components.GameObjects
 
         public void SwitchWeapon(int to)
         {
+            //Switch weapon animations
+            if (to == 1 || to == 3)
+                weapon = Animation_States.snipshot;
+            else if (to == 0)
+                weapon = Animation_States.pistol;
+            else if (to == 2)
+                weapon = Animation_States.assault;
+            else if (to == 4)
+                weapon = Animation_States.sword;
+
             //disable current weapon
             if (currentWeapon > -1)
             {

@@ -12,6 +12,7 @@ namespace SkinnedModel
         private SkinningData skindata;
 
         private AnimationClip fullclip;
+        TimeSpan fullclipDuration;
 
         private Matrix[] boneTransforms;
         private Matrix[] worldTransforms;
@@ -38,6 +39,7 @@ namespace SkinnedModel
 
             // store the long clip
             fullclip = clip;
+            fullclipDuration = fullclip.Duration;
 
             // set up empty matrices
             boneTransforms = new Matrix[skin.BindPose.Count];
@@ -82,7 +84,10 @@ namespace SkinnedModel
                 // If we reached the end, loop back to the start.
                 while (time >= currentDurationClip.end)
                 {
-                    time -= currentDurationClip.duration;
+                    if (time >= fullclipDuration)
+                        time = fullclipDuration;
+                    else
+                        time -= currentDurationClip.duration;
                     currentLoopCount++;
                 } 
             }
