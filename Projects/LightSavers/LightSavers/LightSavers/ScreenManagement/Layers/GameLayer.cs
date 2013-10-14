@@ -9,6 +9,7 @@ using LightSavers.Components;
 using LightPrePassRenderer.partitioning;
 using LightSavers.Utils;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace LightSavers.ScreenManagement.Layers
 {
@@ -27,12 +28,17 @@ namespace LightSavers.ScreenManagement.Layers
         public int difficulty;
         public int numSectionScalingFactor;
 
+        public int cooloffBlue;
+        public int cooloffGreen;
+        public bool count;
+
         //players = 1 or 2
         //sections = 1,2 or 3 (small, medium, long) ---> has scaling factor. default set to 6
         //difficulty = 1, 2, or 3 (easy, medium, hard)
         public GameLayer(int players, int numSections, int difficulty) : base()
         {
-           
+            cooloffBlue = 2000;
+            cooloffGreen = 2000;
             // Screen layer attributes
             numPlayers = players;
             numSectionScalingFactor = 6;
@@ -71,7 +77,7 @@ namespace LightSavers.ScreenManagement.Layers
             // Load the Game
             //second number is number of players
             
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT) numPlayers = 1;
+            //if (Environment.OSVersion.Platform == PlatformID.Win32NT) numPlayers = 1;
             Globals.gameInstance = new RealGame(numSections * numSectionScalingFactor, numPlayers, sceneGraph);
 
             cameraController = new CameraController(viewport, Matrix.Identity);
@@ -121,12 +127,30 @@ namespace LightSavers.ScreenManagement.Layers
             {
                 BlueTex = AssetLoader.sword_blue;
             }
-            String health = "" + Globals.gameInstance.players[0].health;
+            int oldHealth = (int)Globals.gameInstance.players[0].oldHealth;
+            int newHealth = (int)Globals.gameInstance.players[0].health;
+            String health = "" + newHealth;
+            
+            Color col = new Color();
+            if (newHealth > oldHealth)
+            {
+                cooloffBlue = 0;
+            }
+
+            if (cooloffBlue < 30)
+            {
+                col = Color.LightSkyBlue;
+            }
+            else
+            {
+                col = Color.White;
+                cooloffBlue = 2000;
+            }
 
             Vector2 w = AssetLoader.fnt_healthgamescreen.MeasureString(health);
 
             canvas.Draw(BlueTex, new Rectangle(0, viewport.Bounds.Height - (104), 197, 104), Color.White);
-            canvas.DrawString(AssetLoader.fnt_healthgamescreen, health, new Vector2((160 - w.X / 2), viewport.Bounds.Height - (78)), Color.White);
+            canvas.DrawString(AssetLoader.fnt_healthgamescreen, health, new Vector2((160 - w.X / 2), viewport.Bounds.Height - (78)), col);
 
             if (Globals.gameInstance.players.Length == 2)
             {
@@ -150,13 +174,32 @@ namespace LightSavers.ScreenManagement.Layers
                 {
                     GreenTex = AssetLoader.sword_green;
                 }
-                //Globals.gameInstance.players[1].health = 20;
-                health = "" + Globals.gameInstance.players[1].health;
+
+                oldHealth = (int)Globals.gameInstance.players[1].oldHealth;
+                newHealth = (int)Globals.gameInstance.players[1].health;
+                health = "" + newHealth;
+
+                col = new Color();
+                if (newHealth > oldHealth)
+                {
+                    cooloffGreen = 0;
+                }
+
+                if (cooloffGreen < 30)
+                {
+                    col = Color.LightGreen;
+                }
+                else
+                {
+                    col = Color.White;
+                    cooloffGreen = 2000;
+                }
+
 
                 w = AssetLoader.fnt_healthgamescreen.MeasureString(health);
 
                 canvas.Draw(GreenTex, new Rectangle(viewport.Bounds.Width - 197, viewport.Bounds.Height - (104), 197, 104), Color.White);
-                canvas.DrawString(AssetLoader.fnt_healthgamescreen, health, new Vector2(viewport.Bounds.Width - 197 + (37 - w.X / 2), viewport.Bounds.Height - (78)), Color.White);
+                canvas.DrawString(AssetLoader.fnt_healthgamescreen, health, new Vector2(viewport.Bounds.Width - 197 + (37 - w.X / 2), viewport.Bounds.Height - (78)), col);
                 
             }
             //FINISHED HUDS
@@ -183,7 +226,16 @@ namespace LightSavers.ScreenManagement.Layers
         
         public override void Update(float ms)
         {
+            if (cooloffBlue < 30)
+            {
+                cooloffBlue = cooloffBlue + 1;
+            }
+            if (cooloffGreen < 30)
+            {
+                cooloffGreen = cooloffBlue + 1;
+            }
 
+            
             Globals.gameInstance.Update(ms);
 
             if (Globals.inputController.isButtonReleased(Microsoft.Xna.Framework.Input.Buttons.Back, null))
