@@ -123,6 +123,9 @@ namespace LightSavers
         public static Texture2D paused;
         public static Texture2D questionRect;
 
+        public static Texture2D won;
+        public static Texture2D lost;
+
 
         // -- Sections
         public static Model[] mdl_section;
@@ -344,6 +347,8 @@ namespace LightSavers
             questionRect = Globals.content.Load<Texture2D>("textures/question");
 
             ship = loadTexture("textures/spaceship");
+            won = loadTexture("textures/won");
+            lost = loadTexture("textures/lost");
             
             //subheadings
             controls = Globals.content.Load<Texture2D>("textures/Headings/controls");
