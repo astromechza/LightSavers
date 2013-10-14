@@ -35,8 +35,7 @@ namespace LightSavers.Components
         public CampaignManager campaignManager;
 
         private static Color[] playerColours = new Color[] {
-                new Color(0.5f, 1.0f, 0.5f),
-                new Color(0.5f, 0.6f, 1.0f)
+                new Color(0.5f, 0.6f, 1.0f),new Color(0.5f, 1.0f, 0.5f)
         };
 
         private static Vector3[] spawns = new Vector3[] {
