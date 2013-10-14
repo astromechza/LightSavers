@@ -31,9 +31,15 @@ namespace LightSavers.Components.GameObjects
                                              Matrix.CreateScale(0.5f) * Matrix.CreateTranslation(new Vector3(0.2f, 0, 0.1f))
                                          };
 
-        
 
-        public WeaponDepot(Vector3 center)
+
+        public WeaponDepot(Vector3 center, int index)
+        {
+            Construct(center);
+            SetGun(index);
+        }
+
+        public void Construct(Vector3 center)
         {
             this._position = center;
             this._rotation = (float)Globals.random.NextDouble();
@@ -60,8 +66,8 @@ namespace LightSavers.Components.GameObjects
             Globals.gameInstance.sceneGraph.Setup(this.light);
             Globals.gameInstance.sceneGraph.Add(this.light);
 
-            SetGun(2);
         }
+
 
         public void Update(float ms)
         {
