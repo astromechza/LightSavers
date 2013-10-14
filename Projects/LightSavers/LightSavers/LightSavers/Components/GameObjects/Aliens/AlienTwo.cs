@@ -1,6 +1,7 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
 using LightSavers.Components.CampainManager;
+using LightSavers.Components.Guns;
 using LightSavers.Components.Projectiles;
 using LightSavers.Utils;
 using LightSavers.Utils.Geometry;
@@ -15,7 +16,7 @@ namespace LightSavers.Components.GameObjects.Aliens
 {
     public class AlienTwo : BaseAlien
     {
-
+        private BaseGun weapon;
         Vector3 _roamingTarget = new Vector3();
         PlayerObject _targetPlayer = null;
         LiveState _livestate;
@@ -56,6 +57,10 @@ namespace LightSavers.Components.GameObjects.Aliens
             AssignRandomTarget();
 
             this._collisionRectangle = new RectangleF(0, 0, 1.0f, 1.0f);
+
+            weapon = new AlienFace();
+            
+            Globals.gameInstance.sceneGraph.Setup(weapon.mesh);
 
             RebuildCollisionRectangle(_position);
         }
@@ -125,7 +130,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                         bool LOS = true;
                         if (LOS)
                         {
-                            if (d < 10.0f)
+                            if (d < 8.0f)
                             {
                                 _livestate = LiveState.ATTACKING;
                                 if (_targetPlayer.alive == true)
@@ -134,6 +139,8 @@ namespace LightSavers.Components.GameObjects.Aliens
                                 }
                                 _aplayer.StartClip(Animation_States.attacking);
                             }
+                            else
+                                _livestate = LiveState.ROAMING;
                         }
                         else
                         {
@@ -144,7 +151,19 @@ namespace LightSavers.Components.GameObjects.Aliens
                 }
                 if (_livestate == LiveState.ATTACKING)
                 {
-                    _targetPosition = _targetPlayer.Position;
+                   // _targetPosition = _targetPlayer.Position;
+                  
+                    _targetPosition = this.Position;
+
+
+                    if (RotateToFacePosition(_targetPlayer.Position - _position, ms))
+                    {
+                        if (weapon.CanFire())
+                        {
+                            weapon.SetTransform(_aplayer.GetWorldTransforms()[0], _mesh.Transform);
+                            weapon.Fire(this._rotation - MathHelper.PiOver2);
+                        }
+                    }
                     if (_aplayer.GetLoopCount() > 0)
                     {
                         _livestate = LiveState.CHASING;
@@ -159,7 +178,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                     if (RotateToFacePosition(_velocity, ms))
                     {
                         bool collided = false;
-                        Vector3 newpos = _position + _velocity * (ms / 200);
+                        Vector3 newpos = _position + _velocity * (ms / 350);
 
                         // FIRST DO TEH X
                         RebuildCollisionRectangle(newpos);
@@ -197,7 +216,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                         }
                         else
                         {
-                            Vector3 newposX = _position + Vector3.Right * _velocity * (ms / 200);
+                            Vector3 newposX = _position + Vector3.Right * _velocity * (ms / 350);
                             RebuildCollisionRectangle(newposX);
                             if (Globals.gameInstance.cellCollider.RectangleCollides(_collisionRectangle))
                             {
@@ -212,7 +231,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                                 newposX.X = _position.X;
                             }
 
-                            Vector3 newposZ = _position + Vector3.Backward * _velocity * (ms / 200);
+                            Vector3 newposZ = _position + Vector3.Backward * _velocity * (ms / 350);
                             RebuildCollisionRectangle(newposX);
                             if (Globals.gameInstance.cellCollider.RectangleCollides(_collisionRectangle))
                             {
@@ -230,6 +249,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                             _position = new Vector3(newposX.X, _position.Y, newposZ.Z);
 
                         }
+
 
                     }
                 }

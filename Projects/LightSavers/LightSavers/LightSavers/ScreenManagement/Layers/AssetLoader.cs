@@ -60,12 +60,15 @@ namespace LightSavers
         public static Model mdl_desk;
         public static Model mdl_pipe;
         public static Model mdl_weapon_depot;
+        public static Model mdl_teleport_pad;
+        public static Model mdl_teleport_beam;
         public static Model mdl_assault_rifle;
         public static Model mdl_pistol;
         public static Model mdl_shotgun;
         public static Model mdl_sniper_rifle;
         public static Model mdl_sword;
         public static Model mdl_dropfragment;
+        public static Model mdl_alien_projectile;
 
         public static SoundEffect snd_game_music;
         public static SoundEffect snd_game_start;
@@ -78,6 +81,7 @@ namespace LightSavers
         public static SoundEffect snd_bullet_impact1;
 
         public static SoundEffect snd_alien_death1;
+        public static SoundEffect snd_alien_bullet;
 
         public static Texture2D title2;
         public static Texture2D tex_black;
@@ -249,7 +253,10 @@ namespace LightSavers
             Globals.audioManager.LoadGameSound(snd_game_start, "start_game", 1, 1.0f, false);
 
             snd_bullet_impact1 = Globals.content.Load<SoundEffect>("soundz/game/weapons/bulletimpact1");
-            Globals.audioManager.LoadGameSound(snd_bullet_impact1, "impact1", 4, 0.1f, false);           
+            Globals.audioManager.LoadGameSound(snd_bullet_impact1, "impact1", 4, 0.1f, false);
+
+            snd_alien_bullet = Globals.content.Load<SoundEffect>("soundz/game/creatures/range_attack");
+            Globals.audioManager.LoadGameSound(snd_alien_bullet, "alien_range", 15, Globals.audioManager.alienRange, false);
 
             //Load Character and animations
             mdl_character = loadModel("animatedmodels/player/spacemanAnimated");
@@ -292,6 +299,7 @@ namespace LightSavers
             mdl_assaultBullet = loadModel("projectiles/AssaultBullet");
             mdl_sniper_bullet = loadModel("projectiles/SniperBullet");
 
+            mdl_alien_projectile = loadModel("projectiles/AlienProjectile");
 
             mdl_dropfragment = loadModel("projectiles/DropFragment");
 
@@ -309,6 +317,9 @@ namespace LightSavers
             mdl_pistol = loadModel("models/weapons/pistol/Pistol");
             mdl_shotgun = loadModel("models/weapons/shotgun/Shottie");
             mdl_sword = loadModel("models/weapons/sword/Sword");
+
+            mdl_teleport_pad = loadModel("models/teleportpad/teleportPad");
+            mdl_teleport_beam = loadModel("models/teleportpad/teleportBeam");
 
             diamond = loadTexture("textures/diamond");
 

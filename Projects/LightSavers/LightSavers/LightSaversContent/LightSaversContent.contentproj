@@ -350,6 +350,19 @@
       <Processor>LightPrePassProcessor</Processor>
       <ProcessorParameters_Scale>0.5</ProcessorParameters_Scale>
     </Compile>
+    <Compile Include="models\teleportpad\teleportPad.fbx">
+      <Name>teleportPad</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
+      <ProcessorParameters_Scale>1.5</ProcessorParameters_Scale>
+    </Compile>
+    <Compile Include="models\teleportpad\teleportBeam.fbx">
+      <Name>teleportBeam</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>LightPrePassProcessor</Processor>
+      <ProcessorParameters_CastShadows>False</ProcessorParameters_CastShadows>
+      <ProcessorParameters_Scale>1.4</ProcessorParameters_Scale>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="animatedmodels\alien03\Alien03 Animations.txt">
@@ -785,10 +798,35 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="projectiles\AlienProjectile.xml">
+      <Name>AlienProjectile</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>ProjectileModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\teleportpad\teleportPadDiffuse.png">
+      <Name>teleportPadDiffuse</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="models\teleportpad\teleportPadEmissive.png">
+      <Name>teleportPadEmissive</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="textures\spaceship.png">
       <Name>spaceship</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+	</Compile>
+    <Compile Include="models\teleportpad\teleportBeamD.png">
+      <Name>teleportBeamD</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="models\teleportpad\teleportBeamE.png">
+      <Name>teleportBeamE</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
