@@ -130,11 +130,13 @@ namespace LightSavers.Components.GameObjects.Aliens
                         bool LOS = true;
                         if (LOS)
                         {
-                            if (d < 10.0f)
+                            if (d < 8.0f)
                             {
                                 _livestate = LiveState.ATTACKING;
                                 _aplayer.StartClip(Animation_States.attacking);
                             }
+                            else
+                                _livestate = LiveState.ROAMING;
                         }
                         else
                         {
@@ -172,7 +174,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                     if (RotateToFacePosition(_velocity, ms))
                     {
                         bool collided = false;
-                        Vector3 newpos = _position + _velocity * (ms / 200);
+                        Vector3 newpos = _position + _velocity * (ms / 350);
 
                         // FIRST DO TEH X
                         RebuildCollisionRectangle(newpos);
@@ -210,7 +212,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                         }
                         else
                         {
-                            Vector3 newposX = _position + Vector3.Right * _velocity * (ms / 200);
+                            Vector3 newposX = _position + Vector3.Right * _velocity * (ms / 350);
                             RebuildCollisionRectangle(newposX);
                             if (Globals.gameInstance.cellCollider.RectangleCollides(_collisionRectangle))
                             {
@@ -225,7 +227,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                                 newposX.X = _position.X;
                             }
 
-                            Vector3 newposZ = _position + Vector3.Backward * _velocity * (ms / 200);
+                            Vector3 newposZ = _position + Vector3.Backward * _velocity * (ms / 350);
                             RebuildCollisionRectangle(newposX);
                             if (Globals.gameInstance.cellCollider.RectangleCollides(_collisionRectangle))
                             {
