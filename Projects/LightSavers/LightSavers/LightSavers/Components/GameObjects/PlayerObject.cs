@@ -133,19 +133,33 @@ namespace LightSavers.Components.GameObjects
 
         public override void Update(float ms)
         {
-
-            
             if (health <= 0)
             {
+                health = 0;
                 this.alive = false;
-                moving = Animation_States.death;
+
+                if (currentFiringAnimation != Animation_States.death)
+                {
+                    currentFiringAnimation = Animation_States.death;
+                    upPlayer.StartClip(currentFiringAnimation);
+                    lowPlayer.StartClip(currentFiringAnimation);
+                }
+
+                if (upPlayer.GetLoopCount() < 0)
+                {
+                    UpdateAnimation(ms);
+                    UpdateMajorTransforms(ms);
+                }
+                
             }
             else
             {
-                //Console.WriteLine(health);
-                if (oldHealth == health && health > 0)
+                double temp = this.oldHealth;
+                this.oldHealth = this.health;
+
+                if (temp == health && health > 0)
                 {
-                    this.health = this.health + ((ms / 1000) * 0.4);
+                    this.health = this.health + ((ms / 1000) * 0.6);
                 }
                 Vector3 newposition = new Vector3(_position.X, _position.Y, _position.Z);
 
@@ -311,23 +325,20 @@ namespace LightSavers.Components.GameObjects
                     if (weapons[currentWeapon].AnimationComplete()) shooting = 0;
 
                 }
+                    // Update Top half of body
+                    if (currentFiringAnimation != moving + shooting + weapon)
+                    {
+                        currentFiringAnimation = moving + shooting + weapon;
+                        upPlayer.StartClip(currentFiringAnimation);
+                    }
 
-                // Update Top half of body
-                if (currentFiringAnimation != moving + shooting + weapon)
-                {
-                    currentFiringAnimation = moving + shooting + weapon;
-                    upPlayer.StartClip(currentFiringAnimation);
-                }
-
-                //Update Bottom half of body
-                if (currentAnimation != moving + weapon)
-                {
-                    currentAnimation = moving + weapon;
-                    lowPlayer.StartClip(currentAnimation);
-                }
+                    //Update Bottom half of body
+                    if (currentAnimation != moving + weapon)
+                    {
+                        currentAnimation = moving + weapon;
+                        lowPlayer.StartClip(currentAnimation);
+                    }
             }
-
-            this.oldHealth = this.health;
             
         }
 

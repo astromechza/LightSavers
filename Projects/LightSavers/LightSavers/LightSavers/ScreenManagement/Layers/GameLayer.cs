@@ -32,6 +32,8 @@ namespace LightSavers.ScreenManagement.Layers
         public int cooloffGreen;
         public bool count;
 
+        Color col = new Color();
+
         //players = 1 or 2
         //sections = 1,2 or 3 (small, medium, long) ---> has scaling factor. default set to 6
         //difficulty = 1, 2, or 3 (easy, medium, hard)
@@ -131,21 +133,24 @@ namespace LightSavers.ScreenManagement.Layers
             int newHealth = (int)Globals.gameInstance.players[0].health;
             String health = "" + newHealth;
             
-            Color col = new Color();
+            
             if (newHealth > oldHealth)
             {
                 cooloffBlue = 0;
-            }
-
-            if (cooloffBlue < 30)
-            {
                 col = Color.LightSkyBlue;
             }
-            else
+            else if (newHealth < oldHealth)
+            {
+                cooloffBlue = 0;
+                col = Color.Red;
+            }
+
+            if (cooloffBlue >= 30)
             {
                 col = Color.White;
                 cooloffBlue = 2000;
             }
+           // Console.WriteLine(newHealth + " " + oldHealth + " " + cooloffBlue);
 
             Vector2 w = AssetLoader.fnt_healthgamescreen.MeasureString(health);
 
@@ -179,17 +184,18 @@ namespace LightSavers.ScreenManagement.Layers
                 newHealth = (int)Globals.gameInstance.players[1].health;
                 health = "" + newHealth;
 
-                col = new Color();
                 if (newHealth > oldHealth)
                 {
                     cooloffGreen = 0;
-                }
-
-                if (cooloffGreen < 30)
-                {
                     col = Color.LightGreen;
                 }
-                else
+                else if (newHealth < oldHealth)
+                {
+                    cooloffGreen = 0;
+                    col = Color.Red;
+                }
+
+                if (cooloffGreen >= 30)
                 {
                     col = Color.White;
                     cooloffGreen = 2000;
