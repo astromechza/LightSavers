@@ -18,6 +18,8 @@ namespace LightSavers.Components.CampainManager
         public List<CampaignSection> sections;
         private int currentSection;
 
+        public Teleporter endteleporter;
+
         #region
         public int CurrentSection { get { return currentSection; } }
         #endregion
@@ -27,6 +29,7 @@ namespace LightSavers.Components.CampainManager
             this.numberOfSections = numberOfSections;
             this.sections = new List<CampaignSection>(numberOfSections);
             this.currentSection = 0;
+            this.endteleporter = null;
         }
 
         public void Update(float ms)
@@ -34,12 +37,39 @@ namespace LightSavers.Components.CampainManager
             UpdateAliens(ms);
 
             UpdateWeaponDepots(ms);
-
-            if (sections[currentSection].GetAlienCount() == 0)
+            if (currentSection < sections.Count - 1)
             {
-                sections[currentSection].Open();
-                currentSection += 1;
-                sections[currentSection].FillWithAliens();
+                if (sections[currentSection].GetAlienCount() == 0)
+                {
+                    sections[currentSection].Open();
+                    currentSection += 1;
+                    sections[currentSection].FillWithAliens();
+                }
+            }
+            else
+            {
+                // check if players are both on the portal
+                bool allOnPortal = true;
+                for (int i = 0; i < Globals.gameInstance.players.Length; i++)
+                {
+                    if (Vector3.DistanceSquared(endteleporter.Position, Globals.gameInstance.players[i].Position) > 1.5f)
+                    {
+                        allOnPortal = false;
+                        break;
+                    }
+                }
+
+                if (allOnPortal && !endteleporter.Started && !endteleporter.Finished)
+                {
+                    endteleporter.Start();
+                }
+                endteleporter.Update(ms);
+
+                if (endteleporter.Finished)
+                {
+                    // win
+                }
+
             }
 
             UpdateDoors(ms);
@@ -129,6 +159,11 @@ namespace LightSavers.Components.CampainManager
             int ind = (int)_position.X / 32;
 
             return sections[ind].GetNearestActiveDepot(_position);
+        }
+
+        public void SetTeleport(Teleporter teleporter)
+        {
+            endteleporter = teleporter;
         }
     }
 }

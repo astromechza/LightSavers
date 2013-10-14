@@ -60,6 +60,8 @@ namespace LightSavers
         public static Model mdl_desk;
         public static Model mdl_pipe;
         public static Model mdl_weapon_depot;
+        public static Model mdl_teleport_pad;
+        public static Model mdl_teleport_beam;
         public static Model mdl_assault_rifle;
         public static Model mdl_pistol;
         public static Model mdl_shotgun;
@@ -311,6 +313,9 @@ namespace LightSavers
             mdl_pistol = loadModel("models/weapons/pistol/Pistol");
             mdl_shotgun = loadModel("models/weapons/shotgun/Shottie");
             mdl_sword = loadModel("models/weapons/sword/Sword");
+
+            mdl_teleport_pad = loadModel("models/teleportpad/teleportPad");
+            mdl_teleport_beam = loadModel("models/teleportpad/teleportBeam");
 
             diamond = loadTexture("textures/diamond");
 
