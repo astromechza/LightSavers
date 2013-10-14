@@ -819,7 +819,7 @@
       <Name>spaceship</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-	</Compile>
+    </Compile>
     <Compile Include="models\teleportpad\teleportBeamD.png">
       <Name>teleportBeamD</Name>
       <Importer>TextureImporter</Importer>
@@ -827,6 +827,18 @@
     </Compile>
     <Compile Include="models\teleportpad\teleportBeamE.png">
       <Name>teleportBeamE</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="textures\lost.png">
+      <Name>lost</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\won.png">
+      <Name>won</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

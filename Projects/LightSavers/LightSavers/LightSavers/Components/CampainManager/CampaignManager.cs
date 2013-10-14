@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using LightSavers.ScreenManagement.Layers;
 
 namespace LightSavers.Components.CampainManager
 {
@@ -65,9 +66,13 @@ namespace LightSavers.Components.CampainManager
                 }
                 endteleporter.Update(ms);
 
-                if (endteleporter.Finished)
+                if (endteleporter.Progress > 30)
                 {
                     // win
+                    //Globals.gameInstance.parentLayer.
+                    GameLayer game = (GameLayer)Globals.screenManager.GetTop();
+                    game.fadeOutCompleteCallback = win;
+                    game.StartTransitionOff();
                 }
 
             }
@@ -75,6 +80,19 @@ namespace LightSavers.Components.CampainManager
             UpdateDoors(ms);
 
         }
+
+        public bool win()
+        {
+            Globals.screenManager.Push(new EndScreen("won", true));
+            return true;
+        }
+
+        public bool lose()
+        {
+            Globals.screenManager.Push(new EndScreen("lost", false));
+            return true;
+        }
+
 
         // Update all the aliens
         public void UpdateAliens(float ms)
