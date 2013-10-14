@@ -125,6 +125,11 @@ namespace LightSavers.Components.GameObjects.Aliens
                             if (d < 1.0f)
                             {
                                 _livestate = LiveState.ATTACKING;
+                                if (_targetPlayer.alive == true)
+                                {
+                                    _targetPlayer.health = _targetPlayer.health - 2;
+                                }
+                                
                                 _aplayer.StartClip(Animation_States.attacking);
                             }
                         }

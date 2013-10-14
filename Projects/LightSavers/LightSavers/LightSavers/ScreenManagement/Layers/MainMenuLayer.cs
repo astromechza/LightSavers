@@ -125,7 +125,7 @@ namespace LightSavers.ScreenManagement.Layers
             if (gameRunning == false)
             {
                 // Draw the 3d background
-                Console.WriteLine("Bool gameRunning: " + gameRunning);
+               // Console.WriteLine("Bool gameRunning: " + gameRunning);
                 canvas.Draw(menu3dscene, viewport.Bounds, Color.White);
                 menuBackground.Draw(canvas);
                 canvas.Draw(AssetLoader.title2, titleRect, Color.White);
