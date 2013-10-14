@@ -33,7 +33,6 @@ namespace LightSavers.Components.GameObjects
                                          };
 
 
-
         public WeaponDepot(Vector3 center, int index)
         {
             Construct(center);
