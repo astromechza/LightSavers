@@ -118,6 +118,7 @@
     <Compile Include="Components\GameObjects\Aliens\AlienTwo.cs" />
     <Compile Include="Components\GameObjects\Animation States.cs" />
     <Compile Include="Components\GameObjects\Door.cs" />
+    <Compile Include="Components\GameObjects\Teleporter.cs" />
     <Compile Include="Components\GameObjects\WeaponDepot.cs" />
     <Compile Include="Components\Guns\AlienFace.cs" />
     <Compile Include="Components\Guns\AssaultRifle.cs" />

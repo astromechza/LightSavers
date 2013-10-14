@@ -153,6 +153,10 @@ namespace LightSavers.WorldBuilding
                     {
                         csection.SetWeaponDepot(new WeaponDepot(center, Globals.random.Next(4)+1));
                     }
+                    else if (c == Color.SteelBlue)
+                    {
+                        Globals.gameInstance.campaignManager.SetTeleport(new Teleporter(center));
+                    }
 
                 }
             }
