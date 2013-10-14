@@ -122,7 +122,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                         bool LOS = true;
                         if (LOS)
                         {
-                            if (d < 1.0f)
+                            if (d < 2.0f)
                             {
                                 _livestate = LiveState.ATTACKING;
                                 if (_targetPlayer.alive == true)
