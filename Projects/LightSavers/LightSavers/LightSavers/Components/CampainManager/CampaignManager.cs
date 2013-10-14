@@ -87,11 +87,7 @@ namespace LightSavers.Components.CampainManager
             return true;
         }
 
-        public bool lose()
-        {
-            Globals.screenManager.Push(new EndScreen("lost", false));
-            return true;
-        }
+        
 
 
         // Update all the aliens

@@ -6,6 +6,7 @@ using LightSavers.Components.GameObjects;
 using LightSavers.Components.GameObjects.Aliens;
 using LightSavers.Components.HitParticle;
 using LightSavers.Components.Projectiles;
+using LightSavers.ScreenManagement.Layers;
 using LightSavers.Utils;
 using LightSavers.Utils.Geometry;
 using LightSavers.WorldBuilding;
@@ -87,7 +88,9 @@ namespace LightSavers.Components
 
             if (!anyalive)
             {
-                System.Diagnostics.Debug.WriteLine("ALL DEAD");
+                GameLayer game = (GameLayer)Globals.screenManager.GetTop();
+                game.fadeOutCompleteCallback = lose;
+                game.StartTransitionOff();
             } 
 
             projectileManager.Update(ms);
@@ -98,12 +101,18 @@ namespace LightSavers.Components
             fragmentManager.Update(ms);
         }
 
+        public bool lose()
+        {
+            Globals.screenManager.Push(new EndScreen("lost", false));
+            return true;
+        }
+
         public List<Vector2> GetCriticalPoints()
         {
             criticalPoints.Clear();
             for (int i = 0; i < players.Length; i++)
             {
-                if (players[i].alive)
+                if (players[i].alive || criticalPoints.Count == 0)
                 {
                     players[i].AddCriticalPoints(criticalPoints);
                 }
