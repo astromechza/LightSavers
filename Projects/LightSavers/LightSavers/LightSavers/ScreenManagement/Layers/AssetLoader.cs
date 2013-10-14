@@ -66,6 +66,7 @@ namespace LightSavers
         public static Model mdl_sniper_rifle;
         public static Model mdl_sword;
         public static Model mdl_dropfragment;
+        public static Model mdl_alien_projectile;
 
         public static SoundEffect snd_game_music;
         public static SoundEffect snd_game_start;
@@ -288,6 +289,7 @@ namespace LightSavers
             mdl_assaultBullet = loadModel("projectiles/AssaultBullet");
             mdl_sniper_bullet = loadModel("projectiles/SniperBullet");
 
+            mdl_alien_projectile = loadModel("projectiles/AlienProjectile");
 
             mdl_dropfragment = loadModel("projectiles/DropFragment");
 
