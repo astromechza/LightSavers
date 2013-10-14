@@ -110,11 +110,15 @@ namespace LightSavers
         public static Texture2D controller;
         public static Texture2D group;
 
+        public static Texture2D ship;
+
         //subheadings
         public static Texture2D controls;
         public static Texture2D about;
         public static Texture2D settings;
         public static Texture2D paused;
+        public static Texture2D questionRect;
+
 
         // -- Sections
         public static Model[] mdl_section;
@@ -326,6 +330,9 @@ namespace LightSavers
             controller = Globals.content.Load<Texture2D>("textures/xbox_controller_diagram");
             keyboard  = Globals.content.Load<Texture2D>("textures/keyboard_controller_diagram");
             group = Globals.content.Load<Texture2D>("textures/group_small");
+            questionRect = Globals.content.Load<Texture2D>("textures/question");
+
+            ship = loadTexture("textures/spaceship");
             
             //subheadings
             controls = Globals.content.Load<Texture2D>("textures/Headings/controls");
