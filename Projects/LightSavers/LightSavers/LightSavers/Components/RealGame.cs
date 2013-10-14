@@ -6,6 +6,7 @@ using LightSavers.Components.GameObjects;
 using LightSavers.Components.GameObjects.Aliens;
 using LightSavers.Components.HitParticle;
 using LightSavers.Components.Projectiles;
+using LightSavers.ScreenManagement.Layers;
 using LightSavers.Utils;
 using LightSavers.Utils.Geometry;
 using LightSavers.WorldBuilding;
@@ -77,14 +78,32 @@ namespace LightSavers.Components
 
         public void Update(float ms)
         {
-            for (int i = 0; i < players.Length; i++) players[i].Update(ms);
+            bool anyalive = false;
+            for (int i = 0; i < players.Length; i++)
+            {
+                players[i].Update(ms);
+                anyalive = anyalive | (!players[i].dead);
+            }
+
+            if (!anyalive)
+            {
+                GameLayer game = (GameLayer)Globals.screenManager.GetTop();
+                game.fadeOutCompleteCallback = lose;
+                game.StartTransitionOff();
+            } 
 
             projectileManager.Update(ms);
             alienProjectileManager.Update(ms);
 
             campaignManager.Update(ms);
-
+            
             fragmentManager.Update(ms);
+        }
+
+        public bool lose()
+        {
+            Globals.screenManager.Push(new EndScreen("lost", false));
+            return true;
         }
 
         public List<Vector2> GetCriticalPoints()
@@ -92,7 +111,10 @@ namespace LightSavers.Components
             criticalPoints.Clear();
             for (int i = 0; i < players.Length; i++)
             {
-                players[i].AddCriticalPoints(criticalPoints);
+                if (players[i].alive || criticalPoints.Count == 0)
+                {
+                    players[i].AddCriticalPoints(criticalPoints);
+                }
                 MaxProgess = Math.Max(MaxProgess, players[i].Position.X);
             }
             return criticalPoints;
@@ -102,9 +124,12 @@ namespace LightSavers.Components
         public PlayerObject GetClosestPlayer(Vector3 position)
         {
             float d = Vector3.DistanceSquared(position, players[0].Position);
+           
             if (players.Length > 1)
             {
                 float d2 = Vector3.DistanceSquared(position, players[1].Position);
+                if (!players[0].alive) return players[1];
+                if (!players[1].alive) return players[0];
                 if (d2 < d) return players[1];
             }
             return players[0];
