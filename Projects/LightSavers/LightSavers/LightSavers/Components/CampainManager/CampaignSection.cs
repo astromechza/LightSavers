@@ -110,6 +110,19 @@ namespace LightSavers.Components.CampainManager
             return false;
         }
 
+        public bool CollideAliens(RectangleF BB)
+        {
+            for (int i = 0; i < _population.Count; i++)
+            {
+                BaseAlien ba = _population[i];
+                if (Collider.Collide(BB, ba._collisionRectangle))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public bool CollideAliens(BaseAlien alienOne)
         {
             for (int i = 0; i < _population.Count; i++)
