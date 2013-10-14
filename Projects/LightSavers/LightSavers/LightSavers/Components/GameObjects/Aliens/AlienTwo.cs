@@ -81,8 +81,10 @@ namespace LightSavers.Components.GameObjects.Aliens
                     }
                 }
 
+
                 if (_livestate == LiveState.ROAMING)
                 {
+
                     // check distance to target
                     if (Vector3.DistanceSquared(_targetPosition, _position) < 0.3f)
                     {
@@ -123,7 +125,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                         bool LOS = true;
                         if (LOS)
                         {
-                            if (d < 1.0f)
+                            if (d < 10.0f)
                             {
                                 _livestate = LiveState.ATTACKING;
                                 _aplayer.StartClip(Animation_States.attacking);
@@ -170,10 +172,13 @@ namespace LightSavers.Components.GameObjects.Aliens
                             collided = true;
                         }
 
+                        //if not colliding with anything keep going to that happy place
                         if (!collided)
                         {
-                            _position = newpos;
+                            if (!(this._livestate == LiveState.ATTACKING)) ;
+                                _position = newpos;
                         }
+                            //randomely choose a new place to go
                         else if (_livestate == LiveState.ROAMING)
                         {
                             _targetPosition = new Vector3(
@@ -219,7 +224,6 @@ namespace LightSavers.Components.GameObjects.Aliens
                             }
 
                             _position = new Vector3(newposX.X, _position.Y, newposZ.Z);
-
 
                         }
 
