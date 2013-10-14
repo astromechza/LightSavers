@@ -16,6 +16,7 @@ namespace LightSavers.Components.CampainManager
         private int _index;
         private Vector3 _origin;
         private Door _door;
+        private WeaponDepot _weaponDepot;
         private List<Light> _overheadLights;
         private List<BaseAlien> _population;
         private string _currentTitle;
@@ -33,6 +34,7 @@ namespace LightSavers.Components.CampainManager
             _door = null;
             _overheadLights = new List<Light>();
             _population = new List<BaseAlien>();
+            _weaponDepot = null;
             _currentTitle = "";
         }
 
@@ -138,6 +140,25 @@ namespace LightSavers.Components.CampainManager
         public string GetCurrentTitle()
         {
             return _currentTitle;
+        }
+
+        public void SetWeaponDepot(WeaponDepot weaponDepot)
+        {
+            _weaponDepot = weaponDepot;
+        }
+
+        public void UpdateWeaponDepot(float ms)
+        {
+            if (_weaponDepot != null) _weaponDepot.Update(ms);
+        }
+
+        public WeaponDepot GetNearestActiveDepot(Vector3 _position)
+        {
+            if (_weaponDepot != null && _weaponDepot.Active())
+            {
+                if (Vector3.DistanceSquared(_position, _weaponDepot._position) < 0.9f) return _weaponDepot;
+            }
+            return null;
         }
     }
 }
