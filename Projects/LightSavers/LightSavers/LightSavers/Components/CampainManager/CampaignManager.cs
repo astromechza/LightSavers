@@ -33,6 +33,8 @@ namespace LightSavers.Components.CampainManager
         {
             UpdateAliens(ms);
 
+            UpdateWeaponDepots(ms);
+
             if (sections[currentSection].GetAlienCount() == 0)
             {
                 sections[currentSection].Open();
@@ -59,6 +61,14 @@ namespace LightSavers.Components.CampainManager
             for (int i = 0; i < sections.Count; i++)
             {
                 if (sections[i].HasDoor()) sections[i].UpdateDoor(ms);
+            }
+        }
+
+        public void UpdateWeaponDepots(float ms)
+        {
+            for (int i = 0; i < sections.Count; i++)
+            {
+                sections[i].UpdateWeaponDepot(ms);
             }
         }
 
@@ -112,6 +122,13 @@ namespace LightSavers.Components.CampainManager
         public float GetCurrentProgress()
         {
             return (float)(currentSection-1) / sections.Count;
+        }
+
+        public WeaponDepot GetNearestActiveDepot(Vector3 _position)
+        {
+            int ind = (int)_position.X / 32;
+
+            return sections[ind].GetNearestActiveDepot(_position);
         }
     }
 }

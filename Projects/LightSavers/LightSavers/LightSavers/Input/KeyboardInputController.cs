@@ -156,10 +156,10 @@ namespace LightSavers.Components
                     return Keys.Q;
 
                 case Buttons.RightShoulder:
-                    return Keys.E;
+                    return Keys.D3;
 
                 case Buttons.X:
-                    return Keys.D3;
+                    return Keys.E;
 
                 case Buttons.Y:
                     return Keys.F;
