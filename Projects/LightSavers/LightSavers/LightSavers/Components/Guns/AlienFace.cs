@@ -17,7 +17,7 @@ namespace LightSavers.Components.Guns
         public AlienFace()
             : base()
         {
-            SetModel(AssetLoader.mdl_assault_rifle);
+            SetModel(AssetLoader.mdl_alien_projectile);
             SetHoldTransform(Matrix.Identity);
             SetEmmitterVector(new Vector3(-0.7f, 0, 0));
             this.coolDown = new TimeSpan(0, 0, 0, 0, 100);
@@ -32,11 +32,11 @@ namespace LightSavers.Components.Guns
 
         public override void Fire(float rotation)
         {
-            Globals.audioManager.PlayGameSound("assault");
+            Globals.audioManager.PlayGameSound("alien_range");
 
             float r = (float)Globals.random.NextDouble() * accuracy;
 
-            AssaultBullet b = Globals.gameInstance.projectileManager.assaultBulletPool.Provide();
+            AlienBullet b = Globals.gameInstance.alienProjectileManager.alienProjectilePool.Provide();
             b.Construct(emmitterPosition, rotation + r - halfAccuracy);
 
             base.Fire(rotation);

@@ -79,6 +79,7 @@ namespace LightSavers
         public static SoundEffect snd_bullet_impact1;
 
         public static SoundEffect snd_alien_death1;
+        public static SoundEffect snd_alien_bullet;
 
         public static Texture2D title2;
         public static Texture2D tex_black;
@@ -246,7 +247,10 @@ namespace LightSavers
             Globals.audioManager.LoadGameSound(snd_game_start, "start_game", 1, 1.0f, false);
 
             snd_bullet_impact1 = Globals.content.Load<SoundEffect>("soundz/game/weapons/bulletimpact1");
-            Globals.audioManager.LoadGameSound(snd_bullet_impact1, "impact1", 4, 0.1f, false);           
+            Globals.audioManager.LoadGameSound(snd_bullet_impact1, "impact1", 4, 0.1f, false);
+
+            snd_alien_bullet = Globals.content.Load<SoundEffect>("soundz/game/creatures/range_attack");
+            Globals.audioManager.LoadGameSound(snd_alien_bullet, "alien_range", 15, Globals.audioManager.alienRange, false);
 
             //Load Character and animations
             mdl_character = loadModel("animatedmodels/player/spacemanAnimated");

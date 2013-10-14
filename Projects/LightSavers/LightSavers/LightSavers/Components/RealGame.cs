@@ -26,6 +26,7 @@ namespace LightSavers.Components
     {
         public PlayerObject[] players;
         public ProjectileManager projectileManager = new ProjectileManager();
+        public AlienProjectileManager alienProjectileManager = new AlienProjectileManager();
         public DropFragmentManager fragmentManager = new DropFragmentManager();
         public BlockBasedSceneGraph sceneGraph;
         public WorldBuilder worldBuilder;
@@ -78,8 +79,10 @@ namespace LightSavers.Components
         public void Update(float ms)
         {
             for (int i = 0; i < players.Length; i++) players[i].Update(ms);
+
             projectileManager.Update(ms);
-            
+            alienProjectileManager.Update(ms);
+
             campaignManager.Update(ms);
 
             fragmentManager.Update(ms);

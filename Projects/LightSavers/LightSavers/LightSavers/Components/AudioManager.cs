@@ -35,7 +35,8 @@ namespace LightSavers.Components
             sword = 0.3f,
 
             //entity volumes
-            alienDeath1 = 0.8f;
+            alienDeath1 = 0.8f,
+            alienRange = 0.4f;
         #endregion
 
         #region Fields

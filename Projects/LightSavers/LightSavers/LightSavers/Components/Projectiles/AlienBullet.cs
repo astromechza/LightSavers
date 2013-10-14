@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 namespace LightSavers.Components.Projectiles
 {
-    class AlienBullet :BaseBullet 
+    public class AlienBullet :BaseBullet 
     {
         public AlienBullet()
         {

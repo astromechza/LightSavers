@@ -1,4 +1,4 @@
-﻿using LightSavers.Components.GameObjects.Aliens;
+﻿using LightSavers.Components.GameObjects;
 using LightSavers.Utils.Geometry;
 using ObjectPool;
 using System;
@@ -8,19 +8,13 @@ using System.Text;
 
 namespace LightSavers.Components.Projectiles
 {
-    class AlienProjectileManager
+    public class AlienProjectileManager
     {
-        public GObjectPool<PistolBullet> pistolBulletPool;
-        public GObjectPool<ShotgunBullet> shotgunBulletPool;
-        public GObjectPool<AssaultBullet> assaultBulletPool;
-        public GObjectPool<SniperBullet> sniperBulletPool;
+        public GObjectPool<AlienBullet> alienProjectilePool;
 
         public AlienProjectileManager()
         {
-            pistolBulletPool = new GObjectPool<PistolBullet>(100, 10);
-            shotgunBulletPool = new GObjectPool<ShotgunBullet>(100, 50);
-            assaultBulletPool = new GObjectPool<AssaultBullet>(500, 100);
-            sniperBulletPool = new GObjectPool<SniperBullet>(10, 2);
+            alienProjectilePool = new GObjectPool<AlienBullet>(40, 10);
         }
 
         /// <summary>
@@ -30,88 +24,29 @@ namespace LightSavers.Components.Projectiles
         /// <param name="ms">Milliseconds passed since last update</param>
         public void Update(float ms)
         {
-            int i = pistolBulletPool.GetFirst();
+            int i = alienProjectilePool.GetFirst();
             while (i != -1)
             {
-                PistolBullet b = pistolBulletPool.GetByIndex(i);
+                AlienBullet b = alienProjectilePool.GetByIndex(i);
                 b.Update(ms);
                 if (b.MustBeDeleted())
                 {
-                    pistolBulletPool.Dispose(b);
+                    alienProjectilePool.Dispose(b);
                 }
-                i = pistolBulletPool.NextIndex(b);
-            }
-
-            i = shotgunBulletPool.GetFirst();
-            while (i != -1)
-            {
-                ShotgunBullet b = shotgunBulletPool.GetByIndex(i);
-                b.Update(ms);
-                if (b.MustBeDeleted())
-                {
-                    shotgunBulletPool.Dispose(b);
-                }
-                i = shotgunBulletPool.NextIndex(b);
-            }
-
-            i = assaultBulletPool.GetFirst();
-            while (i != -1)
-            {
-                AssaultBullet b = assaultBulletPool.GetByIndex(i);
-                b.Update(ms);
-                if (b.MustBeDeleted())
-                {
-                    assaultBulletPool.Dispose(b);
-                }
-                i = assaultBulletPool.NextIndex(b);
-            }
-
-            i = sniperBulletPool.GetFirst();
-            while (i != -1)
-            {
-                SniperBullet b = sniperBulletPool.GetByIndex(i);
-                b.Update(ms);
-                if (b.MustBeDeleted())
-                {
-                    sniperBulletPool.Dispose(b);
-                }
-                i = sniperBulletPool.NextIndex(b);
+                i = alienProjectilePool.NextIndex(b);
             }
         }
 
-        public IProjectile CheckHit(BaseAlien alien)
+        public IProjectile CheckHit(PlayerObject player)
         {
-            int i = pistolBulletPool.GetFirst();
+            int i = alienProjectilePool.GetFirst();
             while (i != -1)
             {
-                PistolBullet b = pistolBulletPool.GetByIndex(i);
-                if (Collider.Collide(alien.GetBoundRect(), b.GetCenter())) return b;
-                i = pistolBulletPool.NextIndex(b);
+                AlienBullet b = alienProjectilePool.GetByIndex(i);
+                if (Collider.Collide(player.collisionRectangle, b.GetCenter())) return b;
+                i = alienProjectilePool.NextIndex(b);
             }
 
-            i = shotgunBulletPool.GetFirst();
-            while (i != -1)
-            {
-                ShotgunBullet b = shotgunBulletPool.GetByIndex(i);
-                if (Collider.Collide(alien.GetBoundRect(), b.GetCenter())) return b;
-                i = shotgunBulletPool.NextIndex(b);
-            }
-
-            i = assaultBulletPool.GetFirst();
-            while (i != -1)
-            {
-                AssaultBullet b = assaultBulletPool.GetByIndex(i);
-                if (Collider.Collide(alien.GetBoundRect(), b.GetCenter())) return b;
-                i = assaultBulletPool.NextIndex(b);
-            }
-
-            i = sniperBulletPool.GetFirst();
-            while (i != -1)
-            {
-                SniperBullet b = sniperBulletPool.GetByIndex(i);
-                if (Collider.Collide(alien.GetBoundRect(), b.GetCenter())) return b;
-                i = sniperBulletPool.NextIndex(b);
-            }
             return null;
         }
     }
