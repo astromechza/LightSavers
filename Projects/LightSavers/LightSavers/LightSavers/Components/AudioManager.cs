@@ -84,7 +84,19 @@ namespace LightSavers.Components
 
                 menuMusic.resetVolume();                
             }
+            get
+            {
+                if (musicVolume == 0)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
         }
+
 
         public int Volume
         {
@@ -98,6 +110,15 @@ namespace LightSavers.Components
 
                 menuMusic.resetVolume();
                 }
+            get
+            {
+                if (masterVolume == 0.1f)
+                    return 0;
+                else if (masterVolume == 0.5f)
+                    return 1;
+                else
+                    return 2;
+            }
         }
 
         /// <summary>

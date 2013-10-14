@@ -76,8 +76,8 @@ namespace LightSavers.ScreenManagement.Layers
             submenus = new List<Submenu>();
 
             Submenu s2 = new Submenu();
-            s2.AddItem(new ToggleItem("Music", new String[] { "On", "Off" }, 0));
-            s2.AddItem(new ToggleItem("Volume", new String[] { "Low", "Medium", "High" }, 2));
+            s2.AddItem(new ToggleItem("Music", new String[] { "On", "Off" }, (int)Globals.audioManager.Music));
+            s2.AddItem(new ToggleItem("Volume", new String[] { "Low", "Medium", "High" }, (int)Globals.audioManager.Volume));
             s2.AddItem(new DelegateItem("Back", backToMain, Color.White, Color.Gray));
 
             submenus.Add(s2);  
