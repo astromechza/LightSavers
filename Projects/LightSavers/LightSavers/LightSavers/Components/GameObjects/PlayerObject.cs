@@ -153,6 +153,20 @@ namespace LightSavers.Components.GameObjects
             }
             else
             {
+                IProjectile p = Globals.gameInstance.alienProjectileManager.CheckHit(this);
+                if (p != null)
+                {
+                    p.PreDestroy();
+                    p.Destroy();
+                    this.health -= p.GetDamage();
+                    //if (this._health <= 0)
+                    //{
+                    //    this._state = AlienState.DYING;
+                    //    this._aplayer.StartClip(Animation_States.death);
+                    //    Globals.audioManager.PlayGameSound("aliendeath1");
+                    //}
+                }
+
                 double temp = this.oldHealth;
                 this.oldHealth = this.health;
 

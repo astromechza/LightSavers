@@ -1,6 +1,7 @@
 ﻿using LightPrePassRenderer;
 using LightPrePassRenderer.partitioning;
 using LightSavers.Components.CampainManager;
+using LightSavers.Components.Guns;
 using LightSavers.Components.Projectiles;
 using LightSavers.Utils;
 using LightSavers.Utils.Geometry;
@@ -15,7 +16,7 @@ namespace LightSavers.Components.GameObjects.Aliens
 {
     public class AlienTwo : BaseAlien
     {
-
+        private BaseGun weapon;
         Vector3 _roamingTarget = new Vector3();
         PlayerObject _targetPlayer = null;
         LiveState _livestate;
@@ -56,6 +57,10 @@ namespace LightSavers.Components.GameObjects.Aliens
             AssignRandomTarget();
 
             this._collisionRectangle = new RectangleF(0, 0, 1.0f, 1.0f);
+
+            weapon = new AlienFace();
+            
+            Globals.gameInstance.sceneGraph.Setup(weapon.mesh);
 
             RebuildCollisionRectangle(_position);
         }
@@ -144,9 +149,14 @@ namespace LightSavers.Components.GameObjects.Aliens
                   
                     _targetPosition = this.Position;
 
+
                     if (RotateToFacePosition(_targetPlayer.Position - _position, ms))
                     {
-
+                        if (weapon.CanFire())
+                        {
+                            weapon.SetTransform(_aplayer.GetWorldTransforms()[0], _mesh.Transform);
+                            weapon.Fire(this._rotation - MathHelper.PiOver2);
+                        }
                     }
                     if (_aplayer.GetLoopCount() > 0)
                     {

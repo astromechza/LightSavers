@@ -14,7 +14,7 @@ namespace LightSavers.Components.Projectiles
 
         public AlienProjectileManager()
         {
-            alienProjectilePool = new GObjectPool<AlienBullet>(40, 10);
+            alienProjectilePool = new GObjectPool<AlienBullet>(40, 30);
         }
 
         /// <summary>

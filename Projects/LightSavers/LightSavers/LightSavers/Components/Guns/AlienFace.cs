@@ -19,9 +19,9 @@ namespace LightSavers.Components.Guns
         {
             SetModel(AssetLoader.mdl_alien_projectile);
             SetHoldTransform(Matrix.Identity);
-            SetEmmitterVector(new Vector3(-0.7f, 0, 0));
-            this.coolDown = new TimeSpan(0, 0, 0, 0, 100);
-            this.animationCoolDown = new TimeSpan(0, 0, 0, 0, 100);
+            SetEmmitterVector(new Vector3(0.0f, 0, 0));
+            this.coolDown = new TimeSpan(0, 0,0, 0, 500);
+            this.animationCoolDown = new TimeSpan(0, 0, 0, 0, 500);
         }
 
         public void SetAccuracy(float theta)
@@ -37,7 +37,7 @@ namespace LightSavers.Components.Guns
             float r = (float)Globals.random.NextDouble() * accuracy;
 
             AlienBullet b = Globals.gameInstance.alienProjectileManager.alienProjectilePool.Provide();
-            b.Construct(emmitterPosition, rotation + r - halfAccuracy);
+            b.Construct(emmitterPosition, rotation /*+ r - halfAccuracy*/);
 
             base.Fire(rotation);
         }
