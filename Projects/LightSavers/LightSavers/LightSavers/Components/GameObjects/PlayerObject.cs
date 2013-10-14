@@ -67,6 +67,7 @@ namespace LightSavers.Components.GameObjects
 
         //state
         public bool alive = true;
+        public bool dead = false;
 
         public PlayerObject(PlayerIndex playerIndex, Color color, Vector3 pos, float initialYRot)
         {
@@ -144,7 +145,10 @@ namespace LightSavers.Components.GameObjects
                     upPlayer.StartClip(currentFiringAnimation);
                     lowPlayer.StartClip(currentFiringAnimation);
                 }
-
+                else if (upPlayer.GetLoopCount() > 1)
+                {
+                    this.dead = true;
+                }
                
                 UpdateAnimation(ms);
                 UpdateMajorTransforms(ms);

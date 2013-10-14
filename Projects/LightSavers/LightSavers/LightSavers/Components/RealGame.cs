@@ -78,13 +78,23 @@ namespace LightSavers.Components
 
         public void Update(float ms)
         {
-            for (int i = 0; i < players.Length; i++) players[i].Update(ms);
+            bool anyalive = false;
+            for (int i = 0; i < players.Length; i++)
+            {
+                players[i].Update(ms);
+                anyalive = anyalive | (!players[i].dead);
+            }
+
+            if (!anyalive)
+            {
+                System.Diagnostics.Debug.WriteLine("ALL DEAD");
+            } 
 
             projectileManager.Update(ms);
             alienProjectileManager.Update(ms);
 
             campaignManager.Update(ms);
-
+            
             fragmentManager.Update(ms);
         }
 
