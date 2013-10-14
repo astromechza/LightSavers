@@ -45,6 +45,20 @@ namespace LightSavers.Components.CampainManager
                     sections[currentSection].Open();
                     currentSection += 1;
                     sections[currentSection].FillWithAliens();
+
+                    // respawn
+                    if (Globals.gameInstance.players.Length > 1)
+                    {
+                        if (!Globals.gameInstance.players[0].alive)
+                        {
+                            Globals.gameInstance.players[0].Respawn(Globals.gameInstance.players[1].Position);
+                        }
+                        else if (!Globals.gameInstance.players[1].alive)
+                        {
+                            Globals.gameInstance.players[1].Respawn(Globals.gameInstance.players[0].Position);
+                        }
+                    }
+
                 }
             }
             else

@@ -458,5 +458,17 @@ namespace LightSavers.Components.GameObjects
             Vector3 t = Vector3.Transform(v, m);
             outputPoints.Add(new Vector2(t.X,t.Z));
         }
+
+        public void Respawn(Vector3 vector3)
+        {
+            this._position = vector3;
+            alive = true;
+            dead = false;
+            health = 100.0;
+            oldHealth = 100.0;
+            upPlayer.StartClip(moving + shooting + weapon);
+            lowPlayer.StartClip(moving + weapon);
+            SwitchWeapon(0);
+        }
     }
 }
