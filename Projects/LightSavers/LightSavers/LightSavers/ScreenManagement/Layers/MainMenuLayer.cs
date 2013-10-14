@@ -35,6 +35,7 @@ namespace LightSavers.ScreenManagement.Layers
         public MainMenuLayer(bool gameRunning) : base()
         {
             this.gameRunning = gameRunning;
+            isTransparent = gameRunning;
             SetLayerAttributes();
 
             menuBackground = new MenuBackground();
@@ -48,7 +49,7 @@ namespace LightSavers.ScreenManagement.Layers
 
         private void SetLayerAttributes()
         {
-            isTransparent = true;
+            
             transitionOnTime = TimeSpan.FromSeconds(0.6);
             transitionOffTime = TimeSpan.FromSeconds(0.5);
         }
@@ -120,22 +121,22 @@ namespace LightSavers.ScreenManagement.Layers
 
             // Draw the layers
             canvas.Begin();
-
-            if (!gameRunning)
+            
+            if (gameRunning == false)
             {
                 // Draw the 3d background
+                Console.WriteLine("Bool gameRunning: " + gameRunning);
                 canvas.Draw(menu3dscene, viewport.Bounds, Color.White);
                 menuBackground.Draw(canvas);
                 canvas.Draw(AssetLoader.title2, titleRect, Color.White);
             }
             else
             {
+                isTransparent = true;
                 Color talpha = new Color(1.0f, 1.0f, 1.0f, 0.7f);
                 canvas.Draw(AssetLoader.tex_black, viewport.Bounds, talpha);
                 canvas.Draw(AssetLoader.paused, titleRect, Color.White);
             }
-
-            
 
             Draw2DLayers();
 
@@ -171,6 +172,11 @@ namespace LightSavers.ScreenManagement.Layers
             if (this.state == ScreenState.Active)
             {
                 CheckControls();
+            }
+
+            if (gameRunning == true && isTransparent!= true)
+            {
+                isTransparent = true;
             }
 
             base.Update(ms);
@@ -275,10 +281,6 @@ namespace LightSavers.ScreenManagement.Layers
                         newIndex = size - 1;
                     }
                     currentToggle.current = newIndex;
-                    //if (currentToggle.Label == "volume")
-                    //{
-                       
-                    //}                   
                 }                
             }
 
@@ -358,6 +360,7 @@ namespace LightSavers.ScreenManagement.Layers
 
         public bool goBack()
         {
+            Globals.audioManager.SwitchToGame();
             Globals.screenManager.Pop();
             return true;
         }

@@ -205,7 +205,7 @@ namespace LightSavers.ScreenManagement.Layers
         public bool OpenPause()
         {
             //Globals.screenManager.Pop();
-            Globals.screenManager.Push(new PauseMenuLayer());
+            Globals.screenManager.Push(new MainMenuLayer(true));
             Globals.audioManager.SwitchToMenu();
             return true;
         }
