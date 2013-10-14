@@ -140,7 +140,14 @@ namespace LightSavers.Components.GameObjects.Aliens
                 }
                 if (_livestate == LiveState.ATTACKING)
                 {
-                    _targetPosition = _targetPlayer.Position;
+                   // _targetPosition = _targetPlayer.Position;
+                  
+                    _targetPosition = this.Position;
+
+                    if (RotateToFacePosition(_targetPlayer.Position - _position, ms))
+                    {
+
+                    }
                     if (_aplayer.GetLoopCount() > 0)
                     {
                         _livestate = LiveState.CHASING;
@@ -226,6 +233,7 @@ namespace LightSavers.Components.GameObjects.Aliens
                             _position = new Vector3(newposX.X, _position.Y, newposZ.Z);
 
                         }
+
 
                     }
                 }
