@@ -59,6 +59,7 @@ namespace LightSavers
         public static Model mdl_doorBase;
         public static Model mdl_desk;
         public static Model mdl_pipe;
+        public static Model mdl_weapon_depot;
         public static Model mdl_assault_rifle;
         public static Model mdl_pistol;
         public static Model mdl_shotgun;
@@ -296,6 +297,8 @@ namespace LightSavers
             mdl_desk = loadModel("models/desk/Desk");
 
             mdl_pipe = loadModel("models/pipe/pipe");
+
+            mdl_weapon_depot = loadModel("models/weapondepot/weaponDepot");
 
             mdl_assault_rifle = loadModel("models/weapons/assaultrifle/AssaultRifle");
             mdl_sniper_rifle = loadModel("models/weapons/sniperrifle/SniperRifle");
