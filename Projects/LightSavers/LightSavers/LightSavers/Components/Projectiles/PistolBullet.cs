@@ -23,7 +23,7 @@ namespace LightSavers.Components.Projectiles
 
         public override int GetDamage()
         {
-            return 30;
+            return 40;
         } 
     }
 }

@@ -793,11 +793,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="textures\question.png">
+      <Name>question</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="projectiles\AlienProjectile.xml">
       <Name>AlienProjectile</Name>
       <Importer>XmlImporter</Importer>
       <Processor>ProjectileModelProcessor</Processor>
-	</Compile>
+    </Compile>
     <Compile Include="models\teleportpad\teleportPadDiffuse.png">
       <Name>teleportPadDiffuse</Name>
       <Importer>TextureImporter</Importer>
@@ -810,6 +815,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="textures\spaceship.png">
+      <Name>spaceship</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+	</Compile>
     <Compile Include="models\teleportpad\teleportBeamD.png">
       <Name>teleportBeamD</Name>
       <Importer>TextureImporter</Importer>

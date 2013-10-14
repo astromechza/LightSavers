@@ -156,7 +156,9 @@
     <Compile Include="Input\XBoxInputController.cs" />
     <Compile Include="Components\CameraController.cs" />
     <Compile Include="ScreenManagement\Layers\AboutScreenLayer.cs" />
+    <Compile Include="ScreenManagement\Layers\AreYouSureLayer.cs" />
     <Compile Include="ScreenManagement\Layers\ControlScreenLayer.cs" />
+    <Compile Include="ScreenManagement\Layers\IntroStory.cs" />
     <Compile Include="ScreenManagement\Layers\PauseMenuLayer.cs" />
     <Compile Include="ScreenManagement\Layers\SettingsMenuLayer.cs" />
     <Compile Include="Utils\Geometry\CircleF.cs" />

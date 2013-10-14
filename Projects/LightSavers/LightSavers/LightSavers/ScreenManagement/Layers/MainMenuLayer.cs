@@ -84,7 +84,7 @@ namespace LightSavers.ScreenManagement.Layers
             if (gameRunning == true)
             {
                 s0.AddItem(new DelegateItem("Resume Game", goBack, Color.White, Color.Gray));
-                s0.AddItem(new DelegateItem("New Game", restartEverything, Color.White, Color.Gray));
+                s0.AddItem(new DelegateItem("New Game", RestartQuestion, Color.White, Color.Gray));
             }
             else
             {
@@ -95,7 +95,7 @@ namespace LightSavers.ScreenManagement.Layers
             s0.AddItem(new DelegateItem("Controls", OpenControl, Color.White, Color.Gray));
             s0.AddItem(new DelegateItem("Settings", OpenSettings, Color.White, Color.Gray));
             s0.AddItem(new DelegateItem("About", OpenAbout, Color.White, Color.Gray));
-            s0.AddItem(new DelegateItem("Exit", endGame, Color.White, Color.Gray));
+            s0.AddItem(new DelegateItem("Exit", ExitQuestion, Color.White, Color.Gray));
 
             submenus.Add(s0);
 
@@ -218,6 +218,7 @@ namespace LightSavers.ScreenManagement.Layers
                     int destination = current.destination;
                     if (destination == -1)
                     {
+                        this.fadeOutCompleteCallback = ExitQuestion;
                         this.StartTransitionOff();
                     }
                         
@@ -312,12 +313,10 @@ namespace LightSavers.ScreenManagement.Layers
             ToggleItem LengthToggle = (ToggleItem)submenus[1].items[2];
             ToggleItem DiffToggle = (ToggleItem)submenus[1].items[3];
 
-            Globals.screenManager.Push(new GameLayer(playerToggle.current + 1, LengthToggle.current + 1, DiffToggle.current + 1));
+            GameLayer temp = new GameLayer(playerToggle.current + 1, LengthToggle.current + 1, DiffToggle.current + 1);
 
-            Console.WriteLine("Players: " + (playerToggle.current + 1));
-            Console.WriteLine("Length: " + (LengthToggle.current + 1));
-            Console.WriteLine("Difficulty: " + (DiffToggle.current + 1));
-                              
+            Globals.screenManager.Push(new IntroStory(temp));
+                                         
             return true;
         }
 
@@ -345,19 +344,6 @@ namespace LightSavers.ScreenManagement.Layers
             return true;
         }
 
-        public bool restartEverything()
-        {
-            while (Globals.screenManager.layers.Count > 0)
-            {
-                Globals.screenManager.Pop();
-            } 
-            Globals.screenManager.Push(new MainMenuLayer(false));
-            MainMenuLayer current = (MainMenuLayer)Globals.screenManager.layers[0];
-            current.currentSubMenuIndex = 1;
-
-            return true;
-        }
-
         public bool goBack()
         {
             Globals.audioManager.SwitchToGame();
@@ -369,6 +355,20 @@ namespace LightSavers.ScreenManagement.Layers
         {
             // Globals.screenManager.Pop();
             Globals.screenManager.Push(new SettingsMenuLayer());
+            return true;
+        }
+
+        public bool ExitQuestion()
+        {
+            // Globals.screenManager.Pop();
+            Globals.screenManager.Push(new AreYouSureLayer("\n  Are you sure you want to exit?", 0));
+            return true;
+        }
+
+        public bool RestartQuestion()
+        {
+            // Globals.screenManager.Pop();
+            Globals.screenManager.Push(new AreYouSureLayer("Are you sure you want to restart?\nYou will lose all progress in the\ncurrent game.", 1));
             return true;
         }
     }
