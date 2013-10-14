@@ -47,7 +47,7 @@ namespace LightSavers.Components.GameObjects
             if (inProgress)
             {
                 progress += ms/80;
-                this.beamMesh.Transform = Matrix.CreateScale(1, progress*10, 1) * Matrix.CreateTranslation(_position + new Vector3(0,progress/6,0));
+                this.beamMesh.Transform = Matrix.CreateScale(1, progress*10, 1) * Matrix.CreateTranslation(_position);
                 if (progress > 100)
                 {
                     inProgress = false;
