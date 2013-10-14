@@ -126,7 +126,7 @@ namespace LightSavers.Components
             return new RectangleF(left, right, right - left, bottom - left);
         }
 
-        public bool CollidesPlayers(AlienOne alienOne)
+        public bool CollidesPlayers(BaseAlien alienOne)
         {
             for (int i = 0; i < players.Length; i++)
             {

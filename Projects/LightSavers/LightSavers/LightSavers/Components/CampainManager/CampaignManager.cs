@@ -94,7 +94,7 @@ namespace LightSavers.Components.CampainManager
 
         }
 
-        public bool CollideCurrentEntities(AlienOne alienOne)
+        public bool CollideCurrentEntities(BaseAlien alienOne)
         {
             return sections[currentSection].CollideAliens(alienOne);
         }

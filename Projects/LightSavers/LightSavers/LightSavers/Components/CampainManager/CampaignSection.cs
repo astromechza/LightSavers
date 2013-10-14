@@ -60,8 +60,8 @@ namespace LightSavers.Components.CampainManager
         {
             _population.Clear();
 
-            AlienSpawner2<AlienOne>.Spawn(7, this);
-            //AlienSpawner2<AlienTwo>.Spawn(4, this);
+            //AlienSpawner2<AlienOne>.Spawn(7, this);
+            AlienSpawner2<AlienTwo>.Spawn(4, this);
         }
 
         public void AddAlienToPopulation(BaseAlien ba)
@@ -108,7 +108,7 @@ namespace LightSavers.Components.CampainManager
             return false;
         }
 
-        public bool CollideAliens(AlienOne alienOne)
+        public bool CollideAliens(BaseAlien alienOne)
         {
             for (int i = 0; i < _population.Count; i++)
             {
