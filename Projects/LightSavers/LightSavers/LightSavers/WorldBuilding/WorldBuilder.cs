@@ -151,7 +151,7 @@ namespace LightSavers.WorldBuilding
                     }
                     else if (c == Color.Tan)
                     {
-                        csection.SetWeaponDepot(new WeaponDepot(center, Globals.random.Next(4)+1));
+                        csection.SetWeaponDepot(new WeaponDepot(center, Globals.random.Next(3)+1));
                     }
                     else if (c == Color.SteelBlue)
                     {

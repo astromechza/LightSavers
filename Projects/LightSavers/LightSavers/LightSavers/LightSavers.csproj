@@ -111,6 +111,7 @@
     <Compile Include="Components\AudioManager.cs" />
     <Compile Include="Components\CampainManager\CampaignManager.cs" />
     <Compile Include="Components\CampainManager\CampaignSection.cs" />
+    <Compile Include="Components\GameObjects\Aliens\Alien4.cs" />
     <Compile Include="Components\GameObjects\Aliens\AlienOne.cs" />
     <Compile Include="Components\GameObjects\Aliens\AlienSpawner2.cs" />
     <Compile Include="Components\GameObjects\Aliens\BaseAlien.cs" />
