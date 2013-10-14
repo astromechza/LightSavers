@@ -111,11 +111,16 @@ namespace LightSavers.Components
             criticalPoints.Clear();
             for (int i = 0; i < players.Length; i++)
             {
-                if (players[i].alive || criticalPoints.Count == 0)
+                if (players[i].alive)
                 {
                     players[i].AddCriticalPoints(criticalPoints);
                 }
                 MaxProgess = Math.Max(MaxProgess, players[i].Position.X);
+            }
+
+            if (criticalPoints.Count == 0)
+            {
+                players[0].AddCriticalPoints(criticalPoints);
             }
             return criticalPoints;
         }
