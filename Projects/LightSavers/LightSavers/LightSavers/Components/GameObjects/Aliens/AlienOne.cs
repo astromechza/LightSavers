@@ -151,25 +151,77 @@ namespace LightSavers.Components.GameObjects.Aliens
                     _velocity.Normalize();
                     if (RotateToFacePosition(_velocity, ms))
                     {
+                        bool collided = false;
                         Vector3 newpos = _position + _velocity * (ms / 200);
 
+                        // FIRST DO TEH X
                         RebuildCollisionRectangle(newpos);
                         if (Globals.gameInstance.cellCollider.RectangleCollides(_collisionRectangle))
                         {
-                            _targetPosition = _position;
+                            collided = true;
                         }
                         else if (Globals.gameInstance.campaignManager.CollideCurrentEntities(this))
                         {
-                            _targetPosition = _position;
+                            collided = true;
                         }
                         else if (Globals.gameInstance.CollidesPlayers(this))
                         {
-                            _targetPosition = _position;
+                            collided = true;
                         }
-                        else
+
+                        if (!collided)
                         {
                             _position = newpos;
                         }
+                        else if (_livestate == LiveState.ROAMING)
+                        {
+                            _targetPosition = new Vector3(
+                                MathHelper.Clamp(
+                                    _position.X + (float)Globals.random.NextDouble() * 10 - 5,
+                                    _section.Index * 32,
+                                    _section.Index * 32 + 32
+                                ),
+                                _position.Y,
+                                _position.Z + (float)Globals.random.NextDouble() * 10 - 5
+                            );
+                        }
+                        else
+                        {
+                            Vector3 newposX = _position + Vector3.Right * _velocity * (ms / 200);
+                            RebuildCollisionRectangle(newposX);
+                            if (Globals.gameInstance.cellCollider.RectangleCollides(_collisionRectangle))
+                            {
+                                newposX.X = _position.X;
+                            }
+                            else if (Globals.gameInstance.campaignManager.CollideCurrentEntities(this))
+                            {
+                                newposX.X = _position.X;
+                            }
+                            else if (Globals.gameInstance.CollidesPlayers(this))
+                            {
+                                newposX.X = _position.X;
+                            }
+
+                            Vector3 newposZ = _position + Vector3.Backward * _velocity * (ms / 200);
+                            RebuildCollisionRectangle(newposX);
+                            if (Globals.gameInstance.cellCollider.RectangleCollides(_collisionRectangle))
+                            {
+                                newposZ.Z = _position.Z;
+                            }
+                            else if (Globals.gameInstance.campaignManager.CollideCurrentEntities(this))
+                            {
+                                newposZ.Z = _position.Z;
+                            }
+                            else if (Globals.gameInstance.CollidesPlayers(this))
+                            {
+                                newposZ.Z = _position.Z;
+                            }
+
+                            _position = new Vector3(newposX.X, _position.Y, newposZ.Z);
+
+
+                        }
+
                     }
                 }
                 UpdateAnimations(ms * 1.5f);
