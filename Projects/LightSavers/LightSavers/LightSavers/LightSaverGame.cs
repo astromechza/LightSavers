@@ -38,6 +38,7 @@ namespace LightSavers
             // Graphics 
             Globals.graphics.PreferredBackBufferWidth = 1280;
             Globals.graphics.PreferredBackBufferHeight = 720;
+            Globals.graphics.IsFullScreen = true;
         }
 
         protected override void Initialize()

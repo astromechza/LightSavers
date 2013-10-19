@@ -92,7 +92,7 @@ namespace LightSavers.ScreenManagement.Layers
             Draw2DLayers();
 
             canvas.Draw(AssetLoader.title2, new Rectangle(viewport.Bounds.Width / 2 - AssetLoader.about.Width / 2, 60, AssetLoader.about.Width, AssetLoader.about.Height), Color.White);
-            canvas.DrawString(AssetLoader.fnt_paragraph, "Set far in the future, you are in a research\nfacility that has been abandoned for many years\nfor reasons unknown to you.\n\nYou must find their way to the transmatter\nteleporter room where lies your only means of\nescape. Upon entering the facility you find it\nshrouded in darkness...", new Vector2(50, 350), Color.White);
+            canvas.DrawString(AssetLoader.fnt_paragraph, "Set far in the future, you are in a research\nfacility that has been abandoned for many years\nfor reasons unknown to you.\n\nYou must find your way to the transmatter\nteleporter room where lies your only means of\nescape. Upon entering the facility you find it\nshrouded in darkness...", new Vector2(50, 350), Color.White);
             canvas.Draw(AssetLoader.ship, new Rectangle(viewport.Bounds.Width - AssetLoader.ship.Width - 100, 350, AssetLoader.ship.Width, AssetLoader.ship.Height), Color.White);
             
             //drawing prompt to go back

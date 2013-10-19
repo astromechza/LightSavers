@@ -161,8 +161,9 @@ namespace LightSavers.Components
                 case Buttons.X:
                     return Keys.E;
 
-                case Buttons.Y:
-                    return Keys.F;
+                //Temporary fix for disabling switching to any weapon
+                //case Buttons.Y:
+                //    return Keys.F;
 
                 case Buttons.Start:
                     return Keys.Escape;
